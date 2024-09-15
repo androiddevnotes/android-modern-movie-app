@@ -1,5 +1,8 @@
 package com.example.tmdbapp.ui
 
+import android.app.Application
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -18,7 +21,8 @@ import com.example.tmdbapp.viewmodel.CreateListState
 @Composable
 fun ListCreationScreen(
     viewModel: MovieViewModel,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    application: Application // Add this parameter
 ) {
     var listName by remember { mutableStateOf("") }
     var listDescription by remember { mutableStateOf("") }
@@ -26,7 +30,7 @@ fun ListCreationScreen(
     val createListState by viewModel.createListState.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.authenticate()
+        viewModel.startAuthentication()
     }
 
     Scaffold(
@@ -57,6 +61,18 @@ fun ListCreationScreen(
                         text = stringResource(R.string.auth_error, (authState as AuthState.Error).message),
                         color = MaterialTheme.colorScheme.error
                     )
+                }
+                is AuthState.RequestTokenCreated -> {
+                    val token = (authState as AuthState.RequestTokenCreated).token
+                    LaunchedEffect(token) {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.themoviedb.org/authenticate/$token"))
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        application.startActivity(intent) // Use the passed application instance
+                    }
+                    Text("Please approve the request in your browser, then come back here.")
+                    Button(onClick = { viewModel.createSession(token) }) {
+                        Text("I've approved the request")
+                    }
                 }
                 is AuthState.Authenticated -> {
                     OutlinedTextField(

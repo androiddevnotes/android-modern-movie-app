@@ -362,30 +362,29 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         return favorites.value.any { it.id == movieId }
     }
 
-    fun authenticate() {
+    fun startAuthentication() {
         viewModelScope.launch {
             _authState.value = AuthState.Loading
             when (val tokenResult = repository.createRequestToken()) {
                 is Resource.Success -> {
                     val token = tokenResult.data
-                    // Here, you would typically redirect the user to the TMDB website to approve the token
-                    // After approval, you would call createSession with the approved token
-                    when (val sessionResult = token?.let { repository.createSession(it) }) {
-                        is Resource.Success -> _authState.value = AuthState.Authenticated
-                        is Resource.Error -> _authState.value = sessionResult.message?.let {
-                            AuthState.Error(
-                                it
-                            )
-                        }!!
-
-                        else -> {}
+                    if (token != null) {
+                        _authState.value = AuthState.RequestTokenCreated(token)
+                    } else {
+                        _authState.value = AuthState.Error("Failed to create request token")
                     }
                 }
-                is Resource.Error -> _authState.value = tokenResult.message?.let {
-                    AuthState.Error(
-                        it
-                    )
-                }!!
+                is Resource.Error -> _authState.value = AuthState.Error(tokenResult.message ?: "Unknown error")
+            }
+        }
+    }
+
+    fun createSession(approvedToken: String) {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            when (val sessionResult = repository.createSession(approvedToken)) {
+                is Resource.Success -> _authState.value = AuthState.Authenticated
+                is Resource.Error -> _authState.value = AuthState.Error(sessionResult.message ?: "Failed to create session")
             }
         }
     }
@@ -426,6 +425,7 @@ enum class SortOption(val apiValue: String, @StringRes val stringRes: Int) {
 sealed class AuthState {
     object Idle : AuthState()
     object Loading : AuthState()
+    data class RequestTokenCreated(val token: String) : AuthState()
     object Authenticated : AuthState()
     data class Error(val message: String) : AuthState()
 }

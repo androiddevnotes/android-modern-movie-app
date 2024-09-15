@@ -36,6 +36,8 @@
     <string name="create_list">Create List</string>
     <string name="back">Back</string>
     <string name="auth_error">Authentication error: %1$s</string>
+    <string name="approve_request">Please approve the request in your browser, then come back here.</string>
+    <string name="approved_request">I\'ve approved the request</string>
     <string name="list_name">List Name</string>
     <string name="list_description">List Description</string>
     <string name="list_created_success">List created successfully with ID: %1$d</string>

@@ -1,5 +1,6 @@
 package com.example.tmdbapp.ui
 
+import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
@@ -19,7 +20,8 @@ fun NavGraph(
     currentThemeMode: ThemeMode,
     onThemeChange: () -> Unit,
     viewType: String,
-    onViewTypeChange: (String) -> Unit
+    onViewTypeChange: (String) -> Unit,
+    application: Application // Add this parameter
 ) {
     NavHost(navController = navController, startDestination = "movieList") {
         composable("movieList") {
@@ -66,7 +68,8 @@ fun NavGraph(
         composable("createList") {
             ListCreationScreen(
                 viewModel = movieViewModel,
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() },
+                application = application // Pass the application instance
             )
         }
     }
