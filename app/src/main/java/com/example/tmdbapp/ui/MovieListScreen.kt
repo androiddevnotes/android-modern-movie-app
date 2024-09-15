@@ -104,7 +104,8 @@ fun MovieListScreen(
                                             viewModel.selectMovie(movie)
                                             onMovieClick(movie)
                                         },
-                                        onFavoriteClick = { viewModel.toggleFavorite(movie) }
+                                        onFavoriteClick = { viewModel.toggleFavorite(movie) },
+                                        isListView = false
                                     )
                                 }
                             }
@@ -123,7 +124,8 @@ fun MovieListScreen(
                                                 viewModel.selectMovie(movie)
                                                 onMovieClick(movie)
                                             },
-                                        onFavoriteClick = { viewModel.toggleFavorite(movie) }
+                                        onFavoriteClick = { viewModel.toggleFavorite(movie) },
+                                        isListView = true
                                     )
                                 }
                                 item {
