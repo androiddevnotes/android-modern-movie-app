@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
@@ -45,9 +44,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -56,18 +57,12 @@ import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.ui.components.MovieItem
 import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.utils.Constants
+import com.example.tmdbapp.utils.rememberForeverLazyListState
+import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
 import com.example.tmdbapp.viewmodel.MovieUiState
 import com.example.tmdbapp.viewmodel.MovieViewModel
 import com.example.tmdbapp.viewmodel.SortOption
 import kotlinx.coroutines.launch
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
-import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.graphics.Color
-import com.example.tmdbapp.utils.rememberForeverLazyListState
-import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -138,7 +133,7 @@ fun MovieListScreen(
                     value = searchQuery,
                     onValueChange = { viewModel.setSearchQuery(it) },
                     modifier = Modifier.fillMaxWidth(),
-                    placeholder = { 
+                    placeholder = {
                         Text(
                             stringResource(R.string.label_search_movies),
                             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -215,7 +210,7 @@ fun MovieListScreen(
                             Icon(
                                 painter = painterResource(id = R.drawable.cool_shape_fav),
                                 contentDescription = Constants.CONTENT_DESC_FAVORITES,
-//                                tint = Color.Unspecified
+                                tint = Color.Unspecified
                             )
                         }
                         IconButton(onClick = {
@@ -301,9 +296,9 @@ fun MovieListScreen(
                                     }
                                     MovieItem(
                                         movie = movie,
-                                        modifier = Modifier.clickable { 
+                                        modifier = Modifier.clickable {
                                             viewModel.setLastViewedItemIndex(index)
-                                            onMovieClick(movie) 
+                                            onMovieClick(movie)
                                         },
                                         onFavoriteClick = { viewModel.toggleFavorite(movie) },
                                         isListView = false
