@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.repository.MovieRepository
+import com.example.tmdbapp.repository.SortOption
 import com.example.tmdbapp.utils.MovieError
 import com.example.tmdbapp.utils.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,6 +52,9 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _gridScrollPosition = MutableStateFlow(ScrollPosition(0, 0))
     val gridScrollPosition: StateFlow<ScrollPosition> = _gridScrollPosition
+
+    private val _currentSortOption = MutableStateFlow(SortOption.POPULAR)
+    val currentSortOption: StateFlow<SortOption> = _currentSortOption
 
     init {
         fetchPopularMovies()
@@ -114,8 +118,40 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun setSortOption(sortOption: SortOption) {
+        if (_currentSortOption.value != sortOption) {
+            _currentSortOption.value = sortOption
+            currentPage = 1
+            isLastPage = false
+            _uiState.value = MovieUiState.Loading
+            fetchMovies()
+        }
+    }
+
+    private fun fetchMovies() {
+        if (isLoading || isLastPage) return
+        isLoading = true
+        viewModelScope.launch {
+            try {
+                val result = repository.getMovies(_currentSortOption.value, currentPage)
+                when (result) {
+                    is Resource.Success -> {
+                        // ... existing success handling
+                    }
+                    is Resource.Error -> {
+                        // ... existing error handling
+                    }
+                }
+            } catch (e: Exception) {
+                // ... existing exception handling
+            } finally {
+                isLoading = false
+            }
+        }
+    }
+
     fun loadMoreMovies() {
-        fetchPopularMovies()
+        fetchMovies()
     }
 
     fun selectMovie(movie: Movie) {

@@ -44,4 +44,25 @@ class MovieRepository(context: Context) {
     fun isFavorite(movieId: Int): Boolean {
         return favoritePreferences.isFavorite(movieId)
     }
+
+    suspend fun getMovies(sortOption: SortOption, page: Int): Resource<MovieResponse> {
+        return try {
+            val response = when (sortOption) {
+                SortOption.POPULAR -> api.getPopularMovies(apiKey, page)
+                SortOption.NOW_PLAYING -> api.getNowPlayingMovies(apiKey, page)
+                SortOption.TOP_RATED -> api.getTopRatedMovies(apiKey, page)
+                SortOption.UPCOMING -> api.getUpcomingMovies(apiKey, page)
+            }
+            val moviesWithFavoriteStatus = response.results.map { movie ->
+                movie.copy(isFavorite = favoritePreferences.isFavorite(movie.id))
+            }
+            Resource.Success(response.copy(results = moviesWithFavoriteStatus))
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
+        }
+    }
+}
+
+enum class SortOption {
+    POPULAR, NOW_PLAYING, TOP_RATED, UPCOMING
 }

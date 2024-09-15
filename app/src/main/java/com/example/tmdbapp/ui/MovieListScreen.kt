@@ -23,6 +23,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,6 +37,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.remember as rememberComposable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +54,7 @@ import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.MovieUiState
 import com.example.tmdbapp.viewmodel.MovieViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
+import com.example.tmdbapp.repository.SortOption
 
 @Composable
 fun MovieListScreen(
@@ -73,6 +80,9 @@ fun MovieListScreen(
         initialFirstVisibleItemIndex = listScrollPosition.firstVisibleItemIndex,
         initialFirstVisibleItemScrollOffset = listScrollPosition.firstVisibleItemScrollOffset
     )
+
+    var expandedDropdown by remember { mutableStateOf(false) }
+    val currentSortOption by viewModel.currentSortOption.collectAsState()
 
     LaunchedEffect(gridState, viewType) {
         if (viewType == Constants.VIEW_TYPE_GRID) {
@@ -104,22 +114,48 @@ fun MovieListScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = { onViewTypeChange(if (viewType == Constants.VIEW_TYPE_GRID) Constants.VIEW_TYPE_LIST else Constants.VIEW_TYPE_GRID) }) {
+                    IconButton(onClick = { expandedDropdown = true }) {
                         Icon(
                             painter = painterResource(
-                                id = if (viewType == Constants.VIEW_TYPE_GRID)
-                                    R.drawable.view_list_24px
-                                else
-                                    R.drawable.grid_view_24px
+                                id = R.drawable.ic_sort
                             ),
-                            contentDescription = Constants.CONTENT_DESC_SWITCH_VIEW,
+                            contentDescription = "Sort",
                             tint = MaterialTheme.colorScheme.onSurface
                         )
+                    }
+                    DropdownMenu(
+                        expanded = expandedDropdown,
+                        onDismissRequest = { expandedDropdown = false }
+                    ) {
+                        SortOption.values().forEach { sortOption ->
+                            DropdownMenuItem(
+                                text = { Text(sortOption.name.replace("_", " ")) },
+                                onClick = {
+                                    viewModel.setSortOption(sortOption)
+                                    expandedDropdown = false
+                                }
+                            )
+                        }
                     }
                     IconButton(onClick = onFavoritesClick) {
                         Icon(
                             Icons.Default.Favorite,
                             contentDescription = Constants.CONTENT_DESC_FAVORITES
+                        )
+                    }
+                    IconButton(onClick = {
+                        onViewTypeChange(
+                            if (viewType == Constants.VIEW_TYPE_GRID) Constants.VIEW_TYPE_LIST
+                            else Constants.VIEW_TYPE_GRID
+                        )
+                    }) {
+                        Icon(
+                            painter = painterResource(
+                                id = if (viewType == Constants.VIEW_TYPE_GRID) R.drawable.view_list_24px
+                                else R.drawable.grid_view_24px
+                            ),
+                            contentDescription = Constants.CONTENT_DESC_SWITCH_VIEW,
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     IconButton(onClick = onThemeChange) {
