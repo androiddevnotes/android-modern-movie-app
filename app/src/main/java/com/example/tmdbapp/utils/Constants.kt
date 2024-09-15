@@ -18,7 +18,7 @@ object Constants {
 
     
     const val SCREEN_TITLE_FAVORITES = "Favorites"
-    const val SCREEN_TITLE_DISCOVER = "ADN"
+    const val SCREEN_TITLE_DISCOVER = ""
 
     
     const val CONTENT_DESC_BACK = "Back"
