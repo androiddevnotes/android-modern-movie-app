@@ -14,16 +14,18 @@ sealed class Screen {
 @Composable
 fun MainScreen(viewModel: MovieViewModel) {
     var currentScreen by remember { mutableStateOf<Screen>(Screen.List) }
+    var previousScreen by remember { mutableStateOf<Screen>(Screen.List) }
     val selectedMovie by viewModel.selectedMovie.collectAsState()
 
     BackHandler(enabled = currentScreen != Screen.List) {
         when (currentScreen) {
             is Screen.Detail -> {
                 viewModel.clearSelectedMovie()
-                currentScreen = Screen.List
+                currentScreen = previousScreen
             }
             is Screen.Favorites -> {
                 currentScreen = Screen.List
+                previousScreen = Screen.List
             }
             is Screen.List -> {}
         }
@@ -34,15 +36,20 @@ fun MainScreen(viewModel: MovieViewModel) {
             viewModel = viewModel,
             onMovieClick = { 
                 viewModel.selectMovie(it) 
+                previousScreen = Screen.List
                 currentScreen = Screen.Detail(it)
             },
-            onFavoritesClick = { currentScreen = Screen.Favorites }
+            onFavoritesClick = { 
+                currentScreen = Screen.Favorites
+                previousScreen = Screen.List
+            }
         )
         is Screen.Favorites -> FavoritesScreen(
             viewModel = viewModel,
             onMovieClick = { movieId ->
                 viewModel.getMovieById(movieId)?.let { movie ->
                     viewModel.selectMovie(movie)
+                    previousScreen = Screen.Favorites
                     currentScreen = Screen.Detail(movie)
                 }
             }
@@ -52,7 +59,7 @@ fun MainScreen(viewModel: MovieViewModel) {
                 viewModel = viewModel,
                 onBackPress = { 
                     viewModel.clearSelectedMovie()
-                    currentScreen = Screen.List
+                    currentScreen = previousScreen
                 }
             )
         }
