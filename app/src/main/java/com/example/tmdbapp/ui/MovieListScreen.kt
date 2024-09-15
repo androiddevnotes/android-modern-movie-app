@@ -65,6 +65,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.graphics.Color
 import com.example.tmdbapp.utils.rememberForeverLazyListState
 import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
 
@@ -212,8 +213,9 @@ fun MovieListScreen(
                         }
                         IconButton(onClick = onFavoritesClick) {
                             Icon(
-                                Icons.Default.Favorite,
-                                contentDescription = Constants.CONTENT_DESC_FAVORITES
+                                painter = painterResource(id = R.drawable.cool_shape_fav),
+                                contentDescription = Constants.CONTENT_DESC_FAVORITES,
+//                                tint = Color.Unspecified
                             )
                         }
                         IconButton(onClick = {
