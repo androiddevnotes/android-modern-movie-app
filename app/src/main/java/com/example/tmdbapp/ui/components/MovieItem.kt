@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.tmdbapp.models.Movie
@@ -36,14 +37,27 @@ fun MovieItem(
                     .padding(end = 8.dp),
                 contentScale = ContentScale.Crop
             )
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(100.dp)
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.Top
                 ) {
-                    Text(text = movie.title, style = MaterialTheme.typography.titleMedium)
-                    IconButton(onClick = onFavoriteClick) {
+                    Text(
+                        text = movie.title,
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
+                    )
+                    IconButton(
+                        onClick = onFavoriteClick,
+                        modifier = Modifier.size(48.dp)
+                    ) {
                         Icon(
                             imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                             contentDescription = "Favorite",
@@ -52,7 +66,12 @@ fun MovieItem(
                     }
                 }
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = movie.overview, style = MaterialTheme.typography.bodyMedium, maxLines = 4)
+                Text(
+                    text = movie.overview,
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
         }
     }
