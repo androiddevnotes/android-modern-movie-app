@@ -355,7 +355,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 data class FilterOptions(
     val genres: List<Int> = emptyList(),
     val minRating: Float? = null,
-    val releaseYear: Int? = null,
+    val releaseYear: Int? = null
 )
 
 enum class SortOption(val apiValue: String, @StringRes val stringRes: Int) {

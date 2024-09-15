@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import com.example.tmdbapp.ui.theme.ThemeMode
+import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
@@ -16,6 +17,7 @@ fun MainScreen(
 ) {
     val navController = rememberNavController()
     var currentThemeMode by remember { mutableStateOf(ThemeMode.SYSTEM) }
+    var viewType by remember { mutableStateOf(Constants.VIEW_TYPE_GRID) }
 
     NavGraph(
         navController = navController,
@@ -28,6 +30,10 @@ fun MainScreen(
                 ThemeMode.SYSTEM -> ThemeMode.LIGHT
             }
             onThemeChange(currentThemeMode)
+        },
+        viewType = viewType,
+        onViewTypeChange = { newViewType ->
+            viewType = newViewType
         }
     )
 }

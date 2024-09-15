@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.utils.Constants
@@ -20,10 +21,10 @@ fun NavGraph(
     navController: NavHostController,
     movieViewModel: MovieViewModel,
     currentThemeMode: ThemeMode,
-    onThemeChange: () -> Unit
+    onThemeChange: () -> Unit,
+    viewType: String,
+    onViewTypeChange: (String) -> Unit
 ) {
-    var viewType by remember { mutableStateOf(Constants.VIEW_TYPE_GRID) }
-
     NavHost(navController = navController, startDestination = "movieList") {
         composable("movieList") {
             MovieListScreen(
@@ -36,9 +37,7 @@ fun NavGraph(
                 },
                 screenTitle = "Discover",
                 viewType = viewType,
-                onViewTypeChange = { newViewType ->
-                    viewType = newViewType
-                },
+                onViewTypeChange = onViewTypeChange,
                 onThemeChange = onThemeChange,
                 currentThemeMode = currentThemeMode,
                 onDummyListClick = {
@@ -53,7 +52,6 @@ fun NavGraph(
             val movieId = backStackEntry.arguments?.getInt("movieId") ?: return@composable
             LaunchedEffect(movieId) {
                 movieViewModel.fetchMovieDetails(movieId)
-                
             }
             MovieDetailScreen(
                 viewModel = movieViewModel,
@@ -88,4 +86,11 @@ fun NavGraph(
             )
         }
     }
+}
+
+// Helper function to cycle through theme modes
+private fun ThemeMode.next(): ThemeMode = when (this) {
+    ThemeMode.LIGHT -> ThemeMode.DARK
+    ThemeMode.DARK -> ThemeMode.SYSTEM
+    ThemeMode.SYSTEM -> ThemeMode.LIGHT
 }

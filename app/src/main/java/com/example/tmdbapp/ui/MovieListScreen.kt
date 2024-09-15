@@ -64,6 +64,9 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.runtime.saveable.rememberSaveable
+import com.example.tmdbapp.utils.rememberForeverLazyListState
+import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,13 +81,13 @@ fun MovieListScreen(
     currentThemeMode: ThemeMode,
     onDummyListClick: () -> Unit
 ) {
+    var isSearchActive by rememberSaveable { mutableStateOf(false) }
+    var showFilterBottomSheet by rememberSaveable { mutableStateOf(false) }
+
     val uiState by viewModel.uiState.collectAsState()
 
     var expandedDropdown by remember { mutableStateOf(false) }
     val currentSortOption by viewModel.currentSortOption.collectAsState()
-
-    var showFilterBottomSheet by remember { mutableStateOf(false) }
-    val currentFilters by viewModel.filterOptions.collectAsState()
 
     val coroutineScope = rememberCoroutineScope()
     var isRefreshing by remember { mutableStateOf(false) }
@@ -101,12 +104,21 @@ fun MovieListScreen(
     )
 
     val searchQuery by viewModel.searchQuery.collectAsState()
-    var isSearchActive by remember { mutableStateOf(false) }
 
     val lastViewedItemIndex by viewModel.lastViewedItemIndex.collectAsState()
 
-    val listState = rememberLazyListState()
-    val gridState = rememberLazyStaggeredGridState()
+    val listState = rememberForeverLazyListState(
+        key = "movie_list_${viewType}_${searchQuery}",
+        initialFirstVisibleItemIndex = lastViewedItemIndex,
+        initialFirstVisibleItemScrollOffset = 0 // You can adjust this value if needed
+    )
+    val gridState = rememberForeverLazyStaggeredGridState(
+        key = "movie_grid_${viewType}_${searchQuery}",
+        initialFirstVisibleItemIndex = lastViewedItemIndex,
+        initialFirstVisibleItemOffset = 0 // You can adjust this value if needed
+    )
+
+    val currentFilters by viewModel.filterOptions.collectAsState()
 
     if (showFilterBottomSheet) {
         FilterBottomSheet(
@@ -190,7 +202,7 @@ fun MovieListScreen(
                         ) {
                             SortOption.values().forEach { sortOption ->
                                 DropdownMenuItem(
-                                    text = { Text(sortOption.name.replace("_", " ")) },
+                                    text = { Text(stringResource(sortOption.stringRes)) },
                                     onClick = {
                                         viewModel.setSortOption(sortOption)
                                         expandedDropdown = false
