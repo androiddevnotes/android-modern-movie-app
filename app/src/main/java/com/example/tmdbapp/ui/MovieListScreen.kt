@@ -2,6 +2,7 @@ package com.example.tmdbapp.ui
 
 
 import FilterBottomSheet
+import MovieGridItem
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -177,27 +179,25 @@ fun MovieListScreen(
                     when (viewType) {
                         Constants.VIEW_TYPE_GRID -> {
                             LazyVerticalStaggeredGrid(
-                                columns = StaggeredGridCells.Adaptive(Constants.GRID_COLUMNS_ADAPTIVE_WIDTH.dp),
-                                contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
-                                horizontalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM),
-                                verticalItemSpacing = Constants.PADDING_MEDIUM,
+                                columns = StaggeredGridCells.Fixed(3),
+                                contentPadding = PaddingValues(4.dp),
+                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                verticalItemSpacing = 4.dp,
                                 state = gridState
                             ) {
                                 itemsIndexed(
                                     items = movies,
-                                    key = { index, movie -> "${movie.id}_${index}" } // Use index to ensure uniqueness
+                                    key = { index, movie -> "${movie.id}_${index}" }
                                 ) { index, movie ->
                                     if (index >= movies.size - 1 && !viewModel.isLastPage) {
                                         viewModel.loadMoreMovies()
                                     }
-                                    MovieItem(
+                                    MovieGridItem(
                                         movie = movie,
-                                        modifier = Modifier.clickable {
+                                        onClick = {
                                             viewModel.setLastViewedItemIndex(index)
                                             onMovieClick(movie)
-                                        },
-                                        onFavoriteClick = { viewModel.toggleFavorite(movie) },
-                                        isListView = false
+                                        }
                                     )
                                 }
                             }
