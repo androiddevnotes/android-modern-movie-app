@@ -46,7 +46,7 @@ fun MovieItem(
                     .fillMaxSize()
                     .background(
                         Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, Color(0x88000000))
+                            colors = listOf(Color.Transparent, Color(0xCC000000))
                         )
                     )
             )
@@ -66,7 +66,7 @@ fun MovieItem(
             IconButton(
                 onClick = onFavoriteClick,
                 modifier = Modifier
-                    .align(Alignment.TopEnd)
+                    .align(Alignment.BottomEnd)
                     .padding(8.dp)
             ) {
                 Icon(
