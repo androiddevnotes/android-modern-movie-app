@@ -437,16 +437,16 @@ enum class SortOption(val apiValue: String, @StringRes val stringRes: Int) {
 }
 
 sealed class AuthState {
-    object Idle : AuthState()
-    object Loading : AuthState()
+    data object Idle : AuthState()
+    data object Loading : AuthState()
     data class RequestTokenCreated(val token: String) : AuthState()
-    object Authenticated : AuthState()
+    data object Authenticated : AuthState()
     data class Error(val message: String) : AuthState()
 }
 
 sealed class CreateListState {
-    object Idle : CreateListState()
-    object Loading : CreateListState()
+    data object Idle : CreateListState()
+    data object Loading : CreateListState()
     data class Success(val listId: Int) : CreateListState()
     data class Error(val message: String) : CreateListState()
 }
