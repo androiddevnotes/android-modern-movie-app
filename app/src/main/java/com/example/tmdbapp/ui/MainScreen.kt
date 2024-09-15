@@ -47,21 +47,24 @@ fun MainScreen(viewModel: MovieViewModel) {
         is Screen.Favorites -> FavoritesScreen(
             viewModel = viewModel,
             onMovieClick = { movieId ->
-                viewModel.getMovieById(movieId)?.let { movie ->
+                val movie = viewModel.getMovieById(movieId)
+                if (movie != null) {
                     viewModel.selectMovie(movie)
                     previousScreen = Screen.Favorites
                     currentScreen = Screen.Detail(movie)
                 }
+            },
+            onBackPress = {
+                currentScreen = Screen.List
+                previousScreen = Screen.List
             }
         )
-        is Screen.Detail -> {
-            MovieDetailScreen(
-                viewModel = viewModel,
-                onBackPress = { 
-                    viewModel.clearSelectedMovie()
-                    currentScreen = previousScreen
-                }
-            )
-        }
+        is Screen.Detail -> MovieDetailScreen(
+            viewModel = viewModel,
+            onBackPress = {
+                viewModel.clearSelectedMovie()
+                currentScreen = previousScreen
+            }
+        )
     }
 }
