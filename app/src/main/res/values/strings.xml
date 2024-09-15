@@ -33,4 +33,6 @@
     <string name="rating_value">%.1f</string>
     <string name="cancel">Cancel</string>
     <string name="apply">Apply</string>
+    <string name="enter_year">Enter year</string>
+    <string name="clear">Clear</string>
 </resources>

@@ -1,13 +1,18 @@
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.tmdbapp.R
 import com.example.tmdbapp.viewmodel.FilterOptions
@@ -21,24 +26,23 @@ fun FilterBottomSheet(
     onApply: (FilterOptions) -> Unit
 ) {
     var selectedGenres by remember { mutableStateOf(currentFilters.genres.toSet()) }
-    var selectedYear by remember { mutableStateOf(currentFilters.releaseYear) }
+    var selectedYear by remember { mutableStateOf(currentFilters.releaseYear?.toString() ?: "") }
     var minRating by remember { mutableStateOf(currentFilters.minRating ?: 0f) }
-    var isYearMenuExpanded by remember { mutableStateOf(false) }
 
     val currentYear = LocalDate.now().year
-    val yearRange = (1900..currentYear).reversed()
+    val recentYears = (currentYear downTo currentYear - 20).toList()
 
     val genres = listOf(
-         28 to "Action",
-         12 to "Adventure",
-         16 to "Animation",
-         35 to "Comedy",
-         80 to "Crime",
-         18 to "Drama",
-         14 to "Fantasy",
-         27 to "Horror",
-         10749 to "Romance",
-         878 to "Science Fiction"
+        28 to "Action",
+        12 to "Adventure",
+        16 to "Animation",
+        35 to "Comedy",
+        80 to "Crime",
+        18 to "Drama",
+        14 to "Fantasy",
+        27 to "Horror",
+        10749 to "Romance",
+        878 to "Science Fiction"
     )
 
     ModalBottomSheet(
@@ -73,30 +77,40 @@ fun FilterBottomSheet(
             }
 
             Text(stringResource(R.string.release_year), style = MaterialTheme.typography.titleMedium)
-            ExposedDropdownMenuBox(
-                expanded = isYearMenuExpanded,
-                onExpandedChange = { isYearMenuExpanded = !isYearMenuExpanded }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 OutlinedTextField(
-                    value = selectedYear?.toString() ?: "",
-                    onValueChange = { },
-                    readOnly = true,
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isYearMenuExpanded) },
-                    modifier = Modifier.menuAnchor()
+                    value = selectedYear,
+                    onValueChange = { 
+                        if (it.length <= 4) selectedYear = it 
+                    },
+                    label = { Text(stringResource(R.string.enter_year)) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.weight(1f)
                 )
-                ExposedDropdownMenu(
-                    expanded = isYearMenuExpanded,
-                    onDismissRequest = { isYearMenuExpanded = false }
+                Button(
+                    onClick = { selectedYear = "" },
+                    enabled = selectedYear.isNotEmpty()
                 ) {
-                    yearRange.forEach { year ->
-                        DropdownMenuItem(
-                            text = { Text(year.toString()) },
-                            onClick = {
-                                selectedYear = year
-                                isYearMenuExpanded = false
-                            }
-                        )
-                    }
+                    Text(stringResource(R.string.clear))
+                }
+            }
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = 64.dp),
+                contentPadding = PaddingValues(vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.height(120.dp)
+            ) {
+                items(recentYears) { year ->
+                    FilterChip(
+                        selected = selectedYear == year.toString(),
+                        onClick = { selectedYear = year.toString() },
+                        label = { Text(year.toString()) },
+                        modifier = Modifier.height(40.dp)
+                    )
                 }
             }
 
@@ -126,7 +140,7 @@ fun FilterBottomSheet(
                     onApply(
                         FilterOptions(
                             genres = selectedGenres.toList(),
-                            releaseYear = selectedYear,
+                            releaseYear = selectedYear.toIntOrNull(),
                             minRating = if (minRating > 0f) minRating else null
                         )
                     )
