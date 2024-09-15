@@ -35,6 +35,7 @@ import com.example.tmdbapp.viewmodel.MovieViewModel
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.example.tmdbapp.R
+import com.example.tmdbapp.models.Movie
 
 @Composable
 fun MovieDetailScreen(
@@ -44,77 +45,93 @@ fun MovieDetailScreen(
     val movie by viewModel.currentMovie.collectAsState()
     val context = LocalContext.current
 
-    if (movie != null) {
-        Scaffold(
-            topBar = {
-                SmallTopAppBar(
-                    title = { Text(movie!!.title) },
-                    navigationIcon = {
-                        IconButton(onClick = onBackPress) {
-                            Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = { viewModel.toggleFavorite(movie!!) }) {
-                            Icon(
-                                imageVector = if (movie!!.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                                contentDescription = "Favorite",
-                                tint = if (movie!!.isFavorite) Color.Red else Color.White
-                            )
-                        }
-                        IconButton(onClick = { 
-                            viewModel.downloadImage(movie!!.posterPath, context)
-                        }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.download_24px),
-                                contentDescription = "Download Image",
-                                tint = Color.White
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.smallTopAppBarColors(
-                        containerColor = Color.Transparent,
-                        navigationIconContentColor = Color.White,
-                        actionIconContentColor = Color.White
-                    )
-                )
-            }
-        ) { paddingValues ->
-            Box(modifier = Modifier.fillMaxSize()) {
-                AsyncImage(
-                    model = "https://image.tmdb.org/t/p/w500${movie!!.posterPath}",
-                    contentDescription = movie!!.title,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            Brush.verticalGradient(
-                                colors = listOf(Color.Transparent, Color(0xCC000000))
-                            )
+    movie?.let { currentMovie ->
+        MovieDetailContent(
+            movie = currentMovie,
+            onBackPress = onBackPress,
+            onFavoriteClick = { viewModel.toggleFavorite(currentMovie) },
+            onDownloadClick = { viewModel.downloadImage(currentMovie.posterPath, context) }
+        )
+    } ?: run {
+        // Handle the case when movie is null
+        Text("Movie details not available")
+    }
+}
+
+@Composable
+fun MovieDetailContent(
+    movie: Movie,
+    onBackPress: () -> Unit,
+    onFavoriteClick: () -> Unit,
+    onDownloadClick: () -> Unit
+) {
+    Scaffold(
+        topBar = {
+            SmallTopAppBar(
+                title = { Text(movie.title) },
+                navigationIcon = {
+                    IconButton(onClick = onBackPress) {
+                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onFavoriteClick) {
+                        Icon(
+                            imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                            contentDescription = "Favorite",
+                            tint = if (movie.isFavorite) Color.Red else Color.White
                         )
+                    }
+                    IconButton(onClick = onDownloadClick) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.download_24px),
+                            contentDescription = "Download Image",
+                            tint = Color.White
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = Color.Transparent,
+                    navigationIconContentColor = Color.White,
+                    actionIconContentColor = Color.White
                 )
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.Bottom
-                ) {
-                    Text(
-                        text = movie!!.title,
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = Color.White
+            )
+        }
+    ) { paddingValues ->
+        Box(modifier = Modifier.fillMaxSize()) {
+            AsyncImage(
+                model = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
+                contentDescription = movie.title,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(Color.Transparent, Color(0xCC000000))
+                        )
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = movie!!.overview,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.White.copy(alpha = 0.8f)
-                    )
-                }
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                Text(
+                    text = movie.title,
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = movie.overview,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White.copy(alpha = 0.8f)
+                )
             }
         }
     }
