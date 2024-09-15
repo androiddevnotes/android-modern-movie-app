@@ -3,6 +3,7 @@ package com.example.tmdbapp.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tmdbapp.R
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.repository.MovieRepository
 import com.example.tmdbapp.utils.Resource
@@ -56,7 +57,8 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                     isLoading = false
                 }
                 is Resource.Error -> {
-                    _uiState.value = MovieUiState.Error(result.message ?: "Unknown error")
+                    // Emit a well-defined error state without hardcoded string
+                    _uiState.value = MovieUiState.Error(getApplication<Application>().getString(R.string.unknown_error))
                     isLoading = false
                 }
             }

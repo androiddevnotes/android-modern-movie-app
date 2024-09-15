@@ -1,6 +1,7 @@
 package com.example.tmdbapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
@@ -10,11 +11,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.lifecycle.ViewModelProvider
+import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.ui.FavoritesScreen
 import com.example.tmdbapp.ui.MovieDetailScreen
 import com.example.tmdbapp.ui.MovieListScreen
 import com.example.tmdbapp.ui.theme.TMDBAppTheme
 import com.example.tmdbapp.viewmodel.MovieViewModel
+
+// Define a sealed class for screens
+sealed class Screen {
+    object List : Screen()
+    object Favorites : Screen()
+    data class Detail(val movie: Movie) : Screen()
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +32,7 @@ class MainActivity : ComponentActivity() {
             TMDBAppTheme {
                 val movieViewModel: MovieViewModel = viewModel(factory = ViewModelProvider.AndroidViewModelFactory(application))
                 val selectedMovie by movieViewModel.selectedMovie.collectAsState()
-                var currentScreen by remember { mutableStateOf("list") }
+                var currentScreen by remember { mutableStateOf<Screen>(Screen.List) }
 
                 // Handle back press
                 val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
@@ -31,14 +40,14 @@ class MainActivity : ComponentActivity() {
                     val callback = object : OnBackPressedCallback(true) {
                         override fun handleOnBackPressed() {
                             when (currentScreen) {
-                                "detail" -> {
+                                is Screen.Detail -> {
                                     movieViewModel.clearSelectedMovie()
-                                    currentScreen = "list"
+                                    currentScreen = Screen.List
                                 }
-                                "favorites" -> {
-                                    currentScreen = "list"
+                                is Screen.Favorites -> {
+                                    currentScreen = Screen.List
                                 }
-                                else -> {
+                                is Screen.List -> {
                                     isEnabled = false
                                     backDispatcher?.onBackPressed()
                                 }
@@ -49,33 +58,33 @@ class MainActivity : ComponentActivity() {
                 }
 
                 when (currentScreen) {
-                    "list" -> MovieListScreen(
+                    is Screen.List -> MovieListScreen(
                         viewModel = movieViewModel,
                         onMovieClick = { 
                             movieViewModel.selectMovie(it) 
-                            currentScreen = "detail"
+                            currentScreen = Screen.Detail(it)
                         },
-                        onFavoritesClick = { currentScreen = "favorites" }
+                        onFavoritesClick = { currentScreen = Screen.Favorites }
                     )
-                    "favorites" -> FavoritesScreen(
+                    is Screen.Favorites -> FavoritesScreen(
                         viewModel = movieViewModel,
                         onMovieClick = { movieId ->
-                            movieViewModel.getMovieById(movieId)
-                                ?.let { movieViewModel.selectMovie(it) }
-                                currentScreen = "detail"
+                            movieViewModel.getMovieById(movieId)?.let { movie ->
+                                movieViewModel.selectMovie(movie)
+                                currentScreen = Screen.Detail(movie)
+                            } ?: run {
+                                // Handle the null case, e.g., show a toast or navigate back
+                                // Example using a simple log (replace with your preferred method)
+                                Log.e("MainActivity", "Movie not found for ID: $movieId")
+                            }
                         }
                     )
-                    "detail" -> selectedMovie?.let { movie ->
+                    is Screen.Detail -> {
                         MovieDetailScreen(
-                            movie = movie,
-                            onBackPress = { currentScreen = "list" },
-                            onFavoriteClick = { movieViewModel.toggleFavorite(movie) }
+                            movie = (currentScreen as Screen.Detail).movie,
+                            onBackPress = { currentScreen = Screen.List },
+                            onFavoriteClick = { movieViewModel.toggleFavorite((currentScreen as Screen.Detail).movie) }
                         )
-                    }
-                    else -> {
-                        // Handle unknown screen or show a fallback UI
-                        // For example, navigate back to the list
-                        currentScreen = "list"
                     }
                 }
             }
