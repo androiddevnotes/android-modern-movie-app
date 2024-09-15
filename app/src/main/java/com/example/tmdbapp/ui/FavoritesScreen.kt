@@ -35,16 +35,16 @@ fun FavoritesScreen(
 
     Scaffold(
         topBar = {
-            SmallTopAppBar(
-                title = { Text(Constants.SCREEN_TITLE_FAVORITES, style = typography.headlineMedium) },
+            TopAppBar(
+                title = { Text(Constants.SCREEN_TITLE_FAVORITES, style = MaterialTheme.typography.headlineMedium) },
                 navigationIcon = {
                     IconButton(onClick = onBackPress) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = Constants.CONTENT_DESC_BACK)
                     }
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = colorScheme.surface,
-                    titleContentColor = colorScheme.onSurface
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
             )
         }

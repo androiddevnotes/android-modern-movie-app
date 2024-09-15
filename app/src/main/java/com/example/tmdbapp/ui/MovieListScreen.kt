@@ -73,7 +73,7 @@ fun MovieListScreen(
 
     Scaffold(
         topBar = {
-            SmallTopAppBar(
+            TopAppBar(
                 title = { Text(screenTitle, style = MaterialTheme.typography.headlineMedium) },
                 actions = {
                     IconButton(onClick = {
@@ -88,7 +88,7 @@ fun MovieListScreen(
                         Icon(Icons.Default.Favorite, contentDescription = Constants.CONTENT_DESC_FAVORITES)
                     }
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
