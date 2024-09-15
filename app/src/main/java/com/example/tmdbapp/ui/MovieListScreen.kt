@@ -19,6 +19,7 @@ import com.example.tmdbapp.viewmodel.MovieUiState
 import com.example.tmdbapp.viewmodel.MovieViewModel
 import com.example.tmdbapp.ui.components.MovieItem
 import kotlinx.coroutines.flow.distinctUntilChanged
+import com.example.tmdbapp.utils.MovieError
 
 @Composable
 fun MovieListScreen(
@@ -96,9 +97,15 @@ fun MovieListScreen(
                     }
                 }
                 is MovieUiState.Error -> {
-                    val message = (uiState as MovieUiState.Error).message
+                    val error = (uiState as MovieUiState.Error).error
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(text = message)
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(text = error.message, style = MaterialTheme.typography.bodyLarge)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Button(onClick = { viewModel.loadMoreMovies() }) {
+                                Text("Retry")
+                            }
+                        }
                     }
                 }
             }

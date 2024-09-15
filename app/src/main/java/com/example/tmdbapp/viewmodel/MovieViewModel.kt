@@ -7,6 +7,9 @@ import com.example.tmdbapp.R
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.repository.MovieRepository
 import com.example.tmdbapp.utils.Resource
+import com.example.tmdbapp.utils.MovieError
+import retrofit2.HttpException
+import java.io.IOException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -15,7 +18,7 @@ import kotlinx.coroutines.launch
 sealed class MovieUiState {
     object Loading : MovieUiState()
     data class Success(val movies: List<Movie>) : MovieUiState()
-    data class Error(val message: String) : MovieUiState()
+    data class Error(val error: MovieError) : MovieUiState()
 }
 
 data class ListScrollPosition(
@@ -54,26 +57,48 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         if (isLoading || isLastPage) return
         isLoading = true
         viewModelScope.launch {
-            when (val result = repository.getPopularMovies(currentPage)) {
-                is Resource.Success -> {
-                    val newMovies = result.data?.results ?: emptyList()
-                    val currentMovies = if (_uiState.value is MovieUiState.Success) {
-                        (_uiState.value as MovieUiState.Success).movies
-                    } else {
-                        emptyList()
+            try {
+                val result = repository.getPopularMovies(currentPage)
+                when (result) {
+                    is Resource.Success -> {
+                        val newMovies = result.data?.results ?: emptyList()
+                        val currentMovies = if (_uiState.value is MovieUiState.Success) {
+                            (_uiState.value as MovieUiState.Success).movies
+                        } else {
+                            emptyList()
+                        }
+                        _uiState.value = MovieUiState.Success(currentMovies + newMovies)
+                        currentPage++
+                        isLastPage = newMovies.isEmpty()
                     }
-                    _uiState.value = MovieUiState.Success(currentMovies + newMovies)
-                    currentPage++
-                    isLastPage = newMovies.isEmpty()
-                    isLoading = false
+                    is Resource.Error -> {
+                        _uiState.value = MovieUiState.Error(handleError(result.message))
+                    }
                 }
-                is Resource.Error -> {
-                    
-                    _uiState.value = MovieUiState.Error(getApplication<Application>().getString(R.string.unknown_error))
-                    isLoading = false
-                }
+            } catch (e: Exception) {
+                _uiState.value = MovieUiState.Error(handleError(e))
+            } finally {
+                isLoading = false
             }
         }
+    }
+
+    private fun handleError(error: Throwable): MovieError {
+        return when (error) {
+            is IOException -> MovieError.Network
+            is HttpException -> {
+                when (error.code()) {
+                    in 400..499 -> MovieError.ApiError("API Error: ${error.message()}")
+                    in 500..599 -> MovieError.Server
+                    else -> MovieError.Unknown
+                }
+            }
+            else -> MovieError.Unknown
+        }
+    }
+
+    private fun handleError(errorMessage: String?): MovieError {
+        return MovieError.ApiError(errorMessage ?: "An unknown error occurred")
     }
 
     private fun loadFavorites() {
