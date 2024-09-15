@@ -1,11 +1,13 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
 package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
@@ -13,7 +15,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridS
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -26,30 +27,48 @@ import com.example.tmdbapp.viewmodel.MovieViewModel
 import com.example.tmdbapp.ui.components.MovieItem
 import kotlinx.coroutines.flow.distinctUntilChanged
 import com.example.tmdbapp.utils.Constants
-import com.example.tmdbapp.utils.MovieError
 
 @Composable
 fun MovieListScreen(
     viewModel: MovieViewModel,
     onMovieClick: (Movie) -> Unit,
     onFavoritesClick: () -> Unit,
-    screenTitle: String
+    screenTitle: String,
+    viewType: String,
+    onViewTypeChange: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val scrollPosition by viewModel.listScrollPosition.collectAsState()
-    var viewType by remember { mutableStateOf(Constants.VIEW_TYPE_GRID) }
+    val gridScrollPosition by viewModel.gridScrollPosition.collectAsState()
+    val listScrollPosition by viewModel.listScrollPosition.collectAsState()
     
-    val listState = rememberLazyStaggeredGridState(
-        initialFirstVisibleItemIndex = scrollPosition.firstVisibleItemIndex,
-        initialFirstVisibleItemScrollOffset = scrollPosition.firstVisibleItemScrollOffset
+    val gridState = rememberLazyStaggeredGridState(
+        initialFirstVisibleItemIndex = gridScrollPosition.firstVisibleItemIndex,
+        initialFirstVisibleItemScrollOffset = gridScrollPosition.firstVisibleItemScrollOffset
+    )
+    
+    val listState = rememberLazyListState(
+        initialFirstVisibleItemIndex = listScrollPosition.firstVisibleItemIndex,
+        initialFirstVisibleItemScrollOffset = listScrollPosition.firstVisibleItemScrollOffset
     )
 
-    LaunchedEffect(listState) {
-        snapshotFlow { listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset }
-            .distinctUntilChanged()
-            .collect { (index, offset) ->
-                viewModel.saveListScrollPosition(index, offset)
-            }
+    LaunchedEffect(gridState, viewType) {
+        if (viewType == Constants.VIEW_TYPE_GRID) {
+            snapshotFlow { gridState.firstVisibleItemIndex to gridState.firstVisibleItemScrollOffset }
+                .distinctUntilChanged()
+                .collect { (index, offset) ->
+                    viewModel.saveGridScrollPosition(index, offset)
+                }
+        }
+    }
+
+    LaunchedEffect(listState, viewType) {
+        if (viewType == Constants.VIEW_TYPE_LIST) {
+            snapshotFlow { listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset }
+                .distinctUntilChanged()
+                .collect { (index, offset) ->
+                    viewModel.saveListScrollPosition(index, offset)
+                }
+        }
     }
 
     Scaffold(
@@ -57,8 +76,8 @@ fun MovieListScreen(
             SmallTopAppBar(
                 title = { Text(screenTitle, style = MaterialTheme.typography.headlineMedium) },
                 actions = {
-                    IconButton(onClick = { 
-                        viewType = if (viewType == Constants.VIEW_TYPE_GRID) Constants.VIEW_TYPE_LIST else Constants.VIEW_TYPE_GRID 
+                    IconButton(onClick = {
+                        onViewTypeChange(if (viewType == Constants.VIEW_TYPE_GRID) Constants.VIEW_TYPE_LIST else Constants.VIEW_TYPE_GRID)
                     }) {
                         Icon(
                             imageVector = if (viewType == Constants.VIEW_TYPE_GRID) Icons.Default.Menu else Icons.Default.DateRange,
@@ -89,7 +108,7 @@ fun MovieListScreen(
                         Constants.VIEW_TYPE_GRID -> {
                             LazyVerticalStaggeredGrid(
                                 columns = StaggeredGridCells.Adaptive(150.dp),
-                                state = listState,
+                                state = gridState,
                                 contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
                                 horizontalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM),
                                 verticalItemSpacing = Constants.PADDING_MEDIUM
@@ -112,6 +131,7 @@ fun MovieListScreen(
                         }
                         Constants.VIEW_TYPE_LIST -> {
                             LazyColumn(
+                                state = listState,
                                 contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
                                 verticalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM)
                             ) {

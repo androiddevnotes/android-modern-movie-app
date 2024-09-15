@@ -26,6 +26,8 @@ data class ListScrollPosition(
     val firstVisibleItemScrollOffset: Int
 )
 
+data class ScrollPosition(val firstVisibleItemIndex: Int, val firstVisibleItemScrollOffset: Int)
+
 class MovieViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = MovieRepository(application)
 
@@ -42,11 +44,14 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     private var isLastPage = false
     private var isLoading = false
 
-    private val _listScrollPosition = MutableStateFlow(ListScrollPosition(0, 0))
-    val listScrollPosition: StateFlow<ListScrollPosition> = _listScrollPosition
+    private val _listScrollPosition = MutableStateFlow(ScrollPosition(0, 0))
+    val listScrollPosition: StateFlow<ScrollPosition> = _listScrollPosition
 
     private val _currentMovie = MutableStateFlow<Movie?>(null)
     val currentMovie: StateFlow<Movie?> = _currentMovie
+
+    private val _gridScrollPosition = MutableStateFlow(ScrollPosition(0, 0))
+    val gridScrollPosition: StateFlow<ScrollPosition> = _gridScrollPosition
 
     init {
         fetchPopularMovies()
@@ -160,7 +165,11 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun saveListScrollPosition(firstVisibleItemIndex: Int, firstVisibleItemScrollOffset: Int) {
-        _listScrollPosition.value = ListScrollPosition(firstVisibleItemIndex, firstVisibleItemScrollOffset)
+    fun saveGridScrollPosition(index: Int, offset: Int) {
+        _gridScrollPosition.value = ScrollPosition(index, offset)
+    }
+
+    fun saveListScrollPosition(index: Int, offset: Int) {
+        _listScrollPosition.value = ScrollPosition(index, offset)
     }
 }

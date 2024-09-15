@@ -17,6 +17,7 @@ fun MainScreen(viewModel: MovieViewModel) {
     var currentScreen by remember { mutableStateOf<Screen>(Screen.List) }
     var previousScreen by remember { mutableStateOf<Screen>(Screen.List) }
     val selectedMovie by viewModel.selectedMovie.collectAsState()
+    var viewType by remember { mutableStateOf(Constants.VIEW_TYPE_GRID) }
 
     BackHandler(enabled = currentScreen != Screen.List) {
         when (currentScreen) {
@@ -44,7 +45,9 @@ fun MainScreen(viewModel: MovieViewModel) {
                 currentScreen = Screen.Favorites
                 previousScreen = Screen.List
             },
-            screenTitle = Constants.SCREEN_TITLE_DISCOVER
+            screenTitle = Constants.SCREEN_TITLE_DISCOVER,
+            viewType = viewType,
+            onViewTypeChange = { newViewType -> viewType = newViewType }
         )
         is Screen.Favorites -> FavoritesScreen(
             viewModel = viewModel,
