@@ -3,6 +3,7 @@
 package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -18,8 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.viewmodel.MovieViewModel
@@ -35,7 +39,7 @@ fun MovieDetailScreen(
         Scaffold(
             topBar = {
                 SmallTopAppBar(
-                    title = { Text(text = movie.title) },
+                    title = { },
                     navigationIcon = {
                         IconButton(onClick = onBackPress) {
                             Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
@@ -46,35 +50,54 @@ fun MovieDetailScreen(
                             Icon(
                                 imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                                 contentDescription = "Favorite",
-                                tint = if (movie.isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                                tint = if (movie.isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface
                             )
                         }
-                    }
+                    },
+                    colors = TopAppBarDefaults.smallTopAppBarColors(
+                        containerColor = Color.Transparent,
+                        navigationIconContentColor = Color.White,
+                        actionIconContentColor = Color.White
+                    )
                 )
             }
         ) { paddingValues ->
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)) {
-                Image(
-                    painter = rememberAsyncImagePainter(
-                        model = "https://image.tmdb.org/t/p/w500${movie.posterPath}"
-                    ),
+            Box(modifier = Modifier.fillMaxSize()) {
+                AsyncImage(
+                    model = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
                     contentDescription = movie.title,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(300.dp),
+                    modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = movie.title, style = MaterialTheme.typography.headlineSmall)
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(Color.Transparent, Color(0xCC000000))
+                            )
+                        )
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    Text(
+                        text = movie.title,
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = Color.White
+                    )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = movie.overview, style = MaterialTheme.typography.bodyMedium)
+                    Text(
+                        text = movie.overview,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.White.copy(alpha = 0.8f)
+                    )
                 }
             }
         }
-    } ?: run {
-        // Handle case when no movie is selected
-        Text("No movie selected")
     }
 }

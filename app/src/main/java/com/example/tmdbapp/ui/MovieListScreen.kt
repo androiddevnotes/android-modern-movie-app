@@ -47,15 +47,15 @@ fun MovieListScreen(
     Scaffold(
         topBar = {
             SmallTopAppBar(
-                title = { Text("Popular Movies") },
+                title = { Text("Discover Movies", style = MaterialTheme.typography.headlineMedium) },
                 actions = {
                     IconButton(onClick = onFavoritesClick) {
                         Icon(Icons.Default.Favorite, contentDescription = "Favorites")
                     }
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
             )
         }
@@ -70,7 +70,7 @@ fun MovieListScreen(
                 is MovieUiState.Success -> {
                     val movies = (uiState as MovieUiState.Success).movies
                     LazyVerticalStaggeredGrid(
-                        columns = StaggeredGridCells.Adaptive(300.dp),
+                        columns = StaggeredGridCells.Adaptive(150.dp),
                         contentPadding = PaddingValues(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalItemSpacing = 16.dp
