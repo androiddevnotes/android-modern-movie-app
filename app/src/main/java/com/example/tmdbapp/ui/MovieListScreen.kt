@@ -1,5 +1,6 @@
 package com.example.tmdbapp.ui
 
+
 import FilterBottomSheet
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -59,6 +60,10 @@ import com.example.tmdbapp.viewmodel.MovieUiState
 import com.example.tmdbapp.viewmodel.MovieViewModel
 import com.example.tmdbapp.viewmodel.SortOption
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -100,6 +105,9 @@ fun MovieListScreen(
 
     val lastViewedItemIndex by viewModel.lastViewedItemIndex.collectAsState()
 
+    val listState = rememberLazyListState()
+    val gridState = rememberLazyStaggeredGridState()
+
     if (showFilterBottomSheet) {
         FilterBottomSheet(
             currentFilters = currentFilters,
@@ -134,6 +142,7 @@ fun MovieListScreen(
                         IconButton(onClick = {
                             isSearchActive = false
                             viewModel.setSearchQuery("")
+                            // Don't reset scroll position here
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Close,
@@ -266,9 +275,13 @@ fun MovieListScreen(
                                 columns = StaggeredGridCells.Adaptive(Constants.GRID_COLUMNS_ADAPTIVE_WIDTH.dp),
                                 contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
                                 horizontalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM),
-                                verticalItemSpacing = Constants.PADDING_MEDIUM
+                                verticalItemSpacing = Constants.PADDING_MEDIUM,
+                                state = gridState
                             ) {
-                                itemsIndexed(movies) { index, movie ->
+                                itemsIndexed(
+                                    items = movies,
+                                    key = { index, movie -> "${movie.id}_${index}" } // Use index to ensure uniqueness
+                                ) { index, movie ->
                                     if (index >= movies.size - 1 && !viewModel.isLastPage) {
                                         viewModel.loadMoreMovies()
                                     }
@@ -288,9 +301,13 @@ fun MovieListScreen(
                         Constants.VIEW_TYPE_LIST -> {
                             LazyColumn(
                                 contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
-                                verticalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM)
+                                verticalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM),
+                                state = listState
                             ) {
-                                itemsIndexed(movies) { index, movie ->
+                                itemsIndexed(
+                                    items = movies,
+                                    key = { index, movie -> "${movie.id}_${index}" } // Use index to ensure uniqueness
+                                ) { index, movie ->
                                     if (index >= movies.size - 1 && !viewModel.isLastPage) {
                                         viewModel.loadMoreMovies()
                                     }

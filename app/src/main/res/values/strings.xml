@@ -10,4 +10,19 @@
     <string name="message_no_favorites">No favorites yet</string>
     <string name="error_no_image">No image available to download</string>
     <string name="error_failed_to_save">Failed to save image</string>
+    <string name="content_desc_search">Search</string>
+    <string name="content_desc_sort">Sort</string>
+    <string name="content_desc_favorites">Favorites</string>
+    <string name="content_desc_switch_view">Switch view</string>
+    <string name="content_desc_toggle_theme">Toggle theme</string>
+    <string name="content_desc_filter">Filter</string>
+    <string name="content_desc_dummy_list">Dummy list</string>
+    <string name="content_desc_close_search">Close search</string>
+    <string name="sort_release_date">Release Date</string>
+    <string name="sort_vote_average">Vote Average</string>
+    <string name="sort_title">Title</string>
+    <string name="sort_now_playing">Now Playing</string>
+    <string name="sort_popularity">Popular</string>
+    <string name="sort_top_rated">Top Rated</string>
+    <string name="sort_upcoming">Upcoming</string>
 </resources>

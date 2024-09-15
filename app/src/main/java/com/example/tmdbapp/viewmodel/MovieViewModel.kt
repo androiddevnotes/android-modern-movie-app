@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
@@ -181,6 +182,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun setSearchQuery(query: String) {
+        val oldQuery = _searchQuery.value
         _searchQuery.value = query
         searchJob?.cancel()
         if (query.isNotEmpty()) {
@@ -188,9 +190,11 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                 delay(Constants.DELAY_SEARCH)
                 searchMovies(query)
             }
-        } else {
+        } else if (oldQuery.isNotEmpty() && query.isEmpty()) {
+            // Only refresh if we're clearing a non-empty query
             refreshMovies()
         }
+        // If both old and new queries are empty, do nothing
     }
 
     fun setSortOption(sortOption: SortOption) {
@@ -354,14 +358,9 @@ data class FilterOptions(
     val releaseYear: Int? = null,
 )
 
-enum class SortOption(val apiValue: String) {
-
-    NOW_PLAYING("release_date.desc"),
-
-    POPULAR("popularity.desc"),
-
-    TOP_RATED("vote_average.desc"),
-
-    UPCOMING("primary_release_date.asc")
-
+enum class SortOption(val apiValue: String, @StringRes val stringRes: Int) {
+    NOW_PLAYING("release_date.desc", R.string.sort_now_playing),
+    POPULAR("popularity.desc", R.string.sort_popularity),
+    TOP_RATED("vote_average.desc", R.string.sort_top_rated),
+    UPCOMING("primary_release_date.asc", R.string.sort_upcoming)
 }
