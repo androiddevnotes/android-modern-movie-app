@@ -35,8 +35,7 @@ fun TopBar(
     viewType: String,
     onThemeChange: () -> Unit,
     currentThemeMode: ThemeMode,
-    onFilterClick: () -> Unit,
-    onDummyListClick: () -> Unit
+    onFilterClick: () -> Unit
 ) {
     if (isSearchActive) {
         SearchTopBar(
@@ -142,12 +141,7 @@ fun TopBar(
                     )
                 }
 
-                IconButton(onClick = onDummyListClick) {
-                    Icon(
-                        imageVector = Icons.Default.List,
-                        contentDescription = stringResource(R.string.content_desc_dummy_list)
-                    )
-                }
+              
             },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.surface,
