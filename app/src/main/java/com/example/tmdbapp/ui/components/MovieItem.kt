@@ -2,14 +2,10 @@ package com.example.tmdbapp.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.*
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.icons.Icons
-import androidx.compose.material3.icons.filled.Favorite
-import androidx.compose.material3.icons.filled.FavoriteBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,17 +42,17 @@ fun MovieItem(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = movie.title, style = MaterialTheme.typography.h6)
+                    Text(text = movie.title, style = MaterialTheme.typography.titleMedium)
                     IconButton(onClick = onFavoriteClick) {
                         Icon(
                             imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                             contentDescription = "Favorite",
-                            tint = if (movie.isFavorite) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface
+                            tint = if (movie.isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = movie.overview, style = MaterialTheme.typography.body2, maxLines = 4)
+                Text(text = movie.overview, style = MaterialTheme.typography.bodyMedium, maxLines = 4)
             }
         }
     }
