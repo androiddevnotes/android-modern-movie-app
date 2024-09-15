@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,15 +37,15 @@ fun FavoritesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(Constants.SCREEN_TITLE_FAVORITES, style = MaterialTheme.typography.headlineMedium) },
+                title = { Text(Constants.SCREEN_TITLE_FAVORITES, style =  typography.headlineMedium) },
                 navigationIcon = {
                     IconButton(onClick = onBackPress) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = Constants.CONTENT_DESC_BACK)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface
+                    containerColor =  colorScheme.surface,
+                    titleContentColor =  colorScheme.onSurface
                 )
             )
         }
