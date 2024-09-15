@@ -100,4 +100,13 @@ class MovieRepository(context: Context) {
             Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
         }
     }
+
+    suspend fun getMovieDetails(movieId: Int): Movie? {
+        return try {
+            val response = api.getMovieDetails(movieId, apiKey)
+            response.copy(isFavorite = favoritePreferences.isFavorite(response.id))
+        } catch (e: Exception) {
+            null
+        }
+    }
 }

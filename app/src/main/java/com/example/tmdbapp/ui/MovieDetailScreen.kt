@@ -2,6 +2,7 @@
 
 package com.example.tmdbapp.ui
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,6 +27,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -43,18 +46,21 @@ fun MovieDetailScreen(
     onBackPress: () -> Unit
 ) {
     val movie by viewModel.currentMovie.collectAsState()
-    val context = LocalContext.current
 
-    movie?.let { currentMovie ->
-        MovieDetailContent(
-            movie = currentMovie,
-            onBackPress = onBackPress,
-            onFavoriteClick = { viewModel.toggleFavorite(currentMovie) },
-            onDownloadClick = { viewModel.downloadImage(currentMovie.posterPath, context) }
-        )
-    } ?: run {
-        
-        Text("Movie details not available")
+    when {
+        movie == null -> {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+        else -> {
+            MovieDetailContent(
+                movie = movie!!,
+                onBackPress = onBackPress,
+                onFavoriteClick = { viewModel.toggleFavorite(movie!!) },
+                onDownloadClick = viewModel::downloadImage
+            )
+        }
     }
 }
 
@@ -63,8 +69,10 @@ fun MovieDetailContent(
     movie: Movie,
     onBackPress: () -> Unit,
     onFavoriteClick: () -> Unit,
-    onDownloadClick: () -> Unit
+    onDownloadClick: (String?, Context) -> Unit
 ) {
+    val context = LocalContext.current
+
     Scaffold(
         topBar = {
             SmallTopAppBar(
@@ -82,7 +90,7 @@ fun MovieDetailContent(
                             tint = if (movie.isFavorite) Color.Red else Color.White
                         )
                     }
-                    IconButton(onClick = onDownloadClick) {
+                    IconButton(onClick = { onDownloadClick(movie.posterPath, context) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.download_24px),
                             contentDescription = "Download Image",

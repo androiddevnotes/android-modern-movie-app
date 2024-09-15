@@ -339,6 +339,18 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+
+    fun fetchMovieDetails(movieId: Int) {
+        viewModelScope.launch {
+            try {
+                val movie = repository.getMovieDetails(movieId)
+                _currentMovie.value = movie
+            } catch (e: Exception) {
+                // Handle error, maybe update a state to show error message
+                _currentMovie.value = null
+            }
+        }
+    }
 }
 
 data class FilterOptions(

@@ -13,6 +13,7 @@ retrofit = "2.9.0"
 okhttp = "4.10.0"
 coroutines = "1.7.3"
 coil = "2.4.0"
+navigation-compose = "2.7.5"  # Use the latest version available
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -37,6 +38,7 @@ retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

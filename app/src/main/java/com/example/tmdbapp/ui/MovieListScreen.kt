@@ -39,11 +39,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -61,7 +57,10 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,10 +76,6 @@ fun MovieListScreen(
     currentThemeMode: ThemeMode
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
-    
-    
-    
 
     var expandedDropdown by remember { mutableStateOf(false) }
     val currentSortOption by viewModel.currentSortOption.collectAsState()
@@ -278,10 +273,7 @@ fun MovieListScreen(
                                     }
                                     MovieItem(
                                         movie = movie,
-                                        modifier = Modifier.clickable {
-                                            viewModel.selectMovie(movie)
-                                            onMovieClick(movie)
-                                        },
+                                        modifier = Modifier.clickable { onMovieClick(movie) },
                                         onFavoriteClick = { viewModel.toggleFavorite(movie) },
                                         isListView = false
                                     )
@@ -301,10 +293,7 @@ fun MovieListScreen(
                                         movie = movie,
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .clickable {
-                                                viewModel.selectMovie(movie)
-                                                onMovieClick(movie)
-                                            },
+                                            .clickable { onMovieClick(movie) },
                                         onFavoriteClick = { viewModel.toggleFavorite(movie) },
                                         isListView = true
                                     )
