@@ -136,14 +136,22 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                 val result = repository.getMovies(_currentSortOption.value, currentPage)
                 when (result) {
                     is Resource.Success -> {
-                        // ... existing success handling
+                        val newMovies = result.data?.results ?: emptyList()
+                        val currentMovies = if (_uiState.value is MovieUiState.Success && currentPage > 1) {
+                            (_uiState.value as MovieUiState.Success).movies
+                        } else {
+                            emptyList()
+                        }
+                        _uiState.value = MovieUiState.Success(currentMovies + newMovies)
+                        currentPage++
+                        isLastPage = newMovies.isEmpty()
                     }
                     is Resource.Error -> {
-                        // ... existing error handling
+                        _uiState.value = MovieUiState.Error(handleError(result.message))
                     }
                 }
             } catch (e: Exception) {
-                // ... existing exception handling
+                _uiState.value = MovieUiState.Error(handleError(e))
             } finally {
                 isLoading = false
             }
