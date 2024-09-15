@@ -71,6 +71,7 @@ fun MovieListScreen(
                     val movies = (uiState as MovieUiState.Success).movies
                     LazyVerticalStaggeredGrid(
                         columns = StaggeredGridCells.Adaptive(150.dp),
+                        state = listState,
                         contentPadding = PaddingValues(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         verticalItemSpacing = 16.dp
