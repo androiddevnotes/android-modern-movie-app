@@ -1,10 +1,14 @@
 package com.example.tmdbapp.ui
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.activity.compose.BackHandler
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.viewmodel.MovieViewModel
 import com.example.tmdbapp.utils.Constants
+import com.example.tmdbapp.ui.theme.ThemeMode
+import com.example.tmdbapp.ui.theme.LocalThemeMode
 
 sealed class Screen {
     object List : Screen()
@@ -13,16 +17,20 @@ sealed class Screen {
 }
 
 @Composable
-fun MainScreen(viewModel: MovieViewModel) {
+fun MainScreen(
+    movieViewModel: MovieViewModel,
+    onThemeChange: (ThemeMode) -> Unit
+) {
     var currentScreen by remember { mutableStateOf<Screen>(Screen.List) }
     var previousScreen by remember { mutableStateOf<Screen>(Screen.List) }
-    val selectedMovie by viewModel.selectedMovie.collectAsState()
+    val selectedMovie by movieViewModel.selectedMovie.collectAsState()
     var viewType by remember { mutableStateOf(Constants.VIEW_TYPE_GRID) }
+    val currentThemeMode = LocalThemeMode.current
 
     BackHandler(enabled = currentScreen != Screen.List) {
         when (currentScreen) {
             is Screen.Detail -> {
-                viewModel.clearSelectedMovie()
+                movieViewModel.clearSelectedMovie()
                 currentScreen = previousScreen
             }
             is Screen.Favorites -> {
@@ -35,9 +43,9 @@ fun MainScreen(viewModel: MovieViewModel) {
 
     when (currentScreen) {
         is Screen.List -> MovieListScreen(
-            viewModel = viewModel,
+            viewModel = movieViewModel,
             onMovieClick = { 
-                viewModel.selectMovie(it) 
+                movieViewModel.selectMovie(it) 
                 previousScreen = Screen.List
                 currentScreen = Screen.Detail(it)
             },
@@ -47,14 +55,23 @@ fun MainScreen(viewModel: MovieViewModel) {
             },
             screenTitle = Constants.SCREEN_TITLE_DISCOVER,
             viewType = viewType,
-            onViewTypeChange = { newViewType -> viewType = newViewType }
+            onViewTypeChange = { newViewType -> viewType = newViewType },
+            onThemeChange = {
+                val newThemeMode = when (currentThemeMode) {
+                    ThemeMode.LIGHT -> ThemeMode.DARK
+                    ThemeMode.DARK -> ThemeMode.SYSTEM
+                    ThemeMode.SYSTEM -> ThemeMode.LIGHT
+                }
+                onThemeChange(newThemeMode)
+            },
+            currentThemeMode = currentThemeMode
         )
         is Screen.Favorites -> FavoritesScreen(
-            viewModel = viewModel,
+            viewModel = movieViewModel,
             onMovieClick = { movieId ->
-                val movie = viewModel.getMovieById(movieId)
+                val movie = movieViewModel.getMovieById(movieId)
                 if (movie != null) {
-                    viewModel.selectMovie(movie)
+                    movieViewModel.selectMovie(movie)
                     previousScreen = Screen.Favorites
                     currentScreen = Screen.Detail(movie)
                 }
@@ -65,9 +82,9 @@ fun MainScreen(viewModel: MovieViewModel) {
             }
         )
         is Screen.Detail -> MovieDetailScreen(
-            viewModel = viewModel,
+            viewModel = movieViewModel,
             onBackPress = {
-                viewModel.clearSelectedMovie()
+                movieViewModel.clearSelectedMovie()
                 currentScreen = previousScreen
             }
         )

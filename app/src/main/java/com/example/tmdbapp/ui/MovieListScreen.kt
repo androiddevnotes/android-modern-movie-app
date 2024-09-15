@@ -27,6 +27,7 @@ import com.example.tmdbapp.viewmodel.MovieViewModel
 import com.example.tmdbapp.ui.components.MovieItem
 import kotlinx.coroutines.flow.distinctUntilChanged
 import com.example.tmdbapp.utils.Constants
+import com.example.tmdbapp.ui.theme.ThemeMode
 
 @Composable
 fun MovieListScreen(
@@ -35,7 +36,9 @@ fun MovieListScreen(
     onFavoritesClick: () -> Unit,
     screenTitle: String,
     viewType: String,
-    onViewTypeChange: (String) -> Unit
+    onViewTypeChange: (String) -> Unit,
+    onThemeChange: () -> Unit,
+    currentThemeMode: ThemeMode
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val gridScrollPosition by viewModel.gridScrollPosition.collectAsState()
@@ -87,11 +90,24 @@ fun MovieListScreen(
                                     R.drawable.grid_view_24px
                             ),
                             contentDescription = Constants.CONTENT_DESC_SWITCH_VIEW,
-                            tint = MaterialTheme.colorScheme.onSurface // This sets the icon color to match your theme
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     IconButton(onClick = onFavoritesClick) {
                         Icon(Icons.Default.Favorite, contentDescription = Constants.CONTENT_DESC_FAVORITES)
+                    }
+                    IconButton(onClick = onThemeChange) {
+                        Icon(
+                            painter = painterResource(
+                                id = when (currentThemeMode) {
+                                    ThemeMode.LIGHT -> R.drawable.dark_mode_24px
+                                    ThemeMode.DARK -> R.drawable.light_mode_24px
+                                    ThemeMode.SYSTEM -> R.drawable.contrast_24px
+                                }
+                            ),
+                            contentDescription = "Toggle theme",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
