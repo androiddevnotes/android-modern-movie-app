@@ -16,6 +16,7 @@ import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.example.tmdbapp.R
+import com.example.tmdbapp.data.SessionManager
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.repository.MovieRepository
 import com.example.tmdbapp.utils.Constants
@@ -67,6 +68,8 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     val uiState: StateFlow<MovieUiState> = _uiState
 
+    private val sessionManager = SessionManager(application)
+
     private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
     val authState: StateFlow<AuthState> = _authState
 
@@ -76,6 +79,14 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     init {
         fetchPopularMovies()
         loadFavorites()
+
+        // Check if there's an existing session when the ViewModel is created
+        viewModelScope.launch {
+            val sessionId = sessionManager.getSessionId()
+            if (sessionId != null) {
+                _authState.value = AuthState.Authenticated
+            }
+        }
     }
 
     fun downloadImage(posterPath: String?, context: Context) {
@@ -364,6 +375,9 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     fun startAuthentication() {
         viewModelScope.launch {
+            // Check if already authenticated
+            if (_authState.value == AuthState.Authenticated) return@launch
+
             _authState.value = AuthState.Loading
             when (val tokenResult = repository.createRequestToken()) {
                 is Resource.Success -> {

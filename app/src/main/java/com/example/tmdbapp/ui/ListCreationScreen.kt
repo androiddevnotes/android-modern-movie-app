@@ -22,7 +22,7 @@ import com.example.tmdbapp.viewmodel.CreateListState
 fun ListCreationScreen(
     viewModel: MovieViewModel,
     onNavigateBack: () -> Unit,
-    application: Application // Add this parameter
+    application: Application
 ) {
     var listName by remember { mutableStateOf("") }
     var listDescription by remember { mutableStateOf("") }
@@ -67,56 +67,75 @@ fun ListCreationScreen(
                     LaunchedEffect(token) {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.themoviedb.org/authenticate/$token"))
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        application.startActivity(intent) // Use the passed application instance
+                        application.startActivity(intent)
                     }
-                    Text("Please approve the request in your browser, then come back here.")
+                    Text(stringResource(R.string.approve_request))
                     Button(onClick = { viewModel.createSession(token) }) {
-                        Text("I've approved the request")
+                        Text(stringResource(R.string.approved_request))
                     }
                 }
                 is AuthState.Authenticated -> {
-                    OutlinedTextField(
-                        value = listName,
-                        onValueChange = { listName = it },
-                        label = { Text(stringResource(R.string.list_name)) },
-                        modifier = Modifier.fillMaxWidth()
+                    // Show list creation UI
+                    ListCreationContent(
+                        listName = listName,
+                        onListNameChange = { listName = it },
+                        listDescription = listDescription,
+                        onListDescriptionChange = { listDescription = it },
+                        onCreateList = { viewModel.createList(listName, listDescription) },
+                        createListState = createListState
                     )
-
-                    OutlinedTextField(
-                        value = listDescription,
-                        onValueChange = { listDescription = it },
-                        label = { Text(stringResource(R.string.list_description)) },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    Button(
-                        onClick = { viewModel.createList(listName, listDescription) },
-                        modifier = Modifier.align(Alignment.End)
-                    ) {
-                        Text(stringResource(R.string.create_list))
-                    }
-
-                    when (createListState) {
-                        is CreateListState.Loading -> {
-                            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-                        }
-                        is CreateListState.Success -> {
-                            Text(
-                                text = stringResource(R.string.list_created_success, (createListState as CreateListState.Success).listId),
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                        is CreateListState.Error -> {
-                            Text(
-                                text = stringResource(R.string.list_creation_error, (createListState as CreateListState.Error).message),
-                                color = MaterialTheme.colorScheme.error
-                            )
-                        }
-                        else -> {}
-                    }
                 }
                 else -> {}
             }
         }
+    }
+}
+
+@Composable
+private fun ListCreationContent(
+    listName: String,
+    onListNameChange: (String) -> Unit,
+    listDescription: String,
+    onListDescriptionChange: (String) -> Unit,
+    onCreateList: () -> Unit,
+    createListState: CreateListState
+) {
+    OutlinedTextField(
+        value = listName,
+        onValueChange = onListNameChange,
+        label = { Text(stringResource(R.string.list_name)) },
+        modifier = Modifier.fillMaxWidth()
+    )
+
+    OutlinedTextField(
+        value = listDescription,
+        onValueChange = onListDescriptionChange,
+        label = { Text(stringResource(R.string.list_description)) },
+        modifier = Modifier.fillMaxWidth()
+    )
+
+    Button(
+        onClick = onCreateList,
+    ) {
+        Text(stringResource(R.string.create_list))
+    }
+
+    when (createListState) {
+        is CreateListState.Loading -> {
+            CircularProgressIndicator()
+        }
+        is CreateListState.Success -> {
+            Text(
+                text = stringResource(R.string.list_created_success, createListState.listId),
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+        is CreateListState.Error -> {
+            Text(
+                text = stringResource(R.string.list_creation_error, createListState.message),
+                color = MaterialTheme.colorScheme.error
+            )
+        }
+        else -> {}
     }
 }
