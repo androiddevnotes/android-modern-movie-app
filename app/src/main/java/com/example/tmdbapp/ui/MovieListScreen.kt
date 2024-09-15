@@ -105,29 +105,20 @@ fun MovieListScreen(
         }
     )
 
-    LaunchedEffect(gridState, viewType) {
-        if (viewType == Constants.VIEW_TYPE_GRID) {
-            snapshotFlow { gridState.firstVisibleItemIndex to gridState.firstVisibleItemScrollOffset }
-                .distinctUntilChanged()
-                .collect { (index, offset) ->
-                    viewModel.saveGridScrollPosition(index, offset)
-                }
-        }
+    LaunchedEffect(gridState) {
+        snapshotFlow { gridState.firstVisibleItemIndex to gridState.firstVisibleItemScrollOffset }
+            .distinctUntilChanged()
+            .collect { (index, offset) ->
+                viewModel.saveGridScrollPosition(index, offset)
+            }
     }
 
-    LaunchedEffect(listState, viewType) {
-        if (viewType == Constants.VIEW_TYPE_LIST) {
-            snapshotFlow { listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset }
-                .distinctUntilChanged()
-                .collect { (index, offset) ->
-                    viewModel.saveListScrollPosition(index, offset)
-                }
-        }
-    }
-
-    LaunchedEffect(currentSortOption) {
-        gridState.scrollToItem(0)
-        listState.scrollToItem(0)
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset }
+            .distinctUntilChanged()
+            .collect { (index, offset) ->
+                viewModel.saveListScrollPosition(index, offset)
+            }
     }
 
     if (showFilterBottomSheet) {
@@ -246,7 +237,7 @@ fun MovieListScreen(
                                 verticalItemSpacing = Constants.PADDING_MEDIUM
                             ) {
                                 itemsIndexed(movies) { index, movie ->
-                                    if (index >= movies.size - 1) {
+                                    if (index >= movies.size - 1 && !viewModel.isLastPage) {
                                         viewModel.loadMoreMovies()
                                     }
                                     MovieItem(
@@ -282,7 +273,7 @@ fun MovieListScreen(
                                     )
                                 }
                                 item {
-                                    if (movies.isNotEmpty()) {
+                                    if (movies.isNotEmpty() && !viewModel.isLastPage) {
                                         viewModel.loadMoreMovies()
                                     }
                                 }

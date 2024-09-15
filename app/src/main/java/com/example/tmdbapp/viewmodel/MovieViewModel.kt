@@ -40,7 +40,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     val favorites: StateFlow<List<Movie>> = _favorites
 
     private var currentPage = 1
-    private var isLastPage = false
+    internal var isLastPage = false
     private var isLoading = false
 
     private val _listScrollPosition = MutableStateFlow(ScrollPosition(0, 0))
