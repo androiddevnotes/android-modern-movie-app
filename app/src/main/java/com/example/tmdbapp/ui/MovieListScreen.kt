@@ -13,11 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
-import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
@@ -39,7 +38,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -51,17 +54,11 @@ import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.MovieUiState
 import com.example.tmdbapp.viewmodel.MovieViewModel
-import kotlinx.coroutines.flow.distinctUntilChanged
 import com.example.tmdbapp.viewmodel.SortOption
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -102,9 +99,7 @@ fun MovieListScreen(
     val searchQuery by viewModel.searchQuery.collectAsState()
     var isSearchActive by remember { mutableStateOf(false) }
 
-    LaunchedEffect(searchQuery) {
-        viewModel.setSearchQuery(searchQuery)
-    }
+    val lastViewedItemIndex by viewModel.lastViewedItemIndex.collectAsState()
 
     if (showFilterBottomSheet) {
         FilterBottomSheet(
@@ -253,6 +248,7 @@ fun MovieListScreen(
     ) { paddingValues ->
         Box(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(paddingValues)
                 .pullRefresh(pullRefreshState)
         ) {
@@ -269,8 +265,6 @@ fun MovieListScreen(
                         Constants.VIEW_TYPE_GRID -> {
                             LazyVerticalStaggeredGrid(
                                 columns = StaggeredGridCells.Adaptive(150.dp),
-                                
-                                
                                 contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
                                 horizontalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM),
                                 verticalItemSpacing = Constants.PADDING_MEDIUM
@@ -281,7 +275,10 @@ fun MovieListScreen(
                                     }
                                     MovieItem(
                                         movie = movie,
-                                        modifier = Modifier.clickable { onMovieClick(movie) },
+                                        modifier = Modifier.clickable { 
+                                            viewModel.setLastViewedItemIndex(index)
+                                            onMovieClick(movie) 
+                                        },
                                         onFavoriteClick = { viewModel.toggleFavorite(movie) },
                                         isListView = false
                                     )
@@ -291,25 +288,24 @@ fun MovieListScreen(
 
                         Constants.VIEW_TYPE_LIST -> {
                             LazyColumn(
-                                
-                                
                                 contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
                                 verticalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM)
                             ) {
-                                items(movies) { movie ->
+                                itemsIndexed(movies) { index, movie ->
+                                    if (index >= movies.size - 1 && !viewModel.isLastPage) {
+                                        viewModel.loadMoreMovies()
+                                    }
                                     MovieItem(
                                         movie = movie,
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .clickable { onMovieClick(movie) },
+                                            .clickable { 
+                                                viewModel.setLastViewedItemIndex(index)
+                                                onMovieClick(movie) 
+                                            },
                                         onFavoriteClick = { viewModel.toggleFavorite(movie) },
                                         isListView = true
                                     )
-                                }
-                                item {
-                                    if (movies.isNotEmpty() && !viewModel.isLastPage) {
-                                        viewModel.loadMoreMovies()
-                                    }
                                 }
                             }
                         }

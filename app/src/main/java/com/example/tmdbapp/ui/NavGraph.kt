@@ -47,6 +47,7 @@ fun NavGraph(
             val movieId = backStackEntry.arguments?.getInt("movieId") ?: return@composable
             LaunchedEffect(movieId) {
                 movieViewModel.fetchMovieDetails(movieId)
+                // We don't reset the last viewed item index here
             }
             MovieDetailScreen(
                 viewModel = movieViewModel,

@@ -37,6 +37,9 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.coroutineContext
 
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
+
 sealed class MovieUiState {
     object Loading : MovieUiState()
     data class Success(val movies: List<Movie>) : MovieUiState()
@@ -79,6 +82,9 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     val searchQuery: StateFlow<String> = _searchQuery
 
     private var searchJob: Job? = null
+
+    private val _lastViewedItemIndex = MutableStateFlow(0)
+    val lastViewedItemIndex: StateFlow<Int> = _lastViewedItemIndex
 
     init {
         fetchPopularMovies()
@@ -350,6 +356,14 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                 _currentMovie.value = null
             }
         }
+    }
+
+    fun setLastViewedItemIndex(index: Int) {
+        _lastViewedItemIndex.value = index
+    }
+
+    fun resetLastViewedItemIndex() {
+        _lastViewedItemIndex.value = 0
     }
 }
 
