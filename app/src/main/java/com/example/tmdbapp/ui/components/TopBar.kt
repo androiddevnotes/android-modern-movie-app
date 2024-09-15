@@ -13,6 +13,9 @@ import com.example.tmdbapp.R
 import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.SortOption
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.Image
+import androidx.compose.ui.layout.ContentScale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,17 +54,21 @@ fun TopBar(
             },
             actions = {
                 IconButton(onClick = onSearchIconClick) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = stringResource(R.string.content_desc_search)
+                    Image(
+                        painter = painterResource(id = R.drawable.cool_shape_search),
+                        contentDescription = stringResource(R.string.content_desc_search),
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
                 
                 Box {
                     IconButton(onClick = onDropdownExpand) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_sort),
-                            contentDescription = stringResource(R.string.content_desc_sort)
+                        Image(
+                            painter = painterResource(id = R.drawable.cool_shape_sort),
+                            contentDescription = stringResource(R.string.content_desc_sort),
+                            contentScale = ContentScale.Fit,
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                     DropdownMenu(
@@ -86,9 +93,11 @@ fun TopBar(
                 }
 
                 IconButton(onClick = onFavoritesClick) {
-                    Icon(
-                        imageVector = Icons.Default.Favorite,
-                        contentDescription = stringResource(R.string.content_desc_favorites)
+                    Image(
+                        painter = painterResource(id = R.drawable.cool_shape_fav),
+                        contentDescription = stringResource(R.string.content_desc_favorites),
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
 
@@ -98,32 +107,38 @@ fun TopBar(
                         else Constants.VIEW_TYPE_GRID
                     )
                 }) {
-                    Icon(
+                    Image(
                         painter = painterResource(
-                            id = if (viewType == Constants.VIEW_TYPE_GRID) R.drawable.view_list_24px
-                            else R.drawable.grid_view_24px
+                            id = if (viewType == Constants.VIEW_TYPE_GRID) R.drawable.cool_shape_list
+                            else R.drawable.cool_shape_grid
                         ),
-                        contentDescription = stringResource(R.string.content_desc_switch_view)
+                        contentDescription = stringResource(R.string.content_desc_switch_view),
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
 
                 IconButton(onClick = onThemeChange) {
-                    Icon(
+                    Image(
                         painter = painterResource(
                             id = when (currentThemeMode) {
-                                ThemeMode.LIGHT -> R.drawable.dark_mode_24px
-                                ThemeMode.DARK -> R.drawable.light_mode_24px
-                                ThemeMode.SYSTEM -> R.drawable.contrast_24px
+                                ThemeMode.LIGHT -> R.drawable.cool_shape_night
+                                ThemeMode.DARK -> R.drawable.cool_shape_light
+                                ThemeMode.SYSTEM -> R.drawable.cool_shape_theme_system
                             }
                         ),
-                        contentDescription = stringResource(R.string.content_desc_toggle_theme)
+                        contentDescription = stringResource(R.string.content_desc_toggle_theme),
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
 
                 IconButton(onClick = onFilterClick) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_filter),
-                        contentDescription = stringResource(R.string.content_desc_filter)
+                    Image(
+                        painter = painterResource(id = R.drawable.cool_shape_filter),
+                        contentDescription = stringResource(R.string.content_desc_filter),
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
 

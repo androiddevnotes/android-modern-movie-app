@@ -2,6 +2,7 @@ package com.example.tmdbapp.ui
 
 
 import FilterBottomSheet
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -49,6 +51,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -178,18 +181,19 @@ fun MovieListScreen(
                     },
                     actions = {
                         IconButton(onClick = { isSearchActive = true }) {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = "Search"
+                            Image(
+                                painter = painterResource(id = R.drawable.cool_shape_search),
+                                contentDescription = stringResource(R.string.content_desc_search),
+                                contentScale = ContentScale.Fit,
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                         IconButton(onClick = { expandedDropdown = true }) {
-                            Icon(
-                                painter = painterResource(
-                                    id = R.drawable.ic_sort
-                                ),
-                                contentDescription = "Sort",
-                                tint = MaterialTheme.colorScheme.onSurface
+                            Image(
+                                painter = painterResource(id = R.drawable.cool_shape_sort),
+                                contentDescription = stringResource(R.string.content_desc_sort),
+                                contentScale = ContentScale.Fit,
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                         DropdownMenu(
@@ -207,10 +211,11 @@ fun MovieListScreen(
                             }
                         }
                         IconButton(onClick = onFavoritesClick) {
-                            Icon(
+                            Image(
                                 painter = painterResource(id = R.drawable.cool_shape_fav),
-                                contentDescription = Constants.CONTENT_DESC_FAVORITES,
-                                tint = Color.Unspecified
+                                contentDescription = stringResource(R.string.content_desc_favorites),
+                                contentScale = ContentScale.Fit,
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                         IconButton(onClick = {
@@ -219,39 +224,42 @@ fun MovieListScreen(
                                 else Constants.VIEW_TYPE_GRID
                             )
                         }) {
-                            Icon(
+                            Image(
                                 painter = painterResource(
-                                    id = if (viewType == Constants.VIEW_TYPE_GRID) R.drawable.view_list_24px
-                                    else R.drawable.grid_view_24px
+                                    id = if (viewType == Constants.VIEW_TYPE_GRID) R.drawable.cool_shape_list
+                                    else R.drawable.cool_shape_grid
                                 ),
-                                contentDescription = Constants.CONTENT_DESC_SWITCH_VIEW,
-                                tint = MaterialTheme.colorScheme.onSurface
+                                contentDescription = stringResource(R.string.content_desc_switch_view),
+                                contentScale = ContentScale.Fit,
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                         IconButton(onClick = onThemeChange) {
-                            Icon(
+                            Image(
                                 painter = painterResource(
                                     id = when (currentThemeMode) {
-                                        ThemeMode.LIGHT -> R.drawable.dark_mode_24px
-                                        ThemeMode.DARK -> R.drawable.light_mode_24px
-                                        ThemeMode.SYSTEM -> R.drawable.contrast_24px
+                                        ThemeMode.LIGHT -> R.drawable.cool_shape_night
+                                        ThemeMode.DARK -> R.drawable.cool_shape_light
+                                        ThemeMode.SYSTEM -> R.drawable.cool_shape_theme_system
                                     }
                                 ),
-                                contentDescription = Constants.CONTENT_DESC_TOGGLE_THEME,
-                                tint = MaterialTheme.colorScheme.onSurface
+                                contentDescription = stringResource(R.string.content_desc_toggle_theme),
+                                contentScale = ContentScale.Fit,
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                         IconButton(onClick = { showFilterBottomSheet = true }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_filter),
-                                contentDescription = "Filter",
-                                tint = MaterialTheme.colorScheme.onSurface
+                            Image(
+                                painter = painterResource(id = R.drawable.cool_shape_filter),
+                                contentDescription = stringResource(R.string.content_desc_filter),
+                                contentScale = ContentScale.Fit,
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                         IconButton(onClick = onDummyListClick) {
                             Icon(
                                 imageVector = Icons.Default.List,
-                                contentDescription = "Dummy List"
+                                contentDescription = stringResource(R.string.content_desc_dummy_list)
                             )
                         }
                     },
