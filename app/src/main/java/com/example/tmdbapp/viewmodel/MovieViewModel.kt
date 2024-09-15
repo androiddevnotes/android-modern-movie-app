@@ -14,6 +14,7 @@ import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
+import com.example.tmdbapp.R
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.repository.MovieRepository
 import com.example.tmdbapp.utils.Constants
@@ -126,13 +127,12 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         return when (error) {
             is IOException -> MovieError.Network
             is HttpException -> {
-                when (error.code()) {
-                    in 400..499 -> MovieError.ApiError("API Error: ${error.message()}")
-                    in 500..599 -> MovieError.Server
-                    else -> MovieError.Unknown
+                if (error.code() in 500..599) {
+                    MovieError.Server
+                } else {
+                    MovieError.ApiError(error.message())
                 }
             }
-
             else -> MovieError.Unknown
         }
     }
@@ -267,7 +267,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         searchJob?.cancel()
         if (query.isNotEmpty()) {
             searchJob = viewModelScope.launch {
-                delay(300) 
+                delay(Constants.DELAY_SEARCH) 
                 searchMovies(query)
             }
         } else {
@@ -292,7 +292,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     fun downloadImage(posterPath: String?, context: Context) {
         viewModelScope.launch {
             if (posterPath == null) {
-                Toast.makeText(context, "No image available to download", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.error_no_image), Toast.LENGTH_SHORT).show()
                 return@launch
             }
 
@@ -336,12 +336,12 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                         resolver.update(it, contentValues, null, null)
                     }
 
-                    Toast.makeText(context, "Image saved to gallery", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.success_image_saved), Toast.LENGTH_SHORT).show()
                 } ?: run {
-                    Toast.makeText(context, "Failed to save image", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.error_failed_to_save), Toast.LENGTH_SHORT).show()
                 }
             } catch (e: IOException) {
-                Toast.makeText(context, "Failed to save image: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "${context.getString(R.string.error_download_failed)}: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -75,14 +75,14 @@ fun MovieItem(
                         text = movie.title,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        maxLines = 2,
+                        maxLines = Constants.MAX_LINES_TITLE,
                         overflow = TextOverflow.Ellipsis
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = movie.overview,
                         style = MaterialTheme.typography.bodySmall,
-                        maxLines = 3,
+                        maxLines = Constants.MAX_LINES_OVERVIEW,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
@@ -114,7 +114,7 @@ fun MovieItem(
                         .fillMaxSize()
                         .background(
                             Brush.verticalGradient(
-                                colors = listOf(Color.Transparent, Color(0xE6000000)),
+                                colors = listOf(Color.Transparent, Color(0xCC000000)),
                                 startY = 300f,
                                 endY = 900f
                             )
@@ -130,15 +130,15 @@ fun MovieItem(
                         style = MaterialTheme.typography.titleLarge,
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
-                        maxLines = 2,
+                        maxLines = Constants.MAX_LINES_TITLE,
                         overflow = TextOverflow.Ellipsis
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = movie.overview,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color.LightGray,
-                        maxLines = 2,
+                        color = Color.LightGray.copy(alpha = Constants.ALPHA_MEDIUM),
+                        maxLines = Constants.MAX_LINES_OVERVIEW,
                         overflow = TextOverflow.Ellipsis
                     )
                 }

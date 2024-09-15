@@ -59,6 +59,7 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.ui.res.stringResource
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -120,7 +121,7 @@ fun MovieListScreen(
                     modifier = Modifier.fillMaxWidth(),
                     placeholder = { 
                         Text(
-                            "Search movies...",
+                            stringResource(R.string.label_search_movies),
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     },
@@ -264,7 +265,7 @@ fun MovieListScreen(
                     when (viewType) {
                         Constants.VIEW_TYPE_GRID -> {
                             LazyVerticalStaggeredGrid(
-                                columns = StaggeredGridCells.Adaptive(150.dp),
+                                columns = StaggeredGridCells.Adaptive(Constants.GRID_COLUMNS_ADAPTIVE_WIDTH.dp),
                                 contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
                                 horizontalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM),
                                 verticalItemSpacing = Constants.PADDING_MEDIUM
@@ -299,9 +300,9 @@ fun MovieListScreen(
                                         movie = movie,
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .clickable { 
+                                            .clickable {
                                                 viewModel.setLastViewedItemIndex(index)
-                                                onMovieClick(movie) 
+                                                onMovieClick(movie)
                                             },
                                         onFavoriteClick = { viewModel.toggleFavorite(movie) },
                                         isListView = true
@@ -316,7 +317,10 @@ fun MovieListScreen(
                     val error = (uiState as MovieUiState.Error).error
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(text = error.message, style = MaterialTheme.typography.bodyLarge)
+                            Text(
+                                text = stringResource(error.messageResId),
+                                style = MaterialTheme.typography.bodyLarge
+                            )
                             Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
                             Button(onClick = { viewModel.loadMoreMovies() }) {
                                 Text("Retry")

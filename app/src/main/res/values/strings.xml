@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">TmdbApp</string>
     <string name="unknown_error">Unknown error occurred.</string>
+    <string name="label_search_movies">Search movies</string>
+    <string name="error_download_failed">Failed to download image</string>
+    <string name="success_image_saved">Image saved successfully</string>
+    <string name="error_network">Network error. Please check your internet connection.</string>
+    <string name="error_server">Server error. Please try again later.</string>
+    <string name="error_unknown">An unknown error occurred. Please try again.</string>
+    <string name="message_no_favorites">No favorites yet</string>
+    <string name="error_no_image">No image available to download</string>
+    <string name="error_failed_to_save">Failed to save image</string>
 </resources>
