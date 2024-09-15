@@ -32,30 +32,43 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.tmdbapp.viewmodel.MovieViewModel
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import com.example.tmdbapp.R
 
 @Composable
 fun MovieDetailScreen(
     viewModel: MovieViewModel,
     onBackPress: () -> Unit
 ) {
-    val currentMovie by viewModel.currentMovie.collectAsState()
+    val movie by viewModel.currentMovie.collectAsState()
+    val context = LocalContext.current
 
-    currentMovie?.let { movie ->
+    if (movie != null) {
         Scaffold(
             topBar = {
                 SmallTopAppBar(
-                    title = { },
+                    title = { Text(movie!!.title) },
                     navigationIcon = {
                         IconButton(onClick = onBackPress) {
                             Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                         }
                     },
                     actions = {
-                        IconButton(onClick = { viewModel.toggleFavorite(movie) }) {
+                        IconButton(onClick = { viewModel.toggleFavorite(movie!!) }) {
                             Icon(
-                                imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                                imageVector = if (movie!!.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                                 contentDescription = "Favorite",
-                                tint = if (movie.isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface
+                                tint = if (movie!!.isFavorite) Color.Red else Color.White
+                            )
+                        }
+                        IconButton(onClick = { 
+                            viewModel.downloadImage(movie!!.posterPath, context)
+                        }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.download_24px),
+                                contentDescription = "Download Image",
+                                tint = Color.White
                             )
                         }
                     },
@@ -69,8 +82,8 @@ fun MovieDetailScreen(
         ) { paddingValues ->
             Box(modifier = Modifier.fillMaxSize()) {
                 AsyncImage(
-                    model = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
-                    contentDescription = movie.title,
+                    model = "https://image.tmdb.org/t/p/w500${movie!!.posterPath}",
+                    contentDescription = movie!!.title,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
@@ -91,13 +104,13 @@ fun MovieDetailScreen(
                     verticalArrangement = Arrangement.Bottom
                 ) {
                     Text(
-                        text = movie.title,
+                        text = movie!!.title,
                         style = MaterialTheme.typography.headlineLarge,
                         color = Color.White
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = movie.overview,
+                        text = movie!!.overview,
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.White.copy(alpha = 0.8f)
                     )

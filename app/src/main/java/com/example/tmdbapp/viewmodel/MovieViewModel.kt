@@ -1,20 +1,41 @@
 package com.example.tmdbapp.viewmodel
 
 import android.app.Application
+import android.content.ContentValues
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import coil.ImageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.repository.MovieRepository
+import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.utils.MovieError
 import com.example.tmdbapp.utils.Resource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import java.io.OutputStream
+import java.util.UUID
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.coroutines.coroutineContext
 
 sealed class MovieUiState {
     object Loading : MovieUiState()
@@ -272,6 +293,63 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                 is Resource.Error -> {
                     _uiState.value = MovieUiState.Error(handleError(result.message))
                 }
+            }
+        }
+    }
+
+    fun downloadImage(posterPath: String?, context: Context) {
+        viewModelScope.launch {
+            if (posterPath == null) {
+                Toast.makeText(context, "No image available to download", Toast.LENGTH_SHORT).show()
+                return@launch
+            }
+
+            val imageUrl = "${Constants.BASE_IMAGE_URL}$posterPath"
+            
+            try {
+                val bitmap = withContext(Dispatchers.IO) {
+                    val loader = ImageLoader(context)
+                    val request = ImageRequest.Builder(context)
+                        .data(imageUrl)
+                        .allowHardware(false)
+                        .build()
+
+                    val result = (loader.execute(request) as SuccessResult).drawable
+                    (result as BitmapDrawable).bitmap
+                }
+
+                val filename = "TMDB_${System.currentTimeMillis()}.jpg"
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                        put(MediaStore.MediaColumns.IS_PENDING, 1)
+                    }
+                }
+
+                val resolver = context.contentResolver
+                val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+                uri?.let { 
+                    withContext(Dispatchers.IO) {
+                        resolver.openOutputStream(it)?.use { outputStream ->
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                        }
+                    }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        contentValues.clear()
+                        contentValues.put(MediaStore.MediaColumns.IS_PENDING, 0)
+                        resolver.update(it, contentValues, null, null)
+                    }
+
+                    Toast.makeText(context, "Image saved to gallery", Toast.LENGTH_SHORT).show()
+                } ?: run {
+                    Toast.makeText(context, "Failed to save image", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: IOException) {
+                Toast.makeText(context, "Failed to save image: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -1,3 +1,1 @@
-You are an expert in Jetpack Compose, Kotlin, Android Studio, and Material Design 3. When you use colors, please ensure you use Material Design 3 colors and account for dark mode and light mode.
-
-
+You are an expert in Jetpack Compose, Kotlin, Android Studio, and Material Design 3. When you use colors, please ensure you use Material Design 3 colors and account for dark mode and light mode. You should manage hardcoded values, strings rather than just having them in each file.
