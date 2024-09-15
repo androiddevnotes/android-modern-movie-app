@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.repository.MovieRepository
-import com.example.tmdbapp.repository.SortOption
 import com.example.tmdbapp.utils.MovieError
 import com.example.tmdbapp.utils.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -55,6 +54,9 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _currentSortOption = MutableStateFlow(SortOption.POPULAR)
     val currentSortOption: StateFlow<SortOption> = _currentSortOption
+
+    private val _filterOptions = MutableStateFlow(FilterOptions())
+    val filterOptions: StateFlow<FilterOptions> = _filterOptions
 
     init {
         fetchPopularMovies()
@@ -128,12 +130,26 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun setFilterOptions(options: FilterOptions) {
+        _filterOptions.value = options
+        currentPage = 1
+        isLastPage = false
+        _uiState.value = MovieUiState.Loading
+        fetchMovies()
+    }
+
     private fun fetchMovies() {
         if (isLoading || isLastPage) return
         isLoading = true
         viewModelScope.launch {
             try {
-                val result = repository.getMovies(_currentSortOption.value, currentPage)
+                val result = repository.discoverMovies(
+                    page = currentPage,
+                    sortBy = _currentSortOption.value.apiValue,
+                    genres = _filterOptions.value.genres,
+                    releaseYear = _filterOptions.value.releaseYear,
+                    minRating = _filterOptions.value.minRating
+                )
                 when (result) {
                     is Resource.Success -> {
                         val newMovies = result.data?.results ?: emptyList()
@@ -218,4 +234,17 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     fun saveListScrollPosition(index: Int, offset: Int) {
         _listScrollPosition.value = ScrollPosition(index, offset)
     }
+}
+
+data class FilterOptions(
+    val genres: List<Int> = emptyList(),
+    val releaseYear: Int? = null,
+    val minRating: Float? = null
+)
+
+enum class SortOption(val apiValue: String) {
+    POPULAR("popularity.desc"),
+    NOW_PLAYING("release_date.desc"),
+    TOP_RATED("vote_average.desc"),
+    UPCOMING("primary_release_date.asc")
 }

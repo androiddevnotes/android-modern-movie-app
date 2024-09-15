@@ -7,6 +7,7 @@ import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.models.MovieResponse
 import com.example.tmdbapp.network.RetrofitInstance
 import com.example.tmdbapp.utils.Resource
+import com.example.tmdbapp.viewmodel.SortOption
 
 class MovieRepository(context: Context) {
     private val api = RetrofitInstance.api
@@ -61,8 +62,30 @@ class MovieRepository(context: Context) {
             Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
         }
     }
-}
 
-enum class SortOption {
-    POPULAR, NOW_PLAYING, TOP_RATED, UPCOMING
+    suspend fun discoverMovies(
+        page: Int,
+        sortBy: String? = null,
+        genres: List<Int>? = null,
+        releaseYear: Int? = null,
+        minRating: Float? = null
+    ): Resource<MovieResponse> {
+        return try {
+            val genresString = genres?.joinToString(",")
+            val response = api.discoverMovies(
+                apiKey = apiKey,
+                page = page,
+                sortBy = sortBy,
+                genres = genresString,
+                releaseYear = releaseYear,
+                minRating = minRating
+            )
+            val moviesWithFavoriteStatus = response.results.map { movie ->
+                movie.copy(isFavorite = favoritePreferences.isFavorite(movie.id))
+            }
+            Resource.Success(response.copy(results = moviesWithFavoriteStatus))
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
+        }
+    }
 }

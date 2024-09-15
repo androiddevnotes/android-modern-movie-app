@@ -2,6 +2,7 @@
 
 package com.example.tmdbapp.ui
 
+import FilterDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -53,7 +54,7 @@ import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.MovieUiState
 import com.example.tmdbapp.viewmodel.MovieViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
-import com.example.tmdbapp.repository.SortOption
+import com.example.tmdbapp.viewmodel.SortOption
 
 @Composable
 fun MovieListScreen(
@@ -83,6 +84,9 @@ fun MovieListScreen(
     var expandedDropdown by remember { mutableStateOf(false) }
     val currentSortOption by viewModel.currentSortOption.collectAsState()
 
+    var showFilterDialog by remember { mutableStateOf(false) }
+    val currentFilters by viewModel.filterOptions.collectAsState()
+
     LaunchedEffect(gridState, viewType) {
         if (viewType == Constants.VIEW_TYPE_GRID) {
             snapshotFlow { gridState.firstVisibleItemIndex to gridState.firstVisibleItemScrollOffset }
@@ -108,12 +112,22 @@ fun MovieListScreen(
         listState.scrollToItem(0)
     }
 
+    if (showFilterDialog) {
+        FilterDialog(
+            currentFilters = currentFilters,
+            onDismiss = { showFilterDialog = false },
+            onApply = { newFilters ->
+                viewModel.setFilterOptions(newFilters)
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                      screenTitle,  // Changed from screenTitle to "ADN"
+                        screenTitle,
                         style = MaterialTheme.typography.headlineMedium
                     )
                 },
@@ -172,6 +186,13 @@ fun MovieListScreen(
                                 }
                             ),
                             contentDescription = Constants.CONTENT_DESC_TOGGLE_THEME,
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                    IconButton(onClick = { showFilterDialog = true }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_filter),
+                            contentDescription = "Filter",
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }

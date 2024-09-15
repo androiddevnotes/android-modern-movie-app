@@ -28,4 +28,14 @@ interface ApiService {
         @Query("api_key") apiKey: String,
         @Query("page") page: Int
     ): MovieResponse
+
+    @GET("discover/movie")
+    suspend fun discoverMovies(
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int,
+        @Query("sort_by") sortBy: String? = null,
+        @Query("with_genres") genres: String? = null,
+        @Query("primary_release_year") releaseYear: Int? = null,
+        @Query("vote_average.gte") minRating: Float? = null
+    ): MovieResponse
 }
