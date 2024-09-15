@@ -82,7 +82,10 @@ class MainActivity : ComponentActivity() {
                     is Screen.Detail -> {
                         MovieDetailScreen(
                             movie = (currentScreen as Screen.Detail).movie,
-                            onBackPress = { currentScreen = Screen.List },
+                            onBackPress = { 
+                                movieViewModel.clearSelectedMovie()
+                                currentScreen = Screen.List
+                            },
                             onFavoriteClick = { movieViewModel.toggleFavorite((currentScreen as Screen.Detail).movie) }
                         )
                     }

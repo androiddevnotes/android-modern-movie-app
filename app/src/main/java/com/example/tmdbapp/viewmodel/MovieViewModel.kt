@@ -18,6 +18,11 @@ sealed class MovieUiState {
     data class Error(val message: String) : MovieUiState()
 }
 
+data class ListScrollPosition(
+    val firstVisibleItemIndex: Int,
+    val firstVisibleItemScrollOffset: Int
+)
+
 class MovieViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = MovieRepository(application)
 
@@ -33,6 +38,9 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     private var currentPage = 1
     private var isLastPage = false
     private var isLoading = false
+
+    private val _listScrollPosition = MutableStateFlow(ListScrollPosition(0, 0))
+    val listScrollPosition: StateFlow<ListScrollPosition> = _listScrollPosition
 
     init {
         fetchPopularMovies()
@@ -119,5 +127,9 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             is MovieUiState.Success -> currentState.movies.find { it.id == movieId }
             else -> null
         }
+    }
+
+    fun saveListScrollPosition(firstVisibleItemIndex: Int, firstVisibleItemScrollOffset: Int) {
+        _listScrollPosition.value = ListScrollPosition(firstVisibleItemIndex, firstVisibleItemScrollOffset)
     }
 }
