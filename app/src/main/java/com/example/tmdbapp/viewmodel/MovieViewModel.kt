@@ -67,6 +67,12 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     val uiState: StateFlow<MovieUiState> = _uiState
 
+    private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
+    val authState: StateFlow<AuthState> = _authState
+
+    private val _createListState = MutableStateFlow<CreateListState>(CreateListState.Idle)
+    val createListState: StateFlow<CreateListState> = _createListState
+
     init {
         fetchPopularMovies()
         loadFavorites()
@@ -356,6 +362,52 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         return favorites.value.any { it.id == movieId }
     }
 
+    fun authenticate() {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            when (val tokenResult = repository.createRequestToken()) {
+                is Resource.Success -> {
+                    val token = tokenResult.data
+                    // Here, you would typically redirect the user to the TMDB website to approve the token
+                    // After approval, you would call createSession with the approved token
+                    when (val sessionResult = token?.let { repository.createSession(it) }) {
+                        is Resource.Success -> _authState.value = AuthState.Authenticated
+                        is Resource.Error -> _authState.value = sessionResult.message?.let {
+                            AuthState.Error(
+                                it
+                            )
+                        }!!
+
+                        else -> {}
+                    }
+                }
+                is Resource.Error -> _authState.value = tokenResult.message?.let {
+                    AuthState.Error(
+                        it
+                    )
+                }!!
+            }
+        }
+    }
+
+    fun createList(name: String, description: String) {
+        viewModelScope.launch {
+            _createListState.value = CreateListState.Loading
+            when (val result = repository.createList(name, description)) {
+                is Resource.Success -> _createListState.value = result.data?.let {
+                    CreateListState.Success(
+                        it
+                    )
+                }!!
+                is Resource.Error -> _createListState.value = result.message?.let {
+                    CreateListState.Error(
+                        it
+                    )
+                }!!
+            }
+        }
+    }
+
 }
 
 data class FilterOptions(
@@ -369,4 +421,18 @@ enum class SortOption(val apiValue: String, @StringRes val stringRes: Int) {
     POPULAR("popularity.desc", R.string.sort_popularity),
     TOP_RATED("vote_average.desc", R.string.sort_top_rated),
     UPCOMING("primary_release_date.asc", R.string.sort_upcoming)
+}
+
+sealed class AuthState {
+    object Idle : AuthState()
+    object Loading : AuthState()
+    object Authenticated : AuthState()
+    data class Error(val message: String) : AuthState()
+}
+
+sealed class CreateListState {
+    object Idle : CreateListState()
+    object Loading : CreateListState()
+    data class Success(val listId: Int) : CreateListState()
+    data class Error(val message: String) : CreateListState()
 }

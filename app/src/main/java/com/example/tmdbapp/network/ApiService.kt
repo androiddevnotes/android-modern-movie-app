@@ -5,6 +5,7 @@ import com.example.tmdbapp.models.MovieResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ApiService {
     @GET("movie/popular")
@@ -53,4 +54,48 @@ interface ApiService {
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
     ): Movie
+
+    @GET("authentication/token/new")
+    suspend fun createRequestToken(@Query("api_key") apiKey: String): RequestTokenResponse
+
+    @POST("authentication/session/new")
+    suspend fun createSession(
+        @Query("api_key") apiKey: String,
+        @Body requestBody: CreateSessionRequest
+    ): CreateSessionResponse
+
+    @POST("list")
+    suspend fun createList(
+        @Query("api_key") apiKey: String,
+        @Query("session_id") sessionId: String,
+        @Body requestBody: CreateListRequest
+    ): CreateListResponse
 }
+
+data class RequestTokenResponse(
+    val success: Boolean,
+    val expires_at: String,
+    val request_token: String
+)
+
+data class CreateSessionRequest(
+    val request_token: String
+)
+
+data class CreateSessionResponse(
+    val success: Boolean,
+    val session_id: String
+)
+
+data class CreateListRequest(
+    val name: String,
+    val description: String,
+    val language: String = "en"
+)
+
+data class CreateListResponse(
+    val status_message: String,
+    val success: Boolean,
+    val status_code: Int,
+    val list_id: Int
+)

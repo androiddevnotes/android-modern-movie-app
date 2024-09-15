@@ -3,15 +3,20 @@ package com.example.tmdbapp.repository
 import android.content.Context
 import com.example.tmdbapp.BuildConfig
 import com.example.tmdbapp.data.FavoritePreferences
+import com.example.tmdbapp.data.SessionManager
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.models.MovieResponse
+import com.example.tmdbapp.network.CreateListRequest
+import com.example.tmdbapp.network.CreateSessionRequest
 import com.example.tmdbapp.network.RetrofitInstance
 import com.example.tmdbapp.utils.Resource
+import kotlinx.coroutines.flow.first
 
 class MovieRepository(context: Context) {
     private val api = RetrofitInstance.api
     private val apiKey = BuildConfig.TMDB_API_KEY
     private val favoritePreferences = FavoritePreferences(context)
+    private val sessionManager = SessionManager(context)
 
     suspend fun getPopularMovies(page: Int): Resource<MovieResponse> {
         return try {
@@ -85,6 +90,50 @@ class MovieRepository(context: Context) {
             response.copy(isFavorite = favoritePreferences.isFavorite(response.id))
         } catch (e: Exception) {
             null
+        }
+    }
+
+    suspend fun createRequestToken(): Resource<String> {
+        return try {
+            val response = api.createRequestToken(apiKey)
+            if (response.success) {
+                Resource.Success(response.request_token)
+            } else {
+                Resource.Error("Failed to create request token")
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
+        }
+    }
+
+    suspend fun createSession(requestToken: String): Resource<String> {
+        return try {
+            val response = api.createSession(apiKey, CreateSessionRequest(requestToken))
+            if (response.success) {
+                sessionManager.saveSessionId(response.session_id)
+                Resource.Success(response.session_id)
+            } else {
+                Resource.Error("Failed to create session")
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
+        }
+    }
+
+    suspend fun createList(name: String, description: String): Resource<Int> {
+        return try {
+            val sessionId = sessionManager.sessionIdFlow.first()
+            if (sessionId == null) {
+                return Resource.Error("No active session")
+            }
+            val response = api.createList(apiKey, sessionId, CreateListRequest(name, description))
+            if (response.success) {
+                Resource.Success(response.list_id)
+            } else {
+                Resource.Error(response.status_message)
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
         }
     }
 }
