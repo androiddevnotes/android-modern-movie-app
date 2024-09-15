@@ -19,26 +19,27 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.tmdbapp.models.Movie
+import com.example.tmdbapp.utils.Constants
 
 @Composable
 fun MovieItem(
     movie: Movie,
     modifier: Modifier = Modifier,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    isListView: Boolean = false
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(240.dp)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        shape = RoundedCornerShape(16.dp)
+            .height(if (isListView) 120.dp else Constants.MOVIE_ITEM_HEIGHT),
+        elevation = CardDefaults.cardElevation(defaultElevation = Constants.CARD_ELEVATION),
+        shape = RoundedCornerShape(Constants.CARD_CORNER_RADIUS)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
-                model = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
+                model = "${Constants.BASE_IMAGE_URL}${movie.posterPath}",
                 contentDescription = movie.title,
-                contentScale = ContentScale.Crop,
+                contentScale = if (isListView) ContentScale.Crop else ContentScale.FillBounds,
                 modifier = Modifier.fillMaxSize()
             )
             Box(

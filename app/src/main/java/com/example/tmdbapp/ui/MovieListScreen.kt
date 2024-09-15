@@ -4,12 +4,17 @@ package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,6 +25,7 @@ import com.example.tmdbapp.viewmodel.MovieUiState
 import com.example.tmdbapp.viewmodel.MovieViewModel
 import com.example.tmdbapp.ui.components.MovieItem
 import kotlinx.coroutines.flow.distinctUntilChanged
+import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.utils.MovieError
 
 @Composable
@@ -31,6 +37,7 @@ fun MovieListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scrollPosition by viewModel.listScrollPosition.collectAsState()
+    var viewType by remember { mutableStateOf(Constants.VIEW_TYPE_GRID) }
     
     val listState = rememberLazyStaggeredGridState(
         initialFirstVisibleItemIndex = scrollPosition.firstVisibleItemIndex,
@@ -50,8 +57,16 @@ fun MovieListScreen(
             SmallTopAppBar(
                 title = { Text(screenTitle, style = MaterialTheme.typography.headlineMedium) },
                 actions = {
+                    IconButton(onClick = { 
+                        viewType = if (viewType == Constants.VIEW_TYPE_GRID) Constants.VIEW_TYPE_LIST else Constants.VIEW_TYPE_GRID 
+                    }) {
+                        Icon(
+                            imageVector = if (viewType == Constants.VIEW_TYPE_GRID) Icons.Default.Menu else Icons.Default.DateRange,
+                            contentDescription = Constants.CONTENT_DESC_SWITCH_VIEW
+                        )
+                    }
                     IconButton(onClick = onFavoritesClick) {
-                        Icon(Icons.Default.Favorite, contentDescription = "Favorites")
+                        Icon(Icons.Default.Favorite, contentDescription = Constants.CONTENT_DESC_FAVORITES)
                     }
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -70,25 +85,53 @@ fun MovieListScreen(
                 }
                 is MovieUiState.Success -> {
                     val movies = (uiState as MovieUiState.Success).movies
-                    LazyVerticalStaggeredGrid(
-                        columns = StaggeredGridCells.Adaptive(150.dp),
-                        state = listState,
-                        contentPadding = PaddingValues(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        verticalItemSpacing = 16.dp
-                    ) {
-                        itemsIndexed(movies) { index, movie ->
-                            if (index >= movies.size - 1) {
-                                viewModel.loadMoreMovies()
+                    when (viewType) {
+                        Constants.VIEW_TYPE_GRID -> {
+                            LazyVerticalStaggeredGrid(
+                                columns = StaggeredGridCells.Adaptive(150.dp),
+                                state = listState,
+                                contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
+                                horizontalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM),
+                                verticalItemSpacing = Constants.PADDING_MEDIUM
+                            ) {
+                                itemsIndexed(movies) { index, movie ->
+                                    if (index >= movies.size - 1) {
+                                        viewModel.loadMoreMovies()
+                                    }
+                                    MovieItem(
+                                        movie = movie,
+                                        modifier = Modifier.clickable {
+                                            viewModel.selectMovie(movie)
+                                            onMovieClick(movie)
+                                        },
+                                        onFavoriteClick = { viewModel.toggleFavorite(movie) }
+                                    )
+                                }
                             }
-                            MovieItem(
-                                movie = movie,
-                                modifier = Modifier.clickable {
-                                    viewModel.selectMovie(movie)
-                                    onMovieClick(movie)
-                                },
-                                onFavoriteClick = { viewModel.toggleFavorite(movie) }
-                            )
+                        }
+                        Constants.VIEW_TYPE_LIST -> {
+                            LazyColumn(
+                                contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
+                                verticalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM)
+                            ) {
+                                items(movies) { movie ->
+                                    MovieItem(
+                                        movie = movie,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable {
+                                                viewModel.selectMovie(movie)
+                                                onMovieClick(movie)
+                                            },
+                                        onFavoriteClick = { viewModel.toggleFavorite(movie) }
+                                    )
+                                }
+                                item {
+                                    if (movies.isNotEmpty()) {
+                                        viewModel.loadMoreMovies()
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -97,7 +140,7 @@ fun MovieListScreen(
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(text = error.message, style = MaterialTheme.typography.bodyLarge)
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
                             Button(onClick = { viewModel.loadMoreMovies() }) {
                                 Text("Retry")
                             }

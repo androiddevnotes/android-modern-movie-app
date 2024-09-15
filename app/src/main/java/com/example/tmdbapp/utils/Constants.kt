@@ -22,7 +22,12 @@ object Constants {
     // Content descriptions
     const val CONTENT_DESC_BACK = "Back"
     const val CONTENT_DESC_FAVORITES = "Favorites"
+    const val CONTENT_DESC_SWITCH_VIEW = "Switch view"
 
     // Messages
     const val MESSAGE_NO_FAVORITES = "No favorites yet"
+
+    // View types
+    const val VIEW_TYPE_GRID = "grid"
+    const val VIEW_TYPE_LIST = "list"
 }
