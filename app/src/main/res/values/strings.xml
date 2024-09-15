@@ -25,4 +25,12 @@
     <string name="sort_popularity">Popular</string>
     <string name="sort_top_rated">Top Rated</string>
     <string name="sort_upcoming">Upcoming</string>
+    <!-- Add these new strings -->
+    <string name="filter_movies">Filter Movies</string>
+    <string name="genres">Genres</string>
+    <string name="release_year">Release Year</string>
+    <string name="minimum_rating">Minimum Rating</string>
+    <string name="rating_value">%.1f</string>
+    <string name="cancel">Cancel</string>
+    <string name="apply">Apply</string>
 </resources>
