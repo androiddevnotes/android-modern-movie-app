@@ -18,7 +18,7 @@ object Constants {
 
     // Screen titles
     const val SCREEN_TITLE_FAVORITES = "Favorites"
-    const val SCREEN_TITLE_DISCOVER = "Discover Movies"
+    const val SCREEN_TITLE_DISCOVER = "ADN"
 
     // Content descriptions
     const val CONTENT_DESC_BACK = "Back"
