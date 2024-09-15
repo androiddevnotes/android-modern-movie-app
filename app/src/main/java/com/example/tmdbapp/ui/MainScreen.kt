@@ -1,6 +1,7 @@
 package com.example.tmdbapp.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,20 +17,15 @@ fun MainScreen(
     onThemeChange: (ThemeMode) -> Unit
 ) {
     val navController = rememberNavController()
-    var currentThemeMode by remember { mutableStateOf(ThemeMode.SYSTEM) }
-    var viewType by remember { mutableStateOf(Constants.VIEW_TYPE_GRID) }
+    var currentThemeMode by rememberSaveable { mutableStateOf(ThemeMode.SYSTEM) }
+    var viewType by rememberSaveable { mutableStateOf(Constants.VIEW_TYPE_GRID) }
 
     NavGraph(
         navController = navController,
         movieViewModel = movieViewModel,
         currentThemeMode = currentThemeMode,
         onThemeChange = {
-            currentThemeMode = when (currentThemeMode) {
-                ThemeMode.LIGHT -> ThemeMode.DARK
-                ThemeMode.DARK -> ThemeMode.SYSTEM
-                ThemeMode.SYSTEM -> ThemeMode.LIGHT
-            }
-            onThemeChange(currentThemeMode)
+            // ... (theme change logic)
         },
         viewType = viewType,
         onViewTypeChange = { newViewType ->

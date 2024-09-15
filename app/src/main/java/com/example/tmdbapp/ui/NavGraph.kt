@@ -35,7 +35,7 @@ fun NavGraph(
                 onFavoritesClick = {
                     navController.navigate("favorites")
                 },
-                screenTitle = "Discover",
+                screenTitle = Constants.SCREEN_TITLE_DISCOVER,
                 viewType = viewType,
                 onViewTypeChange = onViewTypeChange,
                 onThemeChange = onThemeChange,

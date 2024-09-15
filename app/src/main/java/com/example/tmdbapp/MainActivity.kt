@@ -27,8 +27,7 @@ class MainActivity : ComponentActivity() {
             
             AppContent(
                 movieViewModel = movieViewModel,
-                themeMode = themeMode,
-                onThemeChange = { newThemeMode -> themeMode = newThemeMode }
+                initialThemeMode = themeMode
             )
         }
     }
