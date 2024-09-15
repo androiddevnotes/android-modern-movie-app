@@ -1,10 +1,9 @@
 package com.example.tmdbapp.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import com.example.tmdbapp.ui.theme.ThemeMode
@@ -25,7 +24,7 @@ fun MainScreen(
         movieViewModel = movieViewModel,
         currentThemeMode = currentThemeMode,
         onThemeChange = {
-            
+
         },
         viewType = viewType,
         onViewTypeChange = { newViewType ->

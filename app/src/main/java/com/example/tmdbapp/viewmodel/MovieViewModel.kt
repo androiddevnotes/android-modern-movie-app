@@ -152,7 +152,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                 val movie = repository.getMovieDetails(movieId)
                 _currentMovie.value = movie
             } catch (e: Exception) {
-                
+
                 _currentMovie.value = null
             }
         }
@@ -191,10 +191,10 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                 searchMovies(query)
             }
         } else if (oldQuery.isNotEmpty() && query.isEmpty()) {
-            
+
             refreshMovies()
         }
-        
+
     }
 
     fun setSortOption(sortOption: SortOption) {
@@ -351,8 +351,8 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun isFavorite(movieId: Int): Boolean {
-        
-        
+
+
         return favorites.value.any { it.id == movieId }
     }
 

@@ -53,6 +53,7 @@ fun MovieDetailScreen(
                 CircularProgressIndicator()
             }
         }
+
         else -> {
             MovieDetailContent(
                 movie = movie!!,

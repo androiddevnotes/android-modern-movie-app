@@ -82,7 +82,7 @@ fun FavoritesScreen(
                         movie = movie,
                         modifier = Modifier.clickable { onMovieClick(movie.id) },
                         onFavoriteClick = { viewModel.toggleFavorite(movie) },
-                        isListView = true  
+                        isListView = true
                     )
                 }
             }

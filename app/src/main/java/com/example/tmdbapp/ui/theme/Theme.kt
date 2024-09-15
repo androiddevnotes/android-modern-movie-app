@@ -88,7 +88,7 @@ val LocalThemeMode = staticCompositionLocalOf { ThemeMode.SYSTEM }
 @Composable
 fun TMDBAppTheme(
     themeMode: ThemeMode = ThemeMode.SYSTEM,
-    
+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -103,6 +103,7 @@ fun TMDBAppTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
+
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }

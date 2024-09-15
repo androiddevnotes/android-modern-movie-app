@@ -6,6 +6,7 @@ This Android app interacts with The Movie Database (TMDB) API. Every line of cod
 or suggested by AI using a large language model.
 
 ## Current state:
+
 the codebase evolves as the AI generates more and more code.
 
 ![p4.png](docs%2Fassets%2Fp4.png)
