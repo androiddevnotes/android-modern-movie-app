@@ -26,7 +26,8 @@ import com.example.tmdbapp.utils.MovieError
 fun MovieListScreen(
     viewModel: MovieViewModel,
     onMovieClick: (Movie) -> Unit,
-    onFavoritesClick: () -> Unit
+    onFavoritesClick: () -> Unit,
+    screenTitle: String
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scrollPosition by viewModel.listScrollPosition.collectAsState()
@@ -47,7 +48,7 @@ fun MovieListScreen(
     Scaffold(
         topBar = {
             SmallTopAppBar(
-                title = { Text("Discover Movies", style = MaterialTheme.typography.headlineMedium) },
+                title = { Text(screenTitle, style = MaterialTheme.typography.headlineMedium) },
                 actions = {
                     IconButton(onClick = onFavoritesClick) {
                         Icon(Icons.Default.Favorite, contentDescription = "Favorites")

@@ -23,6 +23,7 @@ import com.example.tmdbapp.viewmodel.MovieViewModel
 import com.example.tmdbapp.ui.components.MovieItem
 import androidx.compose.material3.SmallTopAppBar as SmallTopAppBar
 import androidx.compose.material3.TopAppBarDefaults as TopAppBarDefaults
+import com.example.tmdbapp.utils.Constants
 
 @Composable
 fun FavoritesScreen(
@@ -35,10 +36,10 @@ fun FavoritesScreen(
     Scaffold(
         topBar = {
             SmallTopAppBar(
-                title = { Text("Favorites", style = typography.headlineMedium) },
+                title = { Text(Constants.SCREEN_TITLE_FAVORITES, style = typography.headlineMedium) },
                 navigationIcon = {
                     IconButton(onClick = onBackPress) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Filled.ArrowBack, contentDescription = Constants.CONTENT_DESC_BACK)
                     }
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -55,12 +56,12 @@ fun FavoritesScreen(
                     .padding(paddingValues),
                 contentAlignment = Alignment.Center
             ) {
-                Text("No favorites yet")
+                Text(Constants.MESSAGE_NO_FAVORITES)
             }
         } else {
             LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
+                verticalArrangement = Arrangement.spacedBy(Constants.PADDING_SMALL),
                 modifier = Modifier.padding(paddingValues)
             ) {
                 items(favorites) { movie ->

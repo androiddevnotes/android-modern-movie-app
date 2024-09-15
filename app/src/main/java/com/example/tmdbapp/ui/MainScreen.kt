@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import androidx.activity.compose.BackHandler
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.viewmodel.MovieViewModel
+import com.example.tmdbapp.utils.Constants
 
 sealed class Screen {
     object List : Screen()
@@ -42,7 +43,8 @@ fun MainScreen(viewModel: MovieViewModel) {
             onFavoritesClick = { 
                 currentScreen = Screen.Favorites
                 previousScreen = Screen.List
-            }
+            },
+            screenTitle = Constants.SCREEN_TITLE_DISCOVER
         )
         is Screen.Favorites -> FavoritesScreen(
             viewModel = viewModel,
