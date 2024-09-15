@@ -191,10 +191,10 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                 searchMovies(query)
             }
         } else if (oldQuery.isNotEmpty() && query.isEmpty()) {
-            // Only refresh if we're clearing a non-empty query
+            
             refreshMovies()
         }
-        // If both old and new queries are empty, do nothing
+        
     }
 
     fun setSortOption(sortOption: SortOption) {
@@ -351,8 +351,8 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun isFavorite(movieId: Int): Boolean {
-        // Implement the logic to check if a movie is favorited
-        // This might involve checking a local database or a list of favorite movie IDs
+        
+        
         return favorites.value.any { it.id == movieId }
     }
 

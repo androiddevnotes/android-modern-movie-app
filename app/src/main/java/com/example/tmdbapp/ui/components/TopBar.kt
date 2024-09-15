@@ -52,10 +52,10 @@ fun TopBar(
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.cool_shape_arrow_right), // Replace with your actual logo resource
+                        painter = painterResource(id = R.drawable.cool_shape_arrow_right), 
                         contentDescription = "App Logo",
                         modifier = Modifier
-                            .size(40.dp) // Adjust size as needed
+                            .size(40.dp) 
                             .align(Alignment.Center)
                     )
                 }

@@ -29,11 +29,11 @@ fun FilterBottomSheet(
             Text("Filter Movies", style = MaterialTheme.typography.headlineSmall)
             Spacer(modifier = Modifier.height(16.dp))
             
-            // Add UI elements for selecting genres, min rating, and release year
-            // For example:
-            // GenreSelector(selectedGenres = genres, onGenreSelected = { genres = it })
-            // RatingSlider(rating = minRating, onRatingChange = { minRating = it })
-            // YearPicker(year = releaseYear, onYearChange = { releaseYear = it })
+            
+            
+            
+            
+            
 
             Spacer(modifier = Modifier.height(16.dp))
             Row(

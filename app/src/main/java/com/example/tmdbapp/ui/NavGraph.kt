@@ -70,7 +70,7 @@ fun NavGraph(
     }
 }
 
-// Helper function to cycle through theme modes
+
 private fun ThemeMode.next(): ThemeMode = when (this) {
     ThemeMode.LIGHT -> ThemeMode.DARK
     ThemeMode.DARK -> ThemeMode.SYSTEM

@@ -88,7 +88,7 @@ val LocalThemeMode = staticCompositionLocalOf { ThemeMode.SYSTEM }
 @Composable
 fun TMDBAppTheme(
     themeMode: ThemeMode = ThemeMode.SYSTEM,
-    // Dynamic color is available on Android 12+
+    
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {

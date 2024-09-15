@@ -111,12 +111,12 @@ fun MovieListScreen(
     val listState = rememberForeverLazyListState(
         key = "movie_list_${viewType}_${searchQuery}",
         initialFirstVisibleItemIndex = lastViewedItemIndex,
-        initialFirstVisibleItemScrollOffset = 0 // You can adjust this value if needed
+        initialFirstVisibleItemScrollOffset = 0 
     )
     val gridState = rememberForeverLazyStaggeredGridState(
         key = "movie_grid_${viewType}_${searchQuery}",
         initialFirstVisibleItemIndex = lastViewedItemIndex,
-        initialFirstVisibleItemOffset = 0 // You can adjust this value if needed
+        initialFirstVisibleItemOffset = 0 
     )
 
     val currentFilters by viewModel.filterOptions.collectAsState()
@@ -213,7 +213,7 @@ fun MovieListScreen(
                             ) {
                                 itemsIndexed(
                                     items = movies,
-                                    key = { index, movie -> "${movie.id}_${index}" } // Use index to ensure uniqueness
+                                    key = { index, movie -> "${movie.id}_${index}" } 
                                 ) { index, movie ->
                                     if (index >= movies.size - 1 && !viewModel.isLastPage) {
                                         viewModel.loadMoreMovies()

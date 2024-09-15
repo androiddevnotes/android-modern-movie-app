@@ -25,7 +25,7 @@ fun MainScreen(
         movieViewModel = movieViewModel,
         currentThemeMode = currentThemeMode,
         onThemeChange = {
-            // ... (theme change logic)
+            
         },
         viewType = viewType,
         onViewTypeChange = { newViewType ->
