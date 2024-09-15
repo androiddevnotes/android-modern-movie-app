@@ -1,14 +1,17 @@
 package com.example.tmdbapp.ui
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
 import androidx.activity.compose.BackHandler
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.viewmodel.MovieViewModel
-import com.example.tmdbapp.utils.Constants
-import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.ui.theme.LocalThemeMode
+import com.example.tmdbapp.ui.theme.ThemeMode
+import com.example.tmdbapp.utils.Constants
+import com.example.tmdbapp.viewmodel.MovieViewModel
 
 sealed class Screen {
     object List : Screen()
@@ -33,10 +36,12 @@ fun MainScreen(
                 movieViewModel.clearSelectedMovie()
                 currentScreen = previousScreen
             }
+
             is Screen.Favorites -> {
                 currentScreen = Screen.List
                 previousScreen = Screen.List
             }
+
             is Screen.List -> {}
         }
     }
@@ -44,12 +49,12 @@ fun MainScreen(
     when (currentScreen) {
         is Screen.List -> MovieListScreen(
             viewModel = movieViewModel,
-            onMovieClick = { 
-                movieViewModel.selectMovie(it) 
+            onMovieClick = {
+                movieViewModel.selectMovie(it)
                 previousScreen = Screen.List
                 currentScreen = Screen.Detail(it)
             },
-            onFavoritesClick = { 
+            onFavoritesClick = {
                 currentScreen = Screen.Favorites
                 previousScreen = Screen.List
             },
@@ -66,6 +71,7 @@ fun MainScreen(
             },
             currentThemeMode = currentThemeMode
         )
+
         is Screen.Favorites -> FavoritesScreen(
             viewModel = movieViewModel,
             onMovieClick = { movieId ->
@@ -81,6 +87,7 @@ fun MainScreen(
                 previousScreen = Screen.List
             }
         )
+
         is Screen.Detail -> MovieDetailScreen(
             viewModel = movieViewModel,
             onBackPress = {

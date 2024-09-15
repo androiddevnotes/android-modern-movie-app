@@ -3,7 +3,11 @@
 package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -16,15 +20,15 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.*
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.tmdbapp.viewmodel.MovieViewModel
 import com.example.tmdbapp.ui.components.MovieItem
-import androidx.compose.material3.SmallTopAppBar as SmallTopAppBar
-import androidx.compose.material3.TopAppBarDefaults as TopAppBarDefaults
 import com.example.tmdbapp.utils.Constants
+import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
 fun FavoritesScreen(
@@ -37,15 +41,23 @@ fun FavoritesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(Constants.SCREEN_TITLE_FAVORITES, style =  typography.headlineMedium) },
+                title = {
+                    Text(
+                        Constants.SCREEN_TITLE_FAVORITES,
+                        style = typography.headlineMedium
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBackPress) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = Constants.CONTENT_DESC_BACK)
+                        Icon(
+                            Icons.Filled.ArrowBack,
+                            contentDescription = Constants.CONTENT_DESC_BACK
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor =  colorScheme.surface,
-                    titleContentColor =  colorScheme.onSurface
+                    containerColor = colorScheme.surface,
+                    titleContentColor = colorScheme.onSurface
                 )
             )
         }

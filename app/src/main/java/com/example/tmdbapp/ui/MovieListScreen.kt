@@ -3,9 +3,16 @@
 package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -14,20 +21,33 @@ import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.tmdbapp.R
 import com.example.tmdbapp.models.Movie
+import com.example.tmdbapp.ui.components.MovieItem
+import com.example.tmdbapp.ui.theme.ThemeMode
+import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.MovieUiState
 import com.example.tmdbapp.viewmodel.MovieViewModel
-import com.example.tmdbapp.ui.components.MovieItem
 import kotlinx.coroutines.flow.distinctUntilChanged
-import com.example.tmdbapp.utils.Constants
-import com.example.tmdbapp.ui.theme.ThemeMode
 
 @Composable
 fun MovieListScreen(
@@ -43,12 +63,12 @@ fun MovieListScreen(
     val uiState by viewModel.uiState.collectAsState()
     val gridScrollPosition by viewModel.gridScrollPosition.collectAsState()
     val listScrollPosition by viewModel.listScrollPosition.collectAsState()
-    
+
     val gridState = rememberLazyStaggeredGridState(
         initialFirstVisibleItemIndex = gridScrollPosition.firstVisibleItemIndex,
         initialFirstVisibleItemScrollOffset = gridScrollPosition.firstVisibleItemScrollOffset
     )
-    
+
     val listState = rememberLazyListState(
         initialFirstVisibleItemIndex = listScrollPosition.firstVisibleItemIndex,
         initialFirstVisibleItemScrollOffset = listScrollPosition.firstVisibleItemScrollOffset
@@ -84,9 +104,9 @@ fun MovieListScreen(
                     }) {
                         Icon(
                             painter = painterResource(
-                                id = if (viewType == Constants.VIEW_TYPE_GRID) 
-                                    R.drawable.view_list_24px 
-                                else 
+                                id = if (viewType == Constants.VIEW_TYPE_GRID)
+                                    R.drawable.view_list_24px
+                                else
                                     R.drawable.grid_view_24px
                             ),
                             contentDescription = Constants.CONTENT_DESC_SWITCH_VIEW,
@@ -94,7 +114,10 @@ fun MovieListScreen(
                         )
                     }
                     IconButton(onClick = onFavoritesClick) {
-                        Icon(Icons.Default.Favorite, contentDescription = Constants.CONTENT_DESC_FAVORITES)
+                        Icon(
+                            Icons.Default.Favorite,
+                            contentDescription = Constants.CONTENT_DESC_FAVORITES
+                        )
                     }
                     IconButton(onClick = onThemeChange) {
                         Icon(
@@ -124,6 +147,7 @@ fun MovieListScreen(
                         CircularProgressIndicator()
                     }
                 }
+
                 is MovieUiState.Success -> {
                     val movies = (uiState as MovieUiState.Success).movies
                     when (viewType) {
@@ -151,6 +175,7 @@ fun MovieListScreen(
                                 }
                             }
                         }
+
                         Constants.VIEW_TYPE_LIST -> {
                             LazyColumn(
                                 state = listState,
@@ -179,6 +204,7 @@ fun MovieListScreen(
                         }
                     }
                 }
+
                 is MovieUiState.Error -> {
                     val error = (uiState as MovieUiState.Error).error
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

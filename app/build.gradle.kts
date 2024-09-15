@@ -19,7 +19,11 @@ android {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "TMDB_API_KEY", "\"${project.findProperty("TMDB_API_KEY") ?: ""}\"")
+        buildConfigField(
+            "String",
+            "TMDB_API_KEY",
+            "\"${project.findProperty("TMDB_API_KEY") ?: ""}\""
+        )
     }
 
     buildTypes {

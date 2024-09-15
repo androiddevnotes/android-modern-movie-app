@@ -3,17 +3,16 @@ package com.example.tmdbapp.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tmdbapp.R
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.repository.MovieRepository
-import com.example.tmdbapp.utils.Resource
 import com.example.tmdbapp.utils.MovieError
-import retrofit2.HttpException
-import java.io.IOException
+import com.example.tmdbapp.utils.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
 sealed class MovieUiState {
     object Loading : MovieUiState()
@@ -76,6 +75,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                         currentPage++
                         isLastPage = newMovies.isEmpty()
                     }
+
                     is Resource.Error -> {
                         _uiState.value = MovieUiState.Error(handleError(result.message))
                     }
@@ -98,6 +98,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                     else -> MovieError.Unknown
                 }
             }
+
             else -> MovieError.Unknown
         }
     }
@@ -130,26 +131,27 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             repository.toggleFavorite(movie)
             val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
-            
+
             // Update the current movie
             _currentMovie.value = updatedMovie
-            
+
             when (val currentState = _uiState.value) {
                 is MovieUiState.Success -> {
-                    val updatedMovies = currentState.movies.map { 
-                        if (it.id == movie.id) updatedMovie else it 
+                    val updatedMovies = currentState.movies.map {
+                        if (it.id == movie.id) updatedMovie else it
                     }
                     _uiState.value = MovieUiState.Success(updatedMovies)
                 }
-                else -> {} 
+
+                else -> {}
             }
-            
-            
+
+
             _selectedMovie.update { current ->
                 if (current?.id == movie.id) updatedMovie else current
             }
-            
-            
+
+
             if (updatedMovie.isFavorite) {
                 _favorites.update { it + updatedMovie }
             } else {

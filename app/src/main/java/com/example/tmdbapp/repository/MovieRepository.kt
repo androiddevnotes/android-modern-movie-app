@@ -27,7 +27,7 @@ class MovieRepository(context: Context) {
 
     suspend fun getFavoriteMovies(): List<Movie> {
         return try {
-            val response = api.getPopularMovies(apiKey, 1) 
+            val response = api.getPopularMovies(apiKey, 1)
             response.results.filter { movie ->
                 favoritePreferences.isFavorite(movie.id)
             }.map { it.copy(isFavorite = true) }
