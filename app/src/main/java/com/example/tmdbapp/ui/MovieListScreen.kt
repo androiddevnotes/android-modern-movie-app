@@ -52,50 +52,52 @@ fun MovieListScreen(
             )
         }
     ) { paddingValues ->
-        when (uiState) {
-            is MovieUiState.Loading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
-            }
-            is MovieUiState.Success -> {
-                val movies = (uiState as MovieUiState.Success).movies
-                LazyColumn(
-                    state = listState,
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    itemsIndexed(movies) { index, movie ->
-                        if (index >= movies.size - 1) {
-                            viewModel.loadMoreMovies()
-                        }
-                        MovieItem(
-                            movie = movie,
-                            modifier = Modifier.clickable {
-                                viewModel.selectMovie(movie)
-                                onMovieClick(movie)
-                            },
-                            onFavoriteClick = { viewModel.toggleFavorite(movie) }
-                        )
+        Box(modifier = Modifier.padding(paddingValues)) {
+            when (uiState) {
+                is MovieUiState.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
                     }
-                    item {
-                        if (movies.isNotEmpty()) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator()
+                }
+                is MovieUiState.Success -> {
+                    val movies = (uiState as MovieUiState.Success).movies
+                    LazyColumn(
+                        state = listState,
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        itemsIndexed(movies) { index, movie ->
+                            if (index >= movies.size - 1) {
+                                viewModel.loadMoreMovies()
+                            }
+                            MovieItem(
+                                movie = movie,
+                                modifier = Modifier.clickable {
+                                    viewModel.selectMovie(movie)
+                                    onMovieClick(movie)
+                                },
+                                onFavoriteClick = { viewModel.toggleFavorite(movie) }
+                            )
+                        }
+                        item {
+                            if (movies.isNotEmpty()) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator()
+                                }
                             }
                         }
                     }
                 }
-            }
-            is MovieUiState.Error -> {
-                val message = (uiState as MovieUiState.Error).message
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = message)
+                is MovieUiState.Error -> {
+                    val message = (uiState as MovieUiState.Error).message
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text(text = message)
+                    }
                 }
             }
         }
