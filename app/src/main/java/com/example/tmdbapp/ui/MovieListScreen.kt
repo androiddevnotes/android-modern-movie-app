@@ -195,7 +195,8 @@ fun MovieListScreen(
                                         onClick = {
                                             viewModel.setLastViewedItemIndex(index)
                                             onMovieClick(movie)
-                                        }
+                                        },
+                                        isFavorite = viewModel.isFavorite(movie.id)
                                     )
                                 }
                             }

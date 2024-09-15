@@ -1,5 +1,6 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -20,12 +22,23 @@ import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.utils.Constants
 
 @Composable
-fun MovieGridItem(movie: Movie, onClick: () -> Unit) {
+fun MovieGridItem(movie: Movie, onClick: () -> Unit, isFavorite: Boolean) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(2f / 3f)
-            .clickable(onClick = onClick),
+            .clickable(onClick = onClick)
+            .then(
+                if (isFavorite) {
+                    Modifier.border(
+                        width = 2.dp,
+                        color = MaterialTheme.colorScheme.primary,
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                } else {
+                    Modifier
+                }
+            ),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
         shape = RoundedCornerShape(4.dp)
     ) {
@@ -86,6 +99,15 @@ fun MovieGridItem(movie: Movie, onClick: () -> Unit) {
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
+            if (isFavorite) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .height(4.dp)
+                        .background(MaterialTheme.colorScheme.primary)
+                )
+            }
         }
     }
 }
