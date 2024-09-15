@@ -1,6 +1,7 @@
 package com.example.tmdbapp.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.repository.MovieRepository
@@ -15,8 +16,8 @@ sealed class MovieUiState {
     data class Error(val message: String) : MovieUiState()
 }
 
-class MovieViewModel : ViewModel() {
-    private val repository = MovieRepository()
+class MovieViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository = MovieRepository(application)
 
     private val _uiState = MutableStateFlow<MovieUiState>(MovieUiState.Loading)
     val uiState: StateFlow<MovieUiState> = _uiState
@@ -71,6 +72,7 @@ class MovieViewModel : ViewModel() {
 
     fun toggleFavorite(movie: Movie) {
         viewModelScope.launch {
+            repository.toggleFavorite(movie)
             val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
             when (val currentState = _uiState.value) {
                 is MovieUiState.Success -> {

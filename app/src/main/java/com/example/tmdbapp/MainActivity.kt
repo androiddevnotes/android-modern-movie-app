@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.lifecycle.ViewModelProvider
 import com.example.tmdbapp.ui.MovieDetailScreen
 import com.example.tmdbapp.ui.MovieListScreen
 import com.example.tmdbapp.ui.theme.TMDBAppTheme
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TMDBAppTheme {
-                val movieViewModel: MovieViewModel = viewModel()
+                val movieViewModel: MovieViewModel = viewModel(factory = ViewModelProvider.AndroidViewModelFactory(application))
                 val selectedMovie by movieViewModel.selectedMovie.collectAsState()
 
                 // Handle back press
