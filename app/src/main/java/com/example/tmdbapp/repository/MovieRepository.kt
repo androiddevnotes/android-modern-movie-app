@@ -24,6 +24,17 @@ class MovieRepository(context: Context) {
         }
     }
 
+    suspend fun getFavoriteMovies(): List<Movie> {
+        return try {
+            val response = api.getPopularMovies(apiKey, 1) // Get first page to have some movie data
+            response.results.filter { movie ->
+                favoritePreferences.isFavorite(movie.id)
+            }.map { it.copy(isFavorite = true) }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
     fun toggleFavorite(movie: Movie) {
         val newFavoriteStatus = !movie.isFavorite
         favoritePreferences.setFavorite(movie.id, newFavoriteStatus)

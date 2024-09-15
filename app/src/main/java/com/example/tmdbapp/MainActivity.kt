@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.lifecycle.ViewModelProvider
+import com.example.tmdbapp.ui.FavoritesScreen
 import com.example.tmdbapp.ui.MovieDetailScreen
 import com.example.tmdbapp.ui.MovieListScreen
 import com.example.tmdbapp.ui.theme.TMDBAppTheme
@@ -20,6 +21,7 @@ class MainActivity : ComponentActivity() {
             TMDBAppTheme {
                 val movieViewModel: MovieViewModel = viewModel(factory = ViewModelProvider.AndroidViewModelFactory(application))
                 val selectedMovie by movieViewModel.selectedMovie.collectAsState()
+                var currentScreen by remember { mutableStateOf("list") }
 
                 // Handle back press
                 val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
@@ -40,17 +42,30 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                if (selectedMovie == null) {
-                    MovieListScreen(
+                when (currentScreen) {
+                    "list" -> MovieListScreen(
                         viewModel = movieViewModel,
-                        onMovieClick = { /* Navigation handled by StateFlow */ }
+                        onMovieClick = { movieViewModel.selectMovie(it) },
+                        onFavoritesClick = { currentScreen = "favorites" }
                     )
-                } else {
-                    MovieDetailScreen(
-                        movie = selectedMovie!!,
-                        onBackPress = { movieViewModel.clearSelectedMovie() },
-                        onFavoriteClick = { movieViewModel.toggleFavorite(selectedMovie!!) }
+                    "favorites" -> FavoritesScreen(
+                        viewModel = movieViewModel,
+                        onMovieClick = { movieId ->
+                            movieViewModel.getMovieById(movieId)
+                                ?.let { movieViewModel.selectMovie(it) }
+                            currentScreen = "detail"
+                        }
                     )
+                    "detail" -> selectedMovie?.let { movie ->
+                        MovieDetailScreen(
+                            movie = movie,
+                            onBackPress = { 
+                                movieViewModel.clearSelectedMovie()
+                                currentScreen = "list"
+                            },
+                            onFavoriteClick = { movieViewModel.toggleFavorite(movie) }
+                        )
+                    }
                 }
             }
         }

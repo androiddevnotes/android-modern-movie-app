@@ -8,6 +8,7 @@ import com.example.tmdbapp.repository.MovieRepository
 import com.example.tmdbapp.utils.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 sealed class MovieUiState {
@@ -25,12 +26,16 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     private val _selectedMovie = MutableStateFlow<Movie?>(null)
     val selectedMovie: StateFlow<Movie?> = _selectedMovie
 
+    private val _favorites = MutableStateFlow<List<Movie>>(emptyList())
+    val favorites: StateFlow<List<Movie>> = _favorites
+
     private var currentPage = 1
     private var isLastPage = false
     private var isLoading = false
 
     init {
         fetchPopularMovies()
+        loadFavorites()
     }
 
     private fun fetchPopularMovies() {
@@ -58,6 +63,13 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private fun loadFavorites() {
+        viewModelScope.launch {
+            val favoriteMovies = repository.getFavoriteMovies()
+            _favorites.value = favoriteMovies
+        }
+    }
+
     fun loadMoreMovies() {
         fetchPopularMovies()
     }
@@ -74,6 +86,8 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             repository.toggleFavorite(movie)
             val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
+            
+            // Update UI state
             when (val currentState = _uiState.value) {
                 is MovieUiState.Success -> {
                     val updatedMovies = currentState.movies.map { 
@@ -83,9 +97,25 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 else -> {} // Do nothing for other states
             }
+            
+            // Update selected movie if necessary
             if (_selectedMovie.value?.id == movie.id) {
                 _selectedMovie.value = updatedMovie
             }
+            
+            // Update favorites list
+            if (updatedMovie.isFavorite) {
+                _favorites.update { it + updatedMovie }
+            } else {
+                _favorites.update { it.filter { m -> m.id != updatedMovie.id } }
+            }
+        }
+    }
+
+    fun getMovieById(id: Int): Movie? {
+        return when (val state = _uiState.value) {
+            is MovieUiState.Success -> state.movies.find { it.id == id }
+            else -> null
         }
     }
 }
