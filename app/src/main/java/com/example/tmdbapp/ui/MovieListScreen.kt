@@ -60,7 +60,8 @@ fun MovieListScreen(
     viewType: String,
     onViewTypeChange: (String) -> Unit,
     onThemeChange: () -> Unit,
-    currentThemeMode: ThemeMode
+    currentThemeMode: ThemeMode,
+    onCreateListClick: () -> Unit
 ) {
     var isSearchActive by rememberSaveable { mutableStateOf(false) }
     var showFilterBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -135,7 +136,8 @@ fun MovieListScreen(
                 viewType = viewType,
                 onThemeChange = onThemeChange,
                 currentThemeMode = currentThemeMode,
-                onFilterClick = { showFilterBottomSheet = true }
+                onFilterClick = { showFilterBottomSheet = true },
+                onCreateListClick = onCreateListClick
             )
         }
     ) { paddingValues ->

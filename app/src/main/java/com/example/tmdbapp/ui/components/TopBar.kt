@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
@@ -49,7 +50,8 @@ fun TopBar(
     viewType: String,
     onThemeChange: () -> Unit,
     currentThemeMode: ThemeMode,
-    onFilterClick: () -> Unit
+    onFilterClick: () -> Unit,
+    onCreateListClick: () -> Unit // Add this new parameter
 ) {
     if (isSearchActive) {
         SearchTopBar(
@@ -163,7 +165,14 @@ fun TopBar(
                     )
                 }
 
-
+                // Add the new Create List button
+                IconButton(onClick = onCreateListClick) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.create_list),
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
             },
             colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.surface,

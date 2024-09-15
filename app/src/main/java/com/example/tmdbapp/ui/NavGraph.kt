@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.MovieViewModel
+import com.example.tmdbapp.ui.ListCreationScreen
 
 @Composable
 fun NavGraph(
@@ -35,8 +36,10 @@ fun NavGraph(
                 onViewTypeChange = onViewTypeChange,
                 onThemeChange = onThemeChange,
                 currentThemeMode = currentThemeMode,
-
-                )
+                onCreateListClick = {
+                    navController.navigate("createList")
+                }
+            )
         }
         composable(
             "movieDetail/{movieId}",
@@ -60,8 +63,12 @@ fun NavGraph(
                 onBackPress = { navController.popBackStack() }
             )
         }
-
-
+        composable("createList") {
+            ListCreationScreen(
+                viewModel = movieViewModel,
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
     }
 }
 
