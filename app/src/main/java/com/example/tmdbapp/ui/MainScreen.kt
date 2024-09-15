@@ -58,7 +58,7 @@ fun MainScreen(
                 currentScreen = Screen.Favorites
                 previousScreen = Screen.List
             },
-            screenTitle = Constants.SCREEN_TITLE_DISCOVER,  // This will now be "ADN"
+            screenTitle = Constants.SCREEN_TITLE_DISCOVER,  
             viewType = viewType,
             onViewTypeChange = { newViewType -> viewType = newViewType },
             onThemeChange = {

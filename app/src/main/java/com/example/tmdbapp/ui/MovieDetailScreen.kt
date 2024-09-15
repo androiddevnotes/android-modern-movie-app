@@ -53,7 +53,7 @@ fun MovieDetailScreen(
             onDownloadClick = { viewModel.downloadImage(currentMovie.posterPath, context) }
         )
     } ?: run {
-        // Handle the case when movie is null
+        
         Text("Movie details not available")
     }
 }

@@ -214,7 +214,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             repository.toggleFavorite(movie)
             val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
 
-            // Update the current movie
+            
             _currentMovie.value = updatedMovie
 
             when (val currentState = _uiState.value) {
@@ -261,7 +261,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         searchJob?.cancel()
         if (query.isNotEmpty()) {
             searchJob = viewModelScope.launch {
-                delay(300) // Debounce for 300ms
+                delay(300) 
                 searchMovies(query)
             }
         } else {

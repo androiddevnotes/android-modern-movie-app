@@ -78,8 +78,9 @@ fun MovieListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    val gridState = rememberLazyStaggeredGridState()
-    val listState = rememberLazyListState()
+    
+    
+    
 
     var expandedDropdown by remember { mutableStateOf(false) }
     val currentSortOption by viewModel.currentSortOption.collectAsState()
@@ -265,7 +266,8 @@ fun MovieListScreen(
                         Constants.VIEW_TYPE_GRID -> {
                             LazyVerticalStaggeredGrid(
                                 columns = StaggeredGridCells.Adaptive(150.dp),
-                                state = gridState,
+                                
+                                
                                 contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
                                 horizontalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM),
                                 verticalItemSpacing = Constants.PADDING_MEDIUM
@@ -289,7 +291,8 @@ fun MovieListScreen(
 
                         Constants.VIEW_TYPE_LIST -> {
                             LazyColumn(
-                                state = listState,
+                                
+                                
                                 contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
                                 verticalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM)
                             ) {
