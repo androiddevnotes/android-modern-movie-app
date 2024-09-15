@@ -99,8 +99,8 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             }
             
             // Update selected movie if necessary
-            if (_selectedMovie.value?.id == movie.id) {
-                _selectedMovie.value = updatedMovie
+            _selectedMovie.update { current ->
+                if (current?.id == movie.id) updatedMovie else current
             }
             
             // Update favorites list

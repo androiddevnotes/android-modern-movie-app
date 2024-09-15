@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
@@ -61,14 +62,21 @@ class MainActivity : ComponentActivity() {
                         onMovieClick = { movieId ->
                             movieViewModel.getMovieById(movieId)
                                 ?.let { movieViewModel.selectMovie(it) }
-                            currentScreen = "detail"
+                                currentScreen = "detail"
                         }
                     )
-                    "detail" -> MovieDetailScreen(
-                        movie = selectedMovie ?: return@TMDBAppTheme,
-                        onBackPress = { currentScreen = "list" },
-                        onFavoriteClick = { movieViewModel.toggleFavorite(selectedMovie!!) }
-                    )
+                    "detail" -> selectedMovie?.let { movie ->
+                        MovieDetailScreen(
+                            movie = movie,
+                            onBackPress = { currentScreen = "list" },
+                            onFavoriteClick = { movieViewModel.toggleFavorite(movie) }
+                        )
+                    }
+                    else -> {
+                        // Handle unknown screen or show a fallback UI
+                        // For example, navigate back to the list
+                        currentScreen = "list"
+                    }
                 }
             }
         }
