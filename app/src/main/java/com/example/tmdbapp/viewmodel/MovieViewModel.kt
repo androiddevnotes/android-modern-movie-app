@@ -42,6 +42,9 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     private val _listScrollPosition = MutableStateFlow(ListScrollPosition(0, 0))
     val listScrollPosition: StateFlow<ListScrollPosition> = _listScrollPosition
 
+    private val _currentMovie = MutableStateFlow<Movie?>(null)
+    val currentMovie: StateFlow<Movie?> = _currentMovie
+
     init {
         fetchPopularMovies()
         loadFavorites()
@@ -86,6 +89,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     fun selectMovie(movie: Movie) {
         _selectedMovie.value = movie
+        _currentMovie.value = movie
     }
 
     fun clearSelectedMovie() {
@@ -97,6 +101,8 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             repository.toggleFavorite(movie)
             val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
             
+            // Update the current movie
+            _currentMovie.value = updatedMovie
             
             when (val currentState = _uiState.value) {
                 is MovieUiState.Success -> {
