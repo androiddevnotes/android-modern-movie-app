@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.example.tmdbapp.ui
 
@@ -13,14 +13,14 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.tmdbapp.R
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.viewmodel.MovieUiState
 import com.example.tmdbapp.viewmodel.MovieViewModel
@@ -80,8 +80,14 @@ fun MovieListScreen(
                         onViewTypeChange(if (viewType == Constants.VIEW_TYPE_GRID) Constants.VIEW_TYPE_LIST else Constants.VIEW_TYPE_GRID)
                     }) {
                         Icon(
-                            imageVector = if (viewType == Constants.VIEW_TYPE_GRID) Icons.Default.Menu else Icons.Default.DateRange,
-                            contentDescription = Constants.CONTENT_DESC_SWITCH_VIEW
+                            painter = painterResource(
+                                id = if (viewType == Constants.VIEW_TYPE_GRID) 
+                                    R.drawable.view_list_24px 
+                                else 
+                                    R.drawable.grid_view_24px
+                            ),
+                            contentDescription = Constants.CONTENT_DESC_SWITCH_VIEW,
+                            tint = MaterialTheme.colorScheme.onSurface // This sets the icon color to match your theme
                         )
                     }
                     IconButton(onClick = onFavoritesClick) {
