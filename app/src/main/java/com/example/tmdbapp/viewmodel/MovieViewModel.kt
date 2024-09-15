@@ -66,14 +66,8 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     internal var isLastPage = false
     private var isLoading = false
 
-    private val _listScrollPosition = MutableStateFlow(ScrollPosition(0, 0))
-    val listScrollPosition: StateFlow<ScrollPosition> = _listScrollPosition
-
     private val _currentMovie = MutableStateFlow<Movie?>(null)
     val currentMovie: StateFlow<Movie?> = _currentMovie
-
-    private val _gridScrollPosition = MutableStateFlow(ScrollPosition(0, 0))
-    val gridScrollPosition: StateFlow<ScrollPosition> = _gridScrollPosition
 
     private val _currentSortOption = MutableStateFlow(SortOption.POPULAR)
     val currentSortOption: StateFlow<SortOption> = _currentSortOption
@@ -253,14 +247,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             is MovieUiState.Success -> currentState.movies.find { it.id == movieId }
             else -> null
         }
-    }
-
-    fun saveGridScrollPosition(index: Int, offset: Int) {
-        _gridScrollPosition.value = ScrollPosition(index, offset)
-    }
-
-    fun saveListScrollPosition(index: Int, offset: Int) {
-        _listScrollPosition.value = ScrollPosition(index, offset)
     }
 
     fun refreshMovies() {

@@ -77,18 +77,9 @@ fun MovieListScreen(
     currentThemeMode: ThemeMode
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val gridScrollPosition by viewModel.gridScrollPosition.collectAsState()
-    val listScrollPosition by viewModel.listScrollPosition.collectAsState()
 
-    val gridState = rememberLazyStaggeredGridState(
-        initialFirstVisibleItemIndex = gridScrollPosition.firstVisibleItemIndex,
-        initialFirstVisibleItemScrollOffset = gridScrollPosition.firstVisibleItemScrollOffset
-    )
-
-    val listState = rememberLazyListState(
-        initialFirstVisibleItemIndex = listScrollPosition.firstVisibleItemIndex,
-        initialFirstVisibleItemScrollOffset = listScrollPosition.firstVisibleItemScrollOffset
-    )
+    val gridState = rememberLazyStaggeredGridState()
+    val listState = rememberLazyListState()
 
     var expandedDropdown by remember { mutableStateOf(false) }
     val currentSortOption by viewModel.currentSortOption.collectAsState()
@@ -115,22 +106,6 @@ fun MovieListScreen(
 
     LaunchedEffect(searchQuery) {
         viewModel.setSearchQuery(searchQuery)
-    }
-
-    LaunchedEffect(gridState) {
-        snapshotFlow { gridState.firstVisibleItemIndex to gridState.firstVisibleItemScrollOffset }
-            .distinctUntilChanged()
-            .collect { (index, offset) ->
-                viewModel.saveGridScrollPosition(index, offset)
-            }
-    }
-
-    LaunchedEffect(listState) {
-        snapshotFlow { listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset }
-            .distinctUntilChanged()
-            .collect { (index, offset) ->
-                viewModel.saveListScrollPosition(index, offset)
-            }
     }
 
     if (showFilterBottomSheet) {
