@@ -68,4 +68,22 @@ class MovieViewModel : ViewModel() {
     fun clearSelectedMovie() {
         _selectedMovie.value = null
     }
+
+    fun toggleFavorite(movie: Movie) {
+        viewModelScope.launch {
+            val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
+            when (val currentState = _uiState.value) {
+                is MovieUiState.Success -> {
+                    val updatedMovies = currentState.movies.map { 
+                        if (it.id == movie.id) updatedMovie else it 
+                    }
+                    _uiState.value = MovieUiState.Success(updatedMovies)
+                }
+                else -> {} // Do nothing for other states
+            }
+            if (_selectedMovie.value?.id == movie.id) {
+                _selectedMovie.value = updatedMovie
+            }
+        }
+    }
 }

@@ -10,6 +10,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -18,7 +20,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.tmdbapp.models.Movie
 
 @Composable
-fun MovieDetailScreen(movie: Movie, onBackPress: () -> Unit) {
+fun MovieDetailScreen(movie: Movie, onBackPress: () -> Unit, onFavoriteClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -26,6 +28,15 @@ fun MovieDetailScreen(movie: Movie, onBackPress: () -> Unit) {
                 navigationIcon = {
                     IconButton(onClick = onBackPress) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onFavoriteClick) {
+                        Icon(
+                            imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                            contentDescription = "Favorite",
+                            tint = if (movie.isFavorite) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface
+                        )
                     }
                 }
             )

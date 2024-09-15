@@ -47,7 +47,8 @@ class MainActivity : ComponentActivity() {
                 } else {
                     MovieDetailScreen(
                         movie = selectedMovie!!,
-                        onBackPress = { movieViewModel.clearSelectedMovie() }
+                        onBackPress = { movieViewModel.clearSelectedMovie() },
+                        onFavoriteClick = { movieViewModel.toggleFavorite(selectedMovie!!) }
                     )
                 }
             }

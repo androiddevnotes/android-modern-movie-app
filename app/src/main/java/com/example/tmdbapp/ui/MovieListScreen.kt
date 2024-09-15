@@ -41,7 +41,8 @@ fun MovieListScreen(
                         modifier = Modifier.clickable {
                             viewModel.selectMovie(movie)
                             onMovieClick()
-                        }
+                        },
+                        onFavoriteClick = { viewModel.toggleFavorite(movie) }
                     )
                 }
                 item {
