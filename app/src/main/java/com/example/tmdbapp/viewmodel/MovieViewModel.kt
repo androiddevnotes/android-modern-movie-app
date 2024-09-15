@@ -57,7 +57,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                     isLoading = false
                 }
                 is Resource.Error -> {
-                    // Emit a well-defined error state without hardcoded string
+                    
                     _uiState.value = MovieUiState.Error(getApplication<Application>().getString(R.string.unknown_error))
                     isLoading = false
                 }
@@ -89,7 +89,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             repository.toggleFavorite(movie)
             val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
             
-            // Update UI state
+            
             when (val currentState = _uiState.value) {
                 is MovieUiState.Success -> {
                     val updatedMovies = currentState.movies.map { 
@@ -97,15 +97,15 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                     }
                     _uiState.value = MovieUiState.Success(updatedMovies)
                 }
-                else -> {} // Do nothing for other states
+                else -> {} 
             }
             
-            // Update selected movie if necessary
+            
             _selectedMovie.update { current ->
                 if (current?.id == movie.id) updatedMovie else current
             }
             
-            // Update favorites list
+            
             if (updatedMovie.isFavorite) {
                 _favorites.update { it + updatedMovie }
             } else {

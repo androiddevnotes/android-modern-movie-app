@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">TmdbApp</string>
     <string name="unknown_error">Unknown error occurred.</string>
-    <!-- Add other strings as needed -->
 </resources>

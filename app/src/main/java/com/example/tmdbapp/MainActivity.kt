@@ -18,7 +18,7 @@ import com.example.tmdbapp.ui.MovieListScreen
 import com.example.tmdbapp.ui.theme.TMDBAppTheme
 import com.example.tmdbapp.viewmodel.MovieViewModel
 
-// Define a sealed class for screens
+
 sealed class Screen {
     object List : Screen()
     object Favorites : Screen()
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                 val selectedMovie by movieViewModel.selectedMovie.collectAsState()
                 var currentScreen by remember { mutableStateOf<Screen>(Screen.List) }
 
-                // Handle back press
+                
                 val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
                 LaunchedEffect(backDispatcher, currentScreen) {
                     val callback = object : OnBackPressedCallback(true) {
@@ -73,8 +73,8 @@ class MainActivity : ComponentActivity() {
                                 movieViewModel.selectMovie(movie)
                                 currentScreen = Screen.Detail(movie)
                             } ?: run {
-                                // Handle the null case, e.g., show a toast or navigate back
-                                // Example using a simple log (replace with your preferred method)
+                                
+                                
                                 Log.e("MainActivity", "Movie not found for ID: $movieId")
                             }
                         }

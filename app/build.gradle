@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    // Add the namespace property
+    
     namespace "com.example.tmdbapp"
 
     compileSdk 34
@@ -16,17 +16,17 @@ android {
         versionCode 1
         versionName "1.0"
 
-        // Add this block
+        
         buildConfigField("String", "TMDB_API_KEY", "\"${project.findProperty('TMDB_API_KEY') ?: ''}\"")
     }
 
     buildFeatures {
         compose true
-        buildConfig true  // Add this line to enable BuildConfig
+        buildConfig true  
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.5.2'  // Updated to match Kotlin 1.9.0
+        kotlinCompilerExtensionVersion '1.5.2'  
     }
 
     compileOptions {
@@ -40,32 +40,32 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.0"  // Updated Kotlin version
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.0"  
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
     implementation 'androidx.activity:activity-compose:1.7.2'
     
-    // Compose
+    
     implementation "androidx.compose.ui:ui:1.5.0"
     implementation "androidx.compose.material:material:1.5.0"
     implementation "androidx.compose.ui:ui-tooling-preview:1.5.0"
     
-    // Retrofit
+    
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     
-    // Coroutines
+    
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
     
-    // Lifecycle
+    
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1'
     
-    // Optional: Logging Interceptor
+    
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
     
-    // Compose Preview
+    
     debugImplementation "androidx.compose.ui:ui-tooling:1.5.0"
     
-    // Coil Compose Dependency
+    
     implementation 'io.coil-kt:coil-compose:2.4.0'
 }
