@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     onThemeChange = { themeMode = themeMode.next() },
                     viewType = viewType,
                     onViewTypeChange = { newViewType -> viewType = newViewType },
-                    application = application // Pass the application instance
+                    application = application 
                 )
             }
         }

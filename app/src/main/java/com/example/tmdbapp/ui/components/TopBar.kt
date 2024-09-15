@@ -51,7 +51,7 @@ fun TopBar(
     onThemeChange: () -> Unit,
     currentThemeMode: ThemeMode,
     onFilterClick: () -> Unit,
-    onCreateListClick: () -> Unit // Add this new parameter
+    onCreateListClick: () -> Unit 
 ) {
     if (isSearchActive) {
         SearchTopBar(
@@ -165,7 +165,7 @@ fun TopBar(
                     )
                 }
 
-                // Add the new Create List button
+                
                 IconButton(onClick = onCreateListClick) {
                     Icon(
                         imageVector = Icons.Default.Add,

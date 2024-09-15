@@ -21,7 +21,7 @@ fun NavGraph(
     onThemeChange: () -> Unit,
     viewType: String,
     onViewTypeChange: (String) -> Unit,
-    application: Application // Add this parameter
+    application: Application 
 ) {
     NavHost(navController = navController, startDestination = "movieList") {
         composable("movieList") {
@@ -69,7 +69,7 @@ fun NavGraph(
             ListCreationScreen(
                 viewModel = movieViewModel,
                 onNavigateBack = { navController.popBackStack() },
-                application = application // Pass the application instance
+                application = application 
             )
         }
     }

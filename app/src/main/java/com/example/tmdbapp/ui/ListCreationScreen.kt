@@ -75,7 +75,7 @@ fun ListCreationScreen(
                     }
                 }
                 is AuthState.Authenticated -> {
-                    // Show list creation UI
+                    
                     ListCreationContent(
                         listName = listName,
                         onListNameChange = { listName = it },

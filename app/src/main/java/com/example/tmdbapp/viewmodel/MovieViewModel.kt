@@ -80,7 +80,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         fetchPopularMovies()
         loadFavorites()
 
-        // Check if there's an existing session when the ViewModel is created
+        
         viewModelScope.launch {
             val sessionId = sessionManager.getSessionId()
             if (sessionId != null) {
@@ -375,7 +375,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     fun startAuthentication() {
         viewModelScope.launch {
-            // Check if already authenticated
+            
             if (_authState.value == AuthState.Authenticated) return@launch
 
             _authState.value = AuthState.Loading
