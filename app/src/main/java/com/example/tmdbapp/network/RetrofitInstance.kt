@@ -4,10 +4,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.example.tmdbapp.utils.Constants
 
 object RetrofitInstance {
-    private const val BASE_URL = "https://api.themoviedb.org/3/"
-
     private val client by lazy {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -19,7 +18,7 @@ object RetrofitInstance {
 
     val api: ApiService by lazy {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(Constants.BASE_API_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

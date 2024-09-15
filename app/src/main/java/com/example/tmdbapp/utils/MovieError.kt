@@ -1,8 +1,10 @@
 package com.example.tmdbapp.utils
 
+import com.example.tmdbapp.utils.Constants
+
 sealed class MovieError(val message: String) {
-    object Network : MovieError("Network error. Please check your internet connection.")
-    object Server : MovieError("Server error. Please try again later.")
+    object Network : MovieError(Constants.ERROR_NETWORK)
+    object Server : MovieError(Constants.ERROR_SERVER)
     data class ApiError(val errorMessage: String) : MovieError(errorMessage)
-    object Unknown : MovieError("An unknown error occurred. Please try again.")
+    object Unknown : MovieError(Constants.ERROR_UNKNOWN)
 }

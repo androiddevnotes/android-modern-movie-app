@@ -97,11 +97,14 @@ fun MovieListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(screenTitle, style = MaterialTheme.typography.headlineMedium) },
+                title = {
+                    Text(
+                        screenTitle,
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+                },
                 actions = {
-                    IconButton(onClick = {
-                        onViewTypeChange(if (viewType == Constants.VIEW_TYPE_GRID) Constants.VIEW_TYPE_LIST else Constants.VIEW_TYPE_GRID)
-                    }) {
+                    IconButton(onClick = { onViewTypeChange(if (viewType == Constants.VIEW_TYPE_GRID) Constants.VIEW_TYPE_LIST else Constants.VIEW_TYPE_GRID) }) {
                         Icon(
                             painter = painterResource(
                                 id = if (viewType == Constants.VIEW_TYPE_GRID)
@@ -128,7 +131,7 @@ fun MovieListScreen(
                                     ThemeMode.SYSTEM -> R.drawable.contrast_24px
                                 }
                             ),
-                            contentDescription = "Toggle theme",
+                            contentDescription = Constants.CONTENT_DESC_TOGGLE_THEME,
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
