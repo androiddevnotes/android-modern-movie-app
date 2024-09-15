@@ -32,13 +32,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import com.example.tmdbapp.viewmodel.MovieViewModel
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.tmdbapp.R
 import com.example.tmdbapp.models.Movie
+import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
 fun MovieDetailScreen(

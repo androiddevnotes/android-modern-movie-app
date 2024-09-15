@@ -29,67 +29,249 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
-import java.io.OutputStream
-import java.util.UUID
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.coroutines.coroutineContext
-
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 
 sealed class MovieUiState {
-    object Loading : MovieUiState()
-    data class Success(val movies: List<Movie>) : MovieUiState()
+
     data class Error(val error: MovieError) : MovieUiState()
+
+    data class Success(val movies: List<Movie>) : MovieUiState()
+
+    object Loading : MovieUiState()
+
 }
 
-data class ListScrollPosition(
-    val firstVisibleItemIndex: Int,
-    val firstVisibleItemScrollOffset: Int
-)
-
-data class ScrollPosition(val firstVisibleItemIndex: Int, val firstVisibleItemScrollOffset: Int)
 
 class MovieViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = MovieRepository(application)
-
-    private val _uiState = MutableStateFlow<MovieUiState>(MovieUiState.Loading)
-    val uiState: StateFlow<MovieUiState> = _uiState
-
-    private val _selectedMovie = MutableStateFlow<Movie?>(null)
-    val selectedMovie: StateFlow<Movie?> = _selectedMovie
-
-    private val _favorites = MutableStateFlow<List<Movie>>(emptyList())
-    val favorites: StateFlow<List<Movie>> = _favorites
 
     private var currentPage = 1
-    internal var isLastPage = false
     private var isLoading = false
-
+    private var searchJob: Job? = null
     private val _currentMovie = MutableStateFlow<Movie?>(null)
-    val currentMovie: StateFlow<Movie?> = _currentMovie
-
     private val _currentSortOption = MutableStateFlow(SortOption.POPULAR)
-    val currentSortOption: StateFlow<SortOption> = _currentSortOption
-
+    private val _favorites = MutableStateFlow<List<Movie>>(emptyList())
     private val _filterOptions = MutableStateFlow(FilterOptions())
-    val filterOptions: StateFlow<FilterOptions> = _filterOptions
-
+    private val _lastViewedItemIndex = MutableStateFlow(0)
     private val _searchQuery = MutableStateFlow("")
+    private val _selectedMovie = MutableStateFlow<Movie?>(null)
+    private val _uiState = MutableStateFlow<MovieUiState>(MovieUiState.Loading)
+    private val repository = MovieRepository(application)
+    internal var isLastPage = false
+    val currentMovie: StateFlow<Movie?> = _currentMovie
+    val currentSortOption: StateFlow<SortOption> = _currentSortOption
+    val favorites: StateFlow<List<Movie>> = _favorites
+    val filterOptions: StateFlow<FilterOptions> = _filterOptions
+    val lastViewedItemIndex: StateFlow<Int> = _lastViewedItemIndex
     val searchQuery: StateFlow<String> = _searchQuery
 
-    private var searchJob: Job? = null
-
-    private val _lastViewedItemIndex = MutableStateFlow(0)
-    val lastViewedItemIndex: StateFlow<Int> = _lastViewedItemIndex
+    val uiState: StateFlow<MovieUiState> = _uiState
 
     init {
         fetchPopularMovies()
         loadFavorites()
+    }
+
+    fun downloadImage(posterPath: String?, context: Context) {
+        viewModelScope.launch {
+            if (posterPath == null) {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.error_no_image),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@launch
+            }
+
+            val imageUrl = "${Constants.BASE_IMAGE_URL}$posterPath"
+
+            try {
+                val bitmap = withContext(Dispatchers.IO) {
+                    val loader = ImageLoader(context)
+                    val request = ImageRequest.Builder(context)
+                        .data(imageUrl)
+                        .allowHardware(false)
+                        .build()
+
+                    val result = (loader.execute(request) as SuccessResult).drawable
+                    (result as BitmapDrawable).bitmap
+                }
+
+                val filename = "TMDB_${System.currentTimeMillis()}.jpg"
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                        put(MediaStore.MediaColumns.IS_PENDING, 1)
+                    }
+                }
+
+                val resolver = context.contentResolver
+                val uri =
+                    resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+                uri?.let {
+                    withContext(Dispatchers.IO) {
+                        resolver.openOutputStream(it)?.use { outputStream ->
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                        }
+                    }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        contentValues.clear()
+                        contentValues.put(MediaStore.MediaColumns.IS_PENDING, 0)
+                        resolver.update(it, contentValues, null, null)
+                    }
+
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.success_image_saved),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } ?: run {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.error_failed_to_save),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: IOException) {
+                Toast.makeText(
+                    context,
+                    "${context.getString(R.string.error_download_failed)}: ${e.localizedMessage}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    fun fetchMovieDetails(movieId: Int) {
+        viewModelScope.launch {
+            try {
+                val movie = repository.getMovieDetails(movieId)
+                _currentMovie.value = movie
+            } catch (e: Exception) {
+                
+                _currentMovie.value = null
+            }
+        }
+    }
+
+    fun loadMoreMovies() {
+        fetchMovies()
+    }
+
+    fun refreshMovies() {
+        currentPage = 1
+        isLastPage = false
+        _uiState.value = MovieUiState.Loading
+        fetchMovies()
+    }
+
+    fun setFilterOptions(options: FilterOptions) {
+        _filterOptions.value = options
+        currentPage = 1
+        isLastPage = false
+        _uiState.value = MovieUiState.Loading
+        fetchMovies()
+    }
+
+    fun setLastViewedItemIndex(index: Int) {
+        _lastViewedItemIndex.value = index
+    }
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
+        searchJob?.cancel()
+        if (query.isNotEmpty()) {
+            searchJob = viewModelScope.launch {
+                delay(Constants.DELAY_SEARCH)
+                searchMovies(query)
+            }
+        } else {
+            refreshMovies()
+        }
+    }
+
+    fun setSortOption(sortOption: SortOption) {
+        if (_currentSortOption.value != sortOption) {
+            _currentSortOption.value = sortOption
+            currentPage = 1
+            isLastPage = false
+            _uiState.value = MovieUiState.Loading
+            fetchMovies()
+        }
+    }
+
+    fun toggleFavorite(movie: Movie) {
+        viewModelScope.launch {
+            repository.toggleFavorite(movie)
+            val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
+
+
+            _currentMovie.value = updatedMovie
+
+            when (val currentState = _uiState.value) {
+                is MovieUiState.Success -> {
+                    val updatedMovies = currentState.movies.map {
+                        if (it.id == movie.id) updatedMovie else it
+                    }
+                    _uiState.value = MovieUiState.Success(updatedMovies)
+                }
+
+                else -> {}
+            }
+
+
+            _selectedMovie.update { current ->
+                if (current?.id == movie.id) updatedMovie else current
+            }
+
+
+            if (updatedMovie.isFavorite) {
+                _favorites.update { it + updatedMovie }
+            } else {
+                _favorites.update { it.filter { m -> m.id != updatedMovie.id } }
+            }
+        }
+    }
+
+    private fun fetchMovies() {
+        if (isLoading || isLastPage) return
+        isLoading = true
+        viewModelScope.launch {
+            try {
+                val result = repository.discoverMovies(
+                    page = currentPage,
+                    sortBy = _currentSortOption.value.apiValue,
+                    genres = _filterOptions.value.genres,
+                    releaseYear = _filterOptions.value.releaseYear,
+                    minRating = _filterOptions.value.minRating
+                )
+                when (result) {
+                    is Resource.Success -> {
+                        val newMovies = result.data?.results ?: emptyList()
+                        val currentMovies =
+                            if (_uiState.value is MovieUiState.Success && currentPage > 1) {
+                                (_uiState.value as MovieUiState.Success).movies
+                            } else {
+                                emptyList()
+                            }
+                        _uiState.value = MovieUiState.Success(currentMovies + newMovies)
+                        currentPage++
+                        isLastPage = newMovies.isEmpty()
+                    }
+
+                    is Resource.Error -> {
+                        _uiState.value = MovieUiState.Error(handleError(result.message))
+                    }
+                }
+            } catch (e: Exception) {
+                _uiState.value = MovieUiState.Error(handleError(e))
+            } finally {
+                isLoading = false
+            }
+        }
     }
 
     private fun fetchPopularMovies() {
@@ -123,6 +305,10 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private fun handleError(errorMessage: String?): MovieError {
+        return MovieError.ApiError(errorMessage ?: "An unknown error occurred")
+    }
+
     private fun handleError(error: Throwable): MovieError {
         return when (error) {
             is IOException -> MovieError.Network
@@ -133,145 +319,15 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                     MovieError.ApiError(error.message())
                 }
             }
+
             else -> MovieError.Unknown
         }
-    }
-
-    private fun handleError(errorMessage: String?): MovieError {
-        return MovieError.ApiError(errorMessage ?: "An unknown error occurred")
     }
 
     private fun loadFavorites() {
         viewModelScope.launch {
             val favoriteMovies = repository.getFavoriteMovies()
             _favorites.value = favoriteMovies
-        }
-    }
-
-    fun setSortOption(sortOption: SortOption) {
-        if (_currentSortOption.value != sortOption) {
-            _currentSortOption.value = sortOption
-            currentPage = 1
-            isLastPage = false
-            _uiState.value = MovieUiState.Loading
-            fetchMovies()
-        }
-    }
-
-    fun setFilterOptions(options: FilterOptions) {
-        _filterOptions.value = options
-        currentPage = 1
-        isLastPage = false
-        _uiState.value = MovieUiState.Loading
-        fetchMovies()
-    }
-
-    private fun fetchMovies() {
-        if (isLoading || isLastPage) return
-        isLoading = true
-        viewModelScope.launch {
-            try {
-                val result = repository.discoverMovies(
-                    page = currentPage,
-                    sortBy = _currentSortOption.value.apiValue,
-                    genres = _filterOptions.value.genres,
-                    releaseYear = _filterOptions.value.releaseYear,
-                    minRating = _filterOptions.value.minRating
-                )
-                when (result) {
-                    is Resource.Success -> {
-                        val newMovies = result.data?.results ?: emptyList()
-                        val currentMovies = if (_uiState.value is MovieUiState.Success && currentPage > 1) {
-                            (_uiState.value as MovieUiState.Success).movies
-                        } else {
-                            emptyList()
-                        }
-                        _uiState.value = MovieUiState.Success(currentMovies + newMovies)
-                        currentPage++
-                        isLastPage = newMovies.isEmpty()
-                    }
-                    is Resource.Error -> {
-                        _uiState.value = MovieUiState.Error(handleError(result.message))
-                    }
-                }
-            } catch (e: Exception) {
-                _uiState.value = MovieUiState.Error(handleError(e))
-            } finally {
-                isLoading = false
-            }
-        }
-    }
-
-    fun loadMoreMovies() {
-        fetchMovies()
-    }
-
-    fun selectMovie(movie: Movie) {
-        _selectedMovie.value = movie
-        _currentMovie.value = movie
-    }
-
-    fun clearSelectedMovie() {
-        _selectedMovie.value = null
-    }
-
-    fun toggleFavorite(movie: Movie) {
-        viewModelScope.launch {
-            repository.toggleFavorite(movie)
-            val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
-
-            
-            _currentMovie.value = updatedMovie
-
-            when (val currentState = _uiState.value) {
-                is MovieUiState.Success -> {
-                    val updatedMovies = currentState.movies.map {
-                        if (it.id == movie.id) updatedMovie else it
-                    }
-                    _uiState.value = MovieUiState.Success(updatedMovies)
-                }
-
-                else -> {}
-            }
-
-
-            _selectedMovie.update { current ->
-                if (current?.id == movie.id) updatedMovie else current
-            }
-
-
-            if (updatedMovie.isFavorite) {
-                _favorites.update { it + updatedMovie }
-            } else {
-                _favorites.update { it.filter { m -> m.id != updatedMovie.id } }
-            }
-        }
-    }
-
-    fun getMovieById(movieId: Int): Movie? {
-        return when (val currentState = _uiState.value) {
-            is MovieUiState.Success -> currentState.movies.find { it.id == movieId }
-            else -> null
-        }
-    }
-
-    fun refreshMovies() {
-        currentPage = 1
-        isLastPage = false
-        _uiState.value = MovieUiState.Loading
-        fetchMovies()
-    }
-
-    fun setSearchQuery(query: String) {
-        _searchQuery.value = query
-        searchJob?.cancel()
-        if (query.isNotEmpty()) {
-            searchJob = viewModelScope.launch {
-                delay(Constants.DELAY_SEARCH) 
-                searchMovies(query)
-            }
-        } else {
-            refreshMovies()
         }
     }
 
@@ -282,6 +338,7 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                 is Resource.Success -> {
                     _uiState.value = MovieUiState.Success(result.data?.results ?: emptyList())
                 }
+
                 is Resource.Error -> {
                     _uiState.value = MovieUiState.Error(handleError(result.message))
                 }
@@ -289,93 +346,22 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun downloadImage(posterPath: String?, context: Context) {
-        viewModelScope.launch {
-            if (posterPath == null) {
-                Toast.makeText(context, context.getString(R.string.error_no_image), Toast.LENGTH_SHORT).show()
-                return@launch
-            }
-
-            val imageUrl = "${Constants.BASE_IMAGE_URL}$posterPath"
-            
-            try {
-                val bitmap = withContext(Dispatchers.IO) {
-                    val loader = ImageLoader(context)
-                    val request = ImageRequest.Builder(context)
-                        .data(imageUrl)
-                        .allowHardware(false)
-                        .build()
-
-                    val result = (loader.execute(request) as SuccessResult).drawable
-                    (result as BitmapDrawable).bitmap
-                }
-
-                val filename = "TMDB_${System.currentTimeMillis()}.jpg"
-                val contentValues = ContentValues().apply {
-                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
-                        put(MediaStore.MediaColumns.IS_PENDING, 1)
-                    }
-                }
-
-                val resolver = context.contentResolver
-                val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-
-                uri?.let { 
-                    withContext(Dispatchers.IO) {
-                        resolver.openOutputStream(it)?.use { outputStream ->
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                        }
-                    }
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        contentValues.clear()
-                        contentValues.put(MediaStore.MediaColumns.IS_PENDING, 0)
-                        resolver.update(it, contentValues, null, null)
-                    }
-
-                    Toast.makeText(context, context.getString(R.string.success_image_saved), Toast.LENGTH_SHORT).show()
-                } ?: run {
-                    Toast.makeText(context, context.getString(R.string.error_failed_to_save), Toast.LENGTH_SHORT).show()
-                }
-            } catch (e: IOException) {
-                Toast.makeText(context, "${context.getString(R.string.error_download_failed)}: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    fun fetchMovieDetails(movieId: Int) {
-        viewModelScope.launch {
-            try {
-                val movie = repository.getMovieDetails(movieId)
-                _currentMovie.value = movie
-            } catch (e: Exception) {
-                // Handle error, maybe update a state to show error message
-                _currentMovie.value = null
-            }
-        }
-    }
-
-    fun setLastViewedItemIndex(index: Int) {
-        _lastViewedItemIndex.value = index
-    }
-
-    fun resetLastViewedItemIndex() {
-        _lastViewedItemIndex.value = 0
-    }
 }
 
 data class FilterOptions(
     val genres: List<Int> = emptyList(),
+    val minRating: Float? = null,
     val releaseYear: Int? = null,
-    val minRating: Float? = null
 )
 
 enum class SortOption(val apiValue: String) {
-    POPULAR("popularity.desc"),
+
     NOW_PLAYING("release_date.desc"),
+
+    POPULAR("popularity.desc"),
+
     TOP_RATED("vote_average.desc"),
+
     UPCOMING("primary_release_date.asc")
+
 }

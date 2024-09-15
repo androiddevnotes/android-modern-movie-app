@@ -1,10 +1,10 @@
 package com.example.tmdbapp.network
 
+import com.example.tmdbapp.utils.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.example.tmdbapp.utils.Constants
 
 object RetrofitInstance {
     private val client by lazy {

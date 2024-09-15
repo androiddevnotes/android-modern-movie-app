@@ -42,7 +42,7 @@ object Constants {
     const val ERROR_SERVER = "Server error. Please try again later."
     const val ERROR_UNKNOWN = "An unknown error occurred. Please try again."
 
-    // Add these new constants
+    
     const val GRID_COLUMNS_ADAPTIVE_WIDTH = 150
     const val ALPHA_MEDIUM = 0.8f
     const val MAX_LINES_TITLE = 2

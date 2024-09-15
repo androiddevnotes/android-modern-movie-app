@@ -7,7 +7,6 @@ import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.models.MovieResponse
 import com.example.tmdbapp.network.RetrofitInstance
 import com.example.tmdbapp.utils.Resource
-import com.example.tmdbapp.viewmodel.SortOption
 
 class MovieRepository(context: Context) {
     private val api = RetrofitInstance.api
@@ -40,27 +39,6 @@ class MovieRepository(context: Context) {
     fun toggleFavorite(movie: Movie) {
         val newFavoriteStatus = !movie.isFavorite
         favoritePreferences.setFavorite(movie.id, newFavoriteStatus)
-    }
-
-    fun isFavorite(movieId: Int): Boolean {
-        return favoritePreferences.isFavorite(movieId)
-    }
-
-    suspend fun getMovies(sortOption: SortOption, page: Int): Resource<MovieResponse> {
-        return try {
-            val response = when (sortOption) {
-                SortOption.POPULAR -> api.getPopularMovies(apiKey, page)
-                SortOption.NOW_PLAYING -> api.getNowPlayingMovies(apiKey, page)
-                SortOption.TOP_RATED -> api.getTopRatedMovies(apiKey, page)
-                SortOption.UPCOMING -> api.getUpcomingMovies(apiKey, page)
-            }
-            val moviesWithFavoriteStatus = response.results.map { movie ->
-                movie.copy(isFavorite = favoritePreferences.isFavorite(movie.id))
-            }
-            Resource.Success(response.copy(results = moviesWithFavoriteStatus))
-        } catch (e: Exception) {
-            Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
-        }
     }
 
     suspend fun discoverMovies(

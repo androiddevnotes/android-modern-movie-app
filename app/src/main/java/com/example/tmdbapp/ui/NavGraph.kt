@@ -11,12 +11,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.tmdbapp.viewmodel.MovieViewModel
 import com.example.tmdbapp.ui.theme.ThemeMode
-import androidx.navigation.compose.rememberNavController
-import com.example.tmdbapp.ui.DummyListScreen
-import com.example.tmdbapp.ui.DummyDetailScreen
 import com.example.tmdbapp.utils.Constants
+import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
 fun NavGraph(
@@ -56,7 +53,7 @@ fun NavGraph(
             val movieId = backStackEntry.arguments?.getInt("movieId") ?: return@composable
             LaunchedEffect(movieId) {
                 movieViewModel.fetchMovieDetails(movieId)
-                // We don't reset the last viewed item index here
+                
             }
             MovieDetailScreen(
                 viewModel = movieViewModel,
