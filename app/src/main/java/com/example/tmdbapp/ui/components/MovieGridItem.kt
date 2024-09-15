@@ -1,7 +1,9 @@
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -21,13 +23,17 @@ import coil.request.ImageRequest
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.utils.Constants
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MovieGridItem(movie: Movie, onClick: () -> Unit, isFavorite: Boolean) {
+fun MovieGridItem(movie: Movie, onClick: () -> Unit, onLongClick: () -> Unit, isFavorite: Boolean) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(2f / 3f)
-            .clickable(onClick = onClick)
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick
+            )
             .then(
                 if (isFavorite) {
                     Modifier.border(

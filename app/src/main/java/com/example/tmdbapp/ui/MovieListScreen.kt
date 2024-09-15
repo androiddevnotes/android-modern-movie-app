@@ -196,6 +196,9 @@ fun MovieListScreen(
                                             viewModel.setLastViewedItemIndex(index)
                                             onMovieClick(movie)
                                         },
+                                        onLongClick = {
+                                            viewModel.toggleFavorite(movie)
+                                        },
                                         isFavorite = viewModel.isFavorite(movie.id)
                                     )
                                 }
