@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 
 sealed class MovieUiState {
     object Loading : MovieUiState()
@@ -57,6 +59,11 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _filterOptions = MutableStateFlow(FilterOptions())
     val filterOptions: StateFlow<FilterOptions> = _filterOptions
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery
+
+    private var searchJob: Job? = null
 
     init {
         fetchPopularMovies()
@@ -240,6 +247,33 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         isLastPage = false
         _uiState.value = MovieUiState.Loading
         fetchMovies()
+    }
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
+        searchJob?.cancel()
+        if (query.isNotEmpty()) {
+            searchJob = viewModelScope.launch {
+                delay(300) // Debounce for 300ms
+                searchMovies(query)
+            }
+        } else {
+            refreshMovies()
+        }
+    }
+
+    private fun searchMovies(query: String) {
+        viewModelScope.launch {
+            _uiState.value = MovieUiState.Loading
+            when (val result = repository.searchMovies(query, 1)) {
+                is Resource.Success -> {
+                    _uiState.value = MovieUiState.Success(result.data?.results ?: emptyList())
+                }
+                is Resource.Error -> {
+                    _uiState.value = MovieUiState.Error(handleError(result.message))
+                }
+            }
+        }
     }
 }
 

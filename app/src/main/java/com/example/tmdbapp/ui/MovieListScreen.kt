@@ -19,7 +19,9 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
@@ -30,6 +32,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -60,6 +64,7 @@ import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieListScreen(
     viewModel: MovieViewModel,
@@ -105,6 +110,13 @@ fun MovieListScreen(
         }
     )
 
+    val searchQuery by viewModel.searchQuery.collectAsState()
+    var isSearchActive by remember { mutableStateOf(false) }
+
+    LaunchedEffect(searchQuery) {
+        viewModel.setSearchQuery(searchQuery)
+    }
+
     LaunchedEffect(gridState) {
         snapshotFlow { gridState.firstVisibleItemIndex to gridState.firstVisibleItemScrollOffset }
             .distinctUntilChanged()
@@ -133,84 +145,131 @@ fun MovieListScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        screenTitle,
-                        style = MaterialTheme.typography.headlineMedium
-                    )
-                },
-                actions = {
-                    IconButton(onClick = { expandedDropdown = true }) {
-                        Icon(
-                            painter = painterResource(
-                                id = R.drawable.ic_sort
-                            ),
-                            contentDescription = "Sort",
-                            tint = MaterialTheme.colorScheme.onSurface
+            if (isSearchActive) {
+                TextField(
+                    value = searchQuery,
+                    onValueChange = { viewModel.setSearchQuery(it) },
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = { 
+                        Text(
+                            "Search movies...",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                    }
-                    DropdownMenu(
-                        expanded = expandedDropdown,
-                        onDismissRequest = { expandedDropdown = false }
-                    ) {
-                        SortOption.values().forEach { sortOption ->
-                            DropdownMenuItem(
-                                text = { Text(sortOption.name.replace("_", " ")) },
-                                onClick = {
-                                    viewModel.setSortOption(sortOption)
-                                    expandedDropdown = false
-                                }
+                    },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = "Search",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    },
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            isSearchActive = false
+                            viewModel.setSearchQuery("")
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Close search",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
-                    }
-                    IconButton(onClick = onFavoritesClick) {
-                        Icon(
-                            Icons.Default.Favorite,
-                            contentDescription = Constants.CONTENT_DESC_FAVORITES
-                        )
-                    }
-                    IconButton(onClick = {
-                        onViewTypeChange(
-                            if (viewType == Constants.VIEW_TYPE_GRID) Constants.VIEW_TYPE_LIST
-                            else Constants.VIEW_TYPE_GRID
-                        )
-                    }) {
-                        Icon(
-                            painter = painterResource(
-                                id = if (viewType == Constants.VIEW_TYPE_GRID) R.drawable.view_list_24px
-                                else R.drawable.grid_view_24px
-                            ),
-                            contentDescription = Constants.CONTENT_DESC_SWITCH_VIEW,
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    IconButton(onClick = onThemeChange) {
-                        Icon(
-                            painter = painterResource(
-                                id = when (currentThemeMode) {
-                                    ThemeMode.LIGHT -> R.drawable.dark_mode_24px
-                                    ThemeMode.DARK -> R.drawable.light_mode_24px
-                                    ThemeMode.SYSTEM -> R.drawable.contrast_24px
-                                }
-                            ),
-                            contentDescription = Constants.CONTENT_DESC_TOGGLE_THEME,
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    IconButton(onClick = { showFilterBottomSheet = true }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_filter),
-                            contentDescription = "Filter",
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        cursorColor = MaterialTheme.colorScheme.primary,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    singleLine = true
                 )
-            )
+            } else {
+                TopAppBar(
+                    title = {
+                        Text(
+                            screenTitle,
+                            style = MaterialTheme.typography.headlineMedium
+                        )
+                    },
+                    actions = {
+                        IconButton(onClick = { isSearchActive = true }) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = "Search"
+                            )
+                        }
+                        IconButton(onClick = { expandedDropdown = true }) {
+                            Icon(
+                                painter = painterResource(
+                                    id = R.drawable.ic_sort
+                                ),
+                                contentDescription = "Sort",
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = expandedDropdown,
+                            onDismissRequest = { expandedDropdown = false }
+                        ) {
+                            SortOption.values().forEach { sortOption ->
+                                DropdownMenuItem(
+                                    text = { Text(sortOption.name.replace("_", " ")) },
+                                    onClick = {
+                                        viewModel.setSortOption(sortOption)
+                                        expandedDropdown = false
+                                    }
+                                )
+                            }
+                        }
+                        IconButton(onClick = onFavoritesClick) {
+                            Icon(
+                                Icons.Default.Favorite,
+                                contentDescription = Constants.CONTENT_DESC_FAVORITES
+                            )
+                        }
+                        IconButton(onClick = {
+                            onViewTypeChange(
+                                if (viewType == Constants.VIEW_TYPE_GRID) Constants.VIEW_TYPE_LIST
+                                else Constants.VIEW_TYPE_GRID
+                            )
+                        }) {
+                            Icon(
+                                painter = painterResource(
+                                    id = if (viewType == Constants.VIEW_TYPE_GRID) R.drawable.view_list_24px
+                                    else R.drawable.grid_view_24px
+                                ),
+                                contentDescription = Constants.CONTENT_DESC_SWITCH_VIEW,
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        IconButton(onClick = onThemeChange) {
+                            Icon(
+                                painter = painterResource(
+                                    id = when (currentThemeMode) {
+                                        ThemeMode.LIGHT -> R.drawable.dark_mode_24px
+                                        ThemeMode.DARK -> R.drawable.light_mode_24px
+                                        ThemeMode.SYSTEM -> R.drawable.contrast_24px
+                                    }
+                                ),
+                                contentDescription = Constants.CONTENT_DESC_TOGGLE_THEME,
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        IconButton(onClick = { showFilterBottomSheet = true }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_filter),
+                                contentDescription = "Filter",
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        titleContentColor = MaterialTheme.colorScheme.onSurface
+                    )
+                )
+            }
         }
     ) { paddingValues ->
         Box(

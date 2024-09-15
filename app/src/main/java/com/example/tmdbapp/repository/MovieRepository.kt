@@ -88,4 +88,16 @@ class MovieRepository(context: Context) {
             Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
         }
     }
+
+    suspend fun searchMovies(query: String, page: Int): Resource<MovieResponse> {
+        return try {
+            val response = api.searchMovies(apiKey, query, page)
+            val moviesWithFavoriteStatus = response.results.map { movie ->
+                movie.copy(isFavorite = favoritePreferences.isFavorite(movie.id))
+            }
+            Resource.Success(response.copy(results = moviesWithFavoriteStatus))
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
+        }
+    }
 }
