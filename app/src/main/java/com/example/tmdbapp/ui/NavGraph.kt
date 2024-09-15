@@ -2,6 +2,10 @@ package com.example.tmdbapp.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -12,6 +16,7 @@ import com.example.tmdbapp.ui.theme.ThemeMode
 import androidx.navigation.compose.rememberNavController
 import com.example.tmdbapp.ui.DummyListScreen
 import com.example.tmdbapp.ui.DummyDetailScreen
+import com.example.tmdbapp.utils.Constants
 
 @Composable
 fun NavGraph(
@@ -20,6 +25,8 @@ fun NavGraph(
     currentThemeMode: ThemeMode,
     onThemeChange: () -> Unit
 ) {
+    var viewType by remember { mutableStateOf(Constants.VIEW_TYPE_GRID) }
+
     NavHost(navController = navController, startDestination = "movieList") {
         composable("movieList") {
             MovieListScreen(
@@ -31,8 +38,10 @@ fun NavGraph(
                     navController.navigate("favorites")
                 },
                 screenTitle = "Discover",
-                viewType = "grid", // You might want to make this dynamic
-                onViewTypeChange = { /* Implement view type change */ },
+                viewType = viewType,
+                onViewTypeChange = { newViewType ->
+                    viewType = newViewType
+                },
                 onThemeChange = onThemeChange,
                 currentThemeMode = currentThemeMode,
                 onDummyListClick = {
