@@ -1,23 +1,24 @@
 package com.example.tmdbapp.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Shapes
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
-    primary = Color(0xFF3F51B5),
-    primaryVariant = Color(0xFF303F9F),
-    secondary = Color(0xFFFF4081)
+private val LightColorScheme = lightColorScheme(
+    primary = Purple40,
+    secondary = PurpleGrey40,
+    tertiary = Pink40
+    // You can customize other colors here
 )
 
-private val LightColorPalette = lightColors(
-    primary = Color(0xFF3F51B5),
-    primaryVariant = Color(0xFF303F9F),
-    secondary = Color(0xFFFF4081)
+private val DarkColorScheme = darkColorScheme(
+    primary = Purple80,
+    secondary = PurpleGrey80,
+    tertiary = Pink80
+    // You can customize other colors here
 )
 
 @Composable
@@ -25,16 +26,11 @@ fun TMDBAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     MaterialTheme(
-        colors = colors,
+        colorScheme = colorScheme,
         typography = Typography,
-        shapes = Shapes,
         content = content
     )
 }

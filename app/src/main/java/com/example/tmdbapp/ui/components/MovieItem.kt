@@ -2,14 +2,14 @@ package com.example.tmdbapp.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.icons.Icons
+import androidx.compose.material3.icons.filled.Favorite
+import androidx.compose.material3.icons.filled.FavoriteBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,13 +20,13 @@ import com.example.tmdbapp.models.Movie
 
 @Composable
 fun MovieItem(
-    movie: Movie, 
+    movie: Movie,
     modifier: Modifier = Modifier,
     onFavoriteClick: () -> Unit
 ) {
     Card(
-        elevation = 4.dp,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier,
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(modifier = Modifier.padding(8.dp)) {
             Image(

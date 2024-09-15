@@ -1,17 +1,19 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,7 +34,7 @@ fun MovieDetailScreen(
     currentMovie?.let { movie ->
         Scaffold(
             topBar = {
-                TopAppBar(
+                SmallTopAppBar(
                     title = { Text(text = movie.title) },
                     navigationIcon = {
                         IconButton(onClick = onBackPress) {
@@ -44,7 +46,7 @@ fun MovieDetailScreen(
                             Icon(
                                 imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                                 contentDescription = "Favorite",
-                                tint = if (movie.isFavorite) MaterialTheme.colors.primary else MaterialTheme.colors.onSurface
+                                tint = if (movie.isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -65,9 +67,9 @@ fun MovieDetailScreen(
                     contentScale = ContentScale.Crop
                 )
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = movie.title, style = MaterialTheme.typography.h5)
+                    Text(text = movie.title, style = MaterialTheme.typography.headlineSmall)
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = movie.overview, style = MaterialTheme.typography.body1)
+                    Text(text = movie.overview, style = MaterialTheme.typography.bodyMedium)
                 }
             }
         }
