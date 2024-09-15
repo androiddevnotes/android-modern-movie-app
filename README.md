@@ -8,7 +8,7 @@ or suggested by AI using a large language model.
 ## Current state:
 the codebase evolves as the AI generates more and more code.
 
-![p3.png](docs%2Fassets%2Fp3.png)
+![p4.png](docs%2Fassets%2Fp4.png)
 
 ## Setup
 
