@@ -44,6 +44,7 @@ fun MovieItem(
                     modifier = Modifier
                         .width(100.dp)
                         .fillMaxHeight()
+                        .clip(RoundedCornerShape(topStart = Constants.CARD_CORNER_RADIUS, bottomStart = Constants.CARD_CORNER_RADIUS))
                 )
                 Column(
                     modifier = Modifier
