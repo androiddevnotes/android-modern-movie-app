@@ -3,7 +3,6 @@
 package com.example.tmdbapp.ui
 
 import FilterBottomSheet
-import FilterDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
