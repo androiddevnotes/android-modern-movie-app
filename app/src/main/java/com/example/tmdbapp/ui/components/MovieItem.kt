@@ -1,6 +1,5 @@
 package com.example.tmdbapp.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,10 +14,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import com.example.tmdbapp.models.Movie
 
 @Composable
@@ -30,9 +29,10 @@ fun MovieItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(200.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        shape = MaterialTheme.shapes.medium
+            .height(240.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
@@ -46,7 +46,9 @@ fun MovieItem(
                     .fillMaxSize()
                     .background(
                         Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, Color(0xCC000000))
+                            colors = listOf(Color.Transparent, Color(0xE6000000)),
+                            startY = 300f,
+                            endY = 900f
                         )
                     )
             )
@@ -57,8 +59,17 @@ fun MovieItem(
             ) {
                 Text(
                     text = movie.title,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleLarge,
                     color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = movie.overview,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.LightGray,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -66,13 +77,17 @@ fun MovieItem(
             IconButton(
                 onClick = onFavoriteClick,
                 modifier = Modifier
-                    .align(Alignment.BottomEnd)
+                    .align(Alignment.TopEnd)
                     .padding(8.dp)
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(Color(0x80000000))
             ) {
                 Icon(
                     imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                     contentDescription = "Favorite",
-                    tint = if (movie.isFavorite) Color.Red else Color.White
+                    tint = if (movie.isFavorite) Color.Red else Color.White,
+                    modifier = Modifier.size(28.dp)
                 )
             }
         }
