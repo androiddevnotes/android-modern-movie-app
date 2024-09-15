@@ -112,9 +112,9 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getMovieById(id: Int): Movie? {
-        return when (val state = _uiState.value) {
-            is MovieUiState.Success -> state.movies.find { it.id == id }
+    fun getMovieById(movieId: Int): Movie? {
+        return when (val currentState = _uiState.value) {
+            is MovieUiState.Success -> currentState.movies.find { it.id == movieId }
             else -> null
         }
     }

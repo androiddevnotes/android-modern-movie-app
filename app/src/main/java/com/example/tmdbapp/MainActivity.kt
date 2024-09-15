@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
@@ -25,27 +26,34 @@ class MainActivity : ComponentActivity() {
 
                 // Handle back press
                 val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-                DisposableEffect(backDispatcher) {
+                LaunchedEffect(backDispatcher, currentScreen) {
                     val callback = object : OnBackPressedCallback(true) {
                         override fun handleOnBackPressed() {
-                            if (selectedMovie != null) {
-                                movieViewModel.clearSelectedMovie()
-                            } else {
-                                isEnabled = false
-                                backDispatcher?.onBackPressed()
+                            when (currentScreen) {
+                                "detail" -> {
+                                    movieViewModel.clearSelectedMovie()
+                                    currentScreen = "list"
+                                }
+                                "favorites" -> {
+                                    currentScreen = "list"
+                                }
+                                else -> {
+                                    isEnabled = false
+                                    backDispatcher?.onBackPressed()
+                                }
                             }
                         }
                     }
                     backDispatcher?.addCallback(callback)
-                    onDispose {
-                        callback.remove()
-                    }
                 }
 
                 when (currentScreen) {
                     "list" -> MovieListScreen(
                         viewModel = movieViewModel,
-                        onMovieClick = { movieViewModel.selectMovie(it) },
+                        onMovieClick = { 
+                            movieViewModel.selectMovie(it) 
+                            currentScreen = "detail"
+                        },
                         onFavoritesClick = { currentScreen = "favorites" }
                     )
                     "favorites" -> FavoritesScreen(
@@ -56,16 +64,11 @@ class MainActivity : ComponentActivity() {
                             currentScreen = "detail"
                         }
                     )
-                    "detail" -> selectedMovie?.let { movie ->
-                        MovieDetailScreen(
-                            movie = movie,
-                            onBackPress = { 
-                                movieViewModel.clearSelectedMovie()
-                                currentScreen = "list"
-                            },
-                            onFavoriteClick = { movieViewModel.toggleFavorite(movie) }
-                        )
-                    }
+                    "detail" -> MovieDetailScreen(
+                        movie = selectedMovie ?: return@TMDBAppTheme,
+                        onBackPress = { currentScreen = "list" },
+                        onFavoriteClick = { movieViewModel.toggleFavorite(selectedMovie!!) }
+                    )
                 }
             }
         }
