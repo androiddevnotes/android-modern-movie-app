@@ -15,6 +15,7 @@ import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.SortOption
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.Image
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,10 +47,18 @@ fun TopBar(
     } else {
         TopAppBar(
             title = {
-                Text(
-                    text = screenTitle,
-                    style = MaterialTheme.typography.headlineMedium
-                )
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.cool_shape_arrow_right), // Replace with your actual logo resource
+                        contentDescription = "App Logo",
+                        modifier = Modifier
+                            .size(40.dp) // Adjust size as needed
+                            .align(Alignment.Center)
+                    )
+                }
             },
             actions = {
                 IconButton(onClick = onSearchIconClick) {
