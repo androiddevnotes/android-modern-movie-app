@@ -53,4 +53,3 @@ The app follows the MVVM (Model-View-ViewModel) architecture:
 3. User approves the request token via a web browser
 4. App exchanges the approved token for a session ID
 5. Session ID is stored for future authenticated requests
-``
