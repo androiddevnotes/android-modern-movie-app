@@ -4,9 +4,10 @@ package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
@@ -30,7 +31,7 @@ fun MovieListScreen(
     val uiState by viewModel.uiState.collectAsState()
     val scrollPosition by viewModel.listScrollPosition.collectAsState()
     
-    val listState = rememberLazyListState(
+    val listState = rememberLazyStaggeredGridState(
         initialFirstVisibleItemIndex = scrollPosition.firstVisibleItemIndex,
         initialFirstVisibleItemScrollOffset = scrollPosition.firstVisibleItemScrollOffset
     )
@@ -51,7 +52,11 @@ fun MovieListScreen(
                     IconButton(onClick = onFavoritesClick) {
                         Icon(Icons.Default.Favorite, contentDescription = "Favorites")
                     }
-                }
+                },
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                )
             )
         }
     ) { paddingValues ->
@@ -64,10 +69,11 @@ fun MovieListScreen(
                 }
                 is MovieUiState.Success -> {
                     val movies = (uiState as MovieUiState.Success).movies
-                    LazyColumn(
-                        state = listState,
+                    LazyVerticalStaggeredGrid(
+                        columns = StaggeredGridCells.Adaptive(300.dp),
                         contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalItemSpacing = 16.dp
                     ) {
                         itemsIndexed(movies) { index, movie ->
                             if (index >= movies.size - 1) {
@@ -81,18 +87,6 @@ fun MovieListScreen(
                                 },
                                 onFavoriteClick = { viewModel.toggleFavorite(movie) }
                             )
-                        }
-                        item {
-                            if (movies.isNotEmpty()) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    CircularProgressIndicator()
-                                }
-                            }
                         }
                     }
                 }
