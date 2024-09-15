@@ -5,11 +5,11 @@
 This Android app interacts with The Movie Database (TMDB) API. Every line of code has been generated
 or suggested by AI using a large language model.
 
-## Current state:
+## Current state
 
 the codebase evolves as the AI generates more and more code.
 
-![p4.png](docs%2Fassets%2Fp4.png)
+![p5.png](docs%2Fassets%2Fp5.png)![p4.png](docs%2Fassets%2Fp4.png)
 
 ## Setup
 
@@ -20,3 +20,37 @@ the codebase evolves as the AI generates more and more code.
    ```
 3. Sync project with Gradle files.
 
+## Key Features
+
+1. Browse movies by different categories (popular, top-rated, etc.)
+2. Search for movies
+3. View detailed movie information
+4. Mark movies as favorites
+5. Create custom movie lists (authenticated users only)
+6. Switch between grid and list views
+7. Apply filters (genre, release year, minimum rating)
+8. Toggle between light and dark themes
+
+## Architecture
+
+The app follows the MVVM (Model-View-ViewModel) architecture:
+
+- Model: Represented by the `Movie` and `MovieResponse` data classes
+- View: Compose UI components in various screen files
+- ViewModel: `MovieViewModel` manages the app's state and business logic
+
+## Data Flow
+
+1. The `MovieViewModel` fetches data from the `MovieRepository` (not shown in the provided files)
+2. The repository makes API calls using the `ApiService`
+3. Data is then exposed to the UI components via StateFlows in the ViewModel
+4. UI components observe these flows and recompose when the data changes
+
+## Authentication Flow
+
+1. User initiates authentication from the ListCreationScreen
+2. App obtains a request token from the TMDB API
+3. User approves the request token via a web browser
+4. App exchanges the approved token for a session ID
+5. Session ID is stored for future authenticated requests
+``
