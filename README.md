@@ -9,7 +9,7 @@ or suggested by AI using a large language model.
 
 the codebase evolves as the AI generates more and more code.
 
-![p5.png](docs%2Fassets%2Fp5.png)![p4.png](docs%2Fassets%2Fp4.png)
+![p5.png](docs%2Fassets%2Fp5.png)
 
 ## Setup
 
