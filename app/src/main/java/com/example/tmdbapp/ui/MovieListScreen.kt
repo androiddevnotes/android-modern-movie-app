@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
-
 package com.example.tmdbapp.ui
 
 import FilterBottomSheet
@@ -55,6 +53,12 @@ import com.example.tmdbapp.viewmodel.MovieUiState
 import com.example.tmdbapp.viewmodel.MovieViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import com.example.tmdbapp.viewmodel.SortOption
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun MovieListScreen(
@@ -86,6 +90,20 @@ fun MovieListScreen(
 
     var showFilterBottomSheet by remember { mutableStateOf(false) }
     val currentFilters by viewModel.filterOptions.collectAsState()
+
+    val coroutineScope = rememberCoroutineScope()
+    var isRefreshing by remember { mutableStateOf(false) }
+
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshing,
+        onRefresh = {
+            coroutineScope.launch {
+                isRefreshing = true
+                viewModel.refreshMovies()
+                isRefreshing = false
+            }
+        }
+    )
 
     LaunchedEffect(gridState, viewType) {
         if (viewType == Constants.VIEW_TYPE_GRID) {
@@ -204,7 +222,11 @@ fun MovieListScreen(
             )
         }
     ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
+        Box(
+            modifier = Modifier
+                .padding(paddingValues)
+                .pullRefresh(pullRefreshState)
+        ) {
             when (uiState) {
                 is MovieUiState.Loading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -282,6 +304,11 @@ fun MovieListScreen(
                     }
                 }
             }
+            PullRefreshIndicator(
+                refreshing = isRefreshing,
+                state = pullRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
         }
     }
 }

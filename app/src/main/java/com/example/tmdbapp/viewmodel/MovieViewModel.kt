@@ -234,6 +234,13 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
     fun saveListScrollPosition(index: Int, offset: Int) {
         _listScrollPosition.value = ScrollPosition(index, offset)
     }
+
+    fun refreshMovies() {
+        currentPage = 1
+        isLastPage = false
+        _uiState.value = MovieUiState.Loading
+        fetchMovies()
+    }
 }
 
 data class FilterOptions(
