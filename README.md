@@ -41,7 +41,7 @@ The app follows the MVVM (Model-View-ViewModel) architecture:
 
 ## Data Flow
 
-1. The `MovieViewModel` fetches data from the `MovieRepository` (not shown in the provided files)
+1. The `MovieViewModel` fetches data from the `MovieRepository`
 2. The repository makes API calls using the `ApiService`
 3. Data is then exposed to the UI components via StateFlows in the ViewModel
 4. UI components observe these flows and recompose when the data changes
