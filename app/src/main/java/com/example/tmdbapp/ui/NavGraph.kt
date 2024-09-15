@@ -10,6 +10,8 @@ import androidx.navigation.navArgument
 import com.example.tmdbapp.viewmodel.MovieViewModel
 import com.example.tmdbapp.ui.theme.ThemeMode
 import androidx.navigation.compose.rememberNavController
+import com.example.tmdbapp.ui.DummyListScreen
+import com.example.tmdbapp.ui.DummyDetailScreen
 
 @Composable
 fun NavGraph(
@@ -32,7 +34,10 @@ fun NavGraph(
                 viewType = "grid", // You might want to make this dynamic
                 onViewTypeChange = { /* Implement view type change */ },
                 onThemeChange = onThemeChange,
-                currentThemeMode = currentThemeMode
+                currentThemeMode = currentThemeMode,
+                onDummyListClick = {
+                    navController.navigate("dummyList")
+                }
             )
         }
         composable(
@@ -54,6 +59,24 @@ fun NavGraph(
                 onMovieClick = { movieId ->
                     navController.navigate("movieDetail/$movieId")
                 },
+                onBackPress = { navController.popBackStack() }
+            )
+        }
+        composable("dummyList") {
+            DummyListScreen(
+                onItemClick = { itemId ->
+                    navController.navigate("dummyDetail/$itemId")
+                }
+            )
+        }
+
+        composable(
+            "dummyDetail/{itemId}",
+            arguments = listOf(navArgument("itemId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val itemId = backStackEntry.arguments?.getInt("itemId") ?: return@composable
+            DummyDetailScreen(
+                itemId = itemId,
                 onBackPress = { navController.popBackStack() }
             )
         }

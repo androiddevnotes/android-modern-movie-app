@@ -54,6 +54,7 @@ import com.example.tmdbapp.viewmodel.MovieViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import com.example.tmdbapp.viewmodel.SortOption
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -73,7 +74,8 @@ fun MovieListScreen(
     viewType: String,
     onViewTypeChange: (String) -> Unit,
     onThemeChange: () -> Unit,
-    currentThemeMode: ThemeMode
+    currentThemeMode: ThemeMode,
+    onDummyListClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -232,6 +234,12 @@ fun MovieListScreen(
                                 painter = painterResource(id = R.drawable.ic_filter),
                                 contentDescription = "Filter",
                                 tint = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        IconButton(onClick = onDummyListClick) {
+                            Icon(
+                                imageVector = Icons.Default.List,
+                                contentDescription = "Dummy List"
                             )
                         }
                     },
