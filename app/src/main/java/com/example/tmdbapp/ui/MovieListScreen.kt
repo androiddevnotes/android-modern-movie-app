@@ -2,6 +2,7 @@
 
 package com.example.tmdbapp.ui
 
+import FilterBottomSheet
 import FilterDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -84,7 +85,7 @@ fun MovieListScreen(
     var expandedDropdown by remember { mutableStateOf(false) }
     val currentSortOption by viewModel.currentSortOption.collectAsState()
 
-    var showFilterDialog by remember { mutableStateOf(false) }
+    var showFilterBottomSheet by remember { mutableStateOf(false) }
     val currentFilters by viewModel.filterOptions.collectAsState()
 
     LaunchedEffect(gridState, viewType) {
@@ -112,10 +113,10 @@ fun MovieListScreen(
         listState.scrollToItem(0)
     }
 
-    if (showFilterDialog) {
-        FilterDialog(
+    if (showFilterBottomSheet) {
+        FilterBottomSheet(
             currentFilters = currentFilters,
-            onDismiss = { showFilterDialog = false },
+            onDismiss = { showFilterBottomSheet = false },
             onApply = { newFilters ->
                 viewModel.setFilterOptions(newFilters)
             }
@@ -189,7 +190,7 @@ fun MovieListScreen(
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
-                    IconButton(onClick = { showFilterDialog = true }) {
+                    IconButton(onClick = { showFilterBottomSheet = true }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_filter),
                             contentDescription = "Filter",
