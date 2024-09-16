@@ -192,8 +192,8 @@ fun MovieListScreen(
 
             Constants.VIEW_TYPE_LIST -> {
               LazyColumn(
-                contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
-                verticalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 state = listState,
               ) {
                 itemsIndexed(

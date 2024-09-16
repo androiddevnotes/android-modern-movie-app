@@ -1,7 +1,6 @@
 package com.example.tmdbapp.ui.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -26,8 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -47,124 +45,81 @@ fun MovieItem(
     modifier =
       modifier
         .fillMaxWidth()
-        .height(if (isListView) 150.dp else Constants.MOVIE_ITEM_HEIGHT),
-    elevation = CardDefaults.cardElevation(defaultElevation = Constants.CARD_ELEVATION),
-    shape = RoundedCornerShape(Constants.CARD_CORNER_RADIUS),
+        .height(150.dp),
+    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+    shape = RoundedCornerShape(8.dp),
   ) {
-    if (isListView) {
-      Row(modifier = Modifier.fillMaxSize()) {
-        AsyncImage(
-          model = "${Constants.BASE_IMAGE_URL}${movie.posterPath}",
-          contentDescription = movie.title,
-          contentScale = ContentScale.Crop,
-          modifier =
-            Modifier
-              .width(100.dp)
-              .fillMaxHeight()
-              .clip(
-                RoundedCornerShape(
-                  topStart = Constants.CARD_CORNER_RADIUS,
-                  bottomStart = Constants.CARD_CORNER_RADIUS,
-                ),
+    Row(
+      modifier =
+        Modifier
+          .fillMaxSize()
+          .background(MaterialTheme.colorScheme.surface),
+    ) {
+      AsyncImage(
+        model = "${Constants.BASE_IMAGE_URL}${movie.posterPath}",
+        contentDescription = movie.title,
+        contentScale = ContentScale.Crop,
+        modifier =
+          Modifier
+            .width(100.dp)
+            .fillMaxHeight()
+            .clip(
+              RoundedCornerShape(
+                topStart = 8.dp,
+                bottomStart = 8.dp,
               ),
+            ),
+      )
+      Column(
+        modifier =
+          Modifier
+            .weight(1f)
+            .padding(16.dp),
+      ) {
+        Text(
+          text = movie.title,
+          style = MaterialTheme.typography.titleMedium,
+          fontWeight = FontWeight.Bold,
+          maxLines = 2,
+          overflow = TextOverflow.Ellipsis,
         )
-        Column(
-          modifier =
-            Modifier
-              .weight(1f)
-              .padding(16.dp),
-        ) {
-          Text(
-            text = movie.title,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            maxLines = Constants.MAX_LINES_TITLE,
-            overflow = TextOverflow.Ellipsis,
-          )
-          Spacer(modifier = Modifier.height(4.dp))
-          Text(
-            text = movie.overview,
-            style = MaterialTheme.typography.bodySmall,
-            maxLines = Constants.MAX_LINES_OVERVIEW,
-            overflow = TextOverflow.Ellipsis,
-          )
-        }
-        IconButton(
-          onClick = onFavoriteClick,
-          modifier =
-            Modifier
-              .align(Alignment.Top)
-              .padding(8.dp)
-              .size(40.dp),
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+          text = movie.overview,
+          style = MaterialTheme.typography.bodySmall,
+          maxLines = 3,
+          overflow = TextOverflow.Ellipsis,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Row(
+          verticalAlignment = Alignment.CenterVertically,
         ) {
           Icon(
-            imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-            contentDescription = "Favorite",
-            tint = if (movie.isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.size(24.dp),
+            imageVector = Icons.Filled.Star,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.size(16.dp),
+          )
+          Spacer(modifier = Modifier.width(4.dp))
+          Text(
+            text = String.format("%.1f", movie.voteAverage),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
           )
         }
       }
-    } else {
-      Box(modifier = Modifier.fillMaxSize()) {
-        AsyncImage(
-          model = "${Constants.BASE_IMAGE_URL}${movie.posterPath}",
-          contentDescription = movie.title,
-          contentScale = ContentScale.FillBounds,
-          modifier = Modifier.fillMaxSize(),
+      IconButton(
+        onClick = onFavoriteClick,
+        modifier =
+          Modifier
+            .align(Alignment.Top),
+      ) {
+        Icon(
+          imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+          contentDescription = "Favorite",
+          tint = if (movie.isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
         )
-        Box(
-          modifier =
-            Modifier
-              .fillMaxSize()
-              .background(
-                Brush.verticalGradient(
-                  colors = listOf(Color.Transparent, Color(0xCC000000)),
-                  startY = 300f,
-                  endY = 900f,
-                ),
-              ),
-        )
-        Column(
-          modifier =
-            Modifier
-              .align(Alignment.BottomStart)
-              .padding(16.dp),
-        ) {
-          Text(
-            text = movie.title,
-            style = MaterialTheme.typography.titleLarge,
-            color = Color.White,
-            fontWeight = FontWeight.Bold,
-            maxLines = Constants.MAX_LINES_TITLE,
-            overflow = TextOverflow.Ellipsis,
-          )
-          Spacer(modifier = Modifier.height(4.dp))
-          Text(
-            text = movie.overview,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.LightGray.copy(alpha = Constants.ALPHA_MEDIUM),
-            maxLines = Constants.MAX_LINES_OVERVIEW,
-            overflow = TextOverflow.Ellipsis,
-          )
-        }
-        IconButton(
-          onClick = onFavoriteClick,
-          modifier =
-            Modifier
-              .align(Alignment.TopEnd)
-              .padding(8.dp)
-              .size(48.dp)
-              .clip(RoundedCornerShape(24.dp))
-              .background(Color(0x80000000)),
-        ) {
-          Icon(
-            imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-            contentDescription = "Favorite",
-            tint = if (movie.isFavorite) Color.Red else Color.White,
-            modifier = Modifier.size(28.dp),
-          )
-        }
       }
     }
   }
