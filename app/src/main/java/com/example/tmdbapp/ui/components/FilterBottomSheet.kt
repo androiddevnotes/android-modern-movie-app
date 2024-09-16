@@ -1,35 +1,18 @@
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Slider
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.tmdbapp.R
 import com.example.tmdbapp.viewmodel.FilterOptions
@@ -43,11 +26,11 @@ fun FilterBottomSheet(
   onApply: (FilterOptions) -> Unit,
 ) {
   var selectedGenres by remember { mutableStateOf(currentFilters.genres.toSet()) }
-  var selectedYear by remember { mutableStateOf(currentFilters.releaseYear) }
+  var selectedYear by remember { mutableStateOf(currentFilters.releaseYear?.toString() ?: "") }
   var minRating by remember { mutableStateOf(currentFilters.minRating ?: 0f) }
 
   val currentYear = LocalDate.now().year
-  val yearRange = (1900..currentYear).reversed()
+  val recentYears = (currentYear downTo currentYear - 20).toList()
 
   val genres =
     listOf(
@@ -74,10 +57,7 @@ fun FilterBottomSheet(
           .padding(16.dp),
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-      Text(
-        stringResource(R.string.filter_movies),
-        style = MaterialTheme.typography.titleLarge,
-      )
+      Text(stringResource(R.string.filter_movies), style = MaterialTheme.typography.titleLarge)
 
       Text(stringResource(R.string.genres), style = MaterialTheme.typography.titleMedium)
       LazyRow(
@@ -99,31 +79,45 @@ fun FilterBottomSheet(
         }
       }
 
-      Text(
-        stringResource(R.string.release_year),
-        style = MaterialTheme.typography.titleMedium,
-      )
+      Text(stringResource(R.string.release_year), style = MaterialTheme.typography.titleMedium)
+      Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+      ) {
+        OutlinedTextField(
+          value = selectedYear,
+          onValueChange = {
+            if (it.length <= 4) selectedYear = it
+          },
+          label = { Text(stringResource(R.string.enter_year)) },
+          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+          modifier = Modifier.weight(1f),
+        )
+        Button(
+          onClick = { selectedYear = "" },
+          enabled = selectedYear.isNotEmpty(),
+        ) {
+          Text(stringResource(R.string.clear))
+        }
+      }
       LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 64.dp),
         contentPadding = PaddingValues(vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.height(200.dp),
+        modifier = Modifier.height(120.dp),
       ) {
-        items(yearRange.toList()) { year ->
+        items(recentYears) { year ->
           FilterChip(
-            selected = selectedYear == year,
-            onClick = { selectedYear = year },
+            selected = selectedYear == year.toString(),
+            onClick = { selectedYear = year.toString() },
             label = { Text(year.toString()) },
             modifier = Modifier.height(40.dp),
           )
         }
       }
 
-      Text(
-        stringResource(R.string.minimum_rating),
-        style = MaterialTheme.typography.titleMedium,
-      )
+      Text(stringResource(R.string.minimum_rating), style = MaterialTheme.typography.titleMedium)
       Column {
         Slider(
           value = minRating,
@@ -149,7 +143,7 @@ fun FilterBottomSheet(
           onApply(
             FilterOptions(
               genres = selectedGenres.toList(),
-              releaseYear = selectedYear,
+              releaseYear = selectedYear.toIntOrNull(),
               minRating = if (minRating > 0f) minRating else null,
             ),
           )

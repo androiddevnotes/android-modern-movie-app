@@ -47,4 +47,7 @@
     <string name="release_date">Release Date: %s</string>
     <string name="rating">Rating: %.1f</string>
     <string name="overview">Overview</string>
+    <!-- Add these new strings -->
+    <string name="enter_year">Enter year</string>
+    <string name="clear">Clear</string>
 </resources>
