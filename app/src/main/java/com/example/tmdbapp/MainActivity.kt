@@ -16,39 +16,39 @@ import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.MovieViewModel
 
 class MainActivity : ComponentActivity() {
-    private lateinit var movieViewModel: MovieViewModel
+  private lateinit var movieViewModel: MovieViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
 
-        movieViewModel =
-            ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))
-                .get(MovieViewModel::class.java)
+    movieViewModel =
+      ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))
+        .get(MovieViewModel::class.java)
 
-        setContent {
-            var themeMode by rememberSaveable { mutableStateOf(ThemeMode.SYSTEM) }
-            var viewType by rememberSaveable { mutableStateOf(Constants.VIEW_TYPE_GRID) }
+    setContent {
+      var themeMode by rememberSaveable { mutableStateOf(ThemeMode.SYSTEM) }
+      var viewType by rememberSaveable { mutableStateOf(Constants.VIEW_TYPE_GRID) }
 
-            TMDBAppTheme(themeMode = themeMode) {
-                val navController = rememberNavController()
+      TMDBAppTheme(themeMode = themeMode) {
+        val navController = rememberNavController()
 
-                NavGraph(
-                    navController = navController,
-                    movieViewModel = movieViewModel,
-                    currentThemeMode = themeMode,
-                    onThemeChange = { themeMode = themeMode.next() },
-                    viewType = viewType,
-                    onViewTypeChange = { newViewType -> viewType = newViewType },
-                    application = application,
-                )
-            }
-        }
+        NavGraph(
+          navController = navController,
+          movieViewModel = movieViewModel,
+          currentThemeMode = themeMode,
+          onThemeChange = { themeMode = themeMode.next() },
+          viewType = viewType,
+          onViewTypeChange = { newViewType -> viewType = newViewType },
+          application = application,
+        )
+      }
     }
+  }
 
-    private fun ThemeMode.next(): ThemeMode =
-        when (this) {
-            ThemeMode.LIGHT -> ThemeMode.DARK
-            ThemeMode.DARK -> ThemeMode.SYSTEM
-            ThemeMode.SYSTEM -> ThemeMode.LIGHT
-        }
+  private fun ThemeMode.next(): ThemeMode =
+    when (this) {
+      ThemeMode.LIGHT -> ThemeMode.DARK
+      ThemeMode.DARK -> ThemeMode.SYSTEM
+      ThemeMode.SYSTEM -> ThemeMode.LIGHT
+    }
 }

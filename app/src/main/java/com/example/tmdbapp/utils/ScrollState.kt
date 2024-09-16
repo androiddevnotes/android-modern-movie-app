@@ -7,26 +7,26 @@ import androidx.compose.runtime.saveable.rememberSaveable
 
 @Composable
 fun rememberForeverLazyListState(
-    key: String,
-    initialFirstVisibleItemIndex: Int = 0,
-    initialFirstVisibleItemScrollOffset: Int = 0,
+  key: String,
+  initialFirstVisibleItemIndex: Int = 0,
+  initialFirstVisibleItemScrollOffset: Int = 0,
 ): LazyListState =
-    rememberSaveable(key = key, saver = LazyListState.Saver) {
-        LazyListState(
-            firstVisibleItemIndex = initialFirstVisibleItemIndex,
-            firstVisibleItemScrollOffset = initialFirstVisibleItemScrollOffset,
-        )
-    }
+  rememberSaveable(key = key, saver = LazyListState.Saver) {
+    LazyListState(
+      firstVisibleItemIndex = initialFirstVisibleItemIndex,
+      firstVisibleItemScrollOffset = initialFirstVisibleItemScrollOffset,
+    )
+  }
 
 @Composable
 fun rememberForeverLazyStaggeredGridState(
-    key: String,
-    initialFirstVisibleItemIndex: Int = 0,
-    initialFirstVisibleItemOffset: Int = 0,
+  key: String,
+  initialFirstVisibleItemIndex: Int = 0,
+  initialFirstVisibleItemOffset: Int = 0,
 ): LazyStaggeredGridState =
-    rememberSaveable(key = key, saver = LazyStaggeredGridState.Saver) {
-        LazyStaggeredGridState(
-            initialFirstVisibleItemIndex = initialFirstVisibleItemIndex,
-            initialFirstVisibleItemOffset = initialFirstVisibleItemOffset,
-        )
-    }
+  rememberSaveable(key = key, saver = LazyStaggeredGridState.Saver) {
+    LazyStaggeredGridState(
+      initialFirstVisibleItemIndex = initialFirstVisibleItemIndex,
+      initialFirstVisibleItemOffset = initialFirstVisibleItemOffset,
+    )
+  }

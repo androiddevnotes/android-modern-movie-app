@@ -42,109 +42,109 @@ import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
 fun MovieDetailScreen(
-    viewModel: MovieViewModel,
-    onBackPress: () -> Unit,
+  viewModel: MovieViewModel,
+  onBackPress: () -> Unit,
 ) {
-    val movie by viewModel.currentMovie.collectAsState()
+  val movie by viewModel.currentMovie.collectAsState()
 
-    when {
-        movie == null -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-        }
-
-        else -> {
-            MovieDetailContent(
-                movie = movie!!,
-                onBackPress = onBackPress,
-                onFavoriteClick = { viewModel.toggleFavorite(movie!!) },
-                onDownloadClick = viewModel::downloadImage,
-            )
-        }
+  when {
+    movie == null -> {
+      Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator()
+      }
     }
+
+    else -> {
+      MovieDetailContent(
+        movie = movie!!,
+        onBackPress = onBackPress,
+        onFavoriteClick = { viewModel.toggleFavorite(movie!!) },
+        onDownloadClick = viewModel::downloadImage,
+      )
+    }
+  }
 }
 
 @Composable
 fun MovieDetailContent(
-    movie: Movie,
-    onBackPress: () -> Unit,
-    onFavoriteClick: () -> Unit,
-    onDownloadClick: (String?, Context) -> Unit,
+  movie: Movie,
+  onBackPress: () -> Unit,
+  onFavoriteClick: () -> Unit,
+  onDownloadClick: (String?, Context) -> Unit,
 ) {
-    val context = LocalContext.current
+  val context = LocalContext.current
 
-    Scaffold(
-        topBar = {
-            SmallTopAppBar(
-                title = { Text(movie.title) },
-                navigationIcon = {
-                    IconButton(onClick = onBackPress) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onFavoriteClick) {
-                        Icon(
-                            imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-                            contentDescription = "Favorite",
-                            tint = if (movie.isFavorite) Color.Red else Color.White,
-                        )
-                    }
-                    IconButton(onClick = { onDownloadClick(movie.posterPath, context) }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.download_24px),
-                            contentDescription = "Download Image",
-                            tint = Color.White,
-                        )
-                    }
-                },
-                colors =
-                    TopAppBarDefaults.smallTopAppBarColors(
-                        containerColor = Color.Transparent,
-                        navigationIconContentColor = Color.White,
-                        actionIconContentColor = Color.White,
-                    ),
-            )
+  Scaffold(
+    topBar = {
+      SmallTopAppBar(
+        title = { Text(movie.title) },
+        navigationIcon = {
+          IconButton(onClick = onBackPress) {
+            Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+          }
         },
-    ) { paddingValues ->
-        Box(modifier = Modifier.fillMaxSize()) {
-            AsyncImage(
-                model = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
-                contentDescription = movie.title,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop,
+        actions = {
+          IconButton(onClick = onFavoriteClick) {
+            Icon(
+              imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+              contentDescription = "Favorite",
+              tint = if (movie.isFavorite) Color.Red else Color.White,
             )
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .background(
-                            Brush.verticalGradient(
-                                colors = listOf(Color.Transparent, Color(0xCC000000)),
-                            ),
-                        ),
+          }
+          IconButton(onClick = { onDownloadClick(movie.posterPath, context) }) {
+            Icon(
+              painter = painterResource(id = R.drawable.download_24px),
+              contentDescription = "Download Image",
+              tint = Color.White,
             )
-            Column(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                        .padding(16.dp),
-                verticalArrangement = Arrangement.Bottom,
-            ) {
-                Text(
-                    text = movie.title,
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = Color.White,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = movie.overview,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White.copy(alpha = 0.8f),
-                )
-            }
-        }
+          }
+        },
+        colors =
+          TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = Color.Transparent,
+            navigationIconContentColor = Color.White,
+            actionIconContentColor = Color.White,
+          ),
+      )
+    },
+  ) { paddingValues ->
+    Box(modifier = Modifier.fillMaxSize()) {
+      AsyncImage(
+        model = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
+        contentDescription = movie.title,
+        modifier = Modifier.fillMaxSize(),
+        contentScale = ContentScale.Crop,
+      )
+      Box(
+        modifier =
+          Modifier
+            .fillMaxSize()
+            .background(
+              Brush.verticalGradient(
+                colors = listOf(Color.Transparent, Color(0xCC000000)),
+              ),
+            ),
+      )
+      Column(
+        modifier =
+          Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Bottom,
+      ) {
+        Text(
+          text = movie.title,
+          style = MaterialTheme.typography.headlineLarge,
+          color = Color.White,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+          text = movie.overview,
+          style = MaterialTheme.typography.bodyMedium,
+          color = Color.White.copy(alpha = 0.8f),
+        )
+      }
     }
+  }
 }

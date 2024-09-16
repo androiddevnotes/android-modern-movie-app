@@ -7,32 +7,32 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class SessionManager(
-    context: Context,
+  context: Context,
 ) {
-    private val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-    private val editor: SharedPreferences.Editor = prefs.edit()
+  private val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+  private val editor: SharedPreferences.Editor = prefs.edit()
 
-    private val _sessionIdFlow = MutableStateFlow<String?>(null)
-    val sessionIdFlow: Flow<String?> = _sessionIdFlow.asStateFlow()
+  private val _sessionIdFlow = MutableStateFlow<String?>(null)
+  val sessionIdFlow: Flow<String?> = _sessionIdFlow.asStateFlow()
 
-    init {
-        _sessionIdFlow.value = prefs.getString(SESSION_ID_KEY, null)
-    }
+  init {
+    _sessionIdFlow.value = prefs.getString(SESSION_ID_KEY, null)
+  }
 
-    fun saveSessionId(sessionId: String) {
-        editor.putString(SESSION_ID_KEY, sessionId).apply()
-        _sessionIdFlow.value = sessionId
-    }
+  fun saveSessionId(sessionId: String) {
+    editor.putString(SESSION_ID_KEY, sessionId).apply()
+    _sessionIdFlow.value = sessionId
+  }
 
-    fun getSessionId(): String? = prefs.getString(SESSION_ID_KEY, null)
+  fun getSessionId(): String? = prefs.getString(SESSION_ID_KEY, null)
 
-    fun clearSessionId() {
-        editor.remove(SESSION_ID_KEY).apply()
-        _sessionIdFlow.value = null
-    }
+  fun clearSessionId() {
+    editor.remove(SESSION_ID_KEY).apply()
+    _sessionIdFlow.value = null
+  }
 
-    companion object {
-        private const val PREF_NAME = "TMDBSessionPrefs"
-        private const val SESSION_ID_KEY = "session_id"
-    }
+  companion object {
+    private const val PREF_NAME = "TMDBSessionPrefs"
+    private const val SESSION_ID_KEY = "session_id"
+  }
 }

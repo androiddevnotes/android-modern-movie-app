@@ -32,62 +32,62 @@ import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
 fun FavoritesScreen(
-    viewModel: MovieViewModel,
-    onMovieClick: (Int) -> Unit,
-    onBackPress: () -> Unit,
+  viewModel: MovieViewModel,
+  onMovieClick: (Int) -> Unit,
+  onBackPress: () -> Unit,
 ) {
-    val favorites by viewModel.favorites.collectAsState()
+  val favorites by viewModel.favorites.collectAsState()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        Constants.SCREEN_TITLE_FAVORITES,
-                        style = typography.headlineMedium,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackPress) {
-                        Icon(
-                            Icons.Filled.ArrowBack,
-                            contentDescription = Constants.CONTENT_DESC_BACK,
-                        )
-                    }
-                },
-                colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = colorScheme.surface,
-                        titleContentColor = colorScheme.onSurface,
-                    ),
-            )
+  Scaffold(
+    topBar = {
+      TopAppBar(
+        title = {
+          Text(
+            Constants.SCREEN_TITLE_FAVORITES,
+            style = typography.headlineMedium,
+          )
         },
-    ) { paddingValues ->
-        if (favorites.isEmpty()) {
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(Constants.MESSAGE_NO_FAVORITES)
-            }
-        } else {
-            LazyColumn(
-                contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
-                verticalArrangement = Arrangement.spacedBy(Constants.PADDING_SMALL),
-                modifier = Modifier.padding(paddingValues),
-            ) {
-                items(favorites) { movie ->
-                    MovieItem(
-                        movie = movie,
-                        modifier = Modifier.clickable { onMovieClick(movie.id) },
-                        onFavoriteClick = { viewModel.toggleFavorite(movie) },
-                        isListView = true,
-                    )
-                }
-            }
+        navigationIcon = {
+          IconButton(onClick = onBackPress) {
+            Icon(
+              Icons.Filled.ArrowBack,
+              contentDescription = Constants.CONTENT_DESC_BACK,
+            )
+          }
+        },
+        colors =
+          TopAppBarDefaults.topAppBarColors(
+            containerColor = colorScheme.surface,
+            titleContentColor = colorScheme.onSurface,
+          ),
+      )
+    },
+  ) { paddingValues ->
+    if (favorites.isEmpty()) {
+      Box(
+        modifier =
+          Modifier
+            .fillMaxSize()
+            .padding(paddingValues),
+        contentAlignment = Alignment.Center,
+      ) {
+        Text(Constants.MESSAGE_NO_FAVORITES)
+      }
+    } else {
+      LazyColumn(
+        contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
+        verticalArrangement = Arrangement.spacedBy(Constants.PADDING_SMALL),
+        modifier = Modifier.padding(paddingValues),
+      ) {
+        items(favorites) { movie ->
+          MovieItem(
+            movie = movie,
+            modifier = Modifier.clickable { onMovieClick(movie.id) },
+            onFavoriteClick = { viewModel.toggleFavorite(movie) },
+            isListView = true,
+          )
         }
+      }
     }
+  }
 }

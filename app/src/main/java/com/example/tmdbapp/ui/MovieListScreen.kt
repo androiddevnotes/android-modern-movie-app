@@ -52,196 +52,196 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieListScreen(
-    viewModel: MovieViewModel,
-    onMovieClick: (Movie) -> Unit,
-    onFavoritesClick: () -> Unit,
-    screenTitle: String,
-    viewType: String,
-    onViewTypeChange: (String) -> Unit,
-    onThemeChange: () -> Unit,
-    currentThemeMode: ThemeMode,
-    onCreateListClick: () -> Unit,
+  viewModel: MovieViewModel,
+  onMovieClick: (Movie) -> Unit,
+  onFavoritesClick: () -> Unit,
+  screenTitle: String,
+  viewType: String,
+  onViewTypeChange: (String) -> Unit,
+  onThemeChange: () -> Unit,
+  currentThemeMode: ThemeMode,
+  onCreateListClick: () -> Unit,
 ) {
-    var isSearchActive by rememberSaveable { mutableStateOf(false) }
-    var showFilterBottomSheet by rememberSaveable { mutableStateOf(false) }
+  var isSearchActive by rememberSaveable { mutableStateOf(false) }
+  var showFilterBottomSheet by rememberSaveable { mutableStateOf(false) }
 
-    val uiState by viewModel.uiState.collectAsState()
+  val uiState by viewModel.uiState.collectAsState()
 
-    var expandedDropdown by remember { mutableStateOf(false) }
-    val currentSortOption by viewModel.currentSortOption.collectAsState()
+  var expandedDropdown by remember { mutableStateOf(false) }
+  val currentSortOption by viewModel.currentSortOption.collectAsState()
 
-    val coroutineScope = rememberCoroutineScope()
-    var isRefreshing by remember { mutableStateOf(false) }
+  val coroutineScope = rememberCoroutineScope()
+  var isRefreshing by remember { mutableStateOf(false) }
 
-    val pullRefreshState =
-        rememberPullRefreshState(
-            refreshing = isRefreshing,
-            onRefresh = {
-                coroutineScope.launch {
-                    isRefreshing = true
-                    viewModel.refreshMovies()
-                    isRefreshing = false
-                }
-            },
-        )
-
-    val searchQuery by viewModel.searchQuery.collectAsState()
-
-    val lastViewedItemIndex by viewModel.lastViewedItemIndex.collectAsState()
-
-    val listState =
-        rememberForeverLazyListState(
-            key = "movie_list_${viewType}_$searchQuery",
-            initialFirstVisibleItemIndex = lastViewedItemIndex,
-            initialFirstVisibleItemScrollOffset = 0,
-        )
-    val gridState =
-        rememberForeverLazyStaggeredGridState(
-            key = "movie_grid_${viewType}_$searchQuery",
-            initialFirstVisibleItemIndex = lastViewedItemIndex,
-            initialFirstVisibleItemOffset = 0,
-        )
-
-    val currentFilters by viewModel.filterOptions.collectAsState()
-
-    if (showFilterBottomSheet) {
-        FilterBottomSheet(
-            currentFilters = currentFilters,
-            onDismiss = { showFilterBottomSheet = false },
-            onApply = { newFilters ->
-                viewModel.setFilterOptions(newFilters)
-            },
-        )
-    }
-
-    Scaffold(
-        topBar = {
-            TopBar(
-                isSearchActive = isSearchActive,
-                searchQuery = searchQuery,
-                onSearchQueryChange = { viewModel.setSearchQuery(it) },
-                onSearchIconClick = { isSearchActive = true },
-                onCloseSearchClick = {
-                    isSearchActive = false
-                    viewModel.setSearchQuery("")
-                },
-                screenTitle = screenTitle,
-                expandedDropdown = expandedDropdown,
-                onSortOptionClick = {
-                    viewModel.setSortOption(it)
-                    expandedDropdown = false
-                },
-                currentSortOption = currentSortOption,
-                onDropdownExpand = { expandedDropdown = !expandedDropdown },
-                onFavoritesClick = onFavoritesClick,
-                onViewTypeChange = onViewTypeChange,
-                viewType = viewType,
-                onThemeChange = onThemeChange,
-                currentThemeMode = currentThemeMode,
-                onFilterClick = { showFilterBottomSheet = true },
-                onCreateListClick = onCreateListClick,
-            )
-        },
-    ) { paddingValues ->
-        Box(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .pullRefresh(pullRefreshState),
-        ) {
-            when (uiState) {
-                is MovieUiState.Loading -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
-                    }
-                }
-
-                is MovieUiState.Success -> {
-                    val movies = (uiState as MovieUiState.Success).movies
-                    when (viewType) {
-                        Constants.VIEW_TYPE_GRID -> {
-                            LazyVerticalStaggeredGrid(
-                                columns = StaggeredGridCells.Fixed(3),
-                                contentPadding = PaddingValues(4.dp),
-                                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                                verticalItemSpacing = 4.dp,
-                                state = gridState,
-                            ) {
-                                itemsIndexed(
-                                    items = movies,
-                                    key = { index, movie -> "${movie.id}_$index" },
-                                ) { index, movie ->
-                                    if (index >= movies.size - 1 && !viewModel.isLastPage) {
-                                        viewModel.loadMoreMovies()
-                                    }
-                                    MovieGridItem(
-                                        movie = movie,
-                                        onClick = {
-                                            viewModel.setLastViewedItemIndex(index)
-                                            onMovieClick(movie)
-                                        },
-                                        onLongClick = {
-                                            viewModel.toggleFavorite(movie)
-                                        },
-                                        isFavorite = viewModel.isFavorite(movie.id),
-                                    )
-                                }
-                            }
-                        }
-
-                        Constants.VIEW_TYPE_LIST -> {
-                            LazyColumn(
-                                contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
-                                verticalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM),
-                                state = listState,
-                            ) {
-                                itemsIndexed(
-                                    items = movies,
-                                    key = { index, movie -> "${movie.id}_$index" },
-                                ) { index, movie ->
-                                    if (index >= movies.size - 1 && !viewModel.isLastPage) {
-                                        viewModel.loadMoreMovies()
-                                    }
-                                    MovieItem(
-                                        movie = movie,
-                                        modifier =
-                                            Modifier
-                                                .fillMaxWidth()
-                                                .clickable {
-                                                    viewModel.setLastViewedItemIndex(index)
-                                                    onMovieClick(movie)
-                                                },
-                                        onFavoriteClick = { viewModel.toggleFavorite(movie) },
-                                        isListView = true,
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-
-                is MovieUiState.Error -> {
-                    val error = (uiState as MovieUiState.Error).error
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                text = stringResource(error.messageResId),
-                                style = MaterialTheme.typography.bodyLarge,
-                            )
-                            Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
-                            Button(onClick = { viewModel.loadMoreMovies() }) {
-                                Text("Retry")
-                            }
-                        }
-                    }
-                }
-            }
-            PullRefreshIndicator(
-                refreshing = isRefreshing,
-                state = pullRefreshState,
-                modifier = Modifier.align(Alignment.TopCenter),
-            )
+  val pullRefreshState =
+    rememberPullRefreshState(
+      refreshing = isRefreshing,
+      onRefresh = {
+        coroutineScope.launch {
+          isRefreshing = true
+          viewModel.refreshMovies()
+          isRefreshing = false
         }
+      },
+    )
+
+  val searchQuery by viewModel.searchQuery.collectAsState()
+
+  val lastViewedItemIndex by viewModel.lastViewedItemIndex.collectAsState()
+
+  val listState =
+    rememberForeverLazyListState(
+      key = "movie_list_${viewType}_$searchQuery",
+      initialFirstVisibleItemIndex = lastViewedItemIndex,
+      initialFirstVisibleItemScrollOffset = 0,
+    )
+  val gridState =
+    rememberForeverLazyStaggeredGridState(
+      key = "movie_grid_${viewType}_$searchQuery",
+      initialFirstVisibleItemIndex = lastViewedItemIndex,
+      initialFirstVisibleItemOffset = 0,
+    )
+
+  val currentFilters by viewModel.filterOptions.collectAsState()
+
+  if (showFilterBottomSheet) {
+    FilterBottomSheet(
+      currentFilters = currentFilters,
+      onDismiss = { showFilterBottomSheet = false },
+      onApply = { newFilters ->
+        viewModel.setFilterOptions(newFilters)
+      },
+    )
+  }
+
+  Scaffold(
+    topBar = {
+      TopBar(
+        isSearchActive = isSearchActive,
+        searchQuery = searchQuery,
+        onSearchQueryChange = { viewModel.setSearchQuery(it) },
+        onSearchIconClick = { isSearchActive = true },
+        onCloseSearchClick = {
+          isSearchActive = false
+          viewModel.setSearchQuery("")
+        },
+        screenTitle = screenTitle,
+        expandedDropdown = expandedDropdown,
+        onSortOptionClick = {
+          viewModel.setSortOption(it)
+          expandedDropdown = false
+        },
+        currentSortOption = currentSortOption,
+        onDropdownExpand = { expandedDropdown = !expandedDropdown },
+        onFavoritesClick = onFavoritesClick,
+        onViewTypeChange = onViewTypeChange,
+        viewType = viewType,
+        onThemeChange = onThemeChange,
+        currentThemeMode = currentThemeMode,
+        onFilterClick = { showFilterBottomSheet = true },
+        onCreateListClick = onCreateListClick,
+      )
+    },
+  ) { paddingValues ->
+    Box(
+      modifier =
+        Modifier
+          .fillMaxSize()
+          .padding(paddingValues)
+          .pullRefresh(pullRefreshState),
+    ) {
+      when (uiState) {
+        is MovieUiState.Loading -> {
+          Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+          }
+        }
+
+        is MovieUiState.Success -> {
+          val movies = (uiState as MovieUiState.Success).movies
+          when (viewType) {
+            Constants.VIEW_TYPE_GRID -> {
+              LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Fixed(3),
+                contentPadding = PaddingValues(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalItemSpacing = 4.dp,
+                state = gridState,
+              ) {
+                itemsIndexed(
+                  items = movies,
+                  key = { index, movie -> "${movie.id}_$index" },
+                ) { index, movie ->
+                  if (index >= movies.size - 1 && !viewModel.isLastPage) {
+                    viewModel.loadMoreMovies()
+                  }
+                  MovieGridItem(
+                    movie = movie,
+                    onClick = {
+                      viewModel.setLastViewedItemIndex(index)
+                      onMovieClick(movie)
+                    },
+                    onLongClick = {
+                      viewModel.toggleFavorite(movie)
+                    },
+                    isFavorite = viewModel.isFavorite(movie.id),
+                  )
+                }
+              }
+            }
+
+            Constants.VIEW_TYPE_LIST -> {
+              LazyColumn(
+                contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
+                verticalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM),
+                state = listState,
+              ) {
+                itemsIndexed(
+                  items = movies,
+                  key = { index, movie -> "${movie.id}_$index" },
+                ) { index, movie ->
+                  if (index >= movies.size - 1 && !viewModel.isLastPage) {
+                    viewModel.loadMoreMovies()
+                  }
+                  MovieItem(
+                    movie = movie,
+                    modifier =
+                      Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                          viewModel.setLastViewedItemIndex(index)
+                          onMovieClick(movie)
+                        },
+                    onFavoriteClick = { viewModel.toggleFavorite(movie) },
+                    isListView = true,
+                  )
+                }
+              }
+            }
+          }
+        }
+
+        is MovieUiState.Error -> {
+          val error = (uiState as MovieUiState.Error).error
+          Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+              Text(
+                text = stringResource(error.messageResId),
+                style = MaterialTheme.typography.bodyLarge,
+              )
+              Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
+              Button(onClick = { viewModel.loadMoreMovies() }) {
+                Text("Retry")
+              }
+            }
+          }
+        }
+      }
+      PullRefreshIndicator(
+        refreshing = isRefreshing,
+        state = pullRefreshState,
+        modifier = Modifier.align(Alignment.TopCenter),
+      )
     }
+  }
 }
