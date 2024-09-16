@@ -32,6 +32,7 @@ class MainActivity : ComponentActivity() {
       TMDBAppTheme(themeMode = themeMode) {
         val navController = rememberNavController()
 
+        // NavGraph for the app
         NavGraph(
           navController = navController,
           movieViewModel = movieViewModel,
