@@ -1,8 +1,10 @@
 package com.example.tmdbapp.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -98,19 +100,28 @@ fun TopBar(
           DropdownMenu(
             expanded = expandedDropdown,
             onDismissRequest = { onDropdownExpand() },
+            modifier = Modifier.background(MaterialTheme.colorScheme.surface),
           ) {
             SortOption.values().forEach { sortOption ->
               DropdownMenuItem(
-                text = { Text(stringResource(sortOption.stringRes)) },
+                text = {
+                  Text(
+                    text = stringResource(sortOption.stringRes),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                  )
+                },
                 onClick = { onSortOptionClick(sortOption) },
                 leadingIcon = {
                   if (sortOption == currentSortOption) {
                     Icon(
                       imageVector = Icons.Default.Check,
                       contentDescription = null,
+                      tint = MaterialTheme.colorScheme.primary,
                     )
                   }
                 },
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
               )
             }
           }
