@@ -6,7 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class SessionManager(context: Context) {
+class SessionManager(
+    context: Context,
+) {
     private val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     private val editor: SharedPreferences.Editor = prefs.edit()
 
@@ -22,9 +24,7 @@ class SessionManager(context: Context) {
         _sessionIdFlow.value = sessionId
     }
 
-    fun getSessionId(): String? {
-        return prefs.getString(SESSION_ID_KEY, null)
-    }
+    fun getSessionId(): String? = prefs.getString(SESSION_ID_KEY, null)
 
     fun clearSessionId() {
         editor.remove(SESSION_ID_KEY).apply()

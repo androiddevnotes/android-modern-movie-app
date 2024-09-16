@@ -40,7 +40,7 @@ import java.time.LocalDate
 fun FilterBottomSheet(
     currentFilters: FilterOptions,
     onDismiss: () -> Unit,
-    onApply: (FilterOptions) -> Unit
+    onApply: (FilterOptions) -> Unit,
 ) {
     var selectedGenres by remember { mutableStateOf(currentFilters.genres.toSet()) }
     var selectedYear by remember { mutableStateOf(currentFilters.releaseYear) }
@@ -49,94 +49,97 @@ fun FilterBottomSheet(
     val currentYear = LocalDate.now().year
     val yearRange = (1900..currentYear).reversed()
 
-    val genres = listOf(
-        28 to "Action",
-        12 to "Adventure",
-        16 to "Animation",
-        35 to "Comedy",
-        80 to "Crime",
-        18 to "Drama",
-        14 to "Fantasy",
-        27 to "Horror",
-        10749 to "Romance",
-        878 to "Science Fiction"
-    )
+    val genres =
+        listOf(
+            28 to "Action",
+            12 to "Adventure",
+            16 to "Animation",
+            35 to "Comedy",
+            80 to "Crime",
+            18 to "Drama",
+            14 to "Fantasy",
+            27 to "Horror",
+            10749 to "Romance",
+            878 to "Science Fiction",
+        )
 
     ModalBottomSheet(
-        onDismissRequest = onDismiss
+        onDismissRequest = onDismiss,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
                 stringResource(R.string.filter_movies),
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
             )
 
             Text(stringResource(R.string.genres), style = MaterialTheme.typography.titleMedium)
             LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 items(genres) { (id, name) ->
                     FilterChip(
                         selected = selectedGenres.contains(id),
                         onClick = {
-                            selectedGenres = if (selectedGenres.contains(id)) {
-                                selectedGenres - id
-                            } else {
-                                selectedGenres + id
-                            }
+                            selectedGenres =
+                                if (selectedGenres.contains(id)) {
+                                    selectedGenres - id
+                                } else {
+                                    selectedGenres + id
+                                }
                         },
-                        label = { Text(name) }
+                        label = { Text(name) },
                     )
                 }
             }
 
             Text(
                 stringResource(R.string.release_year),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = 64.dp),
                 contentPadding = PaddingValues(vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.height(200.dp)
+                modifier = Modifier.height(200.dp),
             ) {
                 items(yearRange.toList()) { year ->
                     FilterChip(
                         selected = selectedYear == year,
                         onClick = { selectedYear = year },
                         label = { Text(year.toString()) },
-                        modifier = Modifier.height(40.dp)
+                        modifier = Modifier.height(40.dp),
                     )
                 }
             }
 
             Text(
                 stringResource(R.string.minimum_rating),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
             Column {
                 Slider(
                     value = minRating,
                     onValueChange = { minRating = it },
                     valueRange = 0f..10f,
-                    steps = 9
+                    steps = 9,
                 )
                 Text(
                     text = stringResource(R.string.rating_value, minRating),
-                    modifier = Modifier.align(Alignment.End)
+                    modifier = Modifier.align(Alignment.End),
                 )
             }
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.End,
             ) {
                 TextButton(onClick = onDismiss) {
                     Text(stringResource(R.string.cancel))
@@ -147,8 +150,8 @@ fun FilterBottomSheet(
                         FilterOptions(
                             genres = selectedGenres.toList(),
                             releaseYear = selectedYear,
-                            minRating = if (minRating > 0f) minRating else null
-                        )
+                            minRating = if (minRating > 0f) minRating else null,
+                        ),
                     )
                     onDismiss()
                 }) {

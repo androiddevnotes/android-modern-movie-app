@@ -11,7 +11,6 @@ import androidx.navigation.navArgument
 import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.MovieViewModel
-import com.example.tmdbapp.ui.ListCreationScreen
 
 @Composable
 fun NavGraph(
@@ -21,7 +20,7 @@ fun NavGraph(
     onThemeChange: () -> Unit,
     viewType: String,
     onViewTypeChange: (String) -> Unit,
-    application: Application 
+    application: Application,
 ) {
     NavHost(navController = navController, startDestination = "movieList") {
         composable("movieList") {
@@ -40,12 +39,12 @@ fun NavGraph(
                 currentThemeMode = currentThemeMode,
                 onCreateListClick = {
                     navController.navigate("createList")
-                }
+                },
             )
         }
         composable(
             "movieDetail/{movieId}",
-            arguments = listOf(navArgument("movieId") { type = NavType.IntType })
+            arguments = listOf(navArgument("movieId") { type = NavType.IntType }),
         ) { backStackEntry ->
             val movieId = backStackEntry.arguments?.getInt("movieId") ?: return@composable
             LaunchedEffect(movieId) {
@@ -53,7 +52,7 @@ fun NavGraph(
             }
             MovieDetailScreen(
                 viewModel = movieViewModel,
-                onBackPress = { navController.popBackStack() }
+                onBackPress = { navController.popBackStack() },
             )
         }
         composable("favorites") {
@@ -62,22 +61,22 @@ fun NavGraph(
                 onMovieClick = { movieId ->
                     navController.navigate("movieDetail/$movieId")
                 },
-                onBackPress = { navController.popBackStack() }
+                onBackPress = { navController.popBackStack() },
             )
         }
         composable("createList") {
             ListCreationScreen(
                 viewModel = movieViewModel,
                 onNavigateBack = { navController.popBackStack() },
-                application = application 
+                application = application,
             )
         }
     }
 }
 
-
-private fun ThemeMode.next(): ThemeMode = when (this) {
-    ThemeMode.LIGHT -> ThemeMode.DARK
-    ThemeMode.DARK -> ThemeMode.SYSTEM
-    ThemeMode.SYSTEM -> ThemeMode.LIGHT
-}
+private fun ThemeMode.next(): ThemeMode =
+    when (this) {
+        ThemeMode.LIGHT -> ThemeMode.DARK
+        ThemeMode.DARK -> ThemeMode.SYSTEM
+        ThemeMode.SYSTEM -> ThemeMode.LIGHT
+    }

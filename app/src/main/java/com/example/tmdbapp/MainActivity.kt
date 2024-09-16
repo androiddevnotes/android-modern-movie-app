@@ -9,12 +9,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
-import com.example.tmdbapp.ui.theme.ThemeMode
-import com.example.tmdbapp.viewmodel.MovieViewModel
-import com.example.tmdbapp.ui.ListCreationScreen
 import com.example.tmdbapp.ui.NavGraph
 import com.example.tmdbapp.ui.theme.TMDBAppTheme
+import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.utils.Constants
+import com.example.tmdbapp.viewmodel.MovieViewModel
 
 class MainActivity : ComponentActivity() {
     private lateinit var movieViewModel: MovieViewModel
@@ -22,8 +21,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        movieViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))
-            .get(MovieViewModel::class.java)
+        movieViewModel =
+            ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))
+                .get(MovieViewModel::class.java)
 
         setContent {
             var themeMode by rememberSaveable { mutableStateOf(ThemeMode.SYSTEM) }
@@ -39,15 +39,16 @@ class MainActivity : ComponentActivity() {
                     onThemeChange = { themeMode = themeMode.next() },
                     viewType = viewType,
                     onViewTypeChange = { newViewType -> viewType = newViewType },
-                    application = application 
+                    application = application,
                 )
             }
         }
     }
 
-    private fun ThemeMode.next(): ThemeMode = when (this) {
-        ThemeMode.LIGHT -> ThemeMode.DARK
-        ThemeMode.DARK -> ThemeMode.SYSTEM
-        ThemeMode.SYSTEM -> ThemeMode.LIGHT
-    }
+    private fun ThemeMode.next(): ThemeMode =
+        when (this) {
+            ThemeMode.LIGHT -> ThemeMode.DARK
+            ThemeMode.DARK -> ThemeMode.SYSTEM
+            ThemeMode.SYSTEM -> ThemeMode.LIGHT
+        }
 }

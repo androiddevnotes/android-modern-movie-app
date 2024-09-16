@@ -32,38 +32,45 @@ import com.example.tmdbapp.utils.Constants
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MovieGridItem(movie: Movie, onClick: () -> Unit, onLongClick: () -> Unit, isFavorite: Boolean) {
+fun MovieGridItem(
+    movie: Movie,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
+    isFavorite: Boolean,
+) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(2f / 3f)
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick
-            )
-            .then(
-                if (isFavorite) {
-                    Modifier.border(
-                        width = 2.dp,
-                        color = MaterialTheme.colorScheme.primary,
-                        shape = RoundedCornerShape(4.dp)
-                    )
-                } else {
-                    Modifier
-                }
-            ),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .aspectRatio(2f / 3f)
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = onLongClick,
+                ).then(
+                    if (isFavorite) {
+                        Modifier.border(
+                            width = 2.dp,
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = RoundedCornerShape(4.dp),
+                        )
+                    } else {
+                        Modifier
+                    },
+                ),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
-        shape = RoundedCornerShape(4.dp)
+        shape = RoundedCornerShape(4.dp),
     ) {
         Box {
             SubcomposeAsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(Constants.BASE_IMAGE_URL + movie.posterPath)
-                    .crossfade(true)
-                    .build(),
+                model =
+                    ImageRequest
+                        .Builder(LocalContext.current)
+                        .data(Constants.BASE_IMAGE_URL + movie.posterPath)
+                        .crossfade(true)
+                        .build(),
                 contentDescription = movie.title,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 when (painter.state) {
                     is AsyncImagePainter.State.Loading -> {
@@ -76,13 +83,13 @@ fun MovieGridItem(movie: Movie, onClick: () -> Unit, onLongClick: () -> Unit, is
                         Box(
                             Modifier
                                 .fillMaxSize()
-                                .background(MaterialTheme.colorScheme.surfaceVariant)
+                                .background(MaterialTheme.colorScheme.surfaceVariant),
                         ) {
                             Text(
                                 text = movie.title.take(1),
                                 style = MaterialTheme.typography.headlineLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.align(Alignment.Center)
+                                modifier = Modifier.align(Alignment.Center),
                             )
                         }
                     }
@@ -95,32 +102,35 @@ fun MovieGridItem(movie: Movie, onClick: () -> Unit, onLongClick: () -> Unit, is
                 }
             }
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.7f)),
-                            startY = 300f
-                        )
-                    )
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.7f)),
+                                startY = 300f,
+                            ),
+                        ),
             )
             Text(
                 text = movie.title,
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(8.dp),
+                modifier =
+                    Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(8.dp),
                 style = MaterialTheme.typography.labelSmall,
                 color = Color.White,
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
             if (isFavorite) {
                 Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .height(4.dp)
-                        .background(MaterialTheme.colorScheme.primary)
+                    modifier =
+                        Modifier
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth()
+                            .height(4.dp)
+                            .background(MaterialTheme.colorScheme.primary),
                 )
             }
         }

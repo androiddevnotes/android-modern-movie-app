@@ -1,6 +1,5 @@
 package com.example.tmdbapp.ui
 
-
 import FilterBottomSheet
 import MovieGridItem
 import androidx.compose.foundation.clickable
@@ -61,7 +60,7 @@ fun MovieListScreen(
     onViewTypeChange: (String) -> Unit,
     onThemeChange: () -> Unit,
     currentThemeMode: ThemeMode,
-    onCreateListClick: () -> Unit
+    onCreateListClick: () -> Unit,
 ) {
     var isSearchActive by rememberSaveable { mutableStateOf(false) }
     var showFilterBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -74,31 +73,34 @@ fun MovieListScreen(
     val coroutineScope = rememberCoroutineScope()
     var isRefreshing by remember { mutableStateOf(false) }
 
-    val pullRefreshState = rememberPullRefreshState(
-        refreshing = isRefreshing,
-        onRefresh = {
-            coroutineScope.launch {
-                isRefreshing = true
-                viewModel.refreshMovies()
-                isRefreshing = false
-            }
-        }
-    )
+    val pullRefreshState =
+        rememberPullRefreshState(
+            refreshing = isRefreshing,
+            onRefresh = {
+                coroutineScope.launch {
+                    isRefreshing = true
+                    viewModel.refreshMovies()
+                    isRefreshing = false
+                }
+            },
+        )
 
     val searchQuery by viewModel.searchQuery.collectAsState()
 
     val lastViewedItemIndex by viewModel.lastViewedItemIndex.collectAsState()
 
-    val listState = rememberForeverLazyListState(
-        key = "movie_list_${viewType}_${searchQuery}",
-        initialFirstVisibleItemIndex = lastViewedItemIndex,
-        initialFirstVisibleItemScrollOffset = 0
-    )
-    val gridState = rememberForeverLazyStaggeredGridState(
-        key = "movie_grid_${viewType}_${searchQuery}",
-        initialFirstVisibleItemIndex = lastViewedItemIndex,
-        initialFirstVisibleItemOffset = 0
-    )
+    val listState =
+        rememberForeverLazyListState(
+            key = "movie_list_${viewType}_$searchQuery",
+            initialFirstVisibleItemIndex = lastViewedItemIndex,
+            initialFirstVisibleItemScrollOffset = 0,
+        )
+    val gridState =
+        rememberForeverLazyStaggeredGridState(
+            key = "movie_grid_${viewType}_$searchQuery",
+            initialFirstVisibleItemIndex = lastViewedItemIndex,
+            initialFirstVisibleItemOffset = 0,
+        )
 
     val currentFilters by viewModel.filterOptions.collectAsState()
 
@@ -108,7 +110,7 @@ fun MovieListScreen(
             onDismiss = { showFilterBottomSheet = false },
             onApply = { newFilters ->
                 viewModel.setFilterOptions(newFilters)
-            }
+            },
         )
     }
 
@@ -137,15 +139,16 @@ fun MovieListScreen(
                 onThemeChange = onThemeChange,
                 currentThemeMode = currentThemeMode,
                 onFilterClick = { showFilterBottomSheet = true },
-                onCreateListClick = onCreateListClick
+                onCreateListClick = onCreateListClick,
             )
-        }
+        },
     ) { paddingValues ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .pullRefresh(pullRefreshState)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .pullRefresh(pullRefreshState),
         ) {
             when (uiState) {
                 is MovieUiState.Loading -> {
@@ -163,11 +166,11 @@ fun MovieListScreen(
                                 contentPadding = PaddingValues(4.dp),
                                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                                 verticalItemSpacing = 4.dp,
-                                state = gridState
+                                state = gridState,
                             ) {
                                 itemsIndexed(
                                     items = movies,
-                                    key = { index, movie -> "${movie.id}_${index}" }
+                                    key = { index, movie -> "${movie.id}_$index" },
                                 ) { index, movie ->
                                     if (index >= movies.size - 1 && !viewModel.isLastPage) {
                                         viewModel.loadMoreMovies()
@@ -181,7 +184,7 @@ fun MovieListScreen(
                                         onLongClick = {
                                             viewModel.toggleFavorite(movie)
                                         },
-                                        isFavorite = viewModel.isFavorite(movie.id)
+                                        isFavorite = viewModel.isFavorite(movie.id),
                                     )
                                 }
                             }
@@ -191,25 +194,26 @@ fun MovieListScreen(
                             LazyColumn(
                                 contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
                                 verticalArrangement = Arrangement.spacedBy(Constants.PADDING_MEDIUM),
-                                state = listState
+                                state = listState,
                             ) {
                                 itemsIndexed(
                                     items = movies,
-                                    key = { index, movie -> "${movie.id}_${index}" }
+                                    key = { index, movie -> "${movie.id}_$index" },
                                 ) { index, movie ->
                                     if (index >= movies.size - 1 && !viewModel.isLastPage) {
                                         viewModel.loadMoreMovies()
                                     }
                                     MovieItem(
                                         movie = movie,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .clickable {
-                                                viewModel.setLastViewedItemIndex(index)
-                                                onMovieClick(movie)
-                                            },
+                                        modifier =
+                                            Modifier
+                                                .fillMaxWidth()
+                                                .clickable {
+                                                    viewModel.setLastViewedItemIndex(index)
+                                                    onMovieClick(movie)
+                                                },
                                         onFavoriteClick = { viewModel.toggleFavorite(movie) },
-                                        isListView = true
+                                        isListView = true,
                                     )
                                 }
                             }
@@ -223,7 +227,7 @@ fun MovieListScreen(
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
                                 text = stringResource(error.messageResId),
-                                style = MaterialTheme.typography.bodyLarge
+                                style = MaterialTheme.typography.bodyLarge,
                             )
                             Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
                             Button(onClick = { viewModel.loadMoreMovies() }) {
@@ -236,7 +240,7 @@ fun MovieListScreen(
             PullRefreshIndicator(
                 refreshing = isRefreshing,
                 state = pullRefreshState,
-                modifier = Modifier.align(Alignment.TopCenter)
+                modifier = Modifier.align(Alignment.TopCenter),
             )
         }
     }

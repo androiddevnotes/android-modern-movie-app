@@ -43,7 +43,7 @@ import com.example.tmdbapp.viewmodel.MovieViewModel
 @Composable
 fun MovieDetailScreen(
     viewModel: MovieViewModel,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     val movie by viewModel.currentMovie.collectAsState()
 
@@ -59,7 +59,7 @@ fun MovieDetailScreen(
                 movie = movie!!,
                 onBackPress = onBackPress,
                 onFavoriteClick = { viewModel.toggleFavorite(movie!!) },
-                onDownloadClick = viewModel::downloadImage
+                onDownloadClick = viewModel::downloadImage,
             )
         }
     }
@@ -70,7 +70,7 @@ fun MovieDetailContent(
     movie: Movie,
     onBackPress: () -> Unit,
     onFavoriteClick: () -> Unit,
-    onDownloadClick: (String?, Context) -> Unit
+    onDownloadClick: (String?, Context) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -88,58 +88,61 @@ fun MovieDetailContent(
                         Icon(
                             imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
                             contentDescription = "Favorite",
-                            tint = if (movie.isFavorite) Color.Red else Color.White
+                            tint = if (movie.isFavorite) Color.Red else Color.White,
                         )
                     }
                     IconButton(onClick = { onDownloadClick(movie.posterPath, context) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.download_24px),
                             contentDescription = "Download Image",
-                            tint = Color.White
+                            tint = Color.White,
                         )
                     }
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = Color.Transparent,
-                    navigationIconContentColor = Color.White,
-                    actionIconContentColor = Color.White
-                )
+                colors =
+                    TopAppBarDefaults.smallTopAppBarColors(
+                        containerColor = Color.Transparent,
+                        navigationIconContentColor = Color.White,
+                        actionIconContentColor = Color.White,
+                    ),
             )
-        }
+        },
     ) { paddingValues ->
         Box(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
                 model = "https://image.tmdb.org/t/p/w500${movie.posterPath}",
                 contentDescription = movie.title,
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, Color(0xCC000000))
-                        )
-                    )
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(Color.Transparent, Color(0xCC000000)),
+                            ),
+                        ),
             )
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Bottom
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(16.dp),
+                verticalArrangement = Arrangement.Bottom,
             ) {
                 Text(
                     text = movie.title,
                     style = MaterialTheme.typography.headlineLarge,
-                    color = Color.White
+                    color = Color.White,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = movie.overview,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color.White.copy(alpha = 0.8f)
+                    color = Color.White.copy(alpha = 0.8f),
                 )
             }
         }

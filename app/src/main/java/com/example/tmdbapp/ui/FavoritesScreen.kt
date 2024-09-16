@@ -34,7 +34,7 @@ import com.example.tmdbapp.viewmodel.MovieViewModel
 fun FavoritesScreen(
     viewModel: MovieViewModel,
     onMovieClick: (Int) -> Unit,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
 ) {
     val favorites by viewModel.favorites.collectAsState()
 
@@ -44,30 +44,32 @@ fun FavoritesScreen(
                 title = {
                     Text(
                         Constants.SCREEN_TITLE_FAVORITES,
-                        style = typography.headlineMedium
+                        style = typography.headlineMedium,
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackPress) {
                         Icon(
                             Icons.Filled.ArrowBack,
-                            contentDescription = Constants.CONTENT_DESC_BACK
+                            contentDescription = Constants.CONTENT_DESC_BACK,
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = colorScheme.surface,
-                    titleContentColor = colorScheme.onSurface
-                )
+                colors =
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = colorScheme.surface,
+                        titleContentColor = colorScheme.onSurface,
+                    ),
             )
-        }
+        },
     ) { paddingValues ->
         if (favorites.isEmpty()) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                contentAlignment = Alignment.Center,
             ) {
                 Text(Constants.MESSAGE_NO_FAVORITES)
             }
@@ -75,14 +77,14 @@ fun FavoritesScreen(
             LazyColumn(
                 contentPadding = PaddingValues(Constants.PADDING_MEDIUM),
                 verticalArrangement = Arrangement.spacedBy(Constants.PADDING_SMALL),
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier.padding(paddingValues),
             ) {
                 items(favorites) { movie ->
                     MovieItem(
                         movie = movie,
                         modifier = Modifier.clickable { onMovieClick(movie.id) },
                         onFavoriteClick = { viewModel.toggleFavorite(movie) },
-                        isListView = true
+                        isListView = true,
                     )
                 }
             }

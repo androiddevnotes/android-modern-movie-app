@@ -34,18 +34,20 @@ import retrofit2.HttpException
 import java.io.IOException
 
 sealed class MovieUiState {
+    data class Error(
+        val error: MovieError,
+    ) : MovieUiState()
 
-    data class Error(val error: MovieError) : MovieUiState()
-
-    data class Success(val movies: List<Movie>) : MovieUiState()
+    data class Success(
+        val movies: List<Movie>,
+    ) : MovieUiState()
 
     object Loading : MovieUiState()
-
 }
 
-
-class MovieViewModel(application: Application) : AndroidViewModel(application) {
-
+class MovieViewModel(
+    application: Application,
+) : AndroidViewModel(application) {
     private var currentPage = 1
     private var isLoading = false
     private var searchJob: Job? = null
@@ -80,7 +82,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         fetchPopularMovies()
         loadFavorites()
 
-        
         viewModelScope.launch {
             val sessionId = sessionManager.getSessionId()
             if (sessionId != null) {
@@ -89,40 +90,48 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun downloadImage(posterPath: String?, context: Context) {
+    fun downloadImage(
+        posterPath: String?,
+        context: Context,
+    ) {
         viewModelScope.launch {
             if (posterPath == null) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.error_no_image),
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast
+                    .makeText(
+                        context,
+                        context.getString(R.string.error_no_image),
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 return@launch
             }
 
             val imageUrl = "${Constants.BASE_IMAGE_URL}$posterPath"
 
             try {
-                val bitmap = withContext(Dispatchers.IO) {
-                    val loader = ImageLoader(context)
-                    val request = ImageRequest.Builder(context)
-                        .data(imageUrl)
-                        .allowHardware(false)
-                        .build()
+                val bitmap =
+                    withContext(Dispatchers.IO) {
+                        val loader = ImageLoader(context)
+                        val request =
+                            ImageRequest
+                                .Builder(context)
+                                .data(imageUrl)
+                                .allowHardware(false)
+                                .build()
 
-                    val result = (loader.execute(request) as SuccessResult).drawable
-                    (result as BitmapDrawable).bitmap
-                }
+                        val result = (loader.execute(request) as SuccessResult).drawable
+                        (result as BitmapDrawable).bitmap
+                    }
 
                 val filename = "TMDB_${System.currentTimeMillis()}.jpg"
-                val contentValues = ContentValues().apply {
-                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
-                        put(MediaStore.MediaColumns.IS_PENDING, 1)
+                val contentValues =
+                    ContentValues().apply {
+                        put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                        put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                            put(MediaStore.MediaColumns.IS_PENDING, 1)
+                        }
                     }
-                }
 
                 val resolver = context.contentResolver
                 val uri =
@@ -141,24 +150,27 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                         resolver.update(it, contentValues, null, null)
                     }
 
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.success_image_saved),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast
+                        .makeText(
+                            context,
+                            context.getString(R.string.success_image_saved),
+                            Toast.LENGTH_SHORT,
+                        ).show()
                 } ?: run {
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.error_failed_to_save),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast
+                        .makeText(
+                            context,
+                            context.getString(R.string.error_failed_to_save),
+                            Toast.LENGTH_SHORT,
+                        ).show()
                 }
             } catch (e: IOException) {
-                Toast.makeText(
-                    context,
-                    "${context.getString(R.string.error_download_failed)}: ${e.localizedMessage}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast
+                    .makeText(
+                        context,
+                        "${context.getString(R.string.error_download_failed)}: ${e.localizedMessage}",
+                        Toast.LENGTH_SHORT,
+                    ).show()
             }
         }
     }
@@ -169,7 +181,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                 val movie = repository.getMovieDetails(movieId)
                 _currentMovie.value = movie
             } catch (e: Exception) {
-
                 _currentMovie.value = null
             }
         }
@@ -203,15 +214,14 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         _searchQuery.value = query
         searchJob?.cancel()
         if (query.isNotEmpty()) {
-            searchJob = viewModelScope.launch {
-                delay(Constants.DELAY_SEARCH)
-                searchMovies(query)
-            }
+            searchJob =
+                viewModelScope.launch {
+                    delay(Constants.DELAY_SEARCH)
+                    searchMovies(query)
+                }
         } else if (oldQuery.isNotEmpty() && query.isEmpty()) {
-
             refreshMovies()
         }
-
     }
 
     fun setSortOption(sortOption: SortOption) {
@@ -229,25 +239,23 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
             repository.toggleFavorite(movie)
             val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
 
-
             _currentMovie.value = updatedMovie
 
             when (val currentState = _uiState.value) {
                 is MovieUiState.Success -> {
-                    val updatedMovies = currentState.movies.map {
-                        if (it.id == movie.id) updatedMovie else it
-                    }
+                    val updatedMovies =
+                        currentState.movies.map {
+                            if (it.id == movie.id) updatedMovie else it
+                        }
                     _uiState.value = MovieUiState.Success(updatedMovies)
                 }
 
                 else -> {}
             }
 
-
             _selectedMovie.update { current ->
                 if (current?.id == movie.id) updatedMovie else current
             }
-
 
             if (updatedMovie.isFavorite) {
                 _favorites.update { it + updatedMovie }
@@ -262,13 +270,14 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         isLoading = true
         viewModelScope.launch {
             try {
-                val result = repository.discoverMovies(
-                    page = currentPage,
-                    sortBy = _currentSortOption.value.apiValue,
-                    genres = _filterOptions.value.genres,
-                    releaseYear = _filterOptions.value.releaseYear,
-                    minRating = _filterOptions.value.minRating
-                )
+                val result =
+                    repository.discoverMovies(
+                        page = currentPage,
+                        sortBy = _currentSortOption.value.apiValue,
+                        genres = _filterOptions.value.genres,
+                        releaseYear = _filterOptions.value.releaseYear,
+                        minRating = _filterOptions.value.minRating,
+                    )
                 when (result) {
                     is Resource.Success -> {
                         val newMovies = result.data?.results ?: emptyList()
@@ -304,11 +313,12 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
                 when (result) {
                     is Resource.Success -> {
                         val newMovies = result.data?.results ?: emptyList()
-                        val currentMovies = if (_uiState.value is MovieUiState.Success) {
-                            (_uiState.value as MovieUiState.Success).movies
-                        } else {
-                            emptyList()
-                        }
+                        val currentMovies =
+                            if (_uiState.value is MovieUiState.Success) {
+                                (_uiState.value as MovieUiState.Success).movies
+                            } else {
+                                emptyList()
+                            }
                         _uiState.value = MovieUiState.Success(currentMovies + newMovies)
                         currentPage++
                         isLastPage = newMovies.isEmpty()
@@ -326,12 +336,10 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun handleError(errorMessage: String?): MovieError {
-        return MovieError.ApiError(errorMessage ?: "An unknown error occurred")
-    }
+    private fun handleError(errorMessage: String?): MovieError = MovieError.ApiError(errorMessage ?: "An unknown error occurred")
 
-    private fun handleError(error: Throwable): MovieError {
-        return when (error) {
+    private fun handleError(error: Throwable): MovieError =
+        when (error) {
             is IOException -> MovieError.Network
             is HttpException -> {
                 if (error.code() in 500..599) {
@@ -343,7 +351,6 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
 
             else -> MovieError.Unknown
         }
-    }
 
     private fun loadFavorites() {
         viewModelScope.launch {
@@ -367,15 +374,10 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun isFavorite(movieId: Int): Boolean {
-
-
-        return favorites.value.any { it.id == movieId }
-    }
+    fun isFavorite(movieId: Int): Boolean = favorites.value.any { it.id == movieId }
 
     fun startAuthentication() {
         viewModelScope.launch {
-            
             if (_authState.value == AuthState.Authenticated) return@launch
 
             _authState.value = AuthState.Loading
@@ -403,50 +405,74 @@ class MovieViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun createList(name: String, description: String) {
+    fun createList(
+        name: String,
+        description: String,
+    ) {
         viewModelScope.launch {
             _createListState.value = CreateListState.Loading
             when (val result = repository.createList(name, description)) {
-                is Resource.Success -> _createListState.value = result.data?.let {
-                    CreateListState.Success(
-                        it
-                    )
-                }!!
-                is Resource.Error -> _createListState.value = result.message?.let {
-                    CreateListState.Error(
-                        it
-                    )
-                }!!
+                is Resource.Success ->
+                    _createListState.value =
+                        result.data?.let {
+                            CreateListState.Success(
+                                it,
+                            )
+                        }!!
+                is Resource.Error ->
+                    _createListState.value =
+                        result.message?.let {
+                            CreateListState.Error(
+                                it,
+                            )
+                        }!!
             }
         }
     }
-
 }
 
 data class FilterOptions(
     val genres: List<Int> = emptyList(),
     val minRating: Float? = null,
-    val releaseYear: Int? = null
+    val releaseYear: Int? = null,
 )
 
-enum class SortOption(val apiValue: String, @StringRes val stringRes: Int) {
+enum class SortOption(
+    val apiValue: String,
+    @StringRes val stringRes: Int,
+) {
     NOW_PLAYING("release_date.desc", R.string.sort_now_playing),
     POPULAR("popularity.desc", R.string.sort_popularity),
     TOP_RATED("vote_average.desc", R.string.sort_top_rated),
-    UPCOMING("primary_release_date.asc", R.string.sort_upcoming)
+    UPCOMING("primary_release_date.asc", R.string.sort_upcoming),
 }
 
 sealed class AuthState {
     data object Idle : AuthState()
+
     data object Loading : AuthState()
-    data class RequestTokenCreated(val token: String) : AuthState()
+
+    data class RequestTokenCreated(
+        val token: String,
+    ) : AuthState()
+
     data object Authenticated : AuthState()
-    data class Error(val message: String) : AuthState()
+
+    data class Error(
+        val message: String,
+    ) : AuthState()
 }
 
 sealed class CreateListState {
     data object Idle : CreateListState()
+
     data object Loading : CreateListState()
-    data class Success(val listId: Int) : CreateListState()
-    data class Error(val message: String) : CreateListState()
+
+    data class Success(
+        val listId: Int,
+    ) : CreateListState()
+
+    data class Error(
+        val message: String,
+    ) : CreateListState()
 }

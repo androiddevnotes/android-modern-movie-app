@@ -13,16 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.tmdbapp.R
-import com.example.tmdbapp.viewmodel.MovieViewModel
 import com.example.tmdbapp.viewmodel.AuthState
 import com.example.tmdbapp.viewmodel.CreateListState
+import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListCreationScreen(
     viewModel: MovieViewModel,
     onNavigateBack: () -> Unit,
-    application: Application
+    application: Application,
 ) {
     var listName by remember { mutableStateOf("") }
     var listDescription by remember { mutableStateOf("") }
@@ -41,16 +41,17 @@ fun ListCreationScreen(
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
-                }
+                },
             )
-        }
+        },
     ) { paddingValues ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             when (authState) {
                 is AuthState.Loading -> {
@@ -59,7 +60,7 @@ fun ListCreationScreen(
                 is AuthState.Error -> {
                     Text(
                         text = stringResource(R.string.auth_error, (authState as AuthState.Error).message),
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.error,
                     )
                 }
                 is AuthState.RequestTokenCreated -> {
@@ -75,14 +76,13 @@ fun ListCreationScreen(
                     }
                 }
                 is AuthState.Authenticated -> {
-                    
                     ListCreationContent(
                         listName = listName,
                         onListNameChange = { listName = it },
                         listDescription = listDescription,
                         onListDescriptionChange = { listDescription = it },
                         onCreateList = { viewModel.createList(listName, listDescription) },
-                        createListState = createListState
+                        createListState = createListState,
                     )
                 }
                 else -> {}
@@ -98,20 +98,20 @@ private fun ListCreationContent(
     listDescription: String,
     onListDescriptionChange: (String) -> Unit,
     onCreateList: () -> Unit,
-    createListState: CreateListState
+    createListState: CreateListState,
 ) {
     OutlinedTextField(
         value = listName,
         onValueChange = onListNameChange,
         label = { Text(stringResource(R.string.list_name)) },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     )
 
     OutlinedTextField(
         value = listDescription,
         onValueChange = onListDescriptionChange,
         label = { Text(stringResource(R.string.list_description)) },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     )
 
     Button(
@@ -127,13 +127,13 @@ private fun ListCreationContent(
         is CreateListState.Success -> {
             Text(
                 text = stringResource(R.string.list_created_success, createListState.listId),
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
             )
         }
         is CreateListState.Error -> {
             Text(
                 text = stringResource(R.string.list_creation_error, createListState.message),
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.error,
             )
         }
         else -> {}

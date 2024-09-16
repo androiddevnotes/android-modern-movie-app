@@ -22,7 +22,7 @@ android {
         buildConfigField(
             "String",
             "TMDB_API_KEY",
-            "\"${project.findProperty("TMDB_API_KEY") ?: ""}\""
+            "\"${project.findProperty("TMDB_API_KEY") ?: ""}\"",
         )
     }
 
@@ -31,7 +31,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -41,13 +41,14 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
-        freeCompilerArgs += listOf(
-            "-opt-in=kotlin.RequiresOptIn",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
-            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi"
-        )
+        freeCompilerArgs +=
+            listOf(
+                "-opt-in=kotlin.RequiresOptIn",
+                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
+                "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+                "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+            )
     }
     buildFeatures {
         compose = true
