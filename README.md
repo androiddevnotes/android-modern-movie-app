@@ -20,6 +20,22 @@ the codebase evolves as the AI generates more and more code.
    ```
 3. Sync project with Gradle files.
 
+## Tech Stack
+
+- **Language**: Kotlin
+- **UI Framework**: Jetpack Compose
+- **Architecture**: MVVM (Model-View-ViewModel)
+- **Networking**: Retrofit with OkHttp
+- **JSON Parsing**: Gson
+- **Image Loading**: Coil
+- **Asynchronous Programming**: Kotlin Coroutines
+- **Navigation**: Jetpack Navigation Compose
+- **Dependency Injection**: Manual (no DI framework used yet)
+- **UI Components**: Material Design 3
+- **Build System**: Gradle with Kotlin DSL
+- **Minimum SDK**: 21 (Android 5.0 Lollipop)
+- **Target SDK**: 34 (Android 14)
+
 ## Key Features
 
 1. Browse movies by different categories (popular, top-rated, etc.)
@@ -54,18 +70,3 @@ The app follows the MVVM (Model-View-ViewModel) architecture:
 4. App exchanges the approved token for a session ID
 5. Session ID is stored for future authenticated requests
 
-## Tech Stack
-
-- **Language**: Kotlin
-- **UI Framework**: Jetpack Compose
-- **Architecture**: MVVM (Model-View-ViewModel)
-- **Networking**: Retrofit with OkHttp
-- **JSON Parsing**: Gson
-- **Image Loading**: Coil
-- **Asynchronous Programming**: Kotlin Coroutines
-- **Navigation**: Jetpack Navigation Compose
-- **Dependency Injection**: Manual (no DI framework used yet)
-- **UI Components**: Material Design 3
-- **Build System**: Gradle with Kotlin DSL
-- **Minimum SDK**: 21 (Android 5.0 Lollipop)
-- **Target SDK**: 34 (Android 14)
