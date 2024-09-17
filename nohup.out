@@ -1,0 +1,489 @@
+2024-09-17 19:17:51.394 studio[49174:589149] allVms required 1.8*,1.8+
+2024-09-17 19:17:51.396 studio[49174:589166] Current Directory: /Users/ask/PROJECTS/KMP/TmdbApp
+2024-09-17 19:17:51.396 studio[49174:589166] parseVMOptions: STUDIO_VM_OPTIONS = (null)
+2024-09-17 19:17:51.396 studio[49174:589166] fullFileName is: /Applications/Android Studio.app/Contents/bin/studio.vmoptions
+2024-09-17 19:17:51.396 studio[49174:589166] fullFileName exists: /Applications/Android Studio.app/Contents/bin/studio.vmoptions
+2024-09-17 19:17:51.396 studio[49174:589166] parseVMOptions: /Applications/Android Studio.app/Contents/bin/studio.vmoptions
+2024-09-17 19:17:51.397 studio[49174:589166] parseVMOptions: /Applications/Android Studio.app.vmoptions
+2024-09-17 19:17:51.399 studio[49174:589166] parseVMOptions: /Users/ask/Library/Application Support/Google/AndroidStudio2024.1/studio.vmoptions
+2024-09-17 19:17:51.399 studio[49174:589166] parseVMOptions: platform=18 user=4 file=/Users/ask/Library/Application Support/Google/AndroidStudio2024.1/studio.vmoptions
+CompileCommand: exclude com/intellij/openapi/vfs/impl/FilePartNodeRoot.trieDescend bool exclude = true
+2024-09-17 19:17:52,171 [    421]   WARN - #c.i.s.ComponentManagerImpl - com.android.tools.idea.flags.StudioFlags <clinit> requests com.android.tools.idea.flags.StudioFlagSettings instance. Class initialization must not depend on services. Consider using instance of the service on-demand instead.
+2024-09-17 19:17:52,781 [   1031]   WARN - #c.i.o.a.ActionStub - ActionGroup should be registered using <group> tag: id="MakeTypeSelectionGroup" class="com.android.tools.idea.gradle.actions.MakeTypeSelectionGroupAction"
+2024-09-17 19:17:52,822 [   1072]   WARN - #c.i.o.a.ActionStub - ActionGroup should be registered using <group> tag: id="Android.CreateResourcesActionGroup" class="org.jetbrains.android.actions.CreateResourceFileActionGroup"
+2024-09-17 19:17:52,951 [   1201]   WARN - #c.i.u.j.JBCefApp - JCefAppConfig.class is not from a JBR module, url: jar:file:/Applications/Android%20Studio.app/Contents/lib/lib.jar!/com/jetbrains/cef/JCefAppConfig.class (Use JBR bundled with the IDE)
+2024-09-17 19:17:53,128 [   1378]   WARN - #c.i.s.ComponentManagerImpl - org.jetbrains.kotlin.idea.gradleJava.scripting.roots.GradleBuildRootDataSerializer <clinit> requests com.intellij.util.gist.storage.GistStorage instance. Class initialization must not depend on services. Consider using instance of the service on-demand instead.
+2024-09-17 19:17:53.904 studio[49174:589149] WARNING: Secure coding is not enabled for restorable state! Enable secure coding by implementing NSApplicationDelegate.applicationSupportsSecureRestorableState: and returning YES.
+2024-09-17 19:17:54,508 [   2758]   WARN - #c.i.u.x.Binding - No accessors for com.intellij.openapi.roots.libraries.DummyLibraryProperties. This means that state class cannot be serialized properly. Please see https://jb.gg/ij-psoc
+2024-09-17 19:17:54,929 [   3179]   WARN - #c.i.s.ComponentManagerImpl - com.supermaven.intellij.binary.BinaryLifecycle <clinit> requests com.supermaven.intellij.authentication.SupermavenSettingsState instance. Class initialization must not depend on services. Consider using instance of the service on-demand instead.
+2024-09-17 19:17:55,498 [   3748]   WARN - #com.android.ddmlib - * daemon not running; starting now at tcp:5037
+Could not process message from binary:  {"kind":"passthrough","stateId":"","items":null,"passthrough":{"kind":"active_repo","repo_simple_name":null}}
+2024-09-17 19:17:56,194 [   4444]   WARN - #c.i.i.s.i.StartupManagerImpl - Migrate com.supermaven.intellij.listeners.StartupListener to ProjectActivity [Plugin: com.supermaven.intellij]
+com.intellij.diagnostic.PluginException: Migrate com.supermaven.intellij.listeners.StartupListener to ProjectActivity [Plugin: com.supermaven.intellij]
+	at com.intellij.ide.startup.impl.StartupManagerImpl.runPostStartupActivities(StartupManagerImpl.kt:276)
+	at com.intellij.ide.startup.impl.StartupManagerImpl.access$runPostStartupActivities(StartupManagerImpl.kt:68)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invokeSuspend(StartupManagerImpl.kt:191)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:78)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:167)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3.invokeSuspend(StartupManagerImpl.kt:190)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:270)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:102)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2024-09-17 19:17:56,275 [   4525]   WARN - #com.android.tools.ndk.HotfixForOCInitialTablesBuildingActivity - Overriding OCInitialTablesBuildingActivity with HotfixForOCInitialTablesBuildingActivity
+2024-09-17 19:17:57,798 [   6048]   WARN - #com.android.tools.idea.wearpairing.WearPairingManager - Waited 1 seconds (plus 5020625 nanoseconds delay) for TrustedListenableFutureTask@78c9784e[status=PENDING, info=[task=[running=[NOT STARTED YET], com.android.tools.idea.adb.AdbService$$Lambda$2964/0x0000000801d33cc8@22c7ac44]]]
+java.util.concurrent.TimeoutException: Waited 1 seconds (plus 5020625 nanoseconds delay) for TrustedListenableFutureTask@78c9784e[status=PENDING, info=[task=[running=[NOT STARTED YET], com.android.tools.idea.adb.AdbService$$Lambda$2964/0x0000000801d33cc8@22c7ac44]]]
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:533)
+	at com.google.common.util.concurrent.FluentFuture$TrustedFuture.get(FluentFuture.java:99)
+	at com.android.tools.idea.wearpairing.WearPairingManager.findAdb(WearPairingManager.kt:460)
+	at com.android.tools.idea.wearpairing.WearPairingManager.access$findAdb(WearPairingManager.kt:69)
+	at com.android.tools.idea.wearpairing.WearPairingManager$connectedDevicesProvider$1.invoke(WearPairingManager.kt:99)
+	at com.android.tools.idea.wearpairing.WearPairingManager$connectedDevicesProvider$1.invoke(WearPairingManager.kt:98)
+	at com.android.tools.idea.wearpairing.WearPairingManager.getConnectedDevices(WearPairingManager.kt:469)
+	at com.android.tools.idea.wearpairing.WearPairingManager.getAvailableDevices(WearPairingManager.kt:398)
+	at com.android.tools.idea.wearpairing.WearPairingManager.updateListAndForwardState(WearPairingManager.kt:415)
+	at com.android.tools.idea.wearpairing.WearPairingManager.access$updateListAndForwardState(WearPairingManager.kt:69)
+	at com.android.tools.idea.wearpairing.WearPairingManager$setDeviceListListener$1.invokeSuspend(WearPairingManager.kt:208)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2024-09-17 19:17:58,520 [   6770]   WARN - #com.android.ddmlib - * daemon started successfully
+Popup message: We don't have an active payment method on file for your account. To use Supermaven Pro, please add a payment method.
+2024-09-17 19:18:11,344 [  19594]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-09-17 19:18:11,361 [  19611]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: testing.instrumented.configuration
+2024-09-17 19:18:11,361 [  19611]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: project.propCompiler
+2024-09-17 19:18:12,093 [  20343] SEVERE - #c.i.o.e.i.ExtensionPointImpl - Intention Description Dir URL is null: Create Preview; ComposeCreatePreviewActionK1; while looking for description.html [Plugin: androidx.compose.plugins.idea]
+com.intellij.diagnostic.PluginException: Intention Description Dir URL is null: Create Preview; ComposeCreatePreviewActionK1; while looking for description.html [Plugin: androidx.compose.plugins.idea]
+	at com.intellij.codeInsight.intention.impl.config.IntentionActionMetaData.getResourceLocation(IntentionActionMetaData.java:62)
+	at com.intellij.codeInsight.intention.impl.config.BeforeAfterActionMetaData.getDescription(BeforeAfterActionMetaData.java:132)
+	at com.intellij.codeInsight.intention.impl.config.IntentionManagerSettings$IntentionSearchableOptionContributor.processOptions(IntentionManagerSettings.kt:84)
+	at com.intellij.ide.ui.search.SearchableOptionsRegistrarImpl.lambda$initialize$0(SearchableOptionsRegistrarImpl.java:137)
+	at com.intellij.openapi.extensions.ExtensionPointName.forEachExtensionSafe(ExtensionPointName.kt:61)
+	at com.intellij.ide.ui.search.SearchableOptionsRegistrarImpl.initialize(SearchableOptionsRegistrarImpl.java:137)
+	at com.intellij.openapi.options.newEditor.SettingsFilter.lambda$new$1(SettingsFilter.java:59)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.base/java.util.concurrent.Executors$PrivilegedThreadFactory$1$1.run(Unknown Source)
+	at java.base/java.util.concurrent.Executors$PrivilegedThreadFactory$1$1.run(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(Unknown Source)
+	at java.base/java.util.concurrent.Executors$PrivilegedThreadFactory$1.run(Unknown Source)
+	at java.base/java.lang.Thread.run(Unknown Source)
+2024-09-17 19:18:12,104 [  20354] SEVERE - #c.i.o.e.i.ExtensionPointImpl - Android Studio Koala Feature Drop | 2024.1.2  Build #AI-241.18034.62.2412.12266719
+2024-09-17 19:18:12,104 [  20354] SEVERE - #c.i.o.e.i.ExtensionPointImpl - JDK: 17.0.11; VM: OpenJDK 64-Bit Server VM; Vendor: JetBrains s.r.o.
+2024-09-17 19:18:12,104 [  20354] SEVERE - #c.i.o.e.i.ExtensionPointImpl - OS: Mac OS X
+2024-09-17 19:18:12,104 [  20354] SEVERE - #c.i.o.e.i.ExtensionPointImpl - Last Action: EditorCut
+2024-09-17 19:18:31,556 [  39806]   WARN - #c.i.u.x.Binding - No accessors for org.jetbrains.kotlin.cli.common.arguments.InternalArgument. This means that state class cannot be serialized properly. Please see https://jb.gg/ij-psoc
+2024-09-17 19:18:31,568 [  39818]   WARN - #c.i.u.x.Binding - No accessors for org.jetbrains.kotlin.idea.projectConfiguration.KotlinNotConfiguredSuppressedModulesState. This means that state class cannot be serialized properly. Please see https://jb.gg/ij-psoc
+project closed
+2024-09-17 19:18:53.388 studio[50085:592633] allVms required 1.8*,1.8+
+2024-09-17 19:18:53.389 studio[50085:592648] Current Directory: /Users/ask/PROJECTS/KMP/TmdbApp
+2024-09-17 19:18:53.389 studio[50085:592648] parseVMOptions: STUDIO_VM_OPTIONS = (null)
+2024-09-17 19:18:53.389 studio[50085:592648] fullFileName is: /Applications/Android Studio.app/Contents/bin/studio.vmoptions
+2024-09-17 19:18:53.390 studio[50085:592648] fullFileName exists: /Applications/Android Studio.app/Contents/bin/studio.vmoptions
+2024-09-17 19:18:53.390 studio[50085:592648] parseVMOptions: /Applications/Android Studio.app/Contents/bin/studio.vmoptions
+2024-09-17 19:18:53.390 studio[50085:592648] parseVMOptions: /Applications/Android Studio.app.vmoptions
+2024-09-17 19:18:53.391 studio[50085:592648] parseVMOptions: /Users/ask/Library/Application Support/Google/AndroidStudio2024.1/studio.vmoptions
+2024-09-17 19:18:53.391 studio[50085:592648] parseVMOptions: platform=18 user=4 file=/Users/ask/Library/Application Support/Google/AndroidStudio2024.1/studio.vmoptions
+CompileCommand: exclude com/intellij/openapi/vfs/impl/FilePartNodeRoot.trieDescend bool exclude = true
+2024-09-17 19:18:53,971 [    331]   WARN - #c.i.s.ComponentManagerImpl - com.android.tools.idea.flags.StudioFlags <clinit> requests com.android.tools.idea.flags.StudioFlagSettings instance. Class initialization must not depend on services. Consider using instance of the service on-demand instead.
+2024-09-17 19:18:54,490 [    850]   WARN - #c.i.o.a.ActionStub - ActionGroup should be registered using <group> tag: id="MakeTypeSelectionGroup" class="com.android.tools.idea.gradle.actions.MakeTypeSelectionGroupAction"
+2024-09-17 19:18:54,520 [    880]   WARN - #c.i.o.a.ActionStub - ActionGroup should be registered using <group> tag: id="Android.CreateResourcesActionGroup" class="org.jetbrains.android.actions.CreateResourceFileActionGroup"
+2024-09-17 19:18:54,559 [    919]   WARN - #c.i.s.ComponentManagerImpl - org.jetbrains.kotlin.idea.gradleJava.scripting.roots.GradleBuildRootDataSerializer <clinit> requests com.intellij.util.gist.storage.GistStorage instance. Class initialization must not depend on services. Consider using instance of the service on-demand instead.
+2024-09-17 19:18:54,611 [    971]   WARN - #c.i.u.j.JBCefApp - JCefAppConfig.class is not from a JBR module, url: jar:file:/Applications/Android%20Studio.app/Contents/lib/lib.jar!/com/jetbrains/cef/JCefAppConfig.class (Use JBR bundled with the IDE)
+2024-09-17 19:18:56,119 [   2479]   WARN - #c.i.u.x.Binding - No accessors for com.intellij.openapi.roots.libraries.DummyLibraryProperties. This means that state class cannot be serialized properly. Please see https://jb.gg/ij-psoc
+2024-09-17 19:18:56,151 [   2511]   WARN - #com.android.ddmlib - * daemon not running; starting now at tcp:5037
+2024-09-17 19:18:56,384 [   2744]   WARN - #c.i.s.ComponentManagerImpl - com.supermaven.intellij.binary.BinaryLifecycle <clinit> requests com.supermaven.intellij.authentication.SupermavenSettingsState instance. Class initialization must not depend on services. Consider using instance of the service on-demand instead.
+Could not process message from binary:  {"kind":"passthrough","stateId":"","items":null,"passthrough":{"kind":"active_repo","repo_simple_name":null}}
+2024-09-17 19:18:57,276 [   3636]   WARN - #c.i.i.s.i.StartupManagerImpl - Migrate com.supermaven.intellij.listeners.StartupListener to ProjectActivity [Plugin: com.supermaven.intellij]
+com.intellij.diagnostic.PluginException: Migrate com.supermaven.intellij.listeners.StartupListener to ProjectActivity [Plugin: com.supermaven.intellij]
+	at com.intellij.ide.startup.impl.StartupManagerImpl.runPostStartupActivities(StartupManagerImpl.kt:276)
+	at com.intellij.ide.startup.impl.StartupManagerImpl.access$runPostStartupActivities(StartupManagerImpl.kt:68)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invokeSuspend(StartupManagerImpl.kt:191)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3$2.invoke(StartupManagerImpl.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:78)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:167)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.intellij.ide.startup.impl.StartupManagerImpl$runPostStartupActivities$3.invokeSuspend(StartupManagerImpl.kt:190)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:270)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:102)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2024-09-17 19:18:57,317 [   3677]   WARN - #com.android.tools.ndk.HotfixForOCInitialTablesBuildingActivity - Overriding OCInitialTablesBuildingActivity with HotfixForOCInitialTablesBuildingActivity
+2024-09-17 19:18:58,960 [   5320]   WARN - #com.android.tools.idea.wearpairing.WearPairingManager - Waited 1 seconds (plus 5017958 nanoseconds delay) for TrustedListenableFutureTask@bae9aae[status=PENDING, info=[task=[running=[NOT STARTED YET], com.android.tools.idea.adb.AdbService$$Lambda$2621/0x0000000801b10e68@6d50c44b]]]
+java.util.concurrent.TimeoutException: Waited 1 seconds (plus 5017958 nanoseconds delay) for TrustedListenableFutureTask@bae9aae[status=PENDING, info=[task=[running=[NOT STARTED YET], com.android.tools.idea.adb.AdbService$$Lambda$2621/0x0000000801b10e68@6d50c44b]]]
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:533)
+	at com.google.common.util.concurrent.FluentFuture$TrustedFuture.get(FluentFuture.java:99)
+	at com.android.tools.idea.wearpairing.WearPairingManager.findAdb(WearPairingManager.kt:460)
+	at com.android.tools.idea.wearpairing.WearPairingManager.access$findAdb(WearPairingManager.kt:69)
+	at com.android.tools.idea.wearpairing.WearPairingManager$connectedDevicesProvider$1.invoke(WearPairingManager.kt:99)
+	at com.android.tools.idea.wearpairing.WearPairingManager$connectedDevicesProvider$1.invoke(WearPairingManager.kt:98)
+	at com.android.tools.idea.wearpairing.WearPairingManager.getConnectedDevices(WearPairingManager.kt:469)
+	at com.android.tools.idea.wearpairing.WearPairingManager.getAvailableDevices(WearPairingManager.kt:398)
+	at com.android.tools.idea.wearpairing.WearPairingManager.updateListAndForwardState(WearPairingManager.kt:415)
+	at com.android.tools.idea.wearpairing.WearPairingManager.access$updateListAndForwardState(WearPairingManager.kt:69)
+	at com.android.tools.idea.wearpairing.WearPairingManager$setDeviceListListener$1.invokeSuspend(WearPairingManager.kt:208)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:115)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:103)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)
+2024-09-17 19:18:59,167 [   5527]   WARN - #com.android.ddmlib - * daemon started successfully
+2024-09-17 19:19:02.446 studio[50085:592633] WARNING: Secure coding is not enabled for restorable state! Enable secure coding by implementing NSApplicationDelegate.applicationSupportsSecureRestorableState: and returning YES.
+Popup message: We don't have an active payment method on file for your account. To use Supermaven Pro, please add a payment method.
+2024-09-17 19:19:18,778 [  25138]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-09-17 19:19:18,791 [  25151]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: testing.instrumented.configuration
+2024-09-17 19:19:18,791 [  25151]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: project.propCompiler
+2024-09-17 19:19:19,409 [  25769] SEVERE - #c.i.o.e.i.ExtensionPointImpl - Intention Description Dir URL is null: Create Preview; ComposeCreatePreviewActionK1; while looking for description.html [Plugin: androidx.compose.plugins.idea]
+com.intellij.diagnostic.PluginException: Intention Description Dir URL is null: Create Preview; ComposeCreatePreviewActionK1; while looking for description.html [Plugin: androidx.compose.plugins.idea]
+	at com.intellij.codeInsight.intention.impl.config.IntentionActionMetaData.getResourceLocation(IntentionActionMetaData.java:62)
+	at com.intellij.codeInsight.intention.impl.config.BeforeAfterActionMetaData.getDescription(BeforeAfterActionMetaData.java:132)
+	at com.intellij.codeInsight.intention.impl.config.IntentionManagerSettings$IntentionSearchableOptionContributor.processOptions(IntentionManagerSettings.kt:84)
+	at com.intellij.ide.ui.search.SearchableOptionsRegistrarImpl.lambda$initialize$0(SearchableOptionsRegistrarImpl.java:137)
+	at com.intellij.openapi.extensions.ExtensionPointName.forEachExtensionSafe(ExtensionPointName.kt:61)
+	at com.intellij.ide.ui.search.SearchableOptionsRegistrarImpl.initialize(SearchableOptionsRegistrarImpl.java:137)
+	at com.intellij.openapi.options.newEditor.SettingsFilter.lambda$new$1(SettingsFilter.java:59)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.base/java.util.concurrent.Executors$PrivilegedThreadFactory$1$1.run(Unknown Source)
+	at java.base/java.util.concurrent.Executors$PrivilegedThreadFactory$1$1.run(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(Unknown Source)
+	at java.base/java.util.concurrent.Executors$PrivilegedThreadFactory$1.run(Unknown Source)
+	at java.base/java.lang.Thread.run(Unknown Source)
+2024-09-17 19:19:19,416 [  25776] SEVERE - #c.i.o.e.i.ExtensionPointImpl - Android Studio Koala Feature Drop | 2024.1.2  Build #AI-241.18034.62.2412.12266719
+2024-09-17 19:19:19,417 [  25777] SEVERE - #c.i.o.e.i.ExtensionPointImpl - JDK: 17.0.11; VM: OpenJDK 64-Bit Server VM; Vendor: JetBrains s.r.o.
+2024-09-17 19:19:19,417 [  25777] SEVERE - #c.i.o.e.i.ExtensionPointImpl - OS: Mac OS X
+2024-09-17 19:19:19,417 [  25777] SEVERE - #c.i.o.e.i.ExtensionPointImpl - Last Action: 
+2024-09-17 19:19:23,268 [  29628]   WARN - #c.i.u.x.Binding - No accessors for org.jetbrains.kotlin.cli.common.arguments.InternalArgument. This means that state class cannot be serialized properly. Please see https://jb.gg/ij-psoc
+2024-09-17 19:19:23,278 [  29638]   WARN - #c.i.u.x.Binding - No accessors for org.jetbrains.kotlin.idea.projectConfiguration.KotlinNotConfiguredSuppressedModulesState. This means that state class cannot be serialized properly. Please see https://jb.gg/ij-psoc
+2024-09-17 19:19:33,869 [  40229]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-09-17 19:19:33,874 [  40234]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: testing.instrumented.configuration
+2024-09-17 19:19:33,874 [  40234]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: project.propCompiler
+2024-09-17 19:19:53,896 [  60256]   WARN - #c.i.u.x.Binding - No accessors for com.intellij.platform.feedback.impl.state.DontShowAgainFeedbackState. This means that state class cannot be serialized properly. Please see https://jb.gg/ij-psoc
+2024-09-17 19:19:53,897 [  60257]   WARN - #c.i.u.x.Binding - No accessors for com.intellij.platform.feedback.impl.state.CommonFeedbackSurveysState. This means that state class cannot be serialized properly. Please see https://jb.gg/ij-psoc
+2024-09-17 19:20:11,251 [  77611]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-09-17 19:20:11,254 [  77614]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: testing.instrumented.configuration
+2024-09-17 19:20:11,254 [  77614]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: project.propCompiler
+2024-09-17 19:20:30,515 [  96875]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-09-17 19:20:30,519 [  96879]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: testing.instrumented.configuration
+2024-09-17 19:20:30,520 [  96880]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: project.propCompiler
+2024-09-17 19:20:44,054 [ 110414]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-09-17 19:20:44,056 [ 110416]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: testing.instrumented.configuration
+2024-09-17 19:20:44,056 [ 110416]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: project.propCompiler
+2024-09-17 19:22:11,334 [ 197694]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-09-17 19:22:11,338 [ 197698]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: testing.instrumented.configuration
+2024-09-17 19:22:11,339 [ 197699]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: project.propCompiler
+2024-09-17 19:22:18,776 [ 205136]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-09-17 19:22:18,779 [ 205139]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: testing.instrumented.configuration
+2024-09-17 19:22:18,780 [ 205140]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: project.propCompiler
+2024-09-17 19:22:59,365 [ 245725]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-09-17 19:22:59,368 [ 245728]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: testing.instrumented.configuration
+2024-09-17 19:22:59,368 [ 245728]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: project.propCompiler
+2024-09-17 19:23:11,147 [ 257507]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-09-17 19:23:11,152 [ 257512]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: testing.instrumented.configuration
+2024-09-17 19:23:11,152 [ 257512]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: project.propCompiler
+2024-09-17 19:23:54,276 [ 300636]   WARN - #com.android.tools.idea.analytics.SystemInfoStatsMonitor - CpuInfoFlags.fromExitCode(): unknown flag values '0x80'
+2024-09-17 19:23:57,597 [ 303957]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - ignore deprecated groupId: language for id: preferences.language.Kotlin.scripting
+2024-09-17 19:23:57,601 [ 303961]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: testing.instrumented.configuration
+2024-09-17 19:23:57,601 [ 303961]   WARN - #c.i.o.o.e.ConfigurableExtensionPointUtil - use other group instead of unexpected one: project.propCompiler
+2024-09-17 19:23:59,930 [ 306290]   WARN - #c.i.o.a.ActionStub - ActionGroup should be registered using <group> tag: id="Android.Designer.SwitchLayoutQualifier" class="com.android.tools.idea.uibuilder.actions.LayoutQualifierDropdownMenu"
+2024-09-17 19:23:59,934 [ 306294]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'MakeTypeSelectionGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,934 [ 306294]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ShowTips' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,934 [ 306294]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GenerateModuleDescriptors' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,935 [ 306295]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.SelectCallstackSampleTask' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,935 [ 306295]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.SelectJavaKotlinMethodRecording' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,936 [ 306296]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.StartCallstackSample' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,936 [ 306296]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'StreamingToolbarSecondary' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,936 [ 306296]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'StreamingToolbarVirtualDevice' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,936 [ 306296]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Library.Properties' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,937 [ 306297]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ExternalSystem.AttachProject' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,937 [ 306297]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Logcat.PopupActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,937 [ 306297]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.SelectJavaKotlinAllocationsTask' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,937 [ 306297]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'AndroidToolsGroupExtension' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,937 [ 306297]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Groovy.NewScript' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,937 [ 306297]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.NavBarToolBar' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,937 [ 306297]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.SelectSystemTraceTask' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,938 [ 306298]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.StartHeapDump' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,938 [ 306298]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ExternalSystem.RefreshAllProjects' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,938 [ 306298]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'android.device.reservation.extend.status' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,938 [ 306298]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'android.device.reservation.extend.quarter.hour' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,938 [ 306298]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.ProfilerSelectProcess' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,939 [ 306299]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'NewHtmlFile' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,939 [ 306299]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GradleProjectStructureActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,941 [ 306301]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'android.emulator.wear.health.services' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,942 [ 306302]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'WhatsNewAction' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,942 [ 306302]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.SetRecordingTypeToSampling' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,943 [ 306303]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Build' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,943 [ 306303]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CompileDirty' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,944 [ 306304]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.SelectHeapDumpTask' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,945 [ 306305]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.StopJavaKotlinAllocationsTask' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,945 [ 306305]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ExternalSystem.SelectProjectDataToImport' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,945 [ 306305]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ResourceExplorer' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,945 [ 306305]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'AddFrameworkSupport' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,945 [ 306305]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Gradle.ImportExternalProject' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,945 [ 306305]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Groovy.CheckResources.Make' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,945 [ 306305]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'NewPackageInfo' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,946 [ 306306]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.DeviceManager' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,946 [ 306306]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Images.ShowThumbnails' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,946 [ 306306]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'PsdProjectStructureActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,946 [ 306306]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.ProfilerSelectDevice' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,946 [ 306306]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'android.device.reservation.extend.half.hour' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,946 [ 306306]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.StartSystemTrace' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,946 [ 306306]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.SelectNativeAllocationsTask' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,946 [ 306306]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.StartProfilerTask' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,947 [ 306307]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.StopProfilerTask' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,948 [ 306308]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.SetProfilingStartingPointToNow' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,948 [ 306308]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.DeviceManager.TypeSpecificActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,948 [ 306308]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Compile' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,948 [ 306308]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'BuildArtifact' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,948 [ 306308]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.Diagnostics' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,948 [ 306308]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.StopProfilingSession' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,948 [ 306308]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ExternalSystem.DetachProject' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,948 [ 306308]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'StreamingToolbarPhysicalDevice' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,948 [ 306308]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CompileProject' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,948 [ 306308]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.StopNativeAllocations' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,949 [ 306309]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'AndroidToolbarMakeGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,949 [ 306309]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.SelectLiveViewTask' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,949 [ 306309]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Streaming' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,949 [ 306309]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.StartNativeAllocations' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,949 [ 306309]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.StopCpuCapture' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,949 [ 306309]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'SaveFileAsTemplate' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,949 [ 306309]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Adtui.ZoomActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,950 [ 306310]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Groovy.CheckResources.Rebuild' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,950 [ 306310]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.DeviceManager2' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,950 [ 306310]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ToggleLayoutInspectorActionGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,950 [ 306310]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.DeployActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,950 [ 306310]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.SetProfilingStartingPointToProcessStart' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,950 [ 306310]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.MainToolBarActionGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,951 [ 306311]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Groovy.NewClass' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,951 [ 306311]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'AndroidDeviceManagerPlaceholder' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,952 [ 306312]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.Designer.ToolsActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,952 [ 306312]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.Designer.ReRunUiCheckModeAction' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,952 [ 306312]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.Designer.IssuePanel.ToolbarActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,952 [ 306312]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.Designer.CommonActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,952 [ 306312]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.Designer.IssuePanel.TreePopup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,954 [ 306314]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CPP.NewGroup.After' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,954 [ 306314]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ExternalCppProject' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,954 [ 306314]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CPP.ProjectView.After' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,954 [ 306314]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Lang.Cpp.GenerateDefinitionsGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,954 [ 306314]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Lang.Cpp.GenerateGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,954 [ 306314]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Lang.ObjC.ExtractClassMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,954 [ 306314]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Lang.IntroduceGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,954 [ 306314]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Lang.ObjC.GenerateMethodsGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,954 [ 306314]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Lang.ImportsHierarchyMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,954 [ 306314]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Lang.ObjC.DeclareGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,954 [ 306314]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Lang.ObjC.RefactoringMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,954 [ 306314]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Lang.ObjC.GenerateGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,954 [ 306314]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Lang.ObjC.ConvertGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,955 [ 306315]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Lang.SwitchHeaderSourceGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,955 [ 306315]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Lang.NewGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,955 [ 306315]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.Frames.Tree.Popup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,955 [ 306315]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.FreezeThreadGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,955 [ 306315]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.ValueGroup.DataViewSettings.Popup.Wrapper' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,956 [ 306316]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.FreezeThreadGroup.Popup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,956 [ 306316]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.Settings.FramePresentation.Appender' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,956 [ 306316]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.ForkGroup.Popup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,956 [ 306316]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.FreezeThreadDebuggingActionsGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,956 [ 306316]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.RegisterSets.Group' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,956 [ 306316]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.ForkDebuggingActions.TopToolbar3.Extra' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,957 [ 306317]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.ForkGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,957 [ 306317]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.FreezeThreadDebuggingActions.TopToolbar3.Extra' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,957 [ 306317]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.ValueGroup.WatchExpressions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,957 [ 306317]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Util.Diagnostics' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,957 [ 306317]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.Registers.Group.Wrapper' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,957 [ 306317]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.FramePresentation' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,957 [ 306317]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CIDR.Debugger.ValueGroup.DataViewSettings' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,958 [ 306318]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ShowTypeHintSettings' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,962 [ 306322]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'sml.TestScenarioGeneration' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,963 [ 306323]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Stage.Tree.Menu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,965 [ 306325]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Experimental.Branch.Popup.Actions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,965 [ 306325]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Reword.ToolbarActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,967 [ 306327]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.BranchOperationGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,969 [ 306329]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.MainMenu.FileActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,969 [ 306329]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Branches.Popup.SpeedSearch' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,969 [ 306329]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Stage.Toolbar' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,969 [ 306329]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Hosting.Copy.Link.Group' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,970 [ 306330]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Log.ContextMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,970 [ 306330]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Stage.Local.File.Menu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,970 [ 306330]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.ChangesView.Conflicts' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,971 [ 306331]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Log.ContextMenu.CheckoutBrowse' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,971 [ 306331]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.LogContextMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,971 [ 306331]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Hosting.Open.In.Browser.Group' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,971 [ 306331]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.FileActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,971 [ 306331]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Log.Toolbar' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,972 [ 306332]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Branch' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,972 [ 306332]   WARN - #c.i.o.a.ActionStub - ActionGroup should be registered using <group> tag: id="GitBranchesTreePopupFilterSeparatorWithText" class="git4idea.ui.branch.popup.GitBranchesTreePopupFilterSeparatorWithText"
+2024-09-17 19:23:59,972 [ 306332]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GitBranchesTreePopupFilterSeparatorWithText' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,973 [ 306333]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GitMergeRebaseWidgetGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,973 [ 306333]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GitMainToolbarQuickActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,974 [ 306334]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Vcs.ToolbarWidget.CreateRepository' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,975 [ 306335]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.FileHistory.ContextMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,976 [ 306336]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Stash.Operations.ContextMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,977 [ 306337]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Ongoing.Rebase.Actions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,977 [ 306337]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.MainMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,977 [ 306337]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GitRepositoryActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,979 [ 306339]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Stash.ChangesBrowser.ContextMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,979 [ 306339]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Git.Branches.List' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,980 [ 306340]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'MainToolbarQuickActions.VCS' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,982 [ 306342]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Github.PullRequest.ToolWindow.List.Popup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,982 [ 306342]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Github.PullRequest.Timeline.Popup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,982 [ 306342]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Github.PullRequest.Changes.Popup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,982 [ 306342]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Github.PullRequest.Changes.Toolbar' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,982 [ 306342]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Github.Pull.Request.Branch.Popup.Actions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,982 [ 306342]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Github.PullRequest.Details.Popup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,984 [ 306344]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Gradle.View.ModuleMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,985 [ 306345]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Gradle.View.ProjectMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,985 [ 306345]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Gradle.View.ActionsToolbar.RightPanel' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,986 [ 306346]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Gradle.View.ActionsToolbar.CenterPanel' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,986 [ 306346]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Gradle.View.ActionsToolbar.LeftPanel' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,986 [ 306346]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Gradle.View.DependencyMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,986 [ 306346]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Gradle.GenerateGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,986 [ 306346]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GenerateGradleDslGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,989 [ 306349]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GroovyGenerateGroup1' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,989 [ 306349]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Images.ThumbnailViewActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,989 [ 306349]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Images.EditorToolbar' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,989 [ 306349]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Images.ThumbnailsPopupMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,989 [ 306349]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Images.ThumbnailsToolbar' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,989 [ 306349]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Images.ImageViewActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,989 [ 306349]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Images.EditorPopupMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,989 [ 306349]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'junit.exclude.group' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,990 [ 306350]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'junit.add.to.pattern.group' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,990 [ 306350]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Debugger.ThreadsPanelPopup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,990 [ 306350]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'StructureViewCompileGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,990 [ 306350]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'JavaDebuggerActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,991 [ 306351]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'RefactoringMenu4' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,991 [ 306351]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'WelcomeScreen.Documentation.IDEA' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,991 [ 306351]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Java.ImportFrom.Group' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,991 [ 306351]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ShowPackageDepsGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,991 [ 306351]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'EditorTabCompileGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,991 [ 306351]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'EditorPopupMenuDebugJava' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,991 [ 306351]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'EditorPopupMenuAnalyze' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,991 [ 306351]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'MemoryView.ClassesPopupActionGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,991 [ 306351]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'JavaGenerateGroup2' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,991 [ 306351]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'JavaGenerateGroup1' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,991 [ 306351]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Java.BuildMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,991 [ 306351]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CompilerErrorViewPopupMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,992 [ 306352]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'NewJavaSpecialFile' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,992 [ 306352]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'JavaMethodHierarchyPopupMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,992 [ 306352]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'CommanderPopupMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,992 [ 306352]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'MigrationMenu1' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,992 [ 306352]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'InspectCodeActionInPopupMenus' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,992 [ 306352]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'RefactoringMenuRenameFile' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,992 [ 306352]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Debugger.Representation' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,992 [ 306352]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'JavaCompileGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,992 [ 306352]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'JavaNewProjectOrModuleGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,992 [ 306352]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'idea.java.decompiler.action.group' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,992 [ 306352]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'WelcomeScreen.QuickStart.IDEA' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,993 [ 306353]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'MarkGeneratedSourceRootGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,993 [ 306353]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'MarkSourceRootGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,993 [ 306353]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Java.MarkRootGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,993 [ 306353]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Kotlin.XDebugger.Actions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,993 [ 306353]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'KotlinGenerateGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,993 [ 306353]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ConvertJavaToKotlinGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,994 [ 306354]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Markdown.EditorContextMenuGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,994 [ 306354]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Markdown.InsertGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,994 [ 306354]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Markdown.TableActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,994 [ 306354]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Markdown.TableColumnActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,995 [ 306355]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Markdown.TableRowActions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,995 [ 306355]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Hg.MQ.Unapplied' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,995 [ 306355]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Mq.Patches.ContextMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,995 [ 306355]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Hg.Log.ContextMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,995 [ 306355]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Mq.Patches.Toolbar' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,996 [ 306356]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'DevKit.ThemeEditorToolbar' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,996 [ 306356]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ShGenerateGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,996 [ 306356]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'task.actions' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,996 [ 306356]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'tasks.group' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,996 [ 306356]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'working.context' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,998 [ 306358]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'TerminalToolwindowActionGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,998 [ 306358]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Terminal.PromptContextMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,998 [ 306358]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Terminal.OutputContextMenu' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,999 [ 306359]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'addToTempGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,999 [ 306359]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'excludeGroup' template presentation. Showing its action-id instead
+2024-09-17 19:23:59,999 [ 306359]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Dev.PsiViewerActions' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,065 [ 306425]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'RunDashboard.RemoveConfiguration' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,067 [ 306427]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GuiDesigner.ExpandSelection' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,067 [ 306427]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'sorter' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,068 [ 306428]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ActivateBuildToolWindow' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,069 [ 306429]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Graph.ZoomOut' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,069 [ 306429]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GuiDesigner.EditGroup' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,069 [ 306429]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Console.Jdbc.Execute' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,070 [ 306430]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Sql.EditParameter' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,070 [ 306430]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'BuildSolutionAction' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,070 [ 306430]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Console.TableResult.Submit' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,070 [ 306430]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'DuplicatesForm.SendToRight' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,070 [ 306430]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Console.TableResult.DeleteRows' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,070 [ 306430]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'PinActiveTabAction' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,070 [ 306430]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Graph.Faces.OpenSelectedPages' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,070 [ 306430]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ActivateUnitTestsToolWindow' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,071 [ 306431]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'PropertyInspectorActions.RemoveProperty' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,071 [ 306431]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'RunDashboard.ShowConfigurations' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,072 [ 306432]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GuiDesigner.EditComponent' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,072 [ 306432]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'UML.ShowStructure' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,072 [ 306432]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'DatabaseView.PropertiesAction' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,072 [ 306432]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GuiDesigner.Duplicate' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,072 [ 306432]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'TableResult.GrowSelection' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,072 [ 306432]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'TestGestureAction' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,072 [ 306432]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Groovy.Shell.Execute' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,072 [ 306432]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'UML.ActualSize' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,072 [ 306432]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'DatabaseView.CopyTable' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,072 [ 306432]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'DuplicatesForm.SendToLeft' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,072 [ 306432]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'RemoteHostView.EditSource' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,072 [ 306432]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ValidateXml' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,072 [ 306432]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Console.TableResult.ColumnsList' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,073 [ 306433]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Graph.Delete' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,074 [ 306434]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'UML.ApplyCurrentLayout' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,074 [ 306434]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'DSM.OpenInEditor' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,074 [ 306434]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'UiInspector' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,074 [ 306434]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'DatabaseView.CopyAction' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,074 [ 306434]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Jdbc.RunSqlScript' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,075 [ 306435]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Console.TableResult.PreviousPage' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,075 [ 306435]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Console.TableResult.CompareCells' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,075 [ 306435]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Console.TableResult.NavigateAction' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,075 [ 306435]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Console.TableResult.NextPage' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,075 [ 306435]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GuiDesigner.CreateListener' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,075 [ 306435]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Maven.ExpandAll' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,076 [ 306436]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'RemoteHost.NewRemoteItem' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,076 [ 306436]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Console.TableResult.EditValue' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,076 [ 306436]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GuiDesigner.QuickJavadoc' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,076 [ 306436]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Jdbc.OpenEditor' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,076 [ 306436]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Uml.ShowDiff' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,076 [ 306436]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ActivateNuGetToolWindow' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,077 [ 306437]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ActivateMessagesToolWindow' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,077 [ 306437]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'TableResult.UnselectPreviousOccurrence' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,077 [ 306437]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'GotoNextIncompletePropertyAction' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,078 [ 306438]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'ActivateFavoritesToolWindow' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,078 [ 306438]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'TableResult.ShrinkSelection' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,078 [ 306438]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'DSM.ZoomIn' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,078 [ 306438]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Android.CleanRun' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,079 [ 306439]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Tab' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,079 [ 306439]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Uml.NodeIntentions' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,079 [ 306439]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Graph.ZoomIn' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,079 [ 306439]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'RemoteHostView.Rename' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,079 [ 306439]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Console.TableResult.CloneRow' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,079 [ 306439]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'Console.Jpa.GenerateSql' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,079 [ 306439]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'UML.ZoomIn' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,079 [ 306439]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'SwitchHeaderSource' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,080 [ 306440]   WARN - #c.i.o.k.i.u.ActionsTreeUtil - No text in 'InactiveStopActionPlaceholder' template presentation. Showing its action-id instead
+2024-09-17 19:24:00,189 [ 306549]   WARN - #c.i.o.a.ActionStub - ActionGroup should be registered using <group> tag: id="android.device.liveedit.status" class="com.android.tools.idea.editors.liveedit.ui.LiveEditNotificationGroup"
+2024-09-17 19:28:54,001 [ 600361]   WARN - #c.i.u.x.Binding - No accessors for com.intellij.toolWindow.ToolWindowLayoutStorageManagerState. This means that state class cannot be serialized properly. Please see https://jb.gg/ij-psoc
