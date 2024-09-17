@@ -17,7 +17,6 @@ import com.example.tmdbapp.viewmodel.AuthState
 import com.example.tmdbapp.viewmodel.CreateListState
 import com.example.tmdbapp.viewmodel.MovieViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListCreationScreen(
   viewModel: MovieViewModel,

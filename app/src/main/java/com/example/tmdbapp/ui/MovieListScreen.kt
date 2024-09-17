@@ -20,7 +20,6 @@ import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.viewmodel.*
 import kotlinx.coroutines.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieListScreen(
   viewModel: MovieViewModel,

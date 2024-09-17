@@ -18,7 +18,6 @@ import com.example.tmdbapp.R
 import com.example.tmdbapp.viewmodel.FilterOptions
 import java.time.LocalDate
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterBottomSheet(
   currentFilters: FilterOptions,
