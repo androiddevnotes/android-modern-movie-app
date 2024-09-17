@@ -3,6 +3,7 @@ package com.example.tmdbapp.ui
 import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -30,7 +31,13 @@ fun NavGraph(
           navController.navigate("movieDetail/${movie.id}")
         },
         onFavoritesClick = {
-          navController.navigate("favorites")
+          navController.navigate("favorites") {
+            popUpTo(navController.graph.findStartDestination().id) {
+              saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+          }
         },
         screenTitle = Constants.SCREEN_TITLE_DISCOVER,
         viewType = viewType,
@@ -38,7 +45,13 @@ fun NavGraph(
         onThemeChange = onThemeChange,
         currentThemeMode = currentThemeMode,
         onCreateListClick = {
-          navController.navigate("createList")
+          navController.navigate("createList") {
+            popUpTo(navController.graph.findStartDestination().id) {
+              saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+          }
         },
       )
     }
