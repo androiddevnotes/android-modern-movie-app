@@ -16,6 +16,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -38,6 +39,16 @@ fun MovieGridItem(
   onLongClick: () -> Unit,
   isFavorite: Boolean,
 ) {
+  val context = LocalContext.current
+  val imageRequest =
+    remember(movie.posterPath) {
+      ImageRequest
+        .Builder(context)
+        .data(Constants.BASE_IMAGE_URL + movie.posterPath)
+        .crossfade(true)
+        .build()
+    }
+
   Card(
     modifier =
       Modifier
@@ -60,14 +71,9 @@ fun MovieGridItem(
     elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
     shape = RoundedCornerShape(4.dp),
   ) {
-    Box {
+    Box(modifier = Modifier.fillMaxSize()) {
       SubcomposeAsyncImage(
-        model =
-          ImageRequest
-            .Builder(LocalContext.current)
-            .data(Constants.BASE_IMAGE_URL + movie.posterPath)
-            .crossfade(true)
-            .build(),
+        model = imageRequest,
         contentDescription = movie.title,
         contentScale = ContentScale.Crop,
         modifier = Modifier.fillMaxSize(),
@@ -78,7 +84,6 @@ fun MovieGridItem(
               CircularProgressIndicator(Modifier.align(Alignment.Center))
             }
           }
-
           is AsyncImagePainter.State.Error -> {
             Box(
               Modifier
@@ -93,11 +98,8 @@ fun MovieGridItem(
               )
             }
           }
-
           else -> {
-            this@SubcomposeAsyncImage.painter.let {
-              Image(painter = it, contentDescription = movie.title)
-            }
+            Image(painter = painter, contentDescription = movie.title)
           }
         }
       }
@@ -120,7 +122,7 @@ fun MovieGridItem(
             .padding(8.dp),
         style = MaterialTheme.typography.labelSmall,
         color = Color.White,
-        maxLines = 2,
+        maxLines = Constants.MAX_LINES_TITLE,
         overflow = TextOverflow.Ellipsis,
       )
       if (isFavorite) {

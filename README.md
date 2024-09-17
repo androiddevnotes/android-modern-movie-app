@@ -1,4 +1,4 @@
-# TMDB App: AI-Generated Android Application
+# Modern Movie App
 
 ## Overview
 
