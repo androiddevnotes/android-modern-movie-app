@@ -1,6 +1,7 @@
 plugins {
-  alias(libs.plugins.android.application)
-  alias(libs.plugins.kotlin.android)
+  id("com.android.application")
+  id("org.jetbrains.kotlin.android")
+  id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -90,4 +91,15 @@ dependencies {
   debugImplementation(libs.androidx.ui.test.manifest)
   implementation("androidx.compose.material:material:1.4.3")
   implementation(libs.androidx.navigation.compose)
+  detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
+}
+
+// Add Detekt task
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+  reports {
+    html.required.set(true)
+    xml.required.set(true)
+    txt.required.set(true)
+    sarif.required.set(true)
+  }
 }

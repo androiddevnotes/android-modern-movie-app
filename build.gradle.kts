@@ -1,4 +1,25 @@
 plugins {
-  alias(libs.plugins.android.application) apply false
-  alias(libs.plugins.kotlin.android) apply false
+  id("com.android.application") version "8.1.0" apply false
+  id("org.jetbrains.kotlin.android") version "1.9.0" apply false
+  id("io.gitlab.arturbosch.detekt") version "1.23.1"
+}
+
+allprojects {
+  apply(plugin = "io.gitlab.arturbosch.detekt")
+
+  detekt {
+    config = files("$rootDir/config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
+    allRules = false
+    reports {
+      html.required.set(true)
+      xml.required.set(true)
+      txt.required.set(true)
+      sarif.required.set(true)
+    }
+  }
+}
+
+tasks.register("detektAll") {
+  dependsOn(subprojects.map { "${it.path}:detekt" })
 }

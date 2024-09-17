@@ -18,3 +18,9 @@ google-services.json
 gradle.properties
 /externaldocs/
 nohup.out
+
+# Kotlin Warning Baseline Generator
+**/kotlin-warning-baseline.xml
+
+# Detekt
+**/build/reports/detekt/

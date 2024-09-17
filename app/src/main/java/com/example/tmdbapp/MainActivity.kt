@@ -19,6 +19,7 @@ import com.example.tmdbapp.viewmodel.MovieViewModel
 
 class MainActivity : ComponentActivity() {
   private lateinit var movieViewModel: MovieViewModel
+  var ok = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -57,4 +58,6 @@ class MainActivity : ComponentActivity() {
       ThemeMode.DARK -> ThemeMode.SYSTEM
       ThemeMode.SYSTEM -> ThemeMode.LIGHT
     }
+
+  fun unused() {}
 }

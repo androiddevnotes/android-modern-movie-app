@@ -1,0 +1,17 @@
+formatting:
+  active: true
+  autoCorrect: true
+  Indentation:
+    active: true
+    indentSize: 2
+
+style:
+  MagicNumber:
+    active: false
+ 
+
+complexity:
+  LongMethod:
+    threshold: 60
+
+# Add more rules and configurations as needed
