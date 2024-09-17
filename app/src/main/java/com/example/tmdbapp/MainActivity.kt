@@ -58,6 +58,4 @@ class MainActivity : ComponentActivity() {
       ThemeMode.DARK -> ThemeMode.SYSTEM
       ThemeMode.SYSTEM -> ThemeMode.LIGHT
     }
-
-  fun unused() {}
 }

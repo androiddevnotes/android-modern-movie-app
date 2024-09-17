@@ -8,15 +8,9 @@ allprojects {
   apply(plugin = "io.gitlab.arturbosch.detekt")
 
   detekt {
-    config = files("$rootDir/config/detekt/detekt.yml")
+    config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
     allRules = false
-    reports {
-      html.required.set(true)
-      xml.required.set(true)
-      txt.required.set(true)
-      sarif.required.set(true)
-    }
   }
 }
 

@@ -86,10 +86,3 @@ fun NavGraph(
     }
   }
 }
-
-private fun ThemeMode.next(): ThemeMode =
-  when (this) {
-    ThemeMode.LIGHT -> ThemeMode.DARK
-    ThemeMode.DARK -> ThemeMode.SYSTEM
-    ThemeMode.SYSTEM -> ThemeMode.LIGHT
-  }

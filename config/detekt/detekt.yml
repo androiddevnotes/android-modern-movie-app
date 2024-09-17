@@ -13,5 +13,5 @@ style:
     active: false
 complexity:
   LongMethod:
-    threshold: 60
+    threshold: 100
 

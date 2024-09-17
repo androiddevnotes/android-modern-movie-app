@@ -81,7 +81,7 @@ data class RequestTokenResponse(
 )
 
 data class CreateSessionRequest(
-  val request_token: String,
+  val requestToken: String,
 )
 
 data class CreateSessionResponse(

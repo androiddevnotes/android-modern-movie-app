@@ -91,7 +91,7 @@ dependencies {
   debugImplementation(libs.androidx.ui.test.manifest)
   implementation("androidx.compose.material:material:1.4.3")
   implementation(libs.androidx.navigation.compose)
-  detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
+  detektPlugins(libs.detekt.formatting)
 }
 
 // Add Detekt task
