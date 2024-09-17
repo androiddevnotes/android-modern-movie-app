@@ -1,14 +1,16 @@
 formatting:
   active: true
   autoCorrect: true
+  NoWildcardImports:
+    active: false
+    # packagesToUseImportOnDemandProperty: 'java.util.*,kotlinx.android.synthetic.**,your.package.*'
   Indentation:
-    active: true
+    active: false
     indentSize: 2
 
 style:
   MagicNumber:
     active: false
- 
 
 complexity:
   LongMethod:
