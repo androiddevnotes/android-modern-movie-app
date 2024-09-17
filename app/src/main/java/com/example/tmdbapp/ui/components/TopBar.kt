@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
@@ -188,10 +187,11 @@ fun TopBar(
         }
 
         IconButton(onClick = onCreateListClick) {
-          Icon(
-            imageVector = Icons.Default.Add,
-            contentDescription = stringResource(R.string.create_list),
-            tint = MaterialTheme.colorScheme.onSurface,
+          Image(
+            painter = painterResource(id = R.drawable.cool_shape_plus),
+            contentDescription = stringResource(R.string.content_desc_create_list),
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.size(24.dp),
           )
         }
       },

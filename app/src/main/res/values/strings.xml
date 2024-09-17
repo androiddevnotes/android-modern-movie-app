@@ -50,4 +50,5 @@
     <!-- Add these new strings -->
     <string name="enter_year">Enter year</string>
     <string name="clear">Clear</string>
+    <string name="content_desc_create_list">Create List</string>
 </resources>
