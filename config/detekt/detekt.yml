@@ -3,17 +3,15 @@ formatting:
   autoCorrect: true
   NoWildcardImports:
     active: false
-    # packagesToUseImportOnDemandProperty: 'java.util.*,kotlinx.android.synthetic.**,your.package.*'
   Indentation:
     active: false
     indentSize: 2
-
 style:
   MagicNumber:
     active: false
-
+  WildcardImport:
+    active: false
 complexity:
   LongMethod:
     threshold: 60
 
-# Add more rules and configurations as needed
