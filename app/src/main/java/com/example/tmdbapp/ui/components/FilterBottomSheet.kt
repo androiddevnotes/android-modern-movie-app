@@ -1,23 +1,20 @@
+package com.example.tmdbapp.ui.components
+
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.foundation.text.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.*
+import androidx.compose.ui.res.*
+import androidx.compose.ui.text.input.*
+import androidx.compose.ui.unit.*
 import com.example.tmdbapp.R
-import com.example.tmdbapp.viewmodel.FilterOptions
-import java.time.LocalDate
+import com.example.tmdbapp.viewmodel.*
+import java.time.*
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FilterBottomSheet(
   currentFilters: FilterOptions,
@@ -59,10 +56,12 @@ fun FilterBottomSheet(
       Text(stringResource(R.string.filter_movies), style = MaterialTheme.typography.titleLarge)
 
       Text(stringResource(R.string.genres), style = MaterialTheme.typography.titleMedium)
-      LazyRow(
+      FlowRow(
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
       ) {
-        items(genres) { (id, name) ->
+        genres.forEach { (id, name) ->
           FilterChip(
             selected = selectedGenres.contains(id),
             onClick = {

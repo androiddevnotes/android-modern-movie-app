@@ -1,6 +1,5 @@
 package com.example.tmdbapp.ui
 
-import FilterBottomSheet
 import MovieGridItem
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
