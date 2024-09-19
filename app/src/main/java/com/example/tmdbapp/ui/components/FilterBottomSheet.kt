@@ -14,7 +14,6 @@ import com.example.tmdbapp.R
 import com.example.tmdbapp.viewmodel.*
 import java.time.*
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FilterBottomSheet(
   currentFilters: FilterOptions,

@@ -17,7 +17,6 @@ import coil.request.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.utils.*
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MovieGridItem(
   movie: Movie,
