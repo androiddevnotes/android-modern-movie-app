@@ -1,14 +1,12 @@
 package com.example.tmdbapp.repository
 
-import android.content.Context
-import com.example.tmdbapp.BuildConfig
-import com.example.tmdbapp.data.FavoritePreferences
-import com.example.tmdbapp.data.SessionManager
-import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.models.MovieResponse
+import android.content.*
+import com.example.tmdbapp.*
+import com.example.tmdbapp.data.*
+import com.example.tmdbapp.models.*
 import com.example.tmdbapp.network.*
-import com.example.tmdbapp.utils.Resource
-import kotlinx.coroutines.flow.first
+import com.example.tmdbapp.utils.*
+import kotlinx.coroutines.flow.*
 
 class MovieRepository(
   context: Context,
@@ -125,7 +123,8 @@ class MovieRepository(
     description: String,
   ): Resource<Int> {
     return try {
-      val sessionId = sessionManager.sessionIdFlow.first() ?: return Resource.Error("No active session")
+      val sessionId =
+        sessionManager.sessionIdFlow.first() ?: return Resource.Error("No active session")
       val response = api.createList(apiKey, sessionId, CreateListRequest(name, description))
       if (response.success) {
         Resource.Success(response.listId)
