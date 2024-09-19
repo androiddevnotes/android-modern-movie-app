@@ -18,6 +18,8 @@ complexity:
     threshold: 100
   LongParameterList:
     active: false
+  TooManyFunctions:
+    active: false
 naming:
   FunctionNaming:
     active: true

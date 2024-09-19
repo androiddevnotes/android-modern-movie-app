@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">TmdbApp</string>
-    <string name="unknown_error">Unknown error occurred.</string>
     <string name="label_search_movies">Search movies</string>
     <string name="error_download_failed">Failed to download image</string>
     <string name="success_image_saved">Image saved successfully</string>
