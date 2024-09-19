@@ -1,15 +1,15 @@
 package com.example.tmdbapp.viewmodel
 
 sealed class AuthState {
-  object Idle : AuthState()
+  data object Idle : AuthState()
 
-  object Loading : AuthState()
+  data object Loading : AuthState()
 
   data class RequestTokenCreated(
     val token: String,
   ) : AuthState()
 
-  object Authenticated : AuthState()
+  data object Authenticated : AuthState()
 
   data class Error(
     val message: String,
@@ -17,9 +17,9 @@ sealed class AuthState {
 }
 
 sealed class CreateListState {
-  object Idle : CreateListState()
+  data object Idle : CreateListState()
 
-  object Loading : CreateListState()
+  data object Loading : CreateListState()
 
   data class Success(
     val listId: Int,
