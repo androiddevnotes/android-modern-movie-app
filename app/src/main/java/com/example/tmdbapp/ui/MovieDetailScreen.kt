@@ -133,7 +133,7 @@ fun MovieDetailTopBar(
         Icon(
           imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
           contentDescription = stringResource(R.string.favorite),
-          tint = if (isFavorite) Color.Red else Color.White,
+          tint = if (isFavorite) MaterialTheme.colorScheme.primary else Color.White,
         )
       }
       IconButton(onClick = onDownloadClick) {
