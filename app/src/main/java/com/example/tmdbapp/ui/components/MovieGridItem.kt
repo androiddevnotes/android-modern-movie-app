@@ -7,10 +7,12 @@ import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import coil.compose.*
 import coil.request.*
+import com.example.tmdbapp.R
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.utils.*
 
@@ -55,39 +57,17 @@ fun MovieGridItem(
     shape = RoundedCornerShape(4.dp),
   ) {
     Box(modifier = Modifier.fillMaxSize()) {
-      SubcomposeAsyncImage(
-        model = imageRequest,
+      AsyncImage(
+        model = imageRequest, // Updated from movie.posterUrl to imageRequest
         contentDescription = movie.title,
+        placeholder = painterResource(R.drawable.cool_shape_movie),
+        error = painterResource(R.drawable.cool_shape_grid),
         contentScale = ContentScale.Crop,
-        modifier = Modifier.fillMaxSize(),
-      ) {
-        when (painter.state) {
-          is AsyncImagePainter.State.Loading -> {
-            Box(Modifier.fillMaxSize()) {
-              CircularProgressIndicator(Modifier.align(Alignment.Center))
-            }
-          }
-
-          is AsyncImagePainter.State.Error -> {
-            Box(
-              Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surfaceVariant),
-            ) {
-              Text(
-                text = movie.title.take(1),
-                style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.align(Alignment.Center),
-              )
-            }
-          }
-
-          else -> {
-            Image(painter = painter, contentDescription = movie.title)
-          }
-        }
-      }
+        modifier =
+          Modifier
+            .size(128.dp)
+            .background(MaterialTheme.colorScheme.surface),
+      )
       Box(
         modifier =
           Modifier
