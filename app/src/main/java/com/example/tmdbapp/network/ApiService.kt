@@ -2,10 +2,8 @@ package com.example.tmdbapp.network
 
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.models.MovieResponse
+import kotlinx.serialization.Serializable
 import retrofit2.http.*
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface ApiService {
   @GET("movie/popular")
@@ -76,27 +74,32 @@ interface ApiService {
   ): CreateListResponse
 }
 
+@Serializable
 data class RequestTokenResponse(
   val success: Boolean,
   val expires_at: String,
   val request_token: String,
 )
 
+@Serializable
 data class CreateSessionRequest(
   val requestToken: String,
 )
 
+@Serializable
 data class CreateSessionResponse(
   val success: Boolean,
   val session_id: String,
 )
 
+@Serializable
 data class CreateListRequest(
   val name: String,
   val description: String,
   val language: String = "en",
 )
 
+@Serializable
 data class CreateListResponse(
   val status_message: String,
   val success: Boolean,

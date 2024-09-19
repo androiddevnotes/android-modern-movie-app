@@ -2,6 +2,7 @@ plugins {
   id("com.android.application")
   id("org.jetbrains.kotlin.android")
   id("io.gitlab.arturbosch.detekt")
+  id("kotlinx-serialization")
 }
 
 android {
@@ -78,7 +79,8 @@ dependencies {
   implementation(libs.androidx.material3)
   implementation(libs.androidx.material)
   implementation(libs.retrofit)
-  implementation(libs.retrofit.converter.gson)
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+  implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
   implementation(libs.kotlinx.coroutines.android)
   implementation(libs.androidx.lifecycle.viewmodel.compose)
   implementation(libs.okhttp.logging.interceptor)
