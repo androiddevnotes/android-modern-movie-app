@@ -99,7 +99,7 @@ class MovieRepository(
     try {
       val response = api.createRequestToken(apiKey)
       if (response.success) {
-        Resource.Success(response.request_token)
+        Resource.Success(response.requestToken)
       } else {
         Resource.Error("Failed to create request token")
       }
@@ -111,8 +111,8 @@ class MovieRepository(
     try {
       val response = api.createSession(apiKey, CreateSessionRequest(requestToken))
       if (response.success) {
-        sessionManager.saveSessionId(response.session_id)
-        Resource.Success(response.session_id)
+        sessionManager.saveSessionId(response.sessionId)
+        Resource.Success(response.sessionId)
       } else {
         Resource.Error("Failed to create session")
       }
@@ -125,15 +125,12 @@ class MovieRepository(
     description: String,
   ): Resource<Int> {
     return try {
-      val sessionId = sessionManager.sessionIdFlow.first()
-      if (sessionId == null) {
-        return Resource.Error("No active session")
-      }
+      val sessionId = sessionManager.sessionIdFlow.first() ?: return Resource.Error("No active session")
       val response = api.createList(apiKey, sessionId, CreateListRequest(name, description))
       if (response.success) {
-        Resource.Success(response.list_id)
+        Resource.Success(response.listId)
       } else {
-        Resource.Error(response.status_message)
+        Resource.Error(response.statusMessage)
       }
     } catch (e: Exception) {
       Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
