@@ -14,4 +14,15 @@ style:
 complexity:
   LongMethod:
     threshold: 100
+  LongParameterList:
+    active: false
+naming:
+  FunctionNaming:
+    active: true
+    ignoreAnnotated:
+      - 'Composable'
+  TopLevelPropertyNaming:
+    active: true
+    propertyPattern: '(_)?[A-Za-z][A-Za-z0-9]*'
+    constantPattern: '[A-Z][_A-Za-z0-9]*'
 
