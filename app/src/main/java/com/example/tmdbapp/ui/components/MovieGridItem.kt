@@ -60,7 +60,7 @@ fun MovieGridItem(
       AsyncImage(
         model = imageRequest, // Updated from movie.posterUrl to imageRequest
         contentDescription = movie.title,
-        placeholder = painterResource(R.drawable.cool_shape_movie),
+        placeholder = painterResource(R.drawable.cool_shape_placeholder),
         error = painterResource(R.drawable.cool_shape_grid),
         contentScale = ContentScale.Crop,
         modifier =
