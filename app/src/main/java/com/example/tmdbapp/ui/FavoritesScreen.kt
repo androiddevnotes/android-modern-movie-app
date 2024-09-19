@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.*
