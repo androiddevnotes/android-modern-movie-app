@@ -1,23 +1,18 @@
 package com.example.tmdbapp.viewmodel
 
-import android.content.ContentValues
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.os.Build
-import android.os.Environment
-import android.provider.MediaStore
-import android.widget.Toast
-import androidx.lifecycle.viewModelScope
-import coil.ImageLoader
-import coil.request.ImageRequest
-import coil.request.SuccessResult
-import com.example.tmdbapp.R
-import com.example.tmdbapp.utils.Constants
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.io.IOException
+import android.content.*
+import android.graphics.*
+import android.graphics.drawable.*
+import android.os.*
+import android.provider.*
+import android.widget.*
+import androidx.lifecycle.*
+import coil.*
+import coil.request.*
+import com.example.tmdbapp.*
+import com.example.tmdbapp.utils.*
+import kotlinx.coroutines.*
+import java.io.*
 
 fun MovieViewModel.downloadImage(
   posterPath: String?,
@@ -73,9 +68,16 @@ fun MovieViewModel.downloadImage(
           resolver.update(it, contentValues, null, null)
         }
 
-        Toast.makeText(context, context.getString(R.string.success_image_saved), Toast.LENGTH_SHORT).show()
+        Toast
+          .makeText(context, context.getString(R.string.success_image_saved), Toast.LENGTH_SHORT)
+          .show()
       } ?: run {
-        Toast.makeText(context, context.getString(R.string.error_failed_to_save), Toast.LENGTH_SHORT).show()
+        Toast
+          .makeText(
+            context,
+            context.getString(R.string.error_failed_to_save),
+            Toast.LENGTH_SHORT,
+          ).show()
       }
     } catch (e: IOException) {
       Toast

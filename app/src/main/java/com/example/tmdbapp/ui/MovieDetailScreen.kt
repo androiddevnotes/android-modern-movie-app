@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.tmdbapp.R
 import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.viewmodel.MovieViewModel
+import com.example.tmdbapp.viewmodel.*
 
 @Composable
 fun MovieDetailScreen(

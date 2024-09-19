@@ -1,36 +1,31 @@
 package com.example.tmdbapp.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.tmdbapp.data.SessionManager
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.repository.MovieRepository
 import com.example.tmdbapp.utils.Constants
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
 class MovieViewModel(
   application: Application,
 ) : AndroidViewModel(application) {
-  private var currentPage = 1
-  private var isLoading = false
+  internal var currentPage = 1
+  internal var isLoading = false
   private var searchJob: Job? = null
   internal val repository = MovieRepository(application)
   internal var isLastPage = false
 
   private val _currentMovie = MutableStateFlow<Movie?>(null)
-  private val _currentSortOption = MutableStateFlow(SortOption.POPULAR)
+  internal val _currentSortOption = MutableStateFlow(SortOption.POPULAR)
   private val _favorites = MutableStateFlow<List<Movie>>(emptyList())
-  private val _filterOptions = MutableStateFlow(FilterOptions())
+  internal val _filterOptions = MutableStateFlow(FilterOptions())
   private val _lastViewedItemIndex = MutableStateFlow(0)
   private val _searchQuery = MutableStateFlow("")
   private val _selectedMovie = MutableStateFlow<Movie?>(null)
-  private val _uiState = MutableStateFlow<MovieUiState>(MovieUiState.Loading)
+  internal val _uiState = MutableStateFlow<MovieUiState>(MovieUiState.Loading)
   internal val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
   internal val _createListState = MutableStateFlow<CreateListState>(CreateListState.Idle)
 
