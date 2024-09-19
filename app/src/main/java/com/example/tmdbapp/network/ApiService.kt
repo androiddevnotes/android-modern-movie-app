@@ -2,76 +2,120 @@ package com.example.tmdbapp.network
 
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.models.MovieResponse
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.request.*
 import kotlinx.serialization.Serializable
-import retrofit2.http.*
 
-interface ApiService {
-  @GET("movie/popular")
+class ApiService(
+  private val client: HttpClient,
+) {
   suspend fun getPopularMovies(
-    @Query("api_key") apiKey: String,
-    @Query("page") page: Int,
-  ): MovieResponse
+    apiKey: String,
+    page: Int,
+  ): MovieResponse =
+    client
+      .get("movie/popular") {
+        parameter("api_key", apiKey)
+        parameter("page", page)
+      }.body()
 
-  @GET("movie/now_playing")
   suspend fun getNowPlayingMovies(
-    @Query("api_key") apiKey: String,
-    @Query("page") page: Int,
-  ): MovieResponse
+    apiKey: String,
+    page: Int,
+  ): MovieResponse =
+    client
+      .get("movie/now_playing") {
+        parameter("api_key", apiKey)
+        parameter("page", page)
+      }.body()
 
-  @GET("movie/top_rated")
   suspend fun getTopRatedMovies(
-    @Query("api_key") apiKey: String,
-    @Query("page") page: Int,
-  ): MovieResponse
+    apiKey: String,
+    page: Int,
+  ): MovieResponse =
+    client
+      .get("movie/top_rated") {
+        parameter("api_key", apiKey)
+        parameter("page", page)
+      }.body()
 
-  @GET("movie/upcoming")
   suspend fun getUpcomingMovies(
-    @Query("api_key") apiKey: String,
-    @Query("page") page: Int,
-  ): MovieResponse
+    apiKey: String,
+    page: Int,
+  ): MovieResponse =
+    client
+      .get("movie/upcoming") {
+        parameter("api_key", apiKey)
+        parameter("page", page)
+      }.body()
 
-  @GET("discover/movie")
   suspend fun discoverMovies(
-    @Query("api_key") apiKey: String,
-    @Query("page") page: Int,
-    @Query("sort_by") sortBy: String? = null,
-    @Query("with_genres") genres: String? = null,
-    @Query("primary_release_year") releaseYear: Int? = null,
-    @Query("vote_average.gte") minRating: Float? = null,
-  ): MovieResponse
+    apiKey: String,
+    page: Int,
+    sortBy: String? = null,
+    genres: String? = null,
+    releaseYear: Int? = null,
+    minRating: Float? = null,
+  ): MovieResponse =
+    client
+      .get("discover/movie") {
+        parameter("api_key", apiKey)
+        parameter("page", page)
+        sortBy?.let { parameter("sort_by", it) }
+        genres?.let { parameter("with_genres", it) }
+        releaseYear?.let { parameter("primary_release_year", it) }
+        minRating?.let { parameter("vote_average.gte", it) }
+      }.body()
 
-  @GET("search/movie")
   suspend fun searchMovies(
-    @Query("api_key") apiKey: String,
-    @Query("query") query: String,
-    @Query("page") page: Int,
-  ): MovieResponse
+    apiKey: String,
+    query: String,
+    page: Int,
+  ): MovieResponse =
+    client
+      .get("search/movie") {
+        parameter("api_key", apiKey)
+        parameter("query", query)
+        parameter("page", page)
+      }.body()
 
-  @GET("movie/{movie_id}")
   suspend fun getMovieDetails(
-    @Path("movie_id") movieId: Int,
-    @Query("api_key") apiKey: String,
-  ): Movie
+    movieId: Int,
+    apiKey: String,
+  ): Movie =
+    client
+      .get("movie/$movieId") {
+        parameter("api_key", apiKey)
+      }.body()
 
-  // soemthing
+  suspend fun createRequestToken(apiKey: String): RequestTokenResponse =
+    client
+      .get("authentication/token/new") {
+        parameter("api_key", apiKey)
+      }.body()
 
-  @GET("authentication/token/new")
-  suspend fun createRequestToken(
-    @Query("api_key") apiKey: String,
-  ): RequestTokenResponse
-
-  @POST("authentication/session/new")
   suspend fun createSession(
-    @Query("api_key") apiKey: String,
-    @Body requestBody: CreateSessionRequest,
-  ): CreateSessionResponse
+    apiKey: String,
+    requestBody: CreateSessionRequest,
+  ): CreateSessionResponse =
+    client
+      .post("authentication/session/new") {
+        parameter("api_key", apiKey)
+        setBody(requestBody)
+      }.body()
 
-  @POST("list")
   suspend fun createList(
-    @Query("api_key") apiKey: String,
-    @Query("session_id") sessionId: String,
-    @Body requestBody: CreateListRequest,
-  ): CreateListResponse
+    apiKey: String,
+    sessionId: String,
+    requestBody: CreateListRequest,
+  ): CreateListResponse =
+    client
+      .post("list") {
+        parameter("api_key", apiKey)
+        parameter("session_id", sessionId)
+        setBody(requestBody)
+      }.body()
 }
 
 @Serializable

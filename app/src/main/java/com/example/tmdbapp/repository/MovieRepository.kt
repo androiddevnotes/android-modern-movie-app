@@ -6,16 +6,14 @@ import com.example.tmdbapp.data.FavoritePreferences
 import com.example.tmdbapp.data.SessionManager
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.models.MovieResponse
-import com.example.tmdbapp.network.CreateListRequest
-import com.example.tmdbapp.network.CreateSessionRequest
-import com.example.tmdbapp.network.RetrofitInstance
+import com.example.tmdbapp.network.*
 import com.example.tmdbapp.utils.Resource
 import kotlinx.coroutines.flow.first
 
 class MovieRepository(
   context: Context,
 ) {
-  private val api = RetrofitInstance.api
+  private val api = ApiService(KtorClient.httpClient)
   private val apiKey = BuildConfig.TMDB_API_KEY
   private val favoritePreferences = FavoritePreferences(context)
   private val sessionManager = SessionManager(context)
@@ -56,15 +54,14 @@ class MovieRepository(
     minRating: Float? = null,
   ): Resource<MovieResponse> =
     try {
-      val genresString = genres?.joinToString(",")
       val response =
         api.discoverMovies(
-          apiKey = apiKey,
-          page = page,
-          sortBy = sortBy,
-          genres = genresString,
-          releaseYear = releaseYear,
-          minRating = minRating,
+          apiKey,
+          page,
+          sortBy,
+          genres?.joinToString(","),
+          releaseYear,
+          minRating,
         )
       val moviesWithFavoriteStatus =
         response.results.map { movie ->
