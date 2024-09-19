@@ -9,45 +9,40 @@ import kotlinx.serialization.*
 class ApiService(
   private val client: HttpClient,
 ) {
+  private suspend inline fun <reified T> get(
+    endpoint: String,
+    apiKey: String,
+    page: Int,
+    additionalParams: Map<String, Any?> = emptyMap(),
+  ): T =
+    client
+      .get(endpoint) {
+        parameter("api_key", apiKey)
+        parameter("page", page)
+        additionalParams.forEach { (key, value) ->
+          if (value != null) parameter(key, value)
+        }
+      }.body()
+
   suspend fun getPopularMovies(
     apiKey: String,
     page: Int,
-  ): MovieResponse =
-    client
-      .get("movie/popular") {
-        parameter("api_key", apiKey)
-        parameter("page", page)
-      }.body()
+  ): MovieResponse = get("movie/popular", apiKey, page)
 
   suspend fun getNowPlayingMovies(
     apiKey: String,
     page: Int,
-  ): MovieResponse =
-    client
-      .get("movie/now_playing") {
-        parameter("api_key", apiKey)
-        parameter("page", page)
-      }.body()
+  ): MovieResponse = get("movie/now_playing", apiKey, page)
 
   suspend fun getTopRatedMovies(
     apiKey: String,
     page: Int,
-  ): MovieResponse =
-    client
-      .get("movie/top_rated") {
-        parameter("api_key", apiKey)
-        parameter("page", page)
-      }.body()
+  ): MovieResponse = get("movie/top_rated", apiKey, page)
 
   suspend fun getUpcomingMovies(
     apiKey: String,
     page: Int,
-  ): MovieResponse =
-    client
-      .get("movie/upcoming") {
-        parameter("api_key", apiKey)
-        parameter("page", page)
-      }.body()
+  ): MovieResponse = get("movie/upcoming", apiKey, page)
 
   suspend fun discoverMovies(
     apiKey: String,
@@ -57,42 +52,30 @@ class ApiService(
     releaseYear: Int? = null,
     minRating: Float? = null,
   ): MovieResponse =
-    client
-      .get("discover/movie") {
-        parameter("api_key", apiKey)
-        parameter("page", page)
-        sortBy?.let { parameter("sort_by", it) }
-        genres?.let { parameter("with_genres", it) }
-        releaseYear?.let { parameter("primary_release_year", it) }
-        minRating?.let { parameter("vote_average.gte", it) }
-      }.body()
+    get(
+      "discover/movie",
+      apiKey,
+      page,
+      mapOf(
+        "sort_by" to sortBy,
+        "with_genres" to genres,
+        "primary_release_year" to releaseYear,
+        "vote_average.gte" to minRating,
+      ),
+    )
 
   suspend fun searchMovies(
     apiKey: String,
     query: String,
     page: Int,
-  ): MovieResponse =
-    client
-      .get("search/movie") {
-        parameter("api_key", apiKey)
-        parameter("query", query)
-        parameter("page", page)
-      }.body()
+  ): MovieResponse = get("search/movie", apiKey, page, mapOf("query" to query))
 
   suspend fun getMovieDetails(
     movieId: Int,
     apiKey: String,
-  ): Movie =
-    client
-      .get("movie/$movieId") {
-        parameter("api_key", apiKey)
-      }.body()
+  ): Movie = get("movie/$movieId", apiKey, 1)
 
-  suspend fun createRequestToken(apiKey: String): RequestTokenResponse =
-    client
-      .get("authentication/token/new") {
-        parameter("api_key", apiKey)
-      }.body()
+  suspend fun createRequestToken(apiKey: String): RequestTokenResponse = get("authentication/token/new", apiKey, 1)
 
   suspend fun createSession(
     apiKey: String,
