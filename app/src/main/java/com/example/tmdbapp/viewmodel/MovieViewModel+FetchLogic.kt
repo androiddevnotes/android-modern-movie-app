@@ -3,10 +3,7 @@ package com.example.tmdbapp.viewmodel
 import androidx.lifecycle.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.utils.*
-import io.ktor.client.plugins.*
 import kotlinx.coroutines.*
-import kotlinx.serialization.*
-import java.io.*
 
 fun MovieViewModel.fetchMovies() {
   if (isLoading || isLastPage) return
@@ -44,15 +41,7 @@ private suspend fun MovieViewModel.safeApiCall(apiCall: suspend () -> Resource<M
     val result = apiCall()
     handleMovieResult(result)
   } catch (e: Exception) {
-    _uiState.value =
-      MovieUiState.Error(
-        when (e) {
-          is ResponseException -> MovieError.Server
-          is SerializationException -> MovieError.ApiError("Error parsing data")
-          is IOException -> MovieError.Network
-          else -> MovieError.Unknown
-        },
-      )
+    _uiState.value = MovieUiState.Error(handleError(e))
   } finally {
     isLoading = false
   }

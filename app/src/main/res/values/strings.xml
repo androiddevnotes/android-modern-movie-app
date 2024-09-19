@@ -5,6 +5,7 @@
     <string name="success_image_saved">Image saved successfully</string>
     <string name="error_network">Network error. Please check your internet connection.</string>
     <string name="error_server">Server error. Please try again later.</string>
+    <string name="error_no_internet">No internet connection. Please check your network settings.</string>
     <string name="error_unknown">An unknown error occurred. Please try again.</string>
     <string name="message_no_favorites">No favorites yet</string>
     <string name="error_no_image">No image available to download</string>

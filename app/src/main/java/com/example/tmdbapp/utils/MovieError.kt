@@ -10,6 +10,8 @@ sealed class MovieError(
 
   object Server : MovieError(R.string.error_server)
 
+  object NoInternet : MovieError(R.string.error_no_internet)
+
   data class ApiError(
     val errorMessage: String,
   ) : MovieError(R.string.error_unknown)
