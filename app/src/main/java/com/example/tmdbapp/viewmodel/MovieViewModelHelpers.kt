@@ -1,8 +1,6 @@
 package com.example.tmdbapp.viewmodel
 
 import com.example.tmdbapp.utils.*
-import io.ktor.client.plugins.*
-import java.io.*
 
 fun handleError(errorMessage: String?): MovieError =
   when {
@@ -15,6 +13,7 @@ fun handleError(errorMessage: String?): MovieError =
         MovieError.ApiError(errorMessage)
       }
     }
+
     else -> MovieError.Unknown
   }
 

@@ -52,6 +52,7 @@ private fun MovieViewModel.handleMovieResult(result: Resource<MovieResponse>) {
       currentPage++
       isLastPage = newMovies.isEmpty()
     }
+
     is Resource.Error -> {
       _uiState.value = MovieUiState.Error(handleError(result.message))
     }
