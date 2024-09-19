@@ -12,5 +12,5 @@ sealed class MovieUiState {
     val movies: List<Movie>,
   ) : MovieUiState()
 
-  object Loading : MovieUiState()
+  data object Loading : MovieUiState()
 }

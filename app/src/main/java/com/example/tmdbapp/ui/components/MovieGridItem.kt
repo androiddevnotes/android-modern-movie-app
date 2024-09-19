@@ -97,7 +97,7 @@ fun MovieGridItem(
         Icon(
           imageVector = Icons.Default.Favorite,
           contentDescription = "Favorite",
-          tint = Color.Red,
+          tint = MaterialTheme.colorScheme.primary,
           modifier =
             Modifier
               .align(Alignment.TopEnd)
