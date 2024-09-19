@@ -28,15 +28,11 @@ class MovieRepository(
       movie.copy(isFavorite = favoritePreferences.isFavorite(movie.id))
     }
 
-  suspend fun getPopularMovies(page: Int): Resource<MovieResponse> =
-    safeApiCall {
-      val response = api.getPopularMovies(apiKey, page)
-      response.copy(results = addFavoriteStatus(response.results))
-    }
+  suspend fun getPopularMovies(page: Int): Resource<MovieResponse> = discoverMovies(page, sortBy = "popularity.desc")
 
   suspend fun getFavoriteMovies(): List<Movie> =
     try {
-      val response = api.getPopularMovies(apiKey, 1)
+      val response = api.discoverMovies(apiKey, 1, sortBy = "popularity.desc")
       response.results
         .filter { movie ->
           favoritePreferences.isFavorite(movie.id)

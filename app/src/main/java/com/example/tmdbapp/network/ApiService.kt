@@ -24,11 +24,6 @@ class ApiService(
         }
       }.body()
 
-  suspend fun getPopularMovies(
-    apiKey: String,
-    page: Int,
-  ): MovieResponse = get("movie/popular", apiKey, page)
-
   suspend fun discoverMovies(
     apiKey: String,
     page: Int,
