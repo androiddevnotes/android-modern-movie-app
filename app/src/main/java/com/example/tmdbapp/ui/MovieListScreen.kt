@@ -24,7 +24,6 @@ fun MovieListScreen(
   viewModel: MovieViewModel,
   onMovieClick: (Movie) -> Unit,
   onFavoritesClick: () -> Unit,
-  screenTitle: String,
   viewType: String,
   onViewTypeChange: (String) -> Unit,
   onThemeChange: () -> Unit,

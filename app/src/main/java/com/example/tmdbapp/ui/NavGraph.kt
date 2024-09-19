@@ -10,7 +10,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.tmdbapp.ui.theme.ThemeMode
-import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
@@ -39,7 +38,6 @@ fun NavGraph(
             restoreState = true
           }
         },
-        screenTitle = Constants.SCREEN_TITLE_DISCOVER,
         viewType = viewType,
         onViewTypeChange = onViewTypeChange,
         onThemeChange = onThemeChange,
