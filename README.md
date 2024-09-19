@@ -11,12 +11,12 @@ The codebase evolves as the AI generates more and more code.
 
 <table>
   <tr>
-    <td style="text-align: center;"><img src="docs/assets/p1.png" alt="Detail Screen" style="width: 50%;"></td>
-    <td style="text-align: center;"><img src="docs/assets/p2.png" alt="Grid View List Screen" style="width: 50%;"></td>
+    <td><img src="docs/assets/p1.png" alt="Detail Screen" style="width: 50%;"></td>
+    <td><img src="docs/assets/p2.png" alt="Grid View List Screen" style="width: 50%;"></td>
   </tr>
   <tr>
-    <td style="text-align: center;"><img src="docs/assets/p3.png" alt="Simple View List Screen" style="width: 50%;"></td>
-    <td style="text-align: center;"><img src="docs/assets/p4.png" alt="Filter Bottom Sheet" style="width: 50%;"></td>
+    <td><img src="docs/assets/p3.png" alt="Simple View List Screen" style="width: 50%;"></td>
+    <td><img src="docs/assets/p4.png" alt="Filter Bottom Sheet" style="width: 50%;"></td>
   </tr>
 </table>
 
