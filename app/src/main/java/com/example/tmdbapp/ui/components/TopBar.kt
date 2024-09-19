@@ -39,7 +39,6 @@ fun TopBar(
   onSearchQueryChange: (String) -> Unit,
   onSearchIconClick: () -> Unit,
   onCloseSearchClick: () -> Unit,
-  screenTitle: String,
   expandedDropdown: Boolean,
   onSortOptionClick: (SortOption) -> Unit,
   currentSortOption: SortOption,

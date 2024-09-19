@@ -39,7 +39,6 @@ fun MovieItem(
   movie: Movie,
   modifier: Modifier = Modifier,
   onFavoriteClick: () -> Unit,
-  isListView: Boolean = false,
 ) {
   Card(
     modifier =

@@ -17,11 +17,11 @@ sealed class BottomNavItem(
   val label: String,
   val icon: Int,
 ) {
-  object Discover : BottomNavItem("movieList", "Discover", R.drawable.cool_shape_movie)
+  data object Discover : BottomNavItem("movieList", "Discover", R.drawable.cool_shape_movie)
 
-  object Favorites : BottomNavItem("favorites", "Favorites", R.drawable.cool_shape_fav)
+  data object Favorites : BottomNavItem("favorites", "Favorites", R.drawable.cool_shape_fav)
 
-  object CreateList : BottomNavItem("createList", "Create List", R.drawable.cool_shape_plus)
+  data object CreateList : BottomNavItem("createList", "Create List", R.drawable.cool_shape_plus)
 }
 
 @Composable

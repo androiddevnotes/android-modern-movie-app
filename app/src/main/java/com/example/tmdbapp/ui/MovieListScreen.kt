@@ -94,7 +94,6 @@ fun MovieListScreen(
           isSearchActive = false
           viewModel.setSearchQuery("")
         },
-        screenTitle = screenTitle,
         expandedDropdown = expandedDropdown,
         onSortOptionClick = {
           viewModel.setSortOption(it)
@@ -182,7 +181,6 @@ fun MovieListScreen(
                           onMovieClick(movie)
                         },
                     onFavoriteClick = { viewModel.toggleFavorite(movie) },
-                    isListView = true,
                   )
                 }
               }
