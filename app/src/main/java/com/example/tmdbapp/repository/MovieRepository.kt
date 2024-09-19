@@ -16,16 +16,22 @@ class MovieRepository(
   private val favoritePreferences = FavoritePreferences(context)
   private val sessionManager = SessionManager(context)
 
-  suspend fun getPopularMovies(page: Int): Resource<MovieResponse> =
+  private suspend fun <T> safeApiCall(apiCall: suspend () -> T): Resource<T> =
     try {
-      val response = api.getPopularMovies(apiKey, page)
-      val moviesWithFavoriteStatus =
-        response.results.map { movie ->
-          movie.copy(isFavorite = favoritePreferences.isFavorite(movie.id))
-        }
-      Resource.Success(response.copy(results = moviesWithFavoriteStatus))
+      Resource.Success(apiCall())
     } catch (e: Exception) {
       Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
+    }
+
+  private suspend fun addFavoriteStatus(movies: List<Movie>): List<Movie> =
+    movies.map { movie ->
+      movie.copy(isFavorite = favoritePreferences.isFavorite(movie.id))
+    }
+
+  suspend fun getPopularMovies(page: Int): Resource<MovieResponse> =
+    safeApiCall {
+      val response = api.getPopularMovies(apiKey, page)
+      response.copy(results = addFavoriteStatus(response.results))
     }
 
   suspend fun getFavoriteMovies(): List<Movie> =
@@ -51,7 +57,7 @@ class MovieRepository(
     releaseYear: Int? = null,
     minRating: Float? = null,
   ): Resource<MovieResponse> =
-    try {
+    safeApiCall {
       val response =
         api.discoverMovies(
           apiKey,
@@ -61,28 +67,16 @@ class MovieRepository(
           releaseYear,
           minRating,
         )
-      val moviesWithFavoriteStatus =
-        response.results.map { movie ->
-          movie.copy(isFavorite = favoritePreferences.isFavorite(movie.id))
-        }
-      Resource.Success(response.copy(results = moviesWithFavoriteStatus))
-    } catch (e: Exception) {
-      Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
+      response.copy(results = addFavoriteStatus(response.results))
     }
 
   suspend fun searchMovies(
     query: String,
     page: Int,
   ): Resource<MovieResponse> =
-    try {
+    safeApiCall {
       val response = api.searchMovies(apiKey, query, page)
-      val moviesWithFavoriteStatus =
-        response.results.map { movie ->
-          movie.copy(isFavorite = favoritePreferences.isFavorite(movie.id))
-        }
-      Resource.Success(response.copy(results = moviesWithFavoriteStatus))
-    } catch (e: Exception) {
-      Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
+      response.copy(results = addFavoriteStatus(response.results))
     }
 
   suspend fun getMovieDetails(movieId: Int): Movie? =

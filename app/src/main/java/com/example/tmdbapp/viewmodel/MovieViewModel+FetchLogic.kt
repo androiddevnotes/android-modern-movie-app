@@ -9,7 +9,7 @@ fun MovieViewModel.fetchMovies() {
   if (isLoading || isLastPage) return
   isLoading = true
   viewModelScope.launch {
-    safeApiCall {
+    val result =
       repository.discoverMovies(
         page = currentPage,
         sortBy = _currentSortOption.value.apiValue,
@@ -17,7 +17,7 @@ fun MovieViewModel.fetchMovies() {
         releaseYear = _filterOptions.value.releaseYear,
         minRating = _filterOptions.value.minRating,
       )
-    }
+    handleMovieResult(result)
   }
 }
 
@@ -25,25 +25,16 @@ fun MovieViewModel.fetchPopularMovies() {
   if (isLoading || isLastPage) return
   isLoading = true
   viewModelScope.launch {
-    safeApiCall { repository.getPopularMovies(currentPage) }
+    val result = repository.getPopularMovies(currentPage)
+    handleMovieResult(result)
   }
 }
 
 internal fun MovieViewModel.searchMovies(query: String) {
   viewModelScope.launch {
     _uiState.value = MovieUiState.Loading
-    safeApiCall { repository.searchMovies(query, 1) }
-  }
-}
-
-private suspend fun MovieViewModel.safeApiCall(apiCall: suspend () -> Resource<MovieResponse>) {
-  try {
-    val result = apiCall()
+    val result = repository.searchMovies(query, 1)
     handleMovieResult(result)
-  } catch (e: Exception) {
-    _uiState.value = MovieUiState.Error(handleError(e))
-  } finally {
-    isLoading = false
   }
 }
 
@@ -61,9 +52,9 @@ private fun MovieViewModel.handleMovieResult(result: Resource<MovieResponse>) {
       currentPage++
       isLastPage = newMovies.isEmpty()
     }
-
     is Resource.Error -> {
-      _uiState.value = MovieUiState.Error(MovieError.ApiError(result.message ?: "Unknown error"))
+      _uiState.value = MovieUiState.Error(handleError(result.message))
     }
   }
+  isLoading = false
 }
