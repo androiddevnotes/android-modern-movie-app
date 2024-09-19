@@ -5,6 +5,7 @@ import com.example.tmdbapp.models.MovieResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 class ApiService(
@@ -121,19 +122,19 @@ class ApiService(
 @Serializable
 data class RequestTokenResponse(
   val success: Boolean,
-  val expires_at: String,
-  val request_token: String,
+  @SerialName("expires_at") val expiresAt: String,
+  @SerialName("request_token") val requestToken: String,
 )
 
 @Serializable
 data class CreateSessionRequest(
-  val requestToken: String,
+  @SerialName("request_token") val requestToken: String,
 )
 
 @Serializable
 data class CreateSessionResponse(
   val success: Boolean,
-  val session_id: String,
+  @SerialName("session_id") val sessionId: String,
 )
 
 @Serializable
@@ -145,8 +146,8 @@ data class CreateListRequest(
 
 @Serializable
 data class CreateListResponse(
-  val status_message: String,
+  @SerialName("status_message") val statusMessage: String,
   val success: Boolean,
-  val status_code: Int,
-  val list_id: Int,
+  @SerialName("status_code") val statusCode: Int,
+  @SerialName("list_id") val listId: Int,
 )
