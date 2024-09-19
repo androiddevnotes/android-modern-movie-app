@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
@@ -33,18 +32,6 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 
-sealed class MovieUiState {
-  data class Error(
-    val error: MovieError,
-  ) : MovieUiState()
-
-  data class Success(
-    val movies: List<Movie>,
-  ) : MovieUiState()
-
-  object Loading : MovieUiState()
-}
-
 class MovieViewModel(
   application: Application,
 ) : AndroidViewModel(application) {
@@ -61,13 +48,13 @@ class MovieViewModel(
   private val _uiState = MutableStateFlow<MovieUiState>(MovieUiState.Loading)
   private val repository = MovieRepository(application)
   internal var isLastPage = false
+
   val currentMovie: StateFlow<Movie?> = _currentMovie
   val currentSortOption: StateFlow<SortOption> = _currentSortOption
   val favorites: StateFlow<List<Movie>> = _favorites
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
   val lastViewedItemIndex: StateFlow<Int> = _lastViewedItemIndex
   val searchQuery: StateFlow<String> = _searchQuery
-
   val uiState: StateFlow<MovieUiState> = _uiState
 
   private val sessionManager = SessionManager(application)
@@ -81,13 +68,7 @@ class MovieViewModel(
   init {
     fetchPopularMovies()
     loadFavorites()
-
-    viewModelScope.launch {
-      val sessionId = sessionManager.getSessionId()
-      if (sessionId != null) {
-        _authState.value = AuthState.Authenticated
-      }
-    }
+    checkAuthenticationStatus()
   }
 
   fun downloadImage(
@@ -429,50 +410,13 @@ class MovieViewModel(
       }
     }
   }
-}
 
-data class FilterOptions(
-  val genres: List<Int> = emptyList(),
-  val minRating: Float? = null,
-  val releaseYear: Int? = null,
-)
-
-enum class SortOption(
-  val apiValue: String,
-  @StringRes val stringRes: Int,
-) {
-  NOW_PLAYING("release_date.desc", R.string.sort_now_playing),
-  POPULAR("popularity.desc", R.string.sort_popularity),
-  TOP_RATED("vote_average.desc", R.string.sort_top_rated),
-  UPCOMING("primary_release_date.asc", R.string.sort_upcoming),
-}
-
-sealed class AuthState {
-  data object Idle : AuthState()
-
-  data object Loading : AuthState()
-
-  data class RequestTokenCreated(
-    val token: String,
-  ) : AuthState()
-
-  data object Authenticated : AuthState()
-
-  data class Error(
-    val message: String,
-  ) : AuthState()
-}
-
-sealed class CreateListState {
-  data object Idle : CreateListState()
-
-  data object Loading : CreateListState()
-
-  data class Success(
-    val listId: Int,
-  ) : CreateListState()
-
-  data class Error(
-    val message: String,
-  ) : CreateListState()
+  private fun checkAuthenticationStatus() {
+    viewModelScope.launch {
+      val sessionId = sessionManager.getSessionId()
+      if (sessionId != null) {
+        _authState.value = AuthState.Authenticated
+      }
+    }
+  }
 }
