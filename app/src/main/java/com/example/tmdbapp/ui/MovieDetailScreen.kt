@@ -1,5 +1,3 @@
-
-
 package com.example.tmdbapp.ui
 
 import android.content.*
@@ -63,7 +61,8 @@ fun MovieDetailContent(
       modifier =
         Modifier
           .fillMaxSize()
-          .verticalScroll(scrollState),
+          .verticalScroll(scrollState)
+          .padding(bottom = 80.dp), // Add padding to account for bottom nav bar
     ) {
       MovieDetailTopBar(
         onBackPress = onBackPress,
