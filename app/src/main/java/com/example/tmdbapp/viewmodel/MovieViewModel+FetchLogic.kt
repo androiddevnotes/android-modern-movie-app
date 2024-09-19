@@ -35,7 +35,7 @@ fun MovieViewModel.fetchMovies() {
         }
       }
     } catch (e: Exception) {
-      _uiState.value = MovieUiState.Error(handleError(e))
+      _uiState.value = handleError(e)?.let { MovieUiState.Error(it) }!!
     } finally {
       isLoading = false
     }
@@ -66,7 +66,7 @@ fun MovieViewModel.fetchPopularMovies() {
         }
       }
     } catch (e: Exception) {
-      _uiState.value = MovieUiState.Error(handleError(e))
+      _uiState.value = handleError(e)?.let { MovieUiState.Error(it) }!!
     } finally {
       isLoading = false
     }

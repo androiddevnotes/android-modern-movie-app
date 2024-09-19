@@ -25,7 +25,7 @@ the codebase evolves as the AI generates more and more code.
 - **Language**: Kotlin
 - **UI Framework**: Jetpack Compose
 - **Architecture**: MVVM (Model-View-ViewModel)
-- **Networking**: Retrofit with OkHttp
+- **Networking**: Ktor Client for Android
 - **JSON Parsing**: Gson
 - **Image Loading**: Coil
 - **Asynchronous Programming**: Kotlin Coroutines
