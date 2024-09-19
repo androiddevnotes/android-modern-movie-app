@@ -1,6 +1,6 @@
 package com.example.tmdbapp.network
 
-import android.util.Log
+import android.util.*
 import com.example.tmdbapp.utils.*
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
@@ -8,7 +8,7 @@ import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.*
 
 object KtorClient {
   private const val TIME_OUT = 60_000

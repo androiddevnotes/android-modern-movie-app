@@ -1,17 +1,16 @@
 package com.example.tmdbapp.ui
 
-import android.app.Application
-import android.content.Intent
-import android.net.Uri
+import android.app.*
+import android.content.*
+import android.net.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.*
+import androidx.compose.ui.res.*
+import androidx.compose.ui.unit.*
 import com.example.tmdbapp.R
 import com.example.tmdbapp.viewmodel.*
 
@@ -54,16 +53,22 @@ fun ListCreationScreen(
         is AuthState.Loading -> {
           CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         }
+
         is AuthState.Error -> {
           Text(
             text = stringResource(R.string.auth_error, (authState as AuthState.Error).message),
             color = MaterialTheme.colorScheme.error,
           )
         }
+
         is AuthState.RequestTokenCreated -> {
           val token = (authState as AuthState.RequestTokenCreated).token
           LaunchedEffect(token) {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.themoviedb.org/authenticate/$token"))
+            val intent =
+              Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://www.themoviedb.org/authenticate/$token"),
+              )
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             application.startActivity(intent)
           }
@@ -72,6 +77,7 @@ fun ListCreationScreen(
             Text(stringResource(R.string.approved_request))
           }
         }
+
         is AuthState.Authenticated -> {
           ListCreationContent(
             listName = listName,
@@ -82,6 +88,7 @@ fun ListCreationScreen(
             createListState = createListState,
           )
         }
+
         else -> {}
       }
     }
@@ -121,18 +128,21 @@ private fun ListCreationContent(
     is CreateListState.Loading -> {
       CircularProgressIndicator()
     }
+
     is CreateListState.Success -> {
       Text(
         text = stringResource(R.string.list_created_success, createListState.listId),
         color = MaterialTheme.colorScheme.primary,
       )
     }
+
     is CreateListState.Error -> {
       Text(
         text = stringResource(R.string.list_creation_error, createListState.message),
         color = MaterialTheme.colorScheme.error,
       )
     }
+
     else -> {}
   }
 }

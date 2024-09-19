@@ -1,7 +1,7 @@
 package com.example.tmdbapp.viewmodel
 
-import androidx.annotation.StringRes
-import com.example.tmdbapp.R
+import androidx.annotation.*
+import com.example.tmdbapp.*
 
 data class FilterOptions(
   val genres: List<Int> = emptyList(),

@@ -1,8 +1,8 @@
 package com.example.tmdbapp.ui.theme
 
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Shapes
-import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.shape.*
+import androidx.compose.material3.*
+import androidx.compose.ui.unit.*
 
 val Shapes =
   Shapes(

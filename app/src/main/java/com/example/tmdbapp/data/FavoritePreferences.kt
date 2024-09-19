@@ -1,8 +1,8 @@
 package com.example.tmdbapp.data
 
-import android.content.Context
-import androidx.core.content.edit
-import com.example.tmdbapp.utils.Constants
+import android.content.*
+import androidx.core.content.*
+import com.example.tmdbapp.utils.*
 
 class FavoritePreferences(
   context: Context,

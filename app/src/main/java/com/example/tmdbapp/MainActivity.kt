@@ -1,21 +1,18 @@
 package com.example.tmdbapp
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.compose.rememberNavController
-import com.example.tmdbapp.ui.NavGraph
-import com.example.tmdbapp.ui.components.BottomNavigationBar
-import com.example.tmdbapp.ui.theme.TMDBAppTheme
-import com.example.tmdbapp.ui.theme.ThemeMode
-import com.example.tmdbapp.utils.Constants
-import com.example.tmdbapp.viewmodel.MovieViewModel
+import android.os.*
+import androidx.activity.*
+import androidx.activity.compose.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.*
+import androidx.lifecycle.*
+import androidx.navigation.compose.*
+import com.example.tmdbapp.ui.*
+import com.example.tmdbapp.ui.components.*
+import com.example.tmdbapp.ui.theme.*
+import com.example.tmdbapp.utils.*
+import com.example.tmdbapp.viewmodel.*
 
 class MainActivity : ComponentActivity() {
   private lateinit var movieViewModel: MovieViewModel

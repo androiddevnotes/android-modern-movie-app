@@ -1,8 +1,8 @@
 package com.example.tmdbapp.viewmodel
 
-import androidx.lifecycle.viewModelScope
-import com.example.tmdbapp.utils.Resource
-import kotlinx.coroutines.launch
+import androidx.lifecycle.*
+import com.example.tmdbapp.utils.*
+import kotlinx.coroutines.*
 
 fun MovieViewModel.fetchMovies() {
   if (isLoading || isLastPage) return
@@ -30,6 +30,7 @@ fun MovieViewModel.fetchMovies() {
           currentPage++
           isLastPage = newMovies.isEmpty()
         }
+
         is Resource.Error -> {
           _uiState.value = MovieUiState.Error(handleError(result.message))
         }
@@ -61,6 +62,7 @@ fun MovieViewModel.fetchPopularMovies() {
           currentPage++
           isLastPage = newMovies.isEmpty()
         }
+
         is Resource.Error -> {
           _uiState.value = MovieUiState.Error(handleError(result.message))
         }
@@ -80,6 +82,7 @@ internal fun MovieViewModel.searchMovies(query: String) {
       is Resource.Success -> {
         _uiState.value = MovieUiState.Success(result.data?.results ?: emptyList())
       }
+
       is Resource.Error -> {
         _uiState.value = MovieUiState.Error(handleError(result.message))
       }

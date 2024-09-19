@@ -1,16 +1,12 @@
 package com.example.tmdbapp.ui
 
-import android.app.Application
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import android.app.*
+import androidx.compose.runtime.*
+import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.example.tmdbapp.ui.theme.ThemeMode
-import com.example.tmdbapp.viewmodel.MovieViewModel
+import androidx.navigation.compose.*
+import com.example.tmdbapp.ui.theme.*
+import com.example.tmdbapp.viewmodel.*
 
 @Composable
 fun NavGraph(

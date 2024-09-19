@@ -1,8 +1,8 @@
 package com.example.tmdbapp.viewmodel
 
-import com.example.tmdbapp.utils.MovieError
+import com.example.tmdbapp.utils.*
 import io.ktor.client.plugins.*
-import java.io.IOException
+import java.io.*
 
 fun handleError(errorMessage: String?): MovieError = MovieError.ApiError(errorMessage ?: "An unknown error occurred")
 
@@ -15,5 +15,6 @@ fun handleError(error: Throwable): MovieError? =
         else -> error.message?.let { MovieError.ApiError(it) }
       }
     }
+
     else -> MovieError.Unknown
   }

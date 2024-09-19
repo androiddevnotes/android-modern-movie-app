@@ -1,6 +1,6 @@
 package com.example.tmdbapp.utils
 
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.*
 
 object Constants {
   val PADDING_SMALL = 8.dp

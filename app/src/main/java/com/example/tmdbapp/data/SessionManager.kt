@@ -1,15 +1,13 @@
 package com.example.tmdbapp.data
 
-import android.content.Context
-import android.content.SharedPreferences
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import android.content.*
+import kotlinx.coroutines.flow.*
 
 class SessionManager(
   context: Context,
 ) {
-  private val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+  private val prefs: SharedPreferences =
+    context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
   private val editor: SharedPreferences.Editor = prefs.edit()
 
   private val _sessionIdFlow = MutableStateFlow<String?>(null)

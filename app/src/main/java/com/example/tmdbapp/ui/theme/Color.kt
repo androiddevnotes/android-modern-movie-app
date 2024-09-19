@@ -1,6 +1,6 @@
 package com.example.tmdbapp.ui.theme
 
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.*
 
 val primaryLight = Color(0xFF615690)
 val onPrimaryLight = Color(0xFFFFFFFF)

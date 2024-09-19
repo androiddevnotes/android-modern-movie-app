@@ -1,9 +1,9 @@
 package com.example.tmdbapp.utils
 
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.lazy.staggeredgrid.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.*
 
 @Composable
 fun rememberForeverLazyListState(

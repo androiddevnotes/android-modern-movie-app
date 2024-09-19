@@ -1,12 +1,10 @@
 package com.example.tmdbapp.network
 
-import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.models.MovieResponse
+import com.example.tmdbapp.models.*
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import kotlinx.serialization.*
 
 class ApiService(
   private val client: HttpClient,

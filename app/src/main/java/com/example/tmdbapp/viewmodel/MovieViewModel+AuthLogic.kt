@@ -1,8 +1,8 @@
 package com.example.tmdbapp.viewmodel
 
-import androidx.lifecycle.viewModelScope
-import com.example.tmdbapp.utils.Resource
-import kotlinx.coroutines.launch
+import androidx.lifecycle.*
+import com.example.tmdbapp.utils.*
+import kotlinx.coroutines.*
 
 fun MovieViewModel.startAuthentication() {
   viewModelScope.launch {
@@ -18,7 +18,10 @@ fun MovieViewModel.startAuthentication() {
           _authState.value = AuthState.Error("Failed to create request token")
         }
       }
-      is Resource.Error -> _authState.value = AuthState.Error(tokenResult.message ?: "Unknown error")
+
+      is Resource.Error ->
+        _authState.value =
+          AuthState.Error(tokenResult.message ?: "Unknown error")
     }
   }
 }
@@ -28,7 +31,9 @@ fun MovieViewModel.createSession(approvedToken: String) {
     _authState.value = AuthState.Loading
     when (val sessionResult = repository.createSession(approvedToken)) {
       is Resource.Success -> _authState.value = AuthState.Authenticated
-      is Resource.Error -> _authState.value = AuthState.Error(sessionResult.message ?: "Failed to create session")
+      is Resource.Error ->
+        _authState.value =
+          AuthState.Error(sessionResult.message ?: "Failed to create session")
     }
   }
 }
@@ -40,8 +45,13 @@ fun MovieViewModel.createList(
   viewModelScope.launch {
     _createListState.value = CreateListState.Loading
     when (val result = repository.createList(name, description)) {
-      is Resource.Success -> _createListState.value = result.data?.let { CreateListState.Success(it) }!!
-      is Resource.Error -> _createListState.value = result.message?.let { CreateListState.Error(it) }!!
+      is Resource.Success ->
+        _createListState.value =
+          result.data?.let { CreateListState.Success(it) }!!
+
+      is Resource.Error ->
+        _createListState.value =
+          result.message?.let { CreateListState.Error(it) }!!
     }
   }
 }

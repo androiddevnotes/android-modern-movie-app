@@ -1,11 +1,11 @@
 package com.example.tmdbapp.viewmodel
 
-import android.app.Application
+import android.app.*
 import androidx.lifecycle.*
-import com.example.tmdbapp.data.SessionManager
-import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.repository.MovieRepository
-import com.example.tmdbapp.utils.Constants
+import com.example.tmdbapp.data.*
+import com.example.tmdbapp.models.*
+import com.example.tmdbapp.repository.*
+import com.example.tmdbapp.utils.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -121,6 +121,7 @@ class MovieViewModel(
             }
           _uiState.value = MovieUiState.Success(updatedMovies)
         }
+
         else -> {}
       }
 

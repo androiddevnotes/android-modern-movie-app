@@ -1,7 +1,7 @@
 package com.example.tmdbapp.viewmodel
 
-import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.utils.MovieError
+import com.example.tmdbapp.models.*
+import com.example.tmdbapp.utils.*
 
 sealed class MovieUiState {
   data class Error(
