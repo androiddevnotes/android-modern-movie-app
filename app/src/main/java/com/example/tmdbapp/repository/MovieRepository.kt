@@ -23,7 +23,7 @@ class MovieRepository(
       Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
     }
 
-  private suspend fun addFavoriteStatus(movies: List<Movie>): List<Movie> =
+  private fun addFavoriteStatus(movies: List<Movie>): List<Movie> =
     movies.map { movie ->
       movie.copy(isFavorite = favoritePreferences.isFavorite(movie.id))
     }

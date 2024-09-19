@@ -29,21 +29,6 @@ class ApiService(
     page: Int,
   ): MovieResponse = get("movie/popular", apiKey, page)
 
-  suspend fun getNowPlayingMovies(
-    apiKey: String,
-    page: Int,
-  ): MovieResponse = get("movie/now_playing", apiKey, page)
-
-  suspend fun getTopRatedMovies(
-    apiKey: String,
-    page: Int,
-  ): MovieResponse = get("movie/top_rated", apiKey, page)
-
-  suspend fun getUpcomingMovies(
-    apiKey: String,
-    page: Int,
-  ): MovieResponse = get("movie/upcoming", apiKey, page)
-
   suspend fun discoverMovies(
     apiKey: String,
     page: Int,
