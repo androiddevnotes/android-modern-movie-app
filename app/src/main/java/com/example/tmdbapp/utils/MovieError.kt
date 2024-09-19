@@ -1,7 +1,7 @@
 package com.example.tmdbapp.utils
 
-import androidx.annotation.*
-import com.example.tmdbapp.*
+import androidx.annotation.StringRes
+import com.example.tmdbapp.R
 
 sealed class MovieError(
   @StringRes val messageResId: Int,

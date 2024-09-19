@@ -51,4 +51,8 @@
     <string name="enter_year">Enter year</string>
     <string name="clear">Clear</string>
     <string name="content_desc_create_list">Create List</string>
+    <string name="network_error">Network error occurred. Please check your internet connection.</string>
+    <string name="server_error">Server error occurred. Please try again later.</string>
+    <string name="parse_error">Error parsing data. Please try again.</string>
+    <string name="unknown_error">An unknown error occurred. Please try again.</string>
 </resources>
