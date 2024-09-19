@@ -1,14 +1,12 @@
 package com.example.tmdbapp.viewmodel
 
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.tmdbapp.models.*
-import com.example.tmdbapp.utils.MovieError
-import com.example.tmdbapp.utils.Resource
+import com.example.tmdbapp.utils.*
 import io.ktor.client.plugins.*
-import io.ktor.serialization.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.serialization.*
-import java.io.IOException
+import java.io.*
 
 fun MovieViewModel.fetchMovies() {
   if (isLoading || isLastPage) return
@@ -74,6 +72,7 @@ private fun MovieViewModel.handleMovieResult(result: Resource<MovieResponse>) {
       currentPage++
       isLastPage = newMovies.isEmpty()
     }
+
     is Resource.Error -> {
       _uiState.value = MovieUiState.Error(MovieError.ApiError(result.message ?: "Unknown error"))
     }
