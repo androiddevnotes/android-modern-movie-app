@@ -12,6 +12,8 @@ The codebase evolves as the AI generates more and more code.
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
     <img src="docs/assets/p1.png" alt="Detail Screen" style="width: 50%;">
     <img src="docs/assets/p2.png" alt="Grid View List Screen" style="width: 50%;">
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
     <img src="docs/assets/p3.png" alt="Simple View List Screen" style="width: 50%;">
     <img src="docs/assets/p4.png" alt="Filter Bottom Sheet" style="width: 50%;">
 </div>
