@@ -79,8 +79,8 @@ dependencies {
   implementation(libs.androidx.material3)
   implementation(libs.androidx.material)
   implementation(libs.retrofit)
-  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-  implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+  implementation(libs.kotlinx.serialization.json)
+  implementation(libs.retrofit2.kotlinx.serialization.converter)
   implementation(libs.kotlinx.coroutines.android)
   implementation(libs.androidx.lifecycle.viewmodel.compose)
   implementation(libs.okhttp.logging.interceptor)
@@ -95,10 +95,10 @@ dependencies {
   implementation("androidx.compose.material:material:1.4.3")
   implementation(libs.androidx.navigation.compose)
   detektPlugins(libs.detekt.formatting)
-  implementation("io.ktor:ktor-client-android:2.3.0")
-  implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
-  implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
-  implementation("io.ktor:ktor-client-logging:2.3.0")
+  implementation(libs.ktor.client.android)
+  implementation(libs.ktor.client.content.negotiation)
+  implementation(libs.ktor.serialization.kotlinx.json)
+  implementation(libs.ktor.client.logging)
 }
 
 // Add Detekt task
