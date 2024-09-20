@@ -93,7 +93,7 @@ class ApiService(
           header("Authorization", "Bearer $apiKey")
           setBody(
             OpenAIRequest(
-              model = "gpt-4o",
+              model = "gpt-4o-mini",
               messages =
                 listOf(
                   OpenAIMessage("system", "You are a helpful assistant."),
