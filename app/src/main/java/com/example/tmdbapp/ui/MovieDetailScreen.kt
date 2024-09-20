@@ -36,6 +36,7 @@ fun MovieDetailScreen(
 ) {
   val movie by viewModel.currentMovie.collectAsState()
   val aiResponse by viewModel.aiResponse.collectAsState()
+  val aiResponseState by viewModel.aiResponseState.collectAsState()
 
   // Clear AI response when leaving the screen
   DisposableEffect(Unit) {
@@ -59,6 +60,7 @@ fun MovieDetailScreen(
         onDownloadClick = viewModel::downloadImage,
         onAskAIClick = { viewModel.askAIAboutMovie(movie!!) },
         aiResponse = aiResponse,
+        aiResponseState = aiResponseState,
       )
     }
   }
@@ -72,6 +74,7 @@ fun MovieDetailContent(
   onDownloadClick: (String?, Context) -> Unit,
   onAskAIClick: () -> Unit,
   aiResponse: String?,
+  aiResponseState: AIResponseState,
 ) {
   val context = LocalContext.current
   val scrollState = rememberScrollState()
@@ -97,14 +100,40 @@ fun MovieDetailContent(
 
       // Add AI Button and Response
       Spacer(modifier = Modifier.height(16.dp))
-      GrainyGradientButton(
-        onClick = onAskAIClick,
-        text = stringResource(R.string.ask_ai_about_movie),
-      )
-
-      aiResponse?.let { response ->
-        Spacer(modifier = Modifier.height(16.dp))
-        AIResponseCard(response = response)
+      when (aiResponseState) {
+        AIResponseState.Idle -> {
+          GrainyGradientButton(
+            onClick = onAskAIClick,
+            text = stringResource(R.string.ask_ai_about_movie),
+          )
+        }
+        AIResponseState.Loading -> {
+          Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center,
+          ) {
+            CircularProgressIndicator(
+              modifier = Modifier.size(24.dp),
+            )
+          }
+        }
+        is AIResponseState.Error -> {
+          Text(
+            text = (aiResponseState as AIResponseState.Error).message,
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier.padding(horizontal = 16.dp),
+          )
+          Spacer(modifier = Modifier.height(8.dp))
+          GrainyGradientButton(
+            onClick = onAskAIClick,
+            text = stringResource(R.string.retry_ai_request),
+          )
+        }
+        AIResponseState.Success -> {
+          aiResponse?.let { response ->
+            AIResponseCard(response = response)
+          }
+        }
       }
     }
   }

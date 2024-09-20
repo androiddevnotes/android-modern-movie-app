@@ -150,22 +150,39 @@ class MovieViewModel(
   fun isFavorite(movieId: Int): Boolean = favorites.value.any { it.id == movieId }
 
   private val _aiResponse = MutableStateFlow<String?>(null)
-  val aiResponse: StateFlow<String?> = _aiResponse
+  val aiResponse: StateFlow<String?> = _aiResponse.asStateFlow()
+
+  private val _aiResponseState = MutableStateFlow<AIResponseState>(AIResponseState.Idle)
+  val aiResponseState: StateFlow<AIResponseState> = _aiResponseState.asStateFlow()
 
   fun askAIAboutMovie(movie: Movie) {
     viewModelScope.launch {
+      _aiResponseState.value = AIResponseState.Loading
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
       try {
         val response = repository.api.askOpenAI(BuildConfig.OPENAI_API_KEY, prompt)
         _aiResponse.value = response
+        _aiResponseState.value = AIResponseState.Success
       } catch (e: Exception) {
-        _aiResponse.value = "Error: ${e.localizedMessage}"
+        _aiResponseState.value = AIResponseState.Error(e.localizedMessage ?: "Unknown error occurred")
       }
     }
   }
 
-  // Add this function to clear the AI response
   fun clearAIResponse() {
     _aiResponse.value = null
+    _aiResponseState.value = AIResponseState.Idle
   }
+}
+
+sealed class AIResponseState {
+  object Idle : AIResponseState()
+
+  object Loading : AIResponseState()
+
+  object Success : AIResponseState()
+
+  data class Error(
+    val message: String,
+  ) : AIResponseState()
 }
