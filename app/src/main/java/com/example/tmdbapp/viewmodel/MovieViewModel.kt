@@ -53,6 +53,8 @@ class MovieViewModel(
       try {
         val movie = repository.getMovieDetails(movieId)
         _currentMovie.value = movie
+        // Clear the AI response when fetching details for a new movie
+        _aiResponse.value = null
       } catch (e: Exception) {
         _currentMovie.value = null
       }
@@ -160,5 +162,10 @@ class MovieViewModel(
         _aiResponse.value = "Error: ${e.localizedMessage}"
       }
     }
+  }
+
+  // Add this function to clear the AI response
+  fun clearAIResponse() {
+    _aiResponse.value = null
   }
 }
