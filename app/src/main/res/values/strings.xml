@@ -55,4 +55,5 @@
     <string name="server_error">Server error occurred. Please try again later.</string>
     <string name="parse_error">Error parsing data. Please try again.</string>
     <string name="unknown_error">An unknown error occurred. Please try again.</string>
+    <string name="ask_ai_about_movie">Ask AI about this movie</string>
 </resources>

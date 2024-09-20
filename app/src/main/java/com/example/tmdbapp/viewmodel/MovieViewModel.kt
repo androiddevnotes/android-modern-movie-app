@@ -2,6 +2,7 @@ package com.example.tmdbapp.viewmodel
 
 import android.app.*
 import androidx.lifecycle.*
+import com.example.tmdbapp.*
 import com.example.tmdbapp.data.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.repository.*
@@ -145,4 +146,19 @@ class MovieViewModel(
   }
 
   fun isFavorite(movieId: Int): Boolean = favorites.value.any { it.id == movieId }
+
+  private val _aiResponse = MutableStateFlow<String?>(null)
+  val aiResponse: StateFlow<String?> = _aiResponse
+
+  fun askAIAboutMovie(movie: Movie) {
+    viewModelScope.launch {
+      val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
+      try {
+        val response = repository.api.askOpenAI(BuildConfig.OPENAI_API_KEY, prompt)
+        _aiResponse.value = response
+      } catch (e: Exception) {
+        _aiResponse.value = "Error: ${e.localizedMessage}"
+      }
+    }
+  }
 }

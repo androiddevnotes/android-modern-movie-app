@@ -4,6 +4,9 @@ import com.example.tmdbapp.models.*
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlinx.serialization.*
 
 class ApiService(
@@ -78,6 +81,32 @@ class ApiService(
         parameter("session_id", sessionId)
         setBody(requestBody)
       }.body()
+
+  suspend fun askOpenAI(
+    apiKey: String,
+    prompt: String,
+  ): String {
+    val response: OpenAIResponse =
+      client
+        .post("https://api.openai.com/v1/chat/completions") {
+          contentType(ContentType.Application.Json)
+          header("Authorization", "Bearer $apiKey")
+          setBody(
+            OpenAIRequest(
+              model = "gpt-4o",
+              messages =
+                listOf(
+                  OpenAIMessage("system", "You are a helpful assistant."),
+                  OpenAIMessage("user", prompt),
+                ),
+            ),
+          )
+        }.body()
+    return response.choices
+      .firstOrNull()
+      ?.message
+      ?.content ?: "No response from AI."
+  }
 }
 
 @Serializable
@@ -111,4 +140,41 @@ data class CreateListResponse(
   val success: Boolean,
   @SerialName("status_code") val statusCode: Int,
   @SerialName("list_id") val listId: Int,
+)
+
+@Serializable
+data class OpenAIRequest(
+  val model: String,
+  val messages: List<OpenAIMessage>,
+)
+
+@Serializable
+data class OpenAIResponse(
+  val id: String,
+  val `object`: String,
+  val created: Long,
+  val model: String,
+  @SerialName("system_fingerprint") val systemFingerprint: String?,
+  val choices: List<OpenAIChoice>,
+  val usage: OpenAIUsage,
+)
+
+@Serializable
+data class OpenAIChoice(
+  val index: Int,
+  val message: OpenAIMessage,
+  @SerialName("finish_reason") val finishReason: String,
+)
+
+@Serializable
+data class OpenAIMessage(
+  val role: String,
+  val content: String,
+)
+
+@Serializable
+data class OpenAIUsage(
+  @SerialName("prompt_tokens") val promptTokens: Int,
+  @SerialName("completion_tokens") val completionTokens: Int,
+  @SerialName("total_tokens") val totalTokens: Int,
 )

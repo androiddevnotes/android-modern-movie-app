@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.*
 class MovieRepository(
   context: Context,
 ) {
-  private val api = ApiService(KtorClient.httpClient)
+  internal val api = ApiService(KtorClient.httpClient)
   private val apiKey = BuildConfig.TMDB_API_KEY
   private val favoritePreferences = FavoritePreferences(context)
   private val sessionManager = SessionManager(context)

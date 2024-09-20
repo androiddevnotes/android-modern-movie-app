@@ -13,6 +13,7 @@ import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.font.*
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import coil.compose.*
 import com.example.tmdbapp.R
@@ -25,6 +26,7 @@ fun MovieDetailScreen(
   onBackPress: () -> Unit,
 ) {
   val movie by viewModel.currentMovie.collectAsState()
+  val aiResponse by viewModel.aiResponse.collectAsState()
 
   when {
     movie == null -> {
@@ -39,6 +41,8 @@ fun MovieDetailScreen(
         onBackPress = onBackPress,
         onFavoriteClick = { viewModel.toggleFavorite(movie!!) },
         onDownloadClick = viewModel::downloadImage,
+        onAskAIClick = { viewModel.askAIAboutMovie(movie!!) },
+        aiResponse = aiResponse,
       )
     }
   }
@@ -50,6 +54,8 @@ fun MovieDetailContent(
   onBackPress: () -> Unit,
   onFavoriteClick: () -> Unit,
   onDownloadClick: (String?, Context) -> Unit,
+  onAskAIClick: () -> Unit,
+  aiResponse: String?,
 ) {
   val context = LocalContext.current
   val scrollState = rememberScrollState()
@@ -72,6 +78,29 @@ fun MovieDetailContent(
       )
       Spacer(modifier = Modifier.weight(1f))
       MovieDetailInfo(movie)
+
+      // Add AI Button and Response
+      Spacer(modifier = Modifier.height(16.dp))
+      Button(
+        onClick = onAskAIClick,
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+      ) {
+        Text(stringResource(R.string.ask_ai_about_movie))
+      }
+
+      aiResponse?.let { response ->
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+          text = response,
+          style = MaterialTheme.typography.bodyMedium,
+          color = Color.White.copy(alpha = 0.9f),
+          textAlign = TextAlign.Justify,
+          modifier = Modifier.padding(horizontal = 16.dp),
+        )
+      }
     }
   }
 }
