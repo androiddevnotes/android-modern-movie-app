@@ -47,6 +47,9 @@ fun NavGraph(
             restoreState = true
           }
         },
+        onSettingsClick = {
+          navController.navigate("settings")
+        },
       )
     }
     composable(
@@ -76,6 +79,12 @@ fun NavGraph(
         viewModel = movieViewModel,
         onNavigateBack = { navController.popBackStack() },
         application = application,
+      )
+    }
+    // Add this new composable for the Settings screen
+    composable("settings") {
+      SettingsScreen(
+        viewModel = movieViewModel,
       )
     }
   }

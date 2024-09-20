@@ -57,4 +57,9 @@
     <string name="unknown_error">An unknown error occurred. Please try again.</string>
     <string name="ask_ai_about_movie">Ask AI about this movie</string>
     <string name="retry_ai_request">Retry AI Request</string>
+    <string name="settings_title">Settings</string>
+    <string name="tmdb_api_key">TMDB API Key</string>
+    <string name="openai_api_key">OpenAI API Key</string>
+    <string name="settings">Settings</string>
+    <string name="enter_your_api_key">Enter your API key</string>
 </resources>

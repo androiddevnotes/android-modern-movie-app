@@ -1,6 +1,8 @@
 package com.example.tmdbapp.viewmodel
 
 import android.app.*
+import android.content.Context
+import androidx.core.content.edit
 import androidx.lifecycle.*
 import com.example.tmdbapp.*
 import com.example.tmdbapp.data.*
@@ -41,6 +43,34 @@ class MovieViewModel(
   val createListState: StateFlow<CreateListState> = _createListState
 
   internal val sessionManager = SessionManager(application)
+
+  private val sharedPreferences = application.getSharedPreferences("ApiKeys", Context.MODE_PRIVATE)
+
+  fun getTmdbApiKey(): String {
+    val savedKey = sharedPreferences.getString("TMDB_API_KEY", null)
+    return if (savedKey.isNullOrEmpty()) "" else savedKey
+  }
+
+  fun setTmdbApiKey(key: String) {
+    sharedPreferences.edit {
+      putString("TMDB_API_KEY", key)
+    }
+  }
+
+  fun getOpenAiApiKey(): String {
+    val savedKey = sharedPreferences.getString("OPENAI_API_KEY", null)
+    return if (savedKey.isNullOrEmpty()) "" else savedKey
+  }
+
+  fun setOpenAiApiKey(key: String) {
+    sharedPreferences.edit {
+      putString("OPENAI_API_KEY", key)
+    }
+  }
+
+  private fun getActualTmdbApiKey(): String = getTmdbApiKey().ifEmpty { BuildConfig.TMDB_API_KEY }
+
+  private fun getActualOpenAiApiKey(): String = getOpenAiApiKey().ifEmpty { BuildConfig.OPENAI_API_KEY }
 
   init {
     fetchPopularMovies()
@@ -160,7 +190,8 @@ class MovieViewModel(
       _aiResponseState.value = AIResponseState.Loading
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
       try {
-        val response = repository.api.askOpenAI(BuildConfig.OPENAI_API_KEY, prompt)
+        // Use getActualOpenAiApiKey() instead of getOpenAiApiKey()
+        val response = repository.api.askOpenAI(getActualOpenAiApiKey(), prompt)
         _aiResponse.value = response
         _aiResponseState.value = AIResponseState.Success
       } catch (e: Exception) {

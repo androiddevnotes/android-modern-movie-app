@@ -11,8 +11,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.R
+import com.example.tmdbapp.*
 import com.example.tmdbapp.viewmodel.*
+import com.example.tmdbapp.R as R
 
 @Composable
 fun ListCreationScreen(

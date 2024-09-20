@@ -32,6 +32,7 @@ fun TopBar(
   currentThemeMode: ThemeMode,
   onFilterClick: () -> Unit,
   onCreateListClick: () -> Unit,
+  onSettingsClick: () -> Unit,
 ) {
   if (isSearchActive) {
     SearchTopBar(
@@ -53,6 +54,7 @@ fun TopBar(
       currentThemeMode = currentThemeMode,
       onFilterClick = onFilterClick,
       onCreateListClick = onCreateListClick,
+      onSettingsClick = onSettingsClick,
     )
   }
 }
@@ -71,6 +73,7 @@ private fun MainTopBar(
   currentThemeMode: ThemeMode,
   onFilterClick: () -> Unit,
   onCreateListClick: () -> Unit,
+  onSettingsClick: () -> Unit,
 ) {
   TopAppBar(
     title = { AppLogo() },
@@ -93,6 +96,12 @@ private fun MainTopBar(
       )
       FilterIcon(onClick = onFilterClick)
       CreateListIcon(onClick = onCreateListClick)
+      IconButton(onClick = onSettingsClick) {
+        Icon(
+          imageVector = Icons.Default.Settings,
+          contentDescription = stringResource(R.string.settings),
+        )
+      }
     },
     colors = topAppBarColors(),
   )
