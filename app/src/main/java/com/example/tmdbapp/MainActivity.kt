@@ -3,9 +3,11 @@ package com.example.tmdbapp
 import android.os.*
 import androidx.activity.*
 import androidx.activity.compose.*
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
+import androidx.compose.ui.*
 import androidx.lifecycle.*
 import androidx.navigation.compose.*
 import com.example.tmdbapp.ui.*
@@ -42,6 +44,7 @@ class MainActivity : ComponentActivity() {
             viewType = viewType,
             onViewTypeChange = { newViewType -> viewType = newViewType },
             application = application,
+            modifier = Modifier.padding(innerPadding),
           )
         }
       }

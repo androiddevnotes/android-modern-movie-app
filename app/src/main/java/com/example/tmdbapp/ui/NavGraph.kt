@@ -2,6 +2,7 @@ package com.example.tmdbapp.ui
 
 import android.app.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.*
 import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
@@ -18,10 +19,11 @@ fun NavGraph(
   viewType: String,
   onViewTypeChange: (String) -> Unit,
   application: Application,
+  modifier: Modifier = Modifier,
 ) {
   val apiKeyManager = remember { ApiKeyManager(application) }
 
-  NavHost(navController = navController, startDestination = "movieList") {
+  NavHost(navController = navController, startDestination = "movieList", modifier = modifier) {
     composable("movieList") {
       MovieListScreen(
         viewModel = movieViewModel,
