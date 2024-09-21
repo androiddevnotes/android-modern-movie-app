@@ -88,6 +88,9 @@ fun AIResponseCard(
             textAlign = TextAlign.Justify,
           )
         }
+        Box(modifier = Modifier.matchParentSize()) {
+          ShimmeringOverlay(isVisible = true)
+        }
       }
     }
   }

@@ -2,13 +2,14 @@ package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.pullrefresh.*
-import androidx.compose.material3.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.*
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.ui.components.*
-import com.example.tmdbapp.ui.theme.*
+import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.*
 import kotlinx.coroutines.launch
@@ -98,13 +99,30 @@ fun MovieListScreenContent(
             CircularProgressIndicator()
           }
         }
+
         is MovieUiState.Success -> {
           val movies = uiState.movies
           when (viewType) {
-            Constants.VIEW_TYPE_GRID -> MovieListGridView(movies, viewModel, onMovieClick, viewType, searchQuery)
-            Constants.VIEW_TYPE_LIST -> MovieListListView(movies, viewModel, onMovieClick, viewType, searchQuery)
+            Constants.VIEW_TYPE_GRID ->
+              MovieListGridView(
+                movies,
+                viewModel,
+                onMovieClick,
+                viewType,
+                searchQuery,
+              )
+
+            Constants.VIEW_TYPE_LIST ->
+              MovieListListView(
+                movies,
+                viewModel,
+                onMovieClick,
+                viewType,
+                searchQuery,
+              )
           }
         }
+
         is MovieUiState.Error -> MovieListErrorView(uiState, viewModel, onSettingsClick)
       }
       PullRefreshIndicator(
@@ -112,9 +130,11 @@ fun MovieListScreenContent(
         state = pullRefreshState,
         modifier = Modifier.align(Alignment.TopCenter),
       )
-      ShimmeringOverlay(
-        isVisible = isRefreshing || uiState is MovieUiState.Loading,
-      )
+      Box(modifier = Modifier.matchParentSize()) {
+        ShimmeringOverlay(
+          isVisible = isRefreshing || uiState is MovieUiState.Loading,
+        )
+      }
     }
   }
 }

@@ -107,9 +107,6 @@ fun MovieGridItem(
               .size(24.dp),
         )
       }
-
-      // Add ShimmeringOverlay
-      ShimmeringOverlay(isVisible = true)
     }
   }
 }

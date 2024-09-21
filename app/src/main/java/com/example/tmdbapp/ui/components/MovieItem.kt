@@ -93,9 +93,6 @@ fun MovieItem(
           }
         }
       }
-
-      // Add ShimmeringOverlay
-      ShimmeringOverlay(isVisible = true)
     }
   }
 }
