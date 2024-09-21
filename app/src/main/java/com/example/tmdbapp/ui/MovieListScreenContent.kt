@@ -11,6 +11,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.*
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.ui.components.*
+import com.example.tmdbapp.ui.components.GridItemUi
 import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.*
@@ -108,14 +109,29 @@ fun MovieListScreenContent(
           val movies = uiState.movies
           when (viewType) {
             Constants.VIEW_TYPE_GRID ->
-              MovieListGridView(
-                movies = movies,
+              ItemListGridView(
+                items = movies,
                 viewModel = viewModel,
-                onMovieClick = onMovieClick,
+                onItemClick = onMovieClick,
                 viewType = viewType,
                 searchQuery = searchQuery,
                 gridState = gridState,
-              )
+              ) { movie, index, onClick, onLongClick ->
+                GridItemUi(
+                  title = movie.title,
+                  posterPath = movie.posterPath,
+                  voteAverage = movie.voteAverage,
+                  isFavorite = movie.isFavorite,
+                  onClick = {
+                    viewModel.setLastViewedItemIndex(index)
+                    onClick()
+                  },
+                  onLongClick = {
+                    viewModel.toggleFavorite(movie)
+                    onLongClick()
+                  },
+                )
+              }
             Constants.VIEW_TYPE_LIST ->
               MovieListListView(
                 movies = movies,

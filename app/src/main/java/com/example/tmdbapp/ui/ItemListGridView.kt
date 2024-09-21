@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
 import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
@@ -15,15 +14,25 @@ fun <T> ItemListGridView(
   onItemClick: (T) -> Unit,
   viewType: String,
   searchQuery: String,
+  gridState: LazyStaggeredGridState,
   itemContent: @Composable (T, Int, () -> Unit, () -> Unit) -> Unit,
 ) {
   val lastViewedItemIndex by viewModel.lastViewedItemIndex.collectAsState()
-  val gridState =
-    rememberForeverLazyStaggeredGridState(
-      key = "item_grid_${viewType}_$searchQuery",
-      initialFirstVisibleItemIndex = lastViewedItemIndex,
-      initialFirstVisibleItemScrollOffset = 0,
-    )
+  var shouldScroll by remember { mutableStateOf(false) }
+
+  LaunchedEffect(lastViewedItemIndex) {
+    if (lastViewedItemIndex > 0) {
+      shouldScroll = true
+    }
+  }
+
+  LaunchedEffect(shouldScroll) {
+    if (shouldScroll) {
+      gridState.scrollToItem(lastViewedItemIndex)
+      viewModel.setLastViewedItemIndex(0)
+      shouldScroll = false
+    }
+  }
 
   LazyVerticalStaggeredGrid(
     columns = StaggeredGridCells.Fixed(3),
@@ -42,12 +51,8 @@ fun <T> ItemListGridView(
       itemContent(
         item,
         index,
-        {
-          viewModel.setLastViewedItemIndex(index)
-          onItemClick(item)
-        },
-        {
-        },
+        { onItemClick(item) },
+        { /* You can add long click behavior here if needed */ },
       )
     }
   }

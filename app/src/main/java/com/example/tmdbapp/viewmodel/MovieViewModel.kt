@@ -31,7 +31,7 @@ class MovieViewModel(
   val currentSortOption: StateFlow<SortOption> = _currentSortOption
   val favorites: StateFlow<List<Movie>> = _favorites
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
-  val lastViewedItemIndex: StateFlow<Int> = _lastViewedItemIndex
+  val lastViewedItemIndex: StateFlow<Int> = _lastViewedItemIndex.asStateFlow()
   val searchQuery: StateFlow<String> = _searchQuery
   val uiState: StateFlow<MovieUiState> = _uiState
   val authState: StateFlow<AuthState> = _authState
