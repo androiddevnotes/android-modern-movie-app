@@ -87,8 +87,6 @@ class ApiService(
     apiKey: String,
     prompt: String,
   ): String {
-    kotlinx.coroutines.delay(5000)
-
     val openAIRequest =
       OpenAIRequest(
         model = "gpt-3.5-turbo",
