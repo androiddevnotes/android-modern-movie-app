@@ -11,7 +11,6 @@ import androidx.compose.ui.platform.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.ui.components.AIResponseCard
-import com.example.tmdbapp.ui.components.GradientOverlay
 import com.example.tmdbapp.viewmodel.AIResponseState
 import com.example.tmdbapp.viewmodel.AIResponseState.*
 
@@ -30,7 +29,7 @@ fun MovieDetailContent(
 
   Box(modifier = Modifier.fillMaxSize()) {
     MovieBackgroundImage(movie.posterPath)
-    GradientOverlay()
+//    GradientOverlay()
     Column(
       modifier =
         Modifier
