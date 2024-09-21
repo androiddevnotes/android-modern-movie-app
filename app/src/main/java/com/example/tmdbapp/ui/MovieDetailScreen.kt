@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.draw.*
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.*
@@ -43,31 +44,166 @@ fun MovieDetailScreen(
     }
   }
 
-  when (movieState) {
-    is MovieDetailState.Loading -> {
-      Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
+  Box(modifier = Modifier.fillMaxSize()) {
+    when (movieState) {
+      is MovieDetailState.Loading -> {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+          CircularProgressIndicator()
+        }
+      }
+      is MovieDetailState.Success -> {
+        val movie = (movieState as MovieDetailState.Success).movie
+        MovieDetailContent(
+          movie = movie,
+          onBackPress = onBackPress,
+          onFavoriteClick = { viewModel.toggleFavorite(movie) },
+          onDownloadClick = viewModel::downloadImage,
+          onAskAIClick = { viewModel.askAIAboutMovie(movie) },
+          aiResponse = aiResponse,
+          aiResponseState = aiResponseState,
+        )
+      }
+      is MovieDetailState.Error -> {
+        ErrorContent(
+          error = (movieState as MovieDetailState.Error).error,
+          onRetry = { viewModel.retryFetchMovieDetails() },
+          onBackPress = onBackPress,
+        )
       }
     }
-    is MovieDetailState.Success -> {
-      val movie = (movieState as MovieDetailState.Success).movie
-      MovieDetailContent(
-        movie = movie,
-        onBackPress = onBackPress,
-        onFavoriteClick = { viewModel.toggleFavorite(movie) },
-        onDownloadClick = viewModel::downloadImage,
-        onAskAIClick = { viewModel.askAIAboutMovie(movie) },
-        aiResponse = aiResponse,
-        aiResponseState = aiResponseState,
+
+    // Shimmering overlay
+    ShimmeringOverlay(
+      isVisible = aiResponseState == AIResponseState.Loading,
+    )
+
+    // AI thinking indicator
+    if (aiResponseState == AIResponseState.Loading) {
+      Box(
+        modifier =
+          Modifier
+            .fillMaxSize()
+            .padding(bottom = 32.dp),
+        contentAlignment = Alignment.BottomCenter,
+      ) {
+        Text(
+          text = "AI is thinking...",
+          style = MaterialTheme.typography.titleMedium,
+          color = Color.White,
+          fontWeight = FontWeight.Bold,
+        )
+      }
+    }
+  }
+}
+
+@Composable
+fun ShimmeringOverlay(isVisible: Boolean) {
+  val transition = rememberInfiniteTransition(label = "ShimmerTransition")
+  val translateAnim by transition.animateFloat(
+    initialValue = 0f,
+    targetValue = 1000f,
+    animationSpec =
+      infiniteRepeatable(
+        animation = tween(1000, easing = LinearEasing),
+        repeatMode = RepeatMode.Restart,
+      ),
+    label = "ShimmerTranslate",
+  )
+
+  val alphaAnim by transition.animateFloat(
+    initialValue = 0.2f,
+    targetValue = 0.5f,
+    animationSpec =
+      infiniteRepeatable(
+        animation = tween(1000, easing = FastOutSlowInEasing),
+        repeatMode = RepeatMode.Reverse,
+      ),
+    label = "ShimmerAlpha",
+  )
+
+  val shimmerColors =
+    listOf(
+      Color(0x00FFFFFF),
+      Color(0x40FFFFFF),
+      Color(0x80FFFFFF),
+      Color(0x40FFFFFF),
+      Color(0x00FFFFFF),
+    )
+
+  val brush =
+    Brush.linearGradient(
+      colors = shimmerColors,
+      start = Offset(translateAnim - 1000f, translateAnim - 1000f),
+      end = Offset(translateAnim, translateAnim),
+      tileMode = TileMode.Clamp,
+    )
+
+  AnimatedVisibility(
+    visible = isVisible,
+    enter = fadeIn(),
+    exit = fadeOut(),
+  ) {
+    Box(
+      modifier =
+        Modifier
+          .fillMaxSize()
+          .background(Color(0x40000000))
+          .drawWithContent {
+            drawContent()
+            drawRect(brush = brush, blendMode = BlendMode.Lighten)
+          }.alpha(alphaAnim),
+    )
+  }
+}
+
+@Composable
+fun ShimmeringBox(
+  modifier: Modifier = Modifier,
+  isShimmering: Boolean = true,
+  content: @Composable () -> Unit,
+) {
+  val shimmerColors =
+    listOf(
+      Color.White.copy(alpha = 0.3f),
+      Color.White.copy(alpha = 0.5f),
+      Color.White.copy(alpha = 0.3f),
+    )
+
+  val transition = rememberInfiniteTransition(label = "ShimmerTransition")
+  val translateAnim =
+    transition.animateFloat(
+      initialValue = 0f,
+      targetValue = 1000f,
+      animationSpec =
+        infiniteRepeatable(
+          animation = tween(durationMillis = 1200, easing = FastOutSlowInEasing),
+          repeatMode = RepeatMode.Restart,
+        ),
+      label = "ShimmerAnimation",
+    )
+
+  val brush =
+    if (isShimmering) {
+      Brush.linearGradient(
+        colors = shimmerColors,
+        start = Offset.Zero,
+        end = Offset(x = translateAnim.value, y = translateAnim.value),
+      )
+    } else {
+      Brush.linearGradient(
+        colors = listOf(Color.Transparent, Color.Transparent),
+        start = Offset.Zero,
+        end = Offset.Zero,
       )
     }
-    is MovieDetailState.Error -> {
-      ErrorContent(
-        error = (movieState as MovieDetailState.Error).error,
-        onRetry = { viewModel.retryFetchMovieDetails() },
-        onBackPress = onBackPress,
-      )
-    }
+
+  Box(
+    modifier =
+      modifier
+        .background(brush),
+  ) {
+    content()
   }
 }
 
@@ -138,22 +274,18 @@ fun MovieDetailContent(
       Spacer(modifier = Modifier.height(16.dp))
       when (aiResponseState) {
         AIResponseState.Loading -> {
-          ShimmeringBox(
+          Box(
             modifier =
               Modifier
                 .fillMaxWidth()
                 .height(100.dp)
                 .padding(horizontal = 16.dp),
+            contentAlignment = Alignment.Center,
           ) {
-            Box(
-              modifier = Modifier.fillMaxSize(),
-              contentAlignment = Alignment.Center,
-            ) {
-              CircularProgressIndicator(
-                modifier = Modifier.size(24.dp),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-              )
-            }
+            CircularProgressIndicator(
+              modifier = Modifier.size(24.dp),
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
           }
         }
         is AIResponseState.Error -> {
@@ -339,46 +471,5 @@ fun AIResponseCard(response: String) {
         )
       }
     }
-  }
-}
-
-@Composable
-fun ShimmeringBox(
-  modifier: Modifier = Modifier,
-  content: @Composable () -> Unit,
-) {
-  val shimmerColors =
-    listOf(
-      Color.White.copy(alpha = 0.3f),
-      Color.White.copy(alpha = 0.5f),
-      Color.White.copy(alpha = 0.3f),
-    )
-
-  val transition = rememberInfiniteTransition(label = "ShimmerTransition")
-  val translateAnim =
-    transition.animateFloat(
-      initialValue = 0f,
-      targetValue = 1000f,
-      animationSpec =
-        infiniteRepeatable(
-          animation = tween(durationMillis = 1200, easing = FastOutSlowInEasing),
-          repeatMode = RepeatMode.Restart,
-        ),
-      label = "ShimmerAnimation",
-    )
-
-  val brush =
-    Brush.linearGradient(
-      colors = shimmerColors,
-      start = Offset.Zero,
-      end = Offset(x = translateAnim.value, y = translateAnim.value),
-    )
-
-  Box(
-    modifier =
-      modifier
-        .background(brush),
-  ) {
-    content()
   }
 }
