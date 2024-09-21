@@ -7,10 +7,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
-import androidx.compose.ui.Alignment.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.Movie
+import com.example.tmdbapp.ui.components.AIResponseCard
+import com.example.tmdbapp.ui.components.GradientOverlay
 import com.example.tmdbapp.viewmodel.AIResponseState
 import com.example.tmdbapp.viewmodel.AIResponseState.*
 

@@ -5,8 +5,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.ui.theme.*
+import com.example.tmdbapp.ui.components.*
 import com.example.tmdbapp.viewmodel.*
+import com.example.tmdbapp.viewmodel.AIResponseState.Loading
+import com.example.tmdbapp.viewmodel.MovieDetailState.Error
 
 @Composable
 fun MovieDetailScreen(
@@ -44,7 +46,7 @@ fun MovieDetailScreen(
       }
       is MovieDetailState.Error -> {
         ErrorContent(
-          error = (movieState as MovieDetailState.Error).error,
+          error = (movieState as Error).error,
           onRetry = { viewModel.retryFetchMovieDetails() },
           onBackPress = onBackPress,
         )
@@ -52,7 +54,7 @@ fun MovieDetailScreen(
     }
 
     ShimmeringOverlay(
-      isVisible = aiResponseState == AIResponseState.Loading,
+      isVisible = aiResponseState == Loading,
     )
 
     if (aiResponseState == AIResponseState.Loading) {

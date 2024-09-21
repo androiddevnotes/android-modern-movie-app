@@ -17,6 +17,7 @@ import com.example.tmdbapp.ui.components.*
 import com.example.tmdbapp.ui.theme.*
 import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.viewmodel.*
+import com.example.tmdbapp.viewmodel.MovieUiState.Loading
 import kotlinx.coroutines.*
 
 @Composable
@@ -224,7 +225,7 @@ fun MovieListScreen(
       )
 
       ShimmeringOverlay(
-        isVisible = isRefreshing || uiState is MovieUiState.Loading,
+        isVisible = isRefreshing || uiState is Loading,
       )
     }
   }
