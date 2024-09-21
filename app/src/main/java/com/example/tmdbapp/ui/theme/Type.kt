@@ -14,7 +14,7 @@ val provider =
     certificates = R.array.com_google_android_gms_fonts_certs,
   )
 
-val honkFont = GoogleFont("Honk")
+val honkFont = GoogleFont("Jacquarda Bastarda 9")
 
 val honkFontFamily =
   FontFamily(

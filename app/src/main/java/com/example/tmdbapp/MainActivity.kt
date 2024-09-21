@@ -16,7 +16,6 @@ import com.example.tmdbapp.viewmodel.*
 
 class MainActivity : ComponentActivity() {
   private lateinit var movieViewModel: MovieViewModel
-  var ok = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
