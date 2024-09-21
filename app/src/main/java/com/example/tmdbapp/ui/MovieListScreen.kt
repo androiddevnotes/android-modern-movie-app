@@ -16,6 +16,7 @@ import com.example.tmdbapp.models.*
 import com.example.tmdbapp.ui.components.*
 import com.example.tmdbapp.ui.theme.*
 import com.example.tmdbapp.utils.*
+import com.example.tmdbapp.utils.MovieError
 import com.example.tmdbapp.viewmodel.*
 import kotlinx.coroutines.*
 
@@ -200,6 +201,14 @@ fun MovieListScreen(
               Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
               Button(onClick = { viewModel.loadMoreMovies() }) {
                 Text("Retry")
+              }
+
+              // Add this block to handle API key missing error
+              if (error is MovieError.ApiKeyMissing) {
+                Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
+                Button(onClick = onSettingsClick) {
+                  Text("Go to Settings")
+                }
               }
             }
           }

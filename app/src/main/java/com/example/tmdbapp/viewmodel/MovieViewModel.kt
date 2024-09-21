@@ -43,7 +43,7 @@ class MovieViewModel(
 
   internal val sessionManager = SessionManager(application)
 
-  private val apiKeyManager = ApiKeyManager(application)
+  internal val apiKeyManager = ApiKeyManager(application)
 
   fun setTmdbApiKey(key: String) = apiKeyManager.setTmdbApiKey(key)
 

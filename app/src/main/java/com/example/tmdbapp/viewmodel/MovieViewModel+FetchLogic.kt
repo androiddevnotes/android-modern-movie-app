@@ -54,7 +54,7 @@ private fun MovieViewModel.handleMovieResult(result: Resource<MovieResponse>) {
     }
 
     is Resource.Error -> {
-      _uiState.value = MovieUiState.Error(handleError(result.message))
+      _uiState.value = MovieUiState.Error(handleError(result.message, apiKeyManager))
     }
   }
   isLoading = false

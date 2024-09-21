@@ -12,7 +12,9 @@ class ApiKeyManager(
 
   fun getTmdbApiKey(): String {
     val savedKey = sharedPreferences.getString("TMDB_API_KEY", null)
-    return if (savedKey.isNullOrEmpty()) BuildConfig.TMDB_API_KEY else savedKey
+    return savedKey?.takeIf { it.isNotBlank() }
+      ?: BuildConfig.TMDB_API_KEY.takeIf { it.isNotBlank() }
+      ?: ""
   }
 
   fun setTmdbApiKey(key: String) {
@@ -23,7 +25,9 @@ class ApiKeyManager(
 
   fun getOpenAiApiKey(): String {
     val savedKey = sharedPreferences.getString("OPENAI_API_KEY", null)
-    return if (savedKey.isNullOrEmpty()) BuildConfig.OPENAI_API_KEY else savedKey
+    return savedKey?.takeIf { it.isNotBlank() }
+      ?: BuildConfig.OPENAI_API_KEY.takeIf { it.isNotBlank() }
+      ?: ""
   }
 
   fun setOpenAiApiKey(key: String) {
