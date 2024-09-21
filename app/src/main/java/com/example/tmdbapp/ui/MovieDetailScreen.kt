@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.*
 import coil.compose.AsyncImage
 import com.example.tmdbapp.R
 import com.example.tmdbapp.models.Movie
+import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.utils.MovieError
 import com.example.tmdbapp.viewmodel.*
 import kotlin.random.Random
@@ -111,9 +112,6 @@ fun MovieDetailContent(
   val context = LocalContext.current
   val scrollState = rememberScrollState()
 
-  // Remove the local isFavorite state
-  // var isFavorite by remember { mutableStateOf(movie.isFavorite) }
-
   Box(modifier = Modifier.fillMaxSize()) {
     MovieBackgroundImage(movie.posterPath)
     GradientOverlay()
@@ -122,26 +120,21 @@ fun MovieDetailContent(
         Modifier
           .fillMaxSize()
           .verticalScroll(scrollState)
-          .padding(bottom = 80.dp), // Add padding to account for bottom nav bar
+          .padding(bottom = 80.dp),
     ) {
       MovieDetailTopBar(
         onBackPress = onBackPress,
         onFavoriteClick = onFavoriteClick,
         onDownloadClick = { onDownloadClick(movie.posterPath, context) },
-        isFavorite = movie.isFavorite, // Use the movie's isFavorite property directly
+        onAskAIClick = onAskAIClick,
+        isFavorite = movie.isFavorite,
       )
       Spacer(modifier = Modifier.weight(1f))
       MovieDetailInfo(movie)
 
-      // Add AI Button and Response
+      // AI Response
       Spacer(modifier = Modifier.height(16.dp))
       when (aiResponseState) {
-        AIResponseState.Idle -> {
-          GrainyGradientButton(
-            onClick = onAskAIClick,
-            text = stringResource(R.string.ask_ai_about_movie),
-          )
-        }
         AIResponseState.Loading -> {
           Box(
             modifier = Modifier.fillMaxWidth(),
@@ -158,17 +151,13 @@ fun MovieDetailContent(
             color = MaterialTheme.colorScheme.error,
             modifier = Modifier.padding(horizontal = 16.dp),
           )
-          Spacer(modifier = Modifier.height(8.dp))
-          GrainyGradientButton(
-            onClick = onAskAIClick,
-            text = stringResource(R.string.retry_ai_request),
-          )
         }
         AIResponseState.Success -> {
           aiResponse?.let { response ->
             AIResponseCard(response = response)
           }
         }
+        else -> { /* Do nothing for Idle state */ }
       }
     }
   }
@@ -204,6 +193,7 @@ fun MovieDetailTopBar(
   onBackPress: () -> Unit,
   onFavoriteClick: () -> Unit,
   onDownloadClick: () -> Unit,
+  onAskAIClick: () -> Unit,
   isFavorite: Boolean,
 ) {
   TopAppBar(
@@ -230,6 +220,13 @@ fun MovieDetailTopBar(
           painter = painterResource(id = R.drawable.download_24px),
           contentDescription = stringResource(R.string.download_image),
           tint = Color.White,
+        )
+      }
+      IconButton(onClick = onAskAIClick) {
+        Image(
+          painter = painterResource(id = R.drawable.cool_shape_ai),
+          contentDescription = stringResource(R.string.ask_ai_about_movie),
+          modifier = Modifier.size(Constants.ICON_SIZE_SMALL),
         )
       }
     },
