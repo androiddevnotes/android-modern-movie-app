@@ -28,9 +28,9 @@ fun MovieListGridView(
 
   LazyVerticalStaggeredGrid(
     columns = StaggeredGridCells.Fixed(3),
-    contentPadding = PaddingValues(4.dp),
-    horizontalArrangement = Arrangement.spacedBy(4.dp),
-    verticalItemSpacing = 4.dp,
+    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+    verticalItemSpacing = 8.dp,
     state = gridState,
   ) {
     itemsIndexed(
@@ -41,15 +41,17 @@ fun MovieListGridView(
         viewModel.loadMoreMovies()
       }
       GridViewItem(
-        movie = movie,
+        title = movie.title,
+        posterPath = movie.posterPath,
+        voteAverage = movie.voteAverage,
+        isFavorite = movie.isFavorite,
         onClick = {
           viewModel.setLastViewedItemIndex(index)
           onMovieClick(movie)
         },
         onLongClick = {
           viewModel.toggleFavorite(movie)
-        },
-        isFavorite = viewModel.isFavorite(movie.id),
+        }
       )
     }
   }
