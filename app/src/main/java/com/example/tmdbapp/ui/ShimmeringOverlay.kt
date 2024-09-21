@@ -23,7 +23,7 @@ fun ShimmeringOverlay(isVisible: Boolean) {
     targetValue = 2000f,
     animationSpec =
       infiniteRepeatable(
-        animation = tween(3000, easing = LinearEasing),
+        animation = tween(5000, easing = LinearEasing),
         repeatMode = Restart,
       ),
     label = "ShimmerTranslate",
@@ -31,19 +31,18 @@ fun ShimmeringOverlay(isVisible: Boolean) {
 
   val shimmerColors =
     listOf(
-      Color.Transparent,
-      AIYellow.copy(alpha = 0.3f),
-      AIPink.copy(alpha = 0.3f),
-      AICyan.copy(alpha = 0.3f),
-      AIGreen.copy(alpha = 0.3f),
-      Color.Transparent,
+      Color(0x00FFFFFF),
+      Color(0x40E6E6FA), // Lavender mist
+      Color(0x80B0E0E6), // Powder blue
+      Color(0x80E6E6FA), // Lavender mist
+      Color(0x00FFFFFF),
     )
 
   val brush =
     Brush.linearGradient(
       colors = shimmerColors,
       start = Offset(0f, translateAnim),
-      end = Offset(0f, translateAnim + 500f),
+      end = Offset(0f, translateAnim + 1000f),
       tileMode = TileMode.Clamp,
     )
 
@@ -56,25 +55,31 @@ fun ShimmeringOverlay(isVisible: Boolean) {
       modifier =
         Modifier
           .fillMaxSize()
-          .background(Color(0x80000000))
+          .background(Color(0x80000000)) // Semi-transparent black background
           .drawWithContent {
             drawContent()
-            drawRect(brush = brush, blendMode = BlendMode.Lighten)
+            drawRect(brush = brush, blendMode = BlendMode.Screen)
           },
     ) {
-      // Scanning line
+      // Angelic scanning line
       Box(
         modifier =
           Modifier
             .fillMaxWidth()
-            .height(2.dp)
+            .height(4.dp)
             .background(
               Brush.horizontalGradient(
-                listOf(AIYellow, AIPink, AICyan, AIGreen),
+                listOf(
+                  Color(0x00FFFFFF),
+                  Color(0xFFFFD700), // Gold
+                  Color(0xFFFFFAFA), // Snow white
+                  Color(0xFF87CEFA), // Light sky blue
+                  Color(0x00FFFFFF),
+                ),
               ),
             ).align(Alignment.TopCenter)
             .offset(y = (translateAnim % 2000f).dp)
-            .blur(radius = 10.dp),
+            .blur(radius = 8.dp),
       )
     }
   }
