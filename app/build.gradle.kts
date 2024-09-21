@@ -59,9 +59,7 @@ android {
     compose = true
     buildConfig = true
   }
-  composeCompiler {
-    enableStrongSkippingMode = true
-  }
+
   packaging {
     resources {
       excludes += "/META-INF/{AL2.0,LGPL2.1}"
