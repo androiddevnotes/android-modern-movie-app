@@ -5,23 +5,22 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.ui.components.GridItemUi
 import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
 import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
-fun MovieListGridView(
-  movies: List<Movie>,
+fun <T> ItemListGridView(
+  items: List<T>,
   viewModel: MovieViewModel,
-  onMovieClick: (Movie) -> Unit,
+  onItemClick: (T) -> Unit,
   viewType: String,
   searchQuery: String,
+  itemContent: @Composable (T, Int, () -> Unit, () -> Unit) -> Unit,
 ) {
   val lastViewedItemIndex by viewModel.lastViewedItemIndex.collectAsState()
   val gridState =
     rememberForeverLazyStaggeredGridState(
-      key = "movie_grid_${viewType}_$searchQuery",
+      key = "item_grid_${viewType}_$searchQuery",
       initialFirstVisibleItemIndex = lastViewedItemIndex,
       initialFirstVisibleItemOffset = 0,
     )
@@ -34,23 +33,20 @@ fun MovieListGridView(
     state = gridState,
   ) {
     itemsIndexed(
-      items = movies,
-      key = { index, movie -> "${movie.id}_$index" },
-    ) { index, movie ->
-      if (index >= movies.size - 1 && !viewModel.isLastPage) {
+      items = items,
+      key = { index, item -> "${item.hashCode()}_$index" },
+    ) { index, item ->
+      if (index >= items.size - 1 && !viewModel.isLastPage) {
         viewModel.loadMoreMovies()
       }
-      GridItemUi(
-        title = movie.title,
-        posterPath = movie.posterPath,
-        voteAverage = movie.voteAverage,
-        isFavorite = movie.isFavorite,
-        onClick = {
+      itemContent(
+        item,
+        index,
+        {
           viewModel.setLastViewedItemIndex(index)
-          onMovieClick(movie)
+          onItemClick(item)
         },
-        onLongClick = {
-          viewModel.toggleFavorite(movie)
+        {
         },
       )
     }

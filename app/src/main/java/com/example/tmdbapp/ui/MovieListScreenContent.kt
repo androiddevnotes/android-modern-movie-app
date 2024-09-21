@@ -104,13 +104,22 @@ fun MovieListScreenContent(
           val movies = uiState.movies
           when (viewType) {
             Constants.VIEW_TYPE_GRID ->
-              MovieListGridView(
-                movies,
-                viewModel,
-                onMovieClick,
-                viewType,
-                searchQuery,
-              )
+              ItemListGridView(
+                items = movies,
+                viewModel = viewModel,
+                onItemClick = onMovieClick,
+                viewType = viewType,
+                searchQuery = searchQuery,
+              ) { movie, _, onClick, onLongClick ->
+                GridItemUi(
+                  title = movie.title,
+                  posterPath = movie.posterPath,
+                  voteAverage = movie.voteAverage,
+                  isFavorite = movie.isFavorite,
+                  onClick = onClick,
+                  onLongClick = { viewModel.toggleFavorite(movie) },
+                )
+              }
 
             Constants.VIEW_TYPE_LIST ->
               MovieListListView(
