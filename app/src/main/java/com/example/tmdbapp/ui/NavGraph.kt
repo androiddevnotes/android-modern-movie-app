@@ -6,6 +6,7 @@ import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import com.example.tmdbapp.ui.theme.*
+import com.example.tmdbapp.utils.ApiKeyManager
 import com.example.tmdbapp.viewmodel.*
 
 @Composable
@@ -18,6 +19,8 @@ fun NavGraph(
   onViewTypeChange: (String) -> Unit,
   application: Application,
 ) {
+  val apiKeyManager = remember { ApiKeyManager(application) }
+
   NavHost(navController = navController, startDestination = "movieList") {
     composable("movieList") {
       MovieListScreen(
@@ -81,11 +84,9 @@ fun NavGraph(
         application = application,
       )
     }
-    // Add this new composable for the Settings screen
+    // Update this composable for the Settings screen
     composable("settings") {
-      SettingsScreen(
-        viewModel = movieViewModel,
-      )
+      SettingsScreen(apiKeyManager = apiKeyManager)
     }
   }
 }

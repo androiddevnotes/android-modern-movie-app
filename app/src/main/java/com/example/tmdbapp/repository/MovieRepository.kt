@@ -18,8 +18,6 @@ class MovieRepository(
   private val sharedPreferences = context.getSharedPreferences("ApiKeys", Context.MODE_PRIVATE)
   private val apiKeyManager = ApiKeyManager(context)
 
-  private fun getApiKey(): String = apiKeyManager.getTmdbApiKey()
-
   private suspend fun <T> safeApiCall(apiCall: suspend () -> T): Resource<T> =
     try {
       Resource.Success(apiCall())
@@ -36,7 +34,7 @@ class MovieRepository(
 
   suspend fun getFavoriteMovies(): List<Movie> =
     try {
-      val response = api.discoverMovies(getApiKey(), 1, sortBy = "popularity.desc")
+      val response = api.discoverMovies(apiKeyManager.getTmdbApiKey(), 1, sortBy = "popularity.desc")
       response.results
         .filter { movie ->
           favoritePreferences.isFavorite(movie.id)
@@ -60,7 +58,7 @@ class MovieRepository(
     safeApiCall {
       val response =
         api.discoverMovies(
-          getApiKey(),
+          apiKeyManager.getTmdbApiKey(),
           page,
           sortBy,
           genres?.joinToString(","),
@@ -75,13 +73,13 @@ class MovieRepository(
     page: Int,
   ): Resource<MovieResponse> =
     safeApiCall {
-      val response = api.searchMovies(getApiKey(), query, page)
+      val response = api.searchMovies(apiKeyManager.getTmdbApiKey(), query, page)
       response.copy(results = addFavoriteStatus(response.results))
     }
 
   suspend fun getMovieDetails(movieId: Int): Movie? =
     try {
-      val response = api.getMovieDetails(movieId, getApiKey())
+      val response = api.getMovieDetails(movieId, apiKeyManager.getTmdbApiKey())
       response.copy(isFavorite = favoritePreferences.isFavorite(response.id))
     } catch (e: Exception) {
       null
@@ -89,7 +87,7 @@ class MovieRepository(
 
   suspend fun createRequestToken(): Resource<String> =
     try {
-      val response = api.createRequestToken(getApiKey())
+      val response = api.createRequestToken(apiKeyManager.getTmdbApiKey())
       if (response.success) {
         Resource.Success(response.requestToken)
       } else {
@@ -101,7 +99,7 @@ class MovieRepository(
 
   suspend fun createSession(requestToken: String): Resource<String> =
     try {
-      val response = api.createSession(getApiKey(), CreateSessionRequest(requestToken))
+      val response = api.createSession(apiKeyManager.getTmdbApiKey(), CreateSessionRequest(requestToken))
       if (response.success) {
         sessionManager.saveSessionId(response.sessionId)
         Resource.Success(response.sessionId)
@@ -119,7 +117,7 @@ class MovieRepository(
     return try {
       val sessionId =
         sessionManager.sessionIdFlow.first() ?: return Resource.Error("No active session")
-      val response = api.createList(getApiKey(), sessionId, CreateListRequest(name, description))
+      val response = api.createList(apiKeyManager.getTmdbApiKey(), sessionId, CreateListRequest(name, description))
       if (response.success) {
         Resource.Success(response.listId)
       } else {
@@ -129,4 +127,6 @@ class MovieRepository(
       Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
     }
   }
+
+  suspend fun askOpenAI(prompt: String): String = api.askOpenAI(apiKeyManager.getOpenAiApiKey(), prompt)
 }

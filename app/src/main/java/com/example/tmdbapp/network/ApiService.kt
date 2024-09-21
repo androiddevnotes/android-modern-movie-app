@@ -86,26 +86,24 @@ class ApiService(
     apiKey: String,
     prompt: String,
   ): String {
+    val openAIRequest =
+      OpenAIRequest(
+        model = "gpt-3.5-turbo",
+        messages = listOf(OpenAIMessage(role = "user", content = prompt)),
+      )
+
     val response: OpenAIResponse =
       client
         .post("https://api.openai.com/v1/chat/completions") {
-          contentType(ContentType.Application.Json)
           header("Authorization", "Bearer $apiKey")
-          setBody(
-            OpenAIRequest(
-              model = "gpt-4o-mini",
-              messages =
-                listOf(
-                  OpenAIMessage("system", "You are a helpful assistant."),
-                  OpenAIMessage("user", prompt),
-                ),
-            ),
-          )
+          contentType(ContentType.Application.Json)
+          setBody(openAIRequest)
         }.body()
+
     return response.choices
       .firstOrNull()
       ?.message
-      ?.content ?: "No response from AI."
+      ?.content ?: "No response generated."
   }
 }
 

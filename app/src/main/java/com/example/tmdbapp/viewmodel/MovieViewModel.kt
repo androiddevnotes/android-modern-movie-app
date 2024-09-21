@@ -45,11 +45,7 @@ class MovieViewModel(
 
   private val apiKeyManager = ApiKeyManager(application)
 
-  fun getTmdbApiKey(): String = apiKeyManager.getTmdbApiKey()
-
   fun setTmdbApiKey(key: String) = apiKeyManager.setTmdbApiKey(key)
-
-  fun getOpenAiApiKey(): String = apiKeyManager.getOpenAiApiKey()
 
   fun setOpenAiApiKey(key: String) = apiKeyManager.setOpenAiApiKey(key)
 
@@ -170,7 +166,7 @@ class MovieViewModel(
       _aiResponseState.value = AIResponseState.Loading
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
       try {
-        val response = repository.api.askOpenAI(BuildConfig.OPENAI_API_KEY, prompt)
+        val response = repository.askOpenAI(prompt)
         _aiResponse.value = response
         _aiResponseState.value = AIResponseState.Success
       } catch (e: Exception) {

@@ -8,12 +8,12 @@ import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.BuildConfig
 import com.example.tmdbapp.R
-import com.example.tmdbapp.viewmodel.MovieViewModel
+import com.example.tmdbapp.utils.ApiKeyManager
 
 @Composable
-fun SettingsScreen(viewModel: MovieViewModel) {
-  var tmdbApiKey by remember { mutableStateOf(viewModel.getTmdbApiKey()) }
-  var openAiApiKey by remember { mutableStateOf(viewModel.getOpenAiApiKey()) }
+fun SettingsScreen(apiKeyManager: ApiKeyManager) {
+  var tmdbApiKey by remember { mutableStateOf(apiKeyManager.getTmdbApiKey()) }
+  var openAiApiKey by remember { mutableStateOf(apiKeyManager.getOpenAiApiKey()) }
 
   Column(
     modifier =
@@ -32,7 +32,7 @@ fun SettingsScreen(viewModel: MovieViewModel) {
       value = if (tmdbApiKey == BuildConfig.TMDB_API_KEY) "" else tmdbApiKey,
       onValueChange = {
         tmdbApiKey = it
-        viewModel.setTmdbApiKey(it)
+        apiKeyManager.setTmdbApiKey(it)
       },
       label = { Text(stringResource(R.string.tmdb_api_key)) },
       placeholder = { Text(stringResource(R.string.enter_your_api_key)) },
@@ -45,7 +45,7 @@ fun SettingsScreen(viewModel: MovieViewModel) {
       value = if (openAiApiKey == BuildConfig.OPENAI_API_KEY) "" else openAiApiKey,
       onValueChange = {
         openAiApiKey = it
-        viewModel.setOpenAiApiKey(it)
+        apiKeyManager.setOpenAiApiKey(it)
       },
       label = { Text(stringResource(R.string.openai_api_key)) },
       placeholder = { Text(stringResource(R.string.enter_your_api_key)) },
