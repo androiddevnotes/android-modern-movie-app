@@ -28,6 +28,9 @@ import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.utils.MovieError
 import com.example.tmdbapp.viewmodel.*
 
+// Define a custom color for AI elements
+val AICyan = Color(0xFF00698B) // Darker shade of cyan
+
 @Composable
 fun MovieDetailScreen(
   viewModel: MovieViewModel,
@@ -109,9 +112,9 @@ fun ShimmeringOverlay(isVisible: Boolean) {
   val shimmerColors =
     listOf(
       Color(0x00FFFFFF),
-      Color(0x4000FFFF), // Cyan tint
-      Color(0xA000FFFF), // Stronger cyan
-      Color(0x4000FFFF),
+      AICyan.copy(alpha = 0.2f),
+      AICyan.copy(alpha = 0.4f),
+      AICyan.copy(alpha = 0.2f),
       Color(0x00FFFFFF),
     )
 
@@ -144,10 +147,10 @@ fun ShimmeringOverlay(isVisible: Boolean) {
           Modifier
             .fillMaxWidth()
             .height(2.dp)
-            .background(Color(0xFF00FFFF)) // Cyan color
+            .background(AICyan.copy(alpha = 0.7f))
             .align(Alignment.TopCenter)
             .offset(y = (translateAnim % 2000f).dp)
-            .blur(radius = 10.dp), // Apply blur directly to the modifier
+            .blur(radius = 10.dp),
       )
     }
   }
@@ -444,20 +447,19 @@ fun AIResponseCard(response: String) {
       modifier =
         Modifier
           .fillMaxWidth()
-          .padding(horizontal = 16.dp)
-          .blur(radius = 4.dp), // Apply blur directly to the modifier
+          .padding(horizontal = 16.dp),
       shape = MaterialTheme.shapes.medium,
       colors =
         CardDefaults.cardColors(
-          containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f),
+          containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f),
         ),
-      border = BorderStroke(1.dp, Color(0xFF00FFFF)), // Cyan border
+      border = BorderStroke(1.dp, AICyan.copy(alpha = 0.7f)),
     ) {
       Column(modifier = Modifier.padding(16.dp)) {
         Text(
           text = "AI Response:",
           style = MaterialTheme.typography.titleMedium,
-          color = Color(0xFF00FFFF), // Cyan text
+          color = AICyan,
           fontWeight = FontWeight.Bold,
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -516,13 +518,13 @@ fun AIScanningIndicator() {
     Text(
       text = scanningTexts[textIndex % scanningTexts.size],
       style = MaterialTheme.typography.titleMedium,
-      color = Color(0xFF00FFFF), // Cyan text
+      color = AICyan,
       fontWeight = FontWeight.Bold,
     )
     Text(
       text = ".".repeat(dotCount),
       style = MaterialTheme.typography.titleMedium,
-      color = Color(0xFF00FFFF), // Cyan text
+      color = AICyan,
       fontWeight = FontWeight.Bold,
     )
   }
