@@ -2,31 +2,27 @@ package com.example.tmdbapp.ui
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
-import androidx.compose.animation.core.RepeatMode.Restart
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.Color.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.ui.theme.*
 
 @Composable
 fun ShimmeringOverlay(isVisible: Boolean) {
   val transition = rememberInfiniteTransition(label = "ShimmerTransition")
-  val translateAnim by transition.animateFloat(
-    initialValue = -1000f,
-    targetValue = 2000f,
+  val progress by transition.animateFloat(
+    initialValue = 0f,
+    targetValue = 1f,
     animationSpec =
       infiniteRepeatable(
         animation = tween(3000, easing = LinearEasing),
-        repeatMode = RepeatMode.Restart,
+        repeatMode = RepeatMode.Reverse,
       ),
-    label = "ShimmerTranslate",
+    label = "ShimmerProgress",
   )
 
   val shimmerColors =
@@ -38,29 +34,38 @@ fun ShimmeringOverlay(isVisible: Boolean) {
       Color(0x00FFFFFF),
     )
 
-  val brush =
-    Brush.linearGradient(
-      colors = shimmerColors,
-      start = Offset(translateAnim, 0f),
-      end = Offset(translateAnim + 1000f, 2000f),
-      tileMode = TileMode.Clamp,
-    )
-
   AnimatedVisibility(
     visible = isVisible,
     enter = fadeIn(),
     exit = fadeOut(),
   ) {
-    Box(
+    BoxWithConstraints(
       modifier =
         Modifier
           .fillMaxSize()
-          .background(Color(0x80000000)) // Semi-transparent black background
-          .drawWithContent {
-            drawContent()
-            drawRect(brush = brush, blendMode = BlendMode.Screen)
-          },
+          .background(Color(0x80000000)), // Semi-transparent black background
     ) {
+      val boxHeight = constraints.maxHeight.toFloat()
+      val boxWidth = constraints.maxWidth.toFloat()
+
+      val brush =
+        Brush.linearGradient(
+          colors = shimmerColors,
+          start = Offset(-1000f + progress * (boxWidth + 2000f), 0f),
+          end = Offset(progress * (boxWidth + 2000f), boxHeight),
+          tileMode = TileMode.Clamp,
+        )
+
+      Box(
+        modifier =
+          Modifier
+            .fillMaxSize()
+            .drawWithContent {
+              drawContent()
+              drawRect(brush = brush, blendMode = BlendMode.Screen)
+            },
+      )
+
       // Angelic scanning line
       Box(
         modifier =
@@ -78,7 +83,7 @@ fun ShimmeringOverlay(isVisible: Boolean) {
                 ),
               ),
             ).align(Alignment.TopCenter)
-            .offset(y = (translateAnim % 2000f).dp)
+            .offset(y = (progress * boxHeight).dp)
             .blur(radius = 8.dp),
       )
     }
