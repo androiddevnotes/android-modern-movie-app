@@ -1,6 +1,8 @@
 package com.example.tmdbapp.ui
 
 import android.content.Context
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -10,6 +12,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.*
@@ -135,13 +138,22 @@ fun MovieDetailContent(
       Spacer(modifier = Modifier.height(16.dp))
       when (aiResponseState) {
         AIResponseState.Loading -> {
-          Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center,
+          ShimmeringBox(
+            modifier =
+              Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .padding(horizontal = 16.dp),
           ) {
-            CircularProgressIndicator(
-              modifier = Modifier.size(24.dp),
-            )
+            Box(
+              modifier = Modifier.fillMaxSize(),
+              contentAlignment = Alignment.Center,
+            ) {
+              CircularProgressIndicator(
+                modifier = Modifier.size(24.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+              )
+            }
           }
         }
         is AIResponseState.Error -> {
@@ -285,31 +297,88 @@ fun MovieDetailInfo(movie: Movie) {
 
 @Composable
 fun AIResponseCard(response: String) {
-  Card(
-    modifier =
-      Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp),
-    shape = MaterialTheme.shapes.medium,
-    colors =
-      CardDefaults.cardColors(
-        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f),
-      ),
+  var visible by remember { mutableStateOf(false) }
+
+  LaunchedEffect(response) {
+    visible = true
+  }
+
+  AnimatedVisibility(
+    visible = visible,
+    enter =
+      fadeIn() +
+        expandVertically(
+          expandFrom = Alignment.Top,
+          animationSpec = tween(durationMillis = 300, easing = EaseOutCubic),
+        ),
   ) {
-    Column(modifier = Modifier.padding(16.dp)) {
-      Text(
-        text = "AI Response:",
-        style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        fontWeight = FontWeight.Bold,
-      )
-      Spacer(modifier = Modifier.height(8.dp))
-      Text(
-        text = response,
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        textAlign = TextAlign.Justify,
-      )
+    Card(
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .padding(horizontal = 16.dp),
+      shape = MaterialTheme.shapes.medium,
+      colors =
+        CardDefaults.cardColors(
+          containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f),
+        ),
+    ) {
+      Column(modifier = Modifier.padding(16.dp)) {
+        Text(
+          text = "AI Response:",
+          style = MaterialTheme.typography.titleMedium,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          fontWeight = FontWeight.Bold,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+          text = response,
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          textAlign = TextAlign.Justify,
+        )
+      }
     }
+  }
+}
+
+@Composable
+fun ShimmeringBox(
+  modifier: Modifier = Modifier,
+  content: @Composable () -> Unit,
+) {
+  val shimmerColors =
+    listOf(
+      Color.White.copy(alpha = 0.3f),
+      Color.White.copy(alpha = 0.5f),
+      Color.White.copy(alpha = 0.3f),
+    )
+
+  val transition = rememberInfiniteTransition(label = "ShimmerTransition")
+  val translateAnim =
+    transition.animateFloat(
+      initialValue = 0f,
+      targetValue = 1000f,
+      animationSpec =
+        infiniteRepeatable(
+          animation = tween(durationMillis = 1200, easing = FastOutSlowInEasing),
+          repeatMode = RepeatMode.Restart,
+        ),
+      label = "ShimmerAnimation",
+    )
+
+  val brush =
+    Brush.linearGradient(
+      colors = shimmerColors,
+      start = Offset.Zero,
+      end = Offset(x = translateAnim.value, y = translateAnim.value),
+    )
+
+  Box(
+    modifier =
+      modifier
+        .background(brush),
+  ) {
+    content()
   }
 }
