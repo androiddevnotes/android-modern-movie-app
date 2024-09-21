@@ -27,7 +27,7 @@ fun MovieListScreen(
   val gridState = rememberForeverLazyStaggeredGridState(key = "movie_grid_${viewType}_$searchQuery")
 
   LaunchedEffect(viewType) {
-      viewModel.clearScrollToIndex()
+    viewModel.clearScrollToIndex()
   }
 
   MovieListScreenContent(
