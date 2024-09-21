@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.*
 
 @Composable
-fun MovieGridItem(
+fun GridViewItem(
   movie: Movie,
   onClick: () -> Unit,
   onLongClick: () -> Unit,
