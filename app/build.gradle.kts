@@ -3,6 +3,7 @@ plugins {
   id("org.jetbrains.kotlin.android")
   id("io.gitlab.arturbosch.detekt")
   id("kotlinx-serialization")
+  id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -58,8 +59,8 @@ android {
     compose = true
     buildConfig = true
   }
-  composeOptions {
-    kotlinCompilerExtensionVersion = "1.5.2"
+  composeCompiler {
+    enableStrongSkippingMode = true
   }
   packaging {
     resources {
