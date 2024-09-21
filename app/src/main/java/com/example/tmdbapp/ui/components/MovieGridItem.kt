@@ -1,10 +1,12 @@
 package com.example.tmdbapp.ui.components
 
+import android.content.Context
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
-import androidx.compose.material.icons.*
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
@@ -13,7 +15,7 @@ import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
-import coil.compose.*
+import coil.compose.AsyncImage
 import coil.request.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.utils.*
@@ -26,14 +28,7 @@ fun MovieGridItem(
   isFavorite: Boolean,
 ) {
   val context = LocalContext.current
-  val imageRequest =
-    remember(movie.posterPath) {
-      ImageRequest
-        .Builder(context)
-        .data(Constants.BASE_IMAGE_URL + movie.posterPath)
-        .crossfade(true)
-        .build()
-    }
+  val imageRequest = rememberImageRequest(movie.posterPath, context)
 
   Card(
     modifier =
@@ -48,65 +43,112 @@ fun MovieGridItem(
     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
   ) {
     Box(modifier = Modifier.fillMaxSize()) {
-      AsyncImage(
-        model = imageRequest,
-        contentDescription = movie.title,
-        contentScale = ContentScale.Crop,
-        modifier = Modifier.fillMaxSize(),
-      )
-      Box(
-        modifier =
-          Modifier
-            .fillMaxSize()
-            .background(
-              Brush.verticalGradient(
-                colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.7f)),
-                startY = 100f,
-              ),
-            ),
-      )
-      Column(
+      MoviePoster(imageRequest, movie.title)
+      GradientOverlay()
+      MovieInfo(
+        title = movie.title,
+        voteAverage = movie.voteAverage,
         modifier =
           Modifier
             .align(Alignment.BottomStart)
             .padding(8.dp),
-      ) {
-        Text(
-          text = movie.title,
-          style = MaterialTheme.typography.bodyMedium,
-          color = Color.White,
-          maxLines = 2,
-          overflow = TextOverflow.Ellipsis,
-        )
-        Row(
-          verticalAlignment = Alignment.CenterVertically,
-          horizontalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-          Icon(
-            imageVector = Icons.Default.Star,
-            contentDescription = "Rating",
-            tint = Color.Yellow,
-            modifier = Modifier.size(16.dp),
-          )
-          Text(
-            text = String.format("%.1f", movie.voteAverage),
-            style = MaterialTheme.typography.bodySmall,
-            color = Color.White,
-          )
-        }
-      }
+      )
       if (isFavorite) {
-        Icon(
-          imageVector = Icons.Default.Favorite,
-          contentDescription = "Favorite",
-          tint = MaterialTheme.colorScheme.primary,
+        FavoriteIcon(
           modifier =
             Modifier
               .align(Alignment.TopEnd)
-              .padding(8.dp)
-              .size(24.dp),
+              .padding(8.dp),
         )
       }
     }
   }
+}
+
+@Composable
+private fun rememberImageRequest(
+  posterPath: String?,
+  context: Context,
+) = remember(posterPath) {
+  ImageRequest
+    .Builder(context)
+    .data(Constants.BASE_IMAGE_URL + posterPath)
+    .crossfade(true)
+    .build()
+}
+
+@Composable
+private fun MoviePoster(
+  imageRequest: ImageRequest,
+  title: String,
+) {
+  AsyncImage(
+    model = imageRequest,
+    contentDescription = title,
+    contentScale = ContentScale.Crop,
+    modifier = Modifier.fillMaxSize(),
+  )
+}
+
+@Composable
+private fun MovieInfo(
+  title: String,
+  voteAverage: Float,
+  modifier: Modifier = Modifier,
+) {
+  Column(modifier = modifier) {
+    MovieTitle(title)
+    MovieRating(voteAverage)
+  }
+}
+
+@Composable
+private fun MovieTitle(title: String) {
+  Text(
+    text = title,
+    style = MaterialTheme.typography.bodyMedium,
+    color = Color.White,
+    maxLines = 2,
+    overflow = TextOverflow.Ellipsis,
+  )
+}
+
+@Composable
+private fun MovieRating(voteAverage: Float) {
+  Row(
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.spacedBy(4.dp),
+  ) {
+    RatingIcon()
+    RatingText(voteAverage)
+  }
+}
+
+@Composable
+private fun RatingIcon() {
+  Icon(
+    imageVector = Icons.Default.Star,
+    contentDescription = "Rating",
+    tint = Color.Yellow,
+    modifier = Modifier.size(16.dp),
+  )
+}
+
+@Composable
+private fun RatingText(voteAverage: Float) {
+  Text(
+    text = String.format("%.1f", voteAverage),
+    style = MaterialTheme.typography.bodySmall,
+    color = Color.White,
+  )
+}
+
+@Composable
+private fun FavoriteIcon(modifier: Modifier = Modifier) {
+  Icon(
+    imageVector = Icons.Default.Favorite,
+    contentDescription = "Favorite",
+    tint = MaterialTheme.colorScheme.primary,
+    modifier = modifier.size(24.dp),
+  )
 }
