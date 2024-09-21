@@ -129,24 +129,30 @@ class MovieViewModel(
       repository.toggleFavorite(movie)
       val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
 
-      _currentMovie.value = updatedMovie
-
-      when (val currentState = _uiState.value) {
-        is MovieUiState.Success -> {
-          val updatedMovies =
-            currentState.movies.map {
-              if (it.id == movie.id) updatedMovie else it
-            }
-          _uiState.value = MovieUiState.Success(updatedMovies)
+      // Update the movie detail state
+      _movieDetailState.update { currentState ->
+        if (currentState is MovieDetailState.Success && currentState.movie.id == updatedMovie.id) {
+          MovieDetailState.Success(updatedMovie)
+        } else {
+          currentState
         }
-
-        else -> {}
       }
 
-      _selectedMovie.update { current ->
-        if (current?.id == movie.id) updatedMovie else current
+      // Update the movie list state
+      _uiState.update { currentState ->
+        when (currentState) {
+          is MovieUiState.Success -> {
+            val updatedMovies =
+              currentState.movies.map {
+                if (it.id == updatedMovie.id) updatedMovie else it
+              }
+            MovieUiState.Success(updatedMovies)
+          }
+          else -> currentState
+        }
       }
 
+      // Update favorites
       if (updatedMovie.isFavorite) {
         _favorites.update { it + updatedMovie }
       } else {

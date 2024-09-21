@@ -111,6 +111,9 @@ fun MovieDetailContent(
   val context = LocalContext.current
   val scrollState = rememberScrollState()
 
+  // Remove the local isFavorite state
+  // var isFavorite by remember { mutableStateOf(movie.isFavorite) }
+
   Box(modifier = Modifier.fillMaxSize()) {
     MovieBackgroundImage(movie.posterPath)
     GradientOverlay()
@@ -125,7 +128,7 @@ fun MovieDetailContent(
         onBackPress = onBackPress,
         onFavoriteClick = onFavoriteClick,
         onDownloadClick = { onDownloadClick(movie.posterPath, context) },
-        isFavorite = movie.isFavorite,
+        isFavorite = movie.isFavorite, // Use the movie's isFavorite property directly
       )
       Spacer(modifier = Modifier.weight(1f))
       MovieDetailInfo(movie)
