@@ -47,7 +47,6 @@ fun MovieDetailContent(
       Spacer(modifier = Modifier.weight(1f))
       MovieDetailInfo(movie)
 
-      // AI Response
       Spacer(
         modifier =
           androidx.compose.ui.Modifier
@@ -86,7 +85,7 @@ fun MovieDetailContent(
           }
         }
 
-        else -> { // Do nothing for Idle state
+        else -> {
         }
       }
     }

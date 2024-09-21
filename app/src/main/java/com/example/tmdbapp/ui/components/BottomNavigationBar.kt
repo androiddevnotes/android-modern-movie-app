@@ -43,7 +43,7 @@ fun BottomNavigationBar(navController: NavController) {
             painter = painterResource(id = item.icon),
             contentDescription = item.label,
             tint = Color.Unspecified,
-            modifier = Modifier.size(24.dp), // Adjust the size here
+            modifier = Modifier.size(24.dp),
           )
         },
         label = { Text(item.label) },

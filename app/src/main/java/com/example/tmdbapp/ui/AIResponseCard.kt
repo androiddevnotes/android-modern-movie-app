@@ -73,7 +73,7 @@ fun AIResponseCard(
                   style = Stroke(width = borderWidth),
                 )
               }
-            }.padding(4.dp), // To ensure the border is visible
+            }.padding(4.dp),
       ) {
         Column(modifier = Modifier.padding(16.dp)) {
           Text(

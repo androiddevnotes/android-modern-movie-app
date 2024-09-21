@@ -5,7 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.ui.theme.* // Import the colors from here
+import com.example.tmdbapp.ui.theme.*
 import com.example.tmdbapp.viewmodel.*
 
 @Composable
@@ -17,7 +17,6 @@ fun MovieDetailScreen(
   val aiResponse by viewModel.aiResponse.collectAsState()
   val aiResponseState by viewModel.aiResponseState.collectAsState()
 
-  // Clear AI response when leaving the screen
   DisposableEffect(Unit) {
     onDispose {
       viewModel.clearAIResponse()
@@ -52,12 +51,10 @@ fun MovieDetailScreen(
       }
     }
 
-    // Shimmering overlay
     ShimmeringOverlay(
       isVisible = aiResponseState == AIResponseState.Loading,
     )
 
-    // AI scanning indicator
     if (aiResponseState == AIResponseState.Loading) {
       Box(
         modifier =

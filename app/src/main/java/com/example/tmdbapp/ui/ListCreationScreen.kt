@@ -45,7 +45,7 @@ fun ListCreationScreen(
       modifier =
         Modifier
           .fillMaxSize()
-          .padding(paddingValues) // Add this line
+          .padding(paddingValues)
           .padding(16.dp),
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {

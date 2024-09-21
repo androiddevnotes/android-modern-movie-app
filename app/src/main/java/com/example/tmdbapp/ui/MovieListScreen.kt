@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.ui.components.*
-import com.example.tmdbapp.ui.theme.* // Import colors from here if needed
+import com.example.tmdbapp.ui.theme.*
 import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.viewmodel.*
 import kotlinx.coroutines.*
@@ -223,7 +223,6 @@ fun MovieListScreen(
         modifier = Modifier.align(Alignment.TopCenter),
       )
 
-      // Add ShimmeringOverlay
       ShimmeringOverlay(
         isVisible = isRefreshing || uiState is MovieUiState.Loading,
       )

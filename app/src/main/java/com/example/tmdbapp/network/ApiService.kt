@@ -87,7 +87,6 @@ class ApiService(
     apiKey: String,
     prompt: String,
   ): String {
-    // Add a 5-second delay
     kotlinx.coroutines.delay(5000)
 
     val openAIRequest =

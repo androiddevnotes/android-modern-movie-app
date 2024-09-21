@@ -28,9 +28,9 @@ fun ShimmeringOverlay(isVisible: Boolean) {
   val shimmerColors =
     listOf(
       Color(0x00FFFFFF),
-      Color(0xFF00FFFF).copy(alpha = 0.2f), // Cyan
-      Color(0xFF1E90FF).copy(alpha = 0.2f), // Dodger Blue
-      Color(0xFF00FFFF).copy(alpha = 0.2f), // Cyan
+      Color(0xFF00FFFF).copy(alpha = 0.2f),
+      Color(0xFF1E90FF).copy(alpha = 0.2f),
+      Color(0xFF00FFFF).copy(alpha = 0.2f),
       Color(0x00FFFFFF),
     )
 
@@ -43,7 +43,7 @@ fun ShimmeringOverlay(isVisible: Boolean) {
       modifier =
         Modifier
           .fillMaxSize()
-          .background(Color(0x80000000)), // Semi-transparent black background
+          .background(Color(0x80000000)),
     ) {
       val boxHeight = constraints.maxHeight.toFloat()
       val boxWidth = constraints.maxWidth.toFloat()
@@ -66,7 +66,6 @@ fun ShimmeringOverlay(isVisible: Boolean) {
             },
       )
 
-      // Angelic scanning line
       Box(
         modifier =
           Modifier
@@ -76,9 +75,9 @@ fun ShimmeringOverlay(isVisible: Boolean) {
               Brush.horizontalGradient(
                 listOf(
                   Color(0x00FFFFFF),
-                  Color(0xFFFFD700), // Gold
-                  Color(0xFFFFFAFA), // Snow white
-                  Color(0xFF87CEFA), // Light sky blue
+                  Color(0xFFFFD700),
+                  Color(0xFFFFFAFA),
+                  Color(0xFF87CEFA),
                   Color(0x00FFFFFF),
                 ),
               ),

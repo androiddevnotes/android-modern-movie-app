@@ -126,7 +126,6 @@ class MovieViewModel(
       repository.toggleFavorite(movie)
       val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
 
-      // Update the movie detail state
       _movieDetailState.update { currentState ->
         if (currentState is MovieDetailState.Success && currentState.movie.id == updatedMovie.id) {
           MovieDetailState.Success(updatedMovie)
@@ -135,7 +134,6 @@ class MovieViewModel(
         }
       }
 
-      // Update the movie list state
       _uiState.update { currentState ->
         when (currentState) {
           is MovieUiState.Success -> {
@@ -149,7 +147,6 @@ class MovieViewModel(
         }
       }
 
-      // Update favorites
       if (updatedMovie.isFavorite) {
         _favorites.update { it + updatedMovie }
       } else {

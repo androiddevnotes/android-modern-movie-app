@@ -77,7 +77,7 @@ fun NavGraph(
         application = application,
       )
     }
-    // Update this composable for the Settings screen
+
     composable("settings") {
       SettingsScreen(
         apiKeyManager = apiKeyManager,
