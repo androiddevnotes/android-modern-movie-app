@@ -300,12 +300,14 @@ private fun SearchTopBar(
     },
     singleLine = true,
     colors =
-      TextFieldDefaults.textFieldColors(
-        containerColor = MaterialTheme.colorScheme.surface,
+      TextFieldDefaults.colors(
         focusedTextColor = MaterialTheme.colorScheme.onSurface,
+        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
         cursorColor = MaterialTheme.colorScheme.primary,
         focusedIndicatorColor = MaterialTheme.colorScheme.primary,
         unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        focusedContainerColor = MaterialTheme.colorScheme.surface,
+        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
       ),
   )
 }
