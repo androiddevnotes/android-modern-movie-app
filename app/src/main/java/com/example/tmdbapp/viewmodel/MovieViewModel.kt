@@ -2,7 +2,6 @@ package com.example.tmdbapp.viewmodel
 
 import android.app.*
 import androidx.lifecycle.*
-import com.example.tmdbapp.*
 import com.example.tmdbapp.data.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.repository.*
@@ -44,10 +43,6 @@ class MovieViewModel(
   internal val sessionManager = SessionManager(application)
 
   internal val apiKeyManager = ApiKeyManager(application)
-
-  fun setTmdbApiKey(key: String) = apiKeyManager.setTmdbApiKey(key)
-
-  fun setOpenAiApiKey(key: String) = apiKeyManager.setOpenAiApiKey(key)
 
   init {
     fetchPopularMovies()

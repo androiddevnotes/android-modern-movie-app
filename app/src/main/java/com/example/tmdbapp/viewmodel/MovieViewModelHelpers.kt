@@ -16,7 +16,7 @@ fun handleError(
       } else if (errorMessage.contains("401") || errorMessage.contains("Invalid API key")) {
         MovieError.ApiKeyMissing
       } else {
-        MovieError.ApiError(errorMessage)
+        MovieError.ApiError()
       }
     }
     else -> MovieError.Unknown

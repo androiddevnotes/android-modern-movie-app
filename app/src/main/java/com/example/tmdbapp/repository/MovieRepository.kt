@@ -1,21 +1,21 @@
 package com.example.tmdbapp.repository
 
-import android.content.*
-import com.example.tmdbapp.*
-import com.example.tmdbapp.data.*
-import com.example.tmdbapp.models.*
+import android.content.Context
+import com.example.tmdbapp.data.FavoritePreferences
+import com.example.tmdbapp.data.SessionManager
+import com.example.tmdbapp.models.Movie
+import com.example.tmdbapp.models.MovieResponse
 import com.example.tmdbapp.network.*
-import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.utils.ApiKeyManager
-import kotlinx.coroutines.flow.*
+import com.example.tmdbapp.utils.Resource
+import kotlinx.coroutines.flow.first
 
 class MovieRepository(
-  private val context: Context,
+  context: Context,
 ) {
   internal val api = ApiService(KtorClient.httpClient)
   private val favoritePreferences = FavoritePreferences(context)
   private val sessionManager = SessionManager(context)
-  private val sharedPreferences = context.getSharedPreferences("ApiKeys", Context.MODE_PRIVATE)
   private val apiKeyManager = ApiKeyManager(context)
 
   private suspend fun <T> safeApiCall(apiCall: suspend () -> T): Resource<T> =

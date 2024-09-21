@@ -15,6 +15,7 @@ sealed class MovieError(
   object ApiKeyMissing : MovieError(R.string.error_api_key_missing)
 
   data class ApiError(
+    val errorCode: Int,
     val errorMessage: String,
   ) : MovieError(R.string.error_unknown)
 

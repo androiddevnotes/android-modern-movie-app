@@ -24,11 +24,6 @@ class SessionManager(
 
   fun getSessionId(): String? = prefs.getString(SESSION_ID_KEY, null)
 
-  fun clearSessionId() {
-    editor.remove(SESSION_ID_KEY).apply()
-    _sessionIdFlow.value = null
-  }
-
   companion object {
     private const val PREF_NAME = "TMDBSessionPrefs"
     private const val SESSION_ID_KEY = "session_id"
