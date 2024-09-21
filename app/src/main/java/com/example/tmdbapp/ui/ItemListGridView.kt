@@ -5,29 +5,34 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.viewmodel.MovieViewModel
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun <T> ItemListGridView(
+fun <T, VM : ViewModel> ItemListGridView(
   items: List<T>,
-  viewModel: MovieViewModel,
+  viewModel: VM,
   onItemClick: (T) -> Unit,
   gridState: LazyStaggeredGridState,
+  lastViewedItemIndex: StateFlow<Int>,
+  setLastViewedItemIndex: (Int) -> Unit,
+  loadMoreItems: () -> Unit,
+  isLastPage: Boolean,
   itemContent: @Composable (T, Int, () -> Unit, () -> Unit) -> Unit,
 ) {
-  val lastViewedItemIndex by viewModel.lastViewedItemIndex.collectAsState()
+  val lastViewedItemIndexValue by lastViewedItemIndex.collectAsState()
   var shouldScroll by remember { mutableStateOf(false) }
 
-  LaunchedEffect(lastViewedItemIndex) {
-    if (lastViewedItemIndex > 0) {
+  LaunchedEffect(lastViewedItemIndexValue) {
+    if (lastViewedItemIndexValue > 0) {
       shouldScroll = true
     }
   }
 
   LaunchedEffect(shouldScroll) {
     if (shouldScroll) {
-      gridState.scrollToItem(lastViewedItemIndex)
-      viewModel.setLastViewedItemIndex(0)
+      gridState.scrollToItem(lastViewedItemIndexValue)
+      setLastViewedItemIndex(0)
       shouldScroll = false
     }
   }
@@ -43,8 +48,8 @@ fun <T> ItemListGridView(
       items = items,
       key = { index, item -> "${item.hashCode()}_$index" },
     ) { index, item ->
-      if (index >= items.size - 1 && !viewModel.isLastPage) {
-        viewModel.loadMoreMovies()
+      if (index >= items.size - 1 && !isLastPage) {
+        loadMoreItems()
       }
       itemContent(
         item,
