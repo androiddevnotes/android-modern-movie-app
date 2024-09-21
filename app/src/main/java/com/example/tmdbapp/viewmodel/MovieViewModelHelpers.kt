@@ -1,6 +1,7 @@
 package com.example.tmdbapp.viewmodel
 
-import com.example.tmdbapp.utils.*
+import com.example.tmdbapp.utils.ApiKeyManager
+import com.example.tmdbapp.utils.MovieError
 
 fun handleError(
   errorMessage: String?,
@@ -16,8 +17,9 @@ fun handleError(
       } else if (errorMessage.contains("401") || errorMessage.contains("Invalid API key")) {
         MovieError.ApiKeyMissing
       } else {
-        MovieError.ApiError()
+        MovieError.ApiError(errorMessage)
       }
     }
+
     else -> MovieError.Unknown
   }

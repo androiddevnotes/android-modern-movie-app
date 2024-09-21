@@ -11,12 +11,12 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
 import androidx.compose.ui.res.*
+import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.ui.components.*
 import com.example.tmdbapp.ui.theme.*
 import com.example.tmdbapp.utils.*
-import com.example.tmdbapp.utils.MovieError
 import com.example.tmdbapp.viewmodel.*
 import kotlinx.coroutines.*
 
@@ -195,15 +195,21 @@ fun MovieListScreen(
           Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
               Text(
-                text = stringResource(error.messageResId),
+                text =
+                  when (error) {
+                    is MovieError.ApiError -> stringResource(error.messageResId, error.errorMessage)
+                    else -> stringResource(error.messageResId)
+                  },
                 style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 16.dp),
               )
               Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
               Button(onClick = { viewModel.loadMoreMovies() }) {
                 Text("Retry")
               }
 
-              // Add this block to handle API key missing error
               if (error is MovieError.ApiKeyMissing) {
                 Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
                 Button(onClick = onSettingsClick) {
