@@ -39,8 +39,12 @@ fun MovieListListView(
       if (index >= movies.size - 1 && !viewModel.isLastPage) {
         viewModel.loadMoreMovies()
       }
-      MovieItem(
-        movie = movie,
+      SimpleViewItem(
+        title = movie.title,
+        overview = movie.overview,
+        posterPath = movie.posterPath,
+        voteAverage = movie.voteAverage,
+        isFavorite = movie.isFavorite,
         modifier =
           Modifier
             .fillMaxWidth()

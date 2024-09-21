@@ -14,12 +14,15 @@ import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import coil.compose.*
-import com.example.tmdbapp.models.*
 import com.example.tmdbapp.utils.*
 
 @Composable
-fun MovieItem(
-  movie: Movie,
+fun SimpleViewItem(
+  title: String,
+  overview: String,
+  posterPath: String?,
+  voteAverage: Float,
+  isFavorite: Boolean,
   modifier: Modifier = Modifier,
   onFavoriteClick: () -> Unit,
 ) {
@@ -39,8 +42,8 @@ fun MovieItem(
             .background(MaterialTheme.colorScheme.surface),
       ) {
         AsyncImage(
-          model = "${Constants.BASE_IMAGE_URL}${movie.posterPath}",
-          contentDescription = movie.title,
+          model = "${Constants.BASE_IMAGE_URL}$posterPath",
+          contentDescription = title,
           contentScale = ContentScale.Crop,
           modifier =
             Modifier
@@ -60,7 +63,7 @@ fun MovieItem(
               .padding(16.dp),
         ) {
           Text(
-            text = movie.title,
+            text = title,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             maxLines = 2,
@@ -68,7 +71,7 @@ fun MovieItem(
           )
           Spacer(modifier = Modifier.height(4.dp))
           Text(
-            text = movie.overview,
+            text = overview,
             style = MaterialTheme.typography.bodySmall,
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
@@ -86,7 +89,7 @@ fun MovieItem(
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-              text = String.format("%.1f", movie.voteAverage),
+              text = String.format("%.1f", voteAverage),
               style = MaterialTheme.typography.labelMedium,
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -101,9 +104,9 @@ fun MovieItem(
             .padding(4.dp),
       ) {
         Icon(
-          imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-          contentDescription = if (movie.isFavorite) "Remove from favorites" else "Add to favorites",
-          tint = if (movie.isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+          imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+          contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+          tint = if (isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
           modifier = Modifier.size(24.dp),
         )
       }
