@@ -25,7 +25,15 @@ val Typography =
   Typography(
     bodyLarge =
       TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = honkFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp,
+      ),
+    titleMedium =
+      TextStyle(
+        fontFamily = honkFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
@@ -33,7 +41,7 @@ val Typography =
       ),
     titleLarge =
       TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = honkFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 22.sp,
         lineHeight = 28.sp,
@@ -41,7 +49,7 @@ val Typography =
       ),
     labelSmall =
       TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = honkFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 11.sp,
         lineHeight = 16.sp,
@@ -52,5 +60,21 @@ val Typography =
         fontFamily = honkFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 36.sp,
+      ),
+    bodyMedium =
+      TextStyle(
+        fontFamily = honkFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.25.sp,
+      ),
+    headlineLarge =
+      TextStyle(
+        fontFamily = honkFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 32.sp,
+        lineHeight = 40.sp,
+        letterSpacing = 0.sp,
       ),
   )
