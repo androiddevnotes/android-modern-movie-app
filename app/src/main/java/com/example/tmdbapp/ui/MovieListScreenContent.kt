@@ -108,7 +108,7 @@ fun MovieListScreenContent(
           val movies = uiState.movies
           when (viewType) {
             Constants.VIEW_TYPE_GRID ->
-              MovieListGridView(
+              ItemListGridUi(
                 items = movies,
                 onItemClick = onMovieClick,
                 gridState = gridState,
