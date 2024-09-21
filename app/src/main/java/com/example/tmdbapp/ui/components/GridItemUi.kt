@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.*
 import com.example.tmdbapp.utils.Constants
 
 @Composable
-fun GridViewItem(
+fun GridItemUi(
   title: String,
   posterPath: String?,
   voteAverage: Float,

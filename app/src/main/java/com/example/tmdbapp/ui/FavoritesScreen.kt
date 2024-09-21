@@ -11,7 +11,7 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import com.example.tmdbapp.ui.components.SimpleViewItem
+import com.example.tmdbapp.ui.components.SimpleItemUi
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.MovieViewModel
 
@@ -65,7 +65,7 @@ fun FavoritesScreen(
         modifier = Modifier.padding(paddingValues),
       ) {
         items(favorites) { movie ->
-          SimpleViewItem(
+          SimpleItemUi(
             title = movie.title,
             overview = movie.overview,
             posterPath = movie.posterPath,

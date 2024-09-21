@@ -17,7 +17,7 @@ import coil.compose.*
 import com.example.tmdbapp.utils.*
 
 @Composable
-fun SimpleViewItem(
+fun SimpleItemUi(
   title: String,
   overview: String,
   posterPath: String?,

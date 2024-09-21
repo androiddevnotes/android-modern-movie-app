@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.ui.components.GridViewItem
+import com.example.tmdbapp.ui.components.GridItemUi
 import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
 import com.example.tmdbapp.viewmodel.MovieViewModel
 
@@ -40,7 +40,7 @@ fun MovieListGridView(
       if (index >= movies.size - 1 && !viewModel.isLastPage) {
         viewModel.loadMoreMovies()
       }
-      GridViewItem(
+      GridItemUi(
         title = movie.title,
         posterPath = movie.posterPath,
         voteAverage = movie.voteAverage,
@@ -51,7 +51,7 @@ fun MovieListGridView(
         },
         onLongClick = {
           viewModel.toggleFavorite(movie)
-        }
+        },
       )
     }
   }

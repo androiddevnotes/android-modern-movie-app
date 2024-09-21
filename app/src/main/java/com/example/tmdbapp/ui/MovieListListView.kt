@@ -39,7 +39,7 @@ fun MovieListListView(
       if (index >= movies.size - 1 && !viewModel.isLastPage) {
         viewModel.loadMoreMovies()
       }
-      SimpleViewItem(
+      SimpleItemUi(
         title = movie.title,
         overview = movie.overview,
         posterPath = movie.posterPath,
