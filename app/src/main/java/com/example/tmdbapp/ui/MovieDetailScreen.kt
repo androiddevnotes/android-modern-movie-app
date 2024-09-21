@@ -146,7 +146,7 @@ fun MovieDetailContent(
         }
         is AIResponseState.Error -> {
           Text(
-            text = (aiResponseState as AIResponseState.Error).message,
+            text = aiResponseState.message,
             color = MaterialTheme.colorScheme.error,
             modifier = Modifier.padding(horizontal = 16.dp),
           )

@@ -194,11 +194,11 @@ class MovieViewModel(
 }
 
 sealed class AIResponseState {
-  object Idle : AIResponseState()
+  data object Idle : AIResponseState()
 
-  object Loading : AIResponseState()
+  data object Loading : AIResponseState()
 
-  object Success : AIResponseState()
+  data object Success : AIResponseState()
 
   data class Error(
     val message: String,
@@ -206,7 +206,7 @@ sealed class AIResponseState {
 }
 
 sealed class MovieDetailState {
-  object Loading : MovieDetailState()
+  data object Loading : MovieDetailState()
 
   data class Success(
     val movie: Movie,

@@ -1,21 +1,18 @@
 package com.example.tmdbapp.ui
 
-import android.app.*
-import android.content.*
-import android.net.*
+import android.app.Application
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.*
 import androidx.compose.material.icons.Icons.AutoMirrored.Filled
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.*
+import com.example.tmdbapp.R
 import com.example.tmdbapp.viewmodel.*
-import com.example.tmdbapp.R as R
 
 @Composable
 fun ListCreationScreen(

@@ -10,13 +10,13 @@ sealed class MovieError(
     override val messageResId: Int = R.string.error_api,
   ) : MovieError(messageResId)
 
-  object Network : MovieError(R.string.error_network)
+  data object Network : MovieError(R.string.error_network)
 
-  object Server : MovieError(R.string.error_server)
+  data object Server : MovieError(R.string.error_server)
 
-  object NoInternet : MovieError(R.string.error_no_internet)
+  data object NoInternet : MovieError(R.string.error_no_internet)
 
-  object ApiKeyMissing : MovieError(R.string.error_api_key_missing)
+  data object ApiKeyMissing : MovieError(R.string.error_api_key_missing)
 
-  object Unknown : MovieError(R.string.error_unknown)
+  data object Unknown : MovieError(R.string.error_unknown)
 }

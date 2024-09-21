@@ -1,20 +1,19 @@
 package com.example.tmdbapp.ui
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
-import androidx.compose.material.icons.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons.AutoMirrored.Filled
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import com.example.tmdbapp.ui.components.*
-import com.example.tmdbapp.utils.*
-import com.example.tmdbapp.viewmodel.*
+import com.example.tmdbapp.ui.components.MovieItem
+import com.example.tmdbapp.utils.Constants
+import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
 fun FavoritesScreen(
