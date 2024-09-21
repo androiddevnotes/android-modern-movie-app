@@ -7,6 +7,7 @@ import io.ktor.client.request.*
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import kotlinx.coroutines.*
 import kotlinx.serialization.*
 
 class ApiService(
@@ -86,6 +87,9 @@ class ApiService(
     apiKey: String,
     prompt: String,
   ): String {
+    // Add a 5-second delay
+    kotlinx.coroutines.delay(5000)
+
     val openAIRequest =
       OpenAIRequest(
         model = "gpt-3.5-turbo",
