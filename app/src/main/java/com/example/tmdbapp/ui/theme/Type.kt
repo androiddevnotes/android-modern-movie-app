@@ -3,7 +3,23 @@ package com.example.tmdbapp.ui.theme
 import androidx.compose.material3.*
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.*
+import androidx.compose.ui.text.googlefonts.*
 import androidx.compose.ui.unit.*
+import com.example.tmdbapp.R
+
+val provider =
+  GoogleFont.Provider(
+    providerAuthority = "com.google.android.gms.fonts",
+    providerPackage = "com.google.android.gms",
+    certificates = R.array.com_google_android_gms_fonts_certs,
+  )
+
+val honkFont = GoogleFont("Honk")
+
+val honkFontFamily =
+  FontFamily(
+    Font(googleFont = honkFont, fontProvider = provider),
+  )
 
 val Typography =
   Typography(
@@ -30,5 +46,11 @@ val Typography =
         fontSize = 11.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp,
+      ),
+    displayLarge =
+      TextStyle(
+        fontFamily = honkFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 36.sp,
       ),
   )

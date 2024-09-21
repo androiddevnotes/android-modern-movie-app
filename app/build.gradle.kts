@@ -98,6 +98,7 @@ dependencies {
   implementation(libs.ktor.client.content.negotiation)
   implementation(libs.ktor.serialization.kotlinx.json)
   implementation(libs.ktor.client.logging)
+  implementation("androidx.compose.ui:ui-text-google-fonts:1.7.0")
 }
 
 // Add Detekt task
