@@ -27,6 +27,7 @@ import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.utils.MovieError
 import com.example.tmdbapp.viewmodel.*
+import kotlinx.coroutines.delay
 
 @Composable
 fun MovieDetailScreen(
@@ -77,7 +78,7 @@ fun MovieDetailScreen(
       isVisible = aiResponseState == AIResponseState.Loading,
     )
 
-    // AI thinking indicator
+    // AI scanning indicator
     if (aiResponseState == AIResponseState.Loading) {
       Box(
         modifier =
@@ -86,8 +87,22 @@ fun MovieDetailScreen(
             .padding(bottom = 32.dp),
         contentAlignment = Alignment.BottomCenter,
       ) {
+        var scanningText by remember { mutableStateOf("Scanning movie details") }
+        LaunchedEffect(Unit) {
+          while (true) {
+            delay(500)
+            scanningText =
+              when (scanningText) {
+                "Scanning movie details" -> "Analyzing plot"
+                "Analyzing plot" -> "Processing characters"
+                "Processing characters" -> "Evaluating themes"
+                "Evaluating themes" -> "Generating insights"
+                else -> "Scanning movie details"
+              }
+          }
+        }
         Text(
-          text = "AI is thinking...",
+          text = scanningText,
           style = MaterialTheme.typography.titleMedium,
           color = Color.White,
           fontWeight = FontWeight.Bold,
@@ -101,32 +116,21 @@ fun MovieDetailScreen(
 fun ShimmeringOverlay(isVisible: Boolean) {
   val transition = rememberInfiniteTransition(label = "ShimmerTransition")
   val translateAnim by transition.animateFloat(
-    initialValue = 0f,
+    initialValue = -1000f,
     targetValue = 1000f,
     animationSpec =
       infiniteRepeatable(
-        animation = tween(1000, easing = LinearEasing),
+        animation = tween(2000, easing = LinearEasing),
         repeatMode = RepeatMode.Restart,
       ),
     label = "ShimmerTranslate",
-  )
-
-  val alphaAnim by transition.animateFloat(
-    initialValue = 0.2f,
-    targetValue = 0.5f,
-    animationSpec =
-      infiniteRepeatable(
-        animation = tween(1000, easing = FastOutSlowInEasing),
-        repeatMode = RepeatMode.Reverse,
-      ),
-    label = "ShimmerAlpha",
   )
 
   val shimmerColors =
     listOf(
       Color(0x00FFFFFF),
       Color(0x40FFFFFF),
-      Color(0x80FFFFFF),
+      Color(0xA0FFFFFF),
       Color(0x40FFFFFF),
       Color(0x00FFFFFF),
     )
@@ -134,8 +138,8 @@ fun ShimmeringOverlay(isVisible: Boolean) {
   val brush =
     Brush.linearGradient(
       colors = shimmerColors,
-      start = Offset(translateAnim - 1000f, translateAnim - 1000f),
-      end = Offset(translateAnim, translateAnim),
+      start = Offset(translateAnim, 0f),
+      end = Offset(translateAnim + 500f, 1000f),
       tileMode = TileMode.Clamp,
     )
 
@@ -148,12 +152,23 @@ fun ShimmeringOverlay(isVisible: Boolean) {
       modifier =
         Modifier
           .fillMaxSize()
-          .background(Color(0x40000000))
+          .background(Color(0x80000000))
           .drawWithContent {
             drawContent()
             drawRect(brush = brush, blendMode = BlendMode.Lighten)
-          }.alpha(alphaAnim),
-    )
+          },
+    ) {
+      // Scanning line
+      Box(
+        modifier =
+          Modifier
+            .fillMaxHeight()
+            .width(2.dp)
+            .background(Color(0xFFFFFFFF))
+            .align(Alignment.CenterStart)
+            .offset(x = translateAnim.dp),
+      )
+    }
   }
 }
 
