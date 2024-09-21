@@ -41,15 +41,6 @@ fun NavGraph(
         onViewTypeChange = onViewTypeChange,
         onThemeChange = onThemeChange,
         currentThemeMode = currentThemeMode,
-        onCreateListClick = {
-          navController.navigate("createList") {
-            popUpTo(navController.graph.findStartDestination().id) {
-              saveState = true
-            }
-            launchSingleTop = true
-            restoreState = true
-          }
-        },
         onSettingsClick = {
           navController.navigate("settings")
         },

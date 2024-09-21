@@ -29,7 +29,6 @@ fun MovieListScreen(
   onViewTypeChange: (String) -> Unit,
   onThemeChange: () -> Unit,
   currentThemeMode: ThemeMode,
-  onCreateListClick: () -> Unit,
   onSettingsClick: () -> Unit,
 ) {
   var isSearchActive by rememberSaveable { mutableStateOf(false) }
@@ -108,7 +107,6 @@ fun MovieListScreen(
         onThemeChange = onThemeChange,
         currentThemeMode = currentThemeMode,
         onFilterClick = { showFilterBottomSheet = true },
-        onCreateListClick = onCreateListClick,
         onSettingsClick = onSettingsClick,
       )
     },

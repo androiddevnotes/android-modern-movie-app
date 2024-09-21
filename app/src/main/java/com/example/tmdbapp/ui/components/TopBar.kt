@@ -31,7 +31,6 @@ fun TopBar(
   onThemeChange: () -> Unit,
   currentThemeMode: ThemeMode,
   onFilterClick: () -> Unit,
-  onCreateListClick: () -> Unit,
   onSettingsClick: () -> Unit,
 ) {
   if (isSearchActive) {
@@ -53,7 +52,6 @@ fun TopBar(
       onThemeChange = onThemeChange,
       currentThemeMode = currentThemeMode,
       onFilterClick = onFilterClick,
-      onCreateListClick = onCreateListClick,
       onSettingsClick = onSettingsClick,
     )
   }
@@ -72,7 +70,6 @@ private fun MainTopBar(
   onThemeChange: () -> Unit,
   currentThemeMode: ThemeMode,
   onFilterClick: () -> Unit,
-  onCreateListClick: () -> Unit,
   onSettingsClick: () -> Unit,
 ) {
   TopAppBar(
@@ -95,7 +92,6 @@ private fun MainTopBar(
         onThemeChange = onThemeChange,
       )
       FilterIcon(onClick = onFilterClick)
-      CreateListIcon(onClick = onCreateListClick)
       IconButton(onClick = onSettingsClick) {
         Icon(
           imageVector = Icons.Default.Settings,
@@ -259,18 +255,6 @@ private fun FilterIcon(onClick: () -> Unit) {
     Image(
       painter = painterResource(id = R.drawable.cool_shape_filter),
       contentDescription = stringResource(R.string.content_desc_filter),
-      contentScale = ContentScale.Fit,
-      modifier = Modifier.size(Constants.ICON_SIZE_SMALL),
-    )
-  }
-}
-
-@Composable
-private fun CreateListIcon(onClick: () -> Unit) {
-  IconButton(onClick = onClick) {
-    Image(
-      painter = painterResource(id = R.drawable.cool_shape_plus),
-      contentDescription = stringResource(R.string.content_desc_create_list),
       contentScale = ContentScale.Fit,
       modifier = Modifier.size(Constants.ICON_SIZE_SMALL),
     )
