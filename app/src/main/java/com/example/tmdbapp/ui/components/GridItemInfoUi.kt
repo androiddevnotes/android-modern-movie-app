@@ -1,5 +1,6 @@
 package com.example.tmdbapp.ui.components
 
+import TruncatedTitle
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
