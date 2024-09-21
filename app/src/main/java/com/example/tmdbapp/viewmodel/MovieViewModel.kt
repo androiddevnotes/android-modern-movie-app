@@ -68,10 +68,6 @@ class MovieViewModel(
     }
   }
 
-  private fun getActualTmdbApiKey(): String = getTmdbApiKey().ifEmpty { BuildConfig.TMDB_API_KEY }
-
-  private fun getActualOpenAiApiKey(): String = getOpenAiApiKey().ifEmpty { BuildConfig.OPENAI_API_KEY }
-
   init {
     fetchPopularMovies()
     loadFavorites()
@@ -83,7 +79,6 @@ class MovieViewModel(
       try {
         val movie = repository.getMovieDetails(movieId)
         _currentMovie.value = movie
-        // Clear the AI response when fetching details for a new movie
         _aiResponse.value = null
       } catch (e: Exception) {
         _currentMovie.value = null
@@ -190,8 +185,7 @@ class MovieViewModel(
       _aiResponseState.value = AIResponseState.Loading
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
       try {
-        // Use getActualOpenAiApiKey() instead of getOpenAiApiKey()
-        val response = repository.api.askOpenAI(getActualOpenAiApiKey(), prompt)
+        val response = repository.api.askOpenAI(BuildConfig.OPENAI_API_KEY, prompt)
         _aiResponse.value = response
         _aiResponseState.value = AIResponseState.Success
       } catch (e: Exception) {
