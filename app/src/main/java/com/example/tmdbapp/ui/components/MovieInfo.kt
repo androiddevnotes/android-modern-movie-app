@@ -12,6 +12,6 @@ fun MovieInfo(
 ) {
   Column(modifier = modifier) {
     MovieTitle(title)
-    MovieRating(voteAverage)
+    RatingUi(voteAverage)
   }
 }
