@@ -1,6 +1,8 @@
 package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.material.pullrefresh.*
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
@@ -28,6 +30,8 @@ fun MovieListScreenContent(
   onThemeChange: () -> Unit,
   currentThemeMode: ThemeMode,
   onSettingsClick: () -> Unit,
+  listState: LazyListState,
+  gridState: LazyStaggeredGridState,
 ) {
   var isSearchActive by rememberSaveable { mutableStateOf(false) }
   var showFilterBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -104,30 +108,22 @@ fun MovieListScreenContent(
           val movies = uiState.movies
           when (viewType) {
             Constants.VIEW_TYPE_GRID ->
-              ItemListGridView(
-                items = movies,
+              MovieListGridView(
+                movies = movies,
                 viewModel = viewModel,
-                onItemClick = onMovieClick,
+                onMovieClick = onMovieClick,
                 viewType = viewType,
                 searchQuery = searchQuery,
-              ) { movie, _, onClick, onLongClick ->
-                GridItemUi(
-                  title = movie.title,
-                  posterPath = movie.posterPath,
-                  voteAverage = movie.voteAverage,
-                  isFavorite = movie.isFavorite,
-                  onClick = onClick,
-                  onLongClick = { viewModel.toggleFavorite(movie) },
-                )
-              }
-
+                gridState = gridState,
+              )
             Constants.VIEW_TYPE_LIST ->
               MovieListListView(
-                movies,
-                viewModel,
-                onMovieClick,
-                viewType,
-                searchQuery,
+                movies = movies,
+                viewModel = viewModel,
+                onMovieClick = onMovieClick,
+                viewType = viewType,
+                searchQuery = searchQuery,
+                listState = listState,
               )
           }
         }

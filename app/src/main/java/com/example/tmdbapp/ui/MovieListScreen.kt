@@ -3,6 +3,8 @@ package com.example.tmdbapp.ui
 import androidx.compose.runtime.*
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.ui.theme.ThemeMode
+import com.example.tmdbapp.utils.rememberForeverLazyListState
+import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
 import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
@@ -21,6 +23,9 @@ fun MovieListScreen(
   val currentSortOption by viewModel.currentSortOption.collectAsState()
   val currentFilters by viewModel.filterOptions.collectAsState()
 
+  val listState = rememberForeverLazyListState(key = "movie_list_${viewType}_$searchQuery")
+  val gridState = rememberForeverLazyStaggeredGridState(key = "movie_grid_${viewType}_$searchQuery")
+
   MovieListScreenContent(
     uiState = uiState,
     viewModel = viewModel,
@@ -34,5 +39,7 @@ fun MovieListScreen(
     onThemeChange = onThemeChange,
     currentThemeMode = currentThemeMode,
     onSettingsClick = onSettingsClick,
+    listState = listState,
+    gridState = gridState,
   )
 }

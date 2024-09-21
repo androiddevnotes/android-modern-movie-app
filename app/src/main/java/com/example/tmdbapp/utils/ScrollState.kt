@@ -22,11 +22,11 @@ fun rememberForeverLazyListState(
 fun rememberForeverLazyStaggeredGridState(
   key: String,
   initialFirstVisibleItemIndex: Int = 0,
-  initialFirstVisibleItemOffset: Int = 0,
+  initialFirstVisibleItemScrollOffset: Int = 0,
 ): LazyStaggeredGridState =
   rememberSaveable(key = key, saver = LazyStaggeredGridState.Saver) {
     LazyStaggeredGridState(
       initialFirstVisibleItemIndex = initialFirstVisibleItemIndex,
-      initialFirstVisibleItemOffset = initialFirstVisibleItemOffset,
+      initialFirstVisibleItemOffset = initialFirstVisibleItemScrollOffset,
     )
   }

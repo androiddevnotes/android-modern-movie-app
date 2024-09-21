@@ -22,7 +22,7 @@ fun <T> ItemListGridView(
     rememberForeverLazyStaggeredGridState(
       key = "item_grid_${viewType}_$searchQuery",
       initialFirstVisibleItemIndex = lastViewedItemIndex,
-      initialFirstVisibleItemOffset = 0,
+      initialFirstVisibleItemScrollOffset = 0,
     )
 
   LazyVerticalStaggeredGrid(
