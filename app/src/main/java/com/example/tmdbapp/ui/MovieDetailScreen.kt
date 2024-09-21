@@ -27,7 +27,6 @@ import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.utils.MovieError
 import com.example.tmdbapp.viewmodel.*
-import kotlinx.coroutines.delay
 
 @Composable
 fun MovieDetailScreen(
@@ -87,27 +86,7 @@ fun MovieDetailScreen(
             .padding(bottom = 32.dp),
         contentAlignment = Alignment.BottomCenter,
       ) {
-        var scanningText by remember { mutableStateOf("Initializing scan") }
-        LaunchedEffect(Unit) {
-          while (true) {
-            delay(500)
-            scanningText =
-              when (scanningText) {
-                "Initializing scan" -> "Scanning poster"
-                "Scanning poster" -> "Analyzing title"
-                "Analyzing title" -> "Processing overview"
-                "Processing overview" -> "Evaluating rating"
-                "Evaluating rating" -> "Generating insights"
-                else -> "Initializing scan"
-              }
-          }
-        }
-        Text(
-          text = scanningText,
-          style = MaterialTheme.typography.titleMedium,
-          color = Color.White,
-          fontWeight = FontWeight.Bold,
-        )
+        AIScanningIndicator()
       }
     }
   }
@@ -488,4 +467,37 @@ fun AIResponseCard(response: String) {
       }
     }
   }
+}
+
+@Composable
+fun AIScanningIndicator() {
+  val scanningTexts =
+    listOf(
+      "Initializing scan",
+      "Scanning poster",
+      "Analyzing title",
+      "Processing overview",
+      "Evaluating rating",
+      "Generating insights",
+    )
+
+  val infiniteTransition = rememberInfiniteTransition(label = "ScanningTransition")
+  val textIndex by infiniteTransition.animateValue(
+    initialValue = 0,
+    targetValue = scanningTexts.size,
+    typeConverter = Int.VectorConverter,
+    animationSpec =
+      infiniteRepeatable(
+        animation = tween(durationMillis = 1000, easing = LinearEasing),
+        repeatMode = RepeatMode.Restart,
+      ),
+    label = "ScanningTextIndex",
+  )
+
+  Text(
+    text = scanningTexts[textIndex % scanningTexts.size],
+    style = MaterialTheme.typography.titleMedium,
+    color = Color.White,
+    fontWeight = FontWeight.Bold,
+  )
 }
