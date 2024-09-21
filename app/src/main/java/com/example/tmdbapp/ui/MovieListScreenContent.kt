@@ -109,10 +109,18 @@ fun MovieListScreenContent(
           when (viewType) {
             Constants.VIEW_TYPE_GRID ->
               MovieListGridView(
-                movies = movies,
-                viewModel = viewModel,
-                onMovieClick = onMovieClick,
+                items = movies,
+                onItemClick = onMovieClick,
                 gridState = gridState,
+                isLastPage = viewModel.isLastPage,
+                loadMoreItems = viewModel::loadMoreMovies,
+                setLastViewedItemIndex = viewModel::setLastViewedItemIndex,
+                toggleFavorite = viewModel::toggleFavorite,
+                getItemId = { it.id },
+                getItemTitle = { it.title },
+                getItemPosterPath = { it.posterPath },
+                getItemVoteAverage = { it.voteAverage },
+                isItemFavorite = { it.isFavorite },
               )
             Constants.VIEW_TYPE_LIST ->
               MovieListListView(

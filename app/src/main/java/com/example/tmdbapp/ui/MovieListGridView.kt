@@ -4,16 +4,22 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.models.*
 import com.example.tmdbapp.ui.components.*
-import com.example.tmdbapp.viewmodel.*
 
 @Composable
-fun MovieListGridView(
-  movies: List<Movie>,
-  viewModel: MovieViewModel,
-  onMovieClick: (Movie) -> Unit,
+fun <T : Any> MovieListGridView(
+  items: List<T>,
+  onItemClick: (T) -> Unit,
   gridState: LazyStaggeredGridState,
+  isLastPage: Boolean,
+  loadMoreItems: () -> Unit,
+  setLastViewedItemIndex: (Int) -> Unit,
+  toggleFavorite: (T) -> Unit,
+  getItemId: (T) -> Any,
+  getItemTitle: (T) -> String,
+  getItemPosterPath: (T) -> String?,
+  getItemVoteAverage: (T) -> Float,
+  isItemFavorite: (T) -> Boolean,
 ) {
   LazyVerticalStaggeredGrid(
     columns = StaggeredGridCells.Fixed(3),
@@ -23,23 +29,23 @@ fun MovieListGridView(
     state = gridState,
   ) {
     itemsIndexed(
-      items = movies,
-      key = { index, movie -> "${movie.id}_$index" },
-    ) { index, movie ->
-      if (index >= movies.size - 1 && !viewModel.isLastPage) {
-        viewModel.loadMoreMovies()
+      items = items,
+      key = { index, item -> "${getItemId(item)}_$index" },
+    ) { index, item ->
+      if (index >= items.size - 1 && !isLastPage) {
+        loadMoreItems()
       }
       GridItemUi(
-        title = movie.title,
-        posterPath = movie.posterPath,
-        voteAverage = movie.voteAverage,
-        isFavorite = movie.isFavorite,
+        title = getItemTitle(item),
+        posterPath = getItemPosterPath(item),
+        voteAverage = getItemVoteAverage(item),
+        isFavorite = isItemFavorite(item),
         onClick = {
-          viewModel.setLastViewedItemIndex(index)
-          onMovieClick(movie)
+          setLastViewedItemIndex(index)
+          onItemClick(item)
         },
         onLongClick = {
-          viewModel.toggleFavorite(movie)
+          toggleFavorite(item)
         },
       )
     }
