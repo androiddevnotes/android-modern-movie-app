@@ -48,7 +48,9 @@ fun MovieListListView(
               viewModel.setLastViewedItemIndex(index)
               onMovieClick(movie)
             },
-        onFavoriteClick = { viewModel.toggleFavorite(movie) },
+        onFavoriteClick = {
+          viewModel.toggleFavorite(movie)
+        },
       )
     }
   }

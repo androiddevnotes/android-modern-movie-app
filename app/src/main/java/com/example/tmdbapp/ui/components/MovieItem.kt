@@ -93,6 +93,20 @@ fun MovieItem(
           }
         }
       }
+      IconButton(
+        onClick = onFavoriteClick,
+        modifier =
+          Modifier
+            .align(Alignment.TopEnd)
+            .padding(4.dp),
+      ) {
+        Icon(
+          imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+          contentDescription = if (movie.isFavorite) "Remove from favorites" else "Add to favorites",
+          tint = if (movie.isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+          modifier = Modifier.size(24.dp),
+        )
+      }
     }
   }
 }
