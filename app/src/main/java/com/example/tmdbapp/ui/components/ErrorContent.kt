@@ -31,7 +31,7 @@ fun ErrorContent(
     )
     Spacer(
       modifier =
-        androidx.compose.ui.Modifier
+        Modifier
           .height(16.dp),
     )
     Button(onClick = onRetry) {
@@ -39,7 +39,7 @@ fun ErrorContent(
     }
     Spacer(
       modifier =
-        androidx.compose.ui.Modifier
+        Modifier
           .height(8.dp),
     )
     TextButton(onClick = onBackPress) {

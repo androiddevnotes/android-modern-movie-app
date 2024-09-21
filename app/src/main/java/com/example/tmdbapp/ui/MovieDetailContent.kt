@@ -50,7 +50,7 @@ fun MovieDetailContent(
 
       Spacer(
         modifier =
-          androidx.compose.ui.Modifier
+          Modifier
             .height(16.dp),
       )
       when (aiResponseState) {
@@ -65,7 +65,7 @@ fun MovieDetailContent(
           ) {
             CircularProgressIndicator(
               modifier =
-                androidx.compose.ui.Modifier
+                Modifier
                   .size(24.dp),
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

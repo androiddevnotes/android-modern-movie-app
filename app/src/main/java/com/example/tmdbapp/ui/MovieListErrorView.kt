@@ -2,14 +2,15 @@ package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.models.*
-import com.example.tmdbapp.utils.*
-import com.example.tmdbapp.viewmodel.*
+import com.example.tmdbapp.utils.Constants
+import com.example.tmdbapp.utils.MovieError
+import com.example.tmdbapp.viewmodel.MovieUiState
+import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
 fun MovieListErrorView(

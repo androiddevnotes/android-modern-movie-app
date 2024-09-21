@@ -1,14 +1,9 @@
 package com.example.tmdbapp.ui
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.pullrefresh.*
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
 import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.ui.components.*
-import com.example.tmdbapp.ui.theme.*
-import com.example.tmdbapp.viewmodel.*
+import com.example.tmdbapp.ui.theme.ThemeMode
+import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
 fun MovieListScreen(

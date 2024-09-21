@@ -1,14 +1,14 @@
 package com.example.tmdbapp.ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.models.*
-import com.example.tmdbapp.ui.components.*
-import com.example.tmdbapp.utils.*
-import com.example.tmdbapp.viewmodel.*
+import com.example.tmdbapp.models.Movie
+import com.example.tmdbapp.ui.components.MovieGridItem
+import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
+import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
 fun MovieListGridView(

@@ -99,13 +99,13 @@ fun MovieListScreenContent(
           }
         }
         is MovieUiState.Success -> {
-          val movies = (uiState as MovieUiState.Success).movies
+          val movies = uiState.movies
           when (viewType) {
             Constants.VIEW_TYPE_GRID -> MovieListGridView(movies, viewModel, onMovieClick, viewType, searchQuery)
             Constants.VIEW_TYPE_LIST -> MovieListListView(movies, viewModel, onMovieClick, viewType, searchQuery)
           }
         }
-        is MovieUiState.Error -> MovieListErrorView(uiState as MovieUiState.Error, viewModel, onSettingsClick)
+        is MovieUiState.Error -> MovieListErrorView(uiState, viewModel, onSettingsClick)
       }
       PullRefreshIndicator(
         refreshing = isRefreshing,

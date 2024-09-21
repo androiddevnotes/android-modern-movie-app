@@ -44,7 +44,7 @@ fun MovieDetailScreen(
           aiResponseState = aiResponseState,
         )
       }
-      is MovieDetailState.Error -> {
+      is Error -> {
         ErrorContent(
           error = (movieState as Error).error,
           onRetry = { viewModel.retryFetchMovieDetails() },
@@ -57,7 +57,7 @@ fun MovieDetailScreen(
       isVisible = aiResponseState == Loading,
     )
 
-    if (aiResponseState == AIResponseState.Loading) {
+    if (aiResponseState == Loading) {
       Box(
         modifier =
           Modifier
