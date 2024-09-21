@@ -223,6 +223,11 @@ fun MovieListScreen(
         state = pullRefreshState,
         modifier = Modifier.align(Alignment.TopCenter),
       )
+
+      // Add ShimmeringOverlay
+      ShimmeringOverlay(
+        isVisible = isRefreshing || uiState is MovieUiState.Loading,
+      )
     }
   }
 }
