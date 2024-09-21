@@ -4,15 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
+import com.example.tmdbapp.ui.theme.* // Import the colors from here
 import com.example.tmdbapp.viewmodel.*
-
-// Define custom colors for AI elements
-val AICyan = Color(0xFF00BFFF)
-val AIYellow = Color(0xFFFFD700)
-val AIPink = Color(0xFFFF69B4)
-val AIGreen = Color(0xFF00FF7F)
 
 @Composable
 fun MovieDetailScreen(

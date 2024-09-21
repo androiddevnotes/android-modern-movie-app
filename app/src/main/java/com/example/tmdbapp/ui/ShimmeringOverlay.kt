@@ -13,6 +13,7 @@ import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.Color.*
 import androidx.compose.ui.unit.*
+import com.example.tmdbapp.ui.theme.*
 
 @Composable
 fun ShimmeringOverlay(isVisible: Boolean) {

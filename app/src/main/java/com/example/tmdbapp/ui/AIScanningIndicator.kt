@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.*
 import androidx.compose.ui.Alignment.*
 import androidx.compose.ui.text.font.*
+import com.example.tmdbapp.ui.theme.*
 
 @Composable
 fun AIScanningIndicator() {
