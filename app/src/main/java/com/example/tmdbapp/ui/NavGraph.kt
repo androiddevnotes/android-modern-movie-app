@@ -77,7 +77,10 @@ fun NavGraph(
     }
     // Update this composable for the Settings screen
     composable("settings") {
-      SettingsScreen(apiKeyManager = apiKeyManager)
+      SettingsScreen(
+        apiKeyManager = apiKeyManager,
+        onBackPress = { navController.popBackStack() },
+      )
     }
   }
 }

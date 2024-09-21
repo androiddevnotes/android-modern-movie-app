@@ -18,9 +18,11 @@ lifecycleViewModelCompose = "2.6.1"
 okhttp = "4.10.0"
 coroutines = "1.7.3"
 coil = "2.4.0"
-navigation-compose = "2.7.5"  # Use the latest version available
+navigation-compose = "2.7.5"
+uiTextGoogleFonts = "1.7.0"
 
 [libraries]
+androidx-ui-text-google-fonts = { module = "androidx.compose.ui:ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detektFormatting" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

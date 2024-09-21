@@ -98,10 +98,9 @@ dependencies {
   implementation(libs.ktor.client.content.negotiation)
   implementation(libs.ktor.serialization.kotlinx.json)
   implementation(libs.ktor.client.logging)
-  implementation("androidx.compose.ui:ui-text-google-fonts:1.7.0")
+  implementation(libs.androidx.ui.text.google.fonts)
 }
 
-// Add Detekt task
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
   reports {
     html.required.set(true)
