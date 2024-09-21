@@ -85,20 +85,13 @@ dependencies {
   implementation(libs.androidx.lifecycle.viewmodel.compose)
   implementation(libs.okhttp.logging.interceptor)
   implementation(libs.coil.compose)
-  testImplementation(libs.junit)
-  androidTestImplementation(libs.androidx.junit)
-  androidTestImplementation(libs.androidx.espresso.core)
-  androidTestImplementation(platform(libs.androidx.compose.bom))
-  androidTestImplementation(libs.androidx.ui.test.junit4)
-  debugImplementation(libs.androidx.ui.tooling)
-  debugImplementation(libs.androidx.ui.test.manifest)
-  implementation(libs.androidx.navigation.compose)
   detektPlugins(libs.detekt.formatting)
   implementation(libs.ktor.client.android)
   implementation(libs.ktor.client.content.negotiation)
   implementation(libs.ktor.serialization.kotlinx.json)
   implementation(libs.ktor.client.logging)
   implementation(libs.androidx.ui.text.google.fonts)
+  implementation(libs.androidx.navigation.compose)
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
