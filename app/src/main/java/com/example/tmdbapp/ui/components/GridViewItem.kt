@@ -37,7 +37,6 @@ fun GridViewItem(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             MoviePoster(imageRequest, title)
-            GradientOverlay()
             MovieInfo(
                 title = title,
                 voteAverage = voteAverage,

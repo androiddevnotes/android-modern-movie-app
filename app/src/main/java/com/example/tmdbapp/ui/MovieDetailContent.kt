@@ -29,7 +29,6 @@ fun MovieDetailContent(
 
   Box(modifier = Modifier.fillMaxSize()) {
     MovieBackgroundImage(movie.posterPath)
-//    GradientOverlay()
     Column(
       modifier =
         Modifier
