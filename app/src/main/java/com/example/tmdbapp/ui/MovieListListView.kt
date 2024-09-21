@@ -9,7 +9,6 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.ui.components.*
-import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.viewmodel.*
 
 @Composable
@@ -17,8 +16,6 @@ fun MovieListListView(
   movies: List<Movie>,
   viewModel: MovieViewModel,
   onMovieClick: (Movie) -> Unit,
-  viewType: String,
-  searchQuery: String,
   listState: LazyListState,
 ) {
   LazyColumn(

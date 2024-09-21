@@ -113,8 +113,6 @@ fun MovieListScreenContent(
                 items = movies,
                 viewModel = viewModel,
                 onItemClick = onMovieClick,
-                viewType = viewType,
-                searchQuery = searchQuery,
                 gridState = gridState,
               ) { movie, index, onClick, onLongClick ->
                 GridItemUi(
@@ -137,8 +135,6 @@ fun MovieListScreenContent(
                 movies = movies,
                 viewModel = viewModel,
                 onMovieClick = onMovieClick,
-                viewType = viewType,
-                searchQuery = searchQuery,
                 listState = listState,
               )
           }

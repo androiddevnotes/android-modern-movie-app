@@ -12,8 +12,6 @@ fun <T> ItemListGridView(
   items: List<T>,
   viewModel: MovieViewModel,
   onItemClick: (T) -> Unit,
-  viewType: String,
-  searchQuery: String,
   gridState: LazyStaggeredGridState,
   itemContent: @Composable (T, Int, () -> Unit, () -> Unit) -> Unit,
 ) {
