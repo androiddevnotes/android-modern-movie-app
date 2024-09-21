@@ -216,10 +216,10 @@ fun MovieDetailTopBar(
         )
       }
       IconButton(onClick = onDownloadClick) {
-        Icon(
-          painter = painterResource(id = R.drawable.download_24px),
+        Image(
+          painter = painterResource(id = R.drawable.my_shape_poly12),
           contentDescription = stringResource(R.string.download_image),
-          tint = Color.White,
+          modifier = Modifier.size(Constants.ICON_SIZE_SMALL),
         )
       }
       IconButton(onClick = onAskAIClick) {
