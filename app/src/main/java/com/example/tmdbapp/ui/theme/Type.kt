@@ -14,18 +14,18 @@ val provider =
     certificates = R.array.com_google_android_gms_fonts_certs,
   )
 
-val honkFont = GoogleFont("Jacquarda Bastarda 9")
+val jacquardaBastardaFont = GoogleFont("Jacquarda Bastarda 9")
 
-val honkFontFamily =
+val JacquardaBastardaFontFamily =
   FontFamily(
-    Font(googleFont = honkFont, fontProvider = provider),
+    Font(googleFont = jacquardaBastardaFont, fontProvider = provider),
   )
 
-val Typography =
+val AppTypography =
   Typography(
     bodyLarge =
       TextStyle(
-        fontFamily = honkFontFamily,
+        fontFamily = JacquardaBastardaFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
@@ -33,7 +33,7 @@ val Typography =
       ),
     titleMedium =
       TextStyle(
-        fontFamily = honkFontFamily,
+        fontFamily = JacquardaBastardaFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
@@ -41,7 +41,7 @@ val Typography =
       ),
     titleLarge =
       TextStyle(
-        fontFamily = honkFontFamily,
+        fontFamily = JacquardaBastardaFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 22.sp,
         lineHeight = 28.sp,
@@ -49,7 +49,7 @@ val Typography =
       ),
     labelSmall =
       TextStyle(
-        fontFamily = honkFontFamily,
+        fontFamily = JacquardaBastardaFontFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 11.sp,
         lineHeight = 16.sp,
@@ -57,13 +57,13 @@ val Typography =
       ),
     displayLarge =
       TextStyle(
-        fontFamily = honkFontFamily,
+        fontFamily = JacquardaBastardaFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 36.sp,
       ),
     bodyMedium =
       TextStyle(
-        fontFamily = honkFontFamily,
+        fontFamily = JacquardaBastardaFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp,
@@ -71,7 +71,7 @@ val Typography =
       ),
     headlineLarge =
       TextStyle(
-        fontFamily = honkFontFamily,
+        fontFamily = JacquardaBastardaFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 32.sp,
         lineHeight = 40.sp,

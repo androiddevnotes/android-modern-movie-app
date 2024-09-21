@@ -117,7 +117,7 @@ fun TMDBAppTheme(
   CompositionLocalProvider(LocalThemeMode provides themeMode) {
     MaterialTheme(
       colorScheme = colorScheme,
-      typography = Typography,
+      typography = AppTypography,
       content = content,
     )
   }
