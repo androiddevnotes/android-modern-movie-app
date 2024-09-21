@@ -23,8 +23,8 @@ fun ShimmeringOverlay(isVisible: Boolean) {
     targetValue = 2000f,
     animationSpec =
       infiniteRepeatable(
-        animation = tween(5000, easing = LinearEasing),
-        repeatMode = Restart,
+        animation = tween(3000, easing = LinearEasing),
+        repeatMode = RepeatMode.Restart,
       ),
     label = "ShimmerTranslate",
   )
@@ -32,17 +32,17 @@ fun ShimmeringOverlay(isVisible: Boolean) {
   val shimmerColors =
     listOf(
       Color(0x00FFFFFF),
-      Color(0x40E6E6FA), // Lavender mist
-      Color(0x80B0E0E6), // Powder blue
-      Color(0x80E6E6FA), // Lavender mist
+      Color(0xFF00FFFF).copy(alpha = 0.2f), // Cyan
+      Color(0xFF1E90FF).copy(alpha = 0.2f), // Dodger Blue
+      Color(0xFF00FFFF).copy(alpha = 0.2f), // Cyan
       Color(0x00FFFFFF),
     )
 
   val brush =
     Brush.linearGradient(
       colors = shimmerColors,
-      start = Offset(0f, translateAnim),
-      end = Offset(0f, translateAnim + 1000f),
+      start = Offset(translateAnim, 0f),
+      end = Offset(translateAnim + 1000f, 2000f),
       tileMode = TileMode.Clamp,
     )
 
