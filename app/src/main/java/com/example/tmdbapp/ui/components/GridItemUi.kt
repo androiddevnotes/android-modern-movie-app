@@ -38,7 +38,7 @@ fun GridItemUi(
   ) {
     Box(modifier = Modifier.fillMaxSize()) {
       MoviePoster(imageRequest, title)
-      MovieInfo(
+      GridItemInfoUi(
         title = title,
         voteAverage = voteAverage,
         modifier =
