@@ -8,8 +8,6 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.draw.*
-import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.*
@@ -23,7 +21,6 @@ import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.utils.MovieError
 import com.example.tmdbapp.viewmodel.*
-import kotlin.random.Random
 
 @Composable
 fun MovieDetailScreen(
@@ -280,61 +277,6 @@ fun MovieDetailInfo(movie: Movie) {
       text = movie.overview,
       style = MaterialTheme.typography.bodyMedium,
       color = Color.White.copy(alpha = 0.9f),
-    )
-  }
-}
-
-@Composable
-fun GrainyGradientButton(
-  onClick: () -> Unit,
-  text: String,
-  modifier: Modifier = Modifier,
-) {
-  val gradientBrush =
-    Brush.linearGradient(
-      colors =
-        listOf(
-          Color(0xFF607D8B), // Blue Grey 500
-          Color(0xFF455A64), // Blue Grey 700
-          Color(0xFF37474F), // Blue Grey 800
-        ),
-      start = Offset(0f, 0f),
-      end = Offset(100f, 100f),
-      tileMode = TileMode.Clamp,
-    )
-
-  Button(
-    onClick = onClick,
-    modifier =
-      modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp)
-        .height(48.dp)
-        .clip(MaterialTheme.shapes.small)
-        .drawBehind {
-          drawRect(gradientBrush)
-          // Reduced grainy effect
-          repeat(500) {
-            val x = Random.nextFloat() * size.width
-            val y = Random.nextFloat() * size.height
-            drawCircle(
-              color = Color.White.copy(alpha = 0.05f),
-              radius = 0.5f,
-              center = Offset(x, y),
-            )
-          }
-        },
-    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-    elevation =
-      ButtonDefaults.buttonElevation(
-        defaultElevation = 4.dp,
-        pressedElevation = 8.dp,
-      ),
-  ) {
-    Text(
-      text = text,
-      style = MaterialTheme.typography.labelLarge,
-      color = Color.White,
     )
   }
 }

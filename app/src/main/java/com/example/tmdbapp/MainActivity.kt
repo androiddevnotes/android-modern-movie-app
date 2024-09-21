@@ -23,8 +23,7 @@ class MainActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
 
     movieViewModel =
-      ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))
-        .get(MovieViewModel::class.java)
+      ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))[MovieViewModel::class.java]
 
     setContent {
       var themeMode by rememberSaveable { mutableStateOf(ThemeMode.SYSTEM) }

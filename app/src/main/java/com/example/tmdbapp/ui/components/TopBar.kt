@@ -155,7 +155,7 @@ private fun SortDropdown(
       onDismissRequest = onDropdownExpand,
       modifier = Modifier.background(MaterialTheme.colorScheme.surface),
     ) {
-      SortOption.values().forEach { sortOption ->
+      SortOption.entries.forEach { sortOption ->
         DropdownMenuItem(
           text = {
             Text(

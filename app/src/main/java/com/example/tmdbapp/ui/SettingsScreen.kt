@@ -7,7 +7,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.res.*
-import androidx.compose.ui.unit.*
 import com.example.tmdbapp.BuildConfig
 import com.example.tmdbapp.R
 import com.example.tmdbapp.utils.ApiKeyManager
