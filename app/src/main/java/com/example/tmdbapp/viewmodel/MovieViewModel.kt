@@ -50,15 +50,29 @@ class MovieViewModel(
     checkAuthenticationStatus()
   }
 
+  private val _movieDetailState = MutableStateFlow<MovieDetailState>(MovieDetailState.Loading)
+  val movieDetailState: StateFlow<MovieDetailState> = _movieDetailState.asStateFlow()
+
   fun fetchMovieDetails(movieId: Int) {
     viewModelScope.launch {
+      _movieDetailState.value = MovieDetailState.Loading
       try {
         val movie = repository.getMovieDetails(movieId)
-        _currentMovie.value = movie
-        _aiResponse.value = null
+        if (movie != null) {
+          _movieDetailState.value = MovieDetailState.Success(movie)
+        } else {
+          _movieDetailState.value = MovieDetailState.Error(MovieError.Unknown, movieId)
+        }
       } catch (e: Exception) {
-        _currentMovie.value = null
+        _movieDetailState.value = MovieDetailState.Error(handleError(e.message, apiKeyManager), movieId)
       }
+    }
+  }
+
+  fun retryFetchMovieDetails() {
+    val currentState = _movieDetailState.value
+    if (currentState is MovieDetailState.Error) {
+      fetchMovieDetails(currentState.movieId)
     }
   }
 
@@ -186,4 +200,17 @@ sealed class AIResponseState {
   data class Error(
     val message: String,
   ) : AIResponseState()
+}
+
+sealed class MovieDetailState {
+  object Loading : MovieDetailState()
+
+  data class Success(
+    val movie: Movie,
+  ) : MovieDetailState()
+
+  data class Error(
+    val error: MovieError,
+    val movieId: Int,
+  ) : MovieDetailState()
 }

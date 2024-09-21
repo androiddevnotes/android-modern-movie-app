@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.*
 import coil.compose.AsyncImage
 import com.example.tmdbapp.R
 import com.example.tmdbapp.models.Movie
+import com.example.tmdbapp.utils.MovieError
 import com.example.tmdbapp.viewmodel.*
 import kotlin.random.Random
 
@@ -28,7 +29,7 @@ fun MovieDetailScreen(
   viewModel: MovieViewModel,
   onBackPress: () -> Unit,
 ) {
-  val movie by viewModel.currentMovie.collectAsState()
+  val movieState by viewModel.movieDetailState.collectAsState()
   val aiResponse by viewModel.aiResponse.collectAsState()
   val aiResponseState by viewModel.aiResponseState.collectAsState()
 
@@ -39,23 +40,60 @@ fun MovieDetailScreen(
     }
   }
 
-  when {
-    movie == null -> {
+  when (movieState) {
+    is MovieDetailState.Loading -> {
       Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         CircularProgressIndicator()
       }
     }
-
-    else -> {
+    is MovieDetailState.Success -> {
+      val movie = (movieState as MovieDetailState.Success).movie
       MovieDetailContent(
-        movie = movie!!,
+        movie = movie,
         onBackPress = onBackPress,
-        onFavoriteClick = { viewModel.toggleFavorite(movie!!) },
+        onFavoriteClick = { viewModel.toggleFavorite(movie) },
         onDownloadClick = viewModel::downloadImage,
-        onAskAIClick = { viewModel.askAIAboutMovie(movie!!) },
+        onAskAIClick = { viewModel.askAIAboutMovie(movie) },
         aiResponse = aiResponse,
         aiResponseState = aiResponseState,
       )
+    }
+    is MovieDetailState.Error -> {
+      ErrorContent(
+        error = (movieState as MovieDetailState.Error).error,
+        onRetry = { viewModel.retryFetchMovieDetails() },
+        onBackPress = onBackPress,
+      )
+    }
+  }
+}
+
+@Composable
+fun ErrorContent(
+  error: MovieError,
+  onRetry: () -> Unit,
+  onBackPress: () -> Unit,
+) {
+  Column(
+    modifier =
+      Modifier
+        .fillMaxSize()
+        .padding(16.dp),
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    Text(
+      text = stringResource(error.messageResId),
+      style = MaterialTheme.typography.headlineSmall,
+      textAlign = TextAlign.Center,
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    Button(onClick = onRetry) {
+      Text(stringResource(R.string.retry))
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+    TextButton(onClick = onBackPress) {
+      Text(stringResource(R.string.back))
     }
   }
 }
