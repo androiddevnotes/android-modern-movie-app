@@ -1,4 +1,4 @@
-package com.example.tmdbapp.ui
+package com.example.tmdbapp.ui.components
 
 import androidx.compose.animation.core.*
 import androidx.compose.animation.core.RepeatMode.*
@@ -9,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.*
-import androidx.compose.ui.Alignment.*
 import androidx.compose.ui.text.font.*
 import com.example.tmdbapp.ui.theme.*
 

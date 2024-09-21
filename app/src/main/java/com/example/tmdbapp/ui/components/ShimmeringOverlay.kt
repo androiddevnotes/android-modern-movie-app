@@ -1,4 +1,4 @@
-package com.example.tmdbapp.ui
+package com.example.tmdbapp.ui.components
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
