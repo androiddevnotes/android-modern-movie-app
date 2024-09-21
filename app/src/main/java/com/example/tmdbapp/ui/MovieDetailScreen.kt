@@ -109,9 +109,9 @@ fun ShimmeringOverlay(isVisible: Boolean) {
   val shimmerColors =
     listOf(
       Color(0x00FFFFFF),
-      Color(0x40FFFFFF),
-      Color(0xA0FFFFFF),
-      Color(0x40FFFFFF),
+      Color(0x4000FFFF), // Cyan tint
+      Color(0xA000FFFF), // Stronger cyan
+      Color(0x4000FFFF),
       Color(0x00FFFFFF),
     )
 
@@ -144,9 +144,10 @@ fun ShimmeringOverlay(isVisible: Boolean) {
           Modifier
             .fillMaxWidth()
             .height(2.dp)
-            .background(Color(0xFFFFFFFF))
+            .background(Color(0xFF00FFFF)) // Cyan color
             .align(Alignment.TopCenter)
-            .offset(y = (translateAnim % 2000f).dp),
+            .offset(y = (translateAnim % 2000f).dp)
+            .blur(radius = 10.dp), // Apply blur directly to the modifier
       )
     }
   }
@@ -443,18 +444,20 @@ fun AIResponseCard(response: String) {
       modifier =
         Modifier
           .fillMaxWidth()
-          .padding(horizontal = 16.dp),
+          .padding(horizontal = 16.dp)
+          .blur(radius = 4.dp), // Apply blur directly to the modifier
       shape = MaterialTheme.shapes.medium,
       colors =
         CardDefaults.cardColors(
           containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f),
         ),
+      border = BorderStroke(1.dp, Color(0xFF00FFFF)), // Cyan border
     ) {
       Column(modifier = Modifier.padding(16.dp)) {
         Text(
           text = "AI Response:",
           style = MaterialTheme.typography.titleMedium,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
+          color = Color(0xFF00FFFF), // Cyan text
           fontWeight = FontWeight.Bold,
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -494,10 +497,33 @@ fun AIScanningIndicator() {
     label = "ScanningTextIndex",
   )
 
-  Text(
-    text = scanningTexts[textIndex % scanningTexts.size],
-    style = MaterialTheme.typography.titleMedium,
-    color = Color.White,
-    fontWeight = FontWeight.Bold,
+  val dotCount by infiniteTransition.animateValue(
+    initialValue = 0,
+    targetValue = 3,
+    typeConverter = Int.VectorConverter,
+    animationSpec =
+      infiniteRepeatable(
+        animation = tween(durationMillis = 600, easing = LinearEasing),
+        repeatMode = RepeatMode.Reverse,
+      ),
+    label = "DotAnimation",
   )
+
+  Row(
+    verticalAlignment = Alignment.CenterVertically,
+    horizontalArrangement = Arrangement.Center,
+  ) {
+    Text(
+      text = scanningTexts[textIndex % scanningTexts.size],
+      style = MaterialTheme.typography.titleMedium,
+      color = Color(0xFF00FFFF), // Cyan text
+      fontWeight = FontWeight.Bold,
+    )
+    Text(
+      text = ".".repeat(dotCount),
+      style = MaterialTheme.typography.titleMedium,
+      color = Color(0xFF00FFFF), // Cyan text
+      fontWeight = FontWeight.Bold,
+    )
+  }
 }
