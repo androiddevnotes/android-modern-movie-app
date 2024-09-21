@@ -28,8 +28,11 @@ import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.utils.MovieError
 import com.example.tmdbapp.viewmodel.*
 
-// Define a custom color for AI elements
-val AICyan = Color(0xFF00698B) // Darker shade of cyan
+// Define custom colors for AI elements
+val AICyan = Color(0xFF00BFFF)
+val AIYellow = Color(0xFFFFD700)
+val AIPink = Color(0xFFFF69B4)
+val AIGreen = Color(0xFF00FF7F)
 
 @Composable
 fun MovieDetailScreen(
@@ -111,11 +114,12 @@ fun ShimmeringOverlay(isVisible: Boolean) {
 
   val shimmerColors =
     listOf(
-      Color(0x00FFFFFF),
-      AICyan.copy(alpha = 0.2f),
-      AICyan.copy(alpha = 0.4f),
-      AICyan.copy(alpha = 0.2f),
-      Color(0x00FFFFFF),
+      Color.Transparent,
+      AIYellow.copy(alpha = 0.3f),
+      AIPink.copy(alpha = 0.3f),
+      AICyan.copy(alpha = 0.3f),
+      AIGreen.copy(alpha = 0.3f),
+      Color.Transparent,
     )
 
   val brush =
@@ -147,8 +151,11 @@ fun ShimmeringOverlay(isVisible: Boolean) {
           Modifier
             .fillMaxWidth()
             .height(2.dp)
-            .background(AICyan.copy(alpha = 0.7f))
-            .align(Alignment.TopCenter)
+            .background(
+              Brush.horizontalGradient(
+                listOf(AIYellow, AIPink, AICyan, AIGreen),
+              ),
+            ).align(Alignment.TopCenter)
             .offset(y = (translateAnim % 2000f).dp)
             .blur(radius = 10.dp),
       )
@@ -453,7 +460,11 @@ fun AIResponseCard(response: String) {
         CardDefaults.cardColors(
           containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f),
         ),
-      border = BorderStroke(1.dp, AICyan.copy(alpha = 0.7f)),
+      border =
+        BorderStroke(
+          1.dp,
+          Brush.linearGradient(listOf(AIYellow, AIPink, AICyan, AIGreen)),
+        ),
     ) {
       Column(modifier = Modifier.padding(16.dp)) {
         Text(
@@ -511,6 +522,19 @@ fun AIScanningIndicator() {
     label = "DotAnimation",
   )
 
+  val colors = listOf(AIYellow, AIPink, AICyan, AIGreen)
+  val currentColorIndex by infiniteTransition.animateValue(
+    initialValue = 0,
+    targetValue = colors.size,
+    typeConverter = Int.VectorConverter,
+    animationSpec =
+      infiniteRepeatable(
+        animation = tween(durationMillis = 1000, easing = LinearEasing),
+        repeatMode = RepeatMode.Restart,
+      ),
+    label = "ColorAnimation",
+  )
+
   Row(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.Center,
@@ -518,13 +542,13 @@ fun AIScanningIndicator() {
     Text(
       text = scanningTexts[textIndex % scanningTexts.size],
       style = MaterialTheme.typography.titleMedium,
-      color = AICyan,
+      color = colors[currentColorIndex % colors.size],
       fontWeight = FontWeight.Bold,
     )
     Text(
       text = ".".repeat(dotCount),
       style = MaterialTheme.typography.titleMedium,
-      color = AICyan,
+      color = colors[currentColorIndex % colors.size],
       fontWeight = FontWeight.Bold,
     )
   }
