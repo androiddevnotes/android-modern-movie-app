@@ -35,8 +35,9 @@ class ApiService(
     genres: String? = null,
     releaseYear: Int? = null,
     minRating: Float? = null,
-  ): MovieResponse =
-    get(
+  ): MovieResponse {
+    kotlinx.coroutines.delay(5000) // Add a 5-second delay
+    return get(
       "discover/movie",
       apiKey,
       page,
@@ -47,6 +48,7 @@ class ApiService(
         "vote_average.gte" to minRating,
       ),
     )
+  }
 
   suspend fun searchMovies(
     apiKey: String,
