@@ -87,17 +87,18 @@ fun MovieDetailScreen(
             .padding(bottom = 32.dp),
         contentAlignment = Alignment.BottomCenter,
       ) {
-        var scanningText by remember { mutableStateOf("Scanning movie details") }
+        var scanningText by remember { mutableStateOf("Initializing scan") }
         LaunchedEffect(Unit) {
           while (true) {
             delay(500)
             scanningText =
               when (scanningText) {
-                "Scanning movie details" -> "Analyzing plot"
-                "Analyzing plot" -> "Processing characters"
-                "Processing characters" -> "Evaluating themes"
-                "Evaluating themes" -> "Generating insights"
-                else -> "Scanning movie details"
+                "Initializing scan" -> "Scanning poster"
+                "Scanning poster" -> "Analyzing title"
+                "Analyzing title" -> "Processing overview"
+                "Processing overview" -> "Evaluating rating"
+                "Evaluating rating" -> "Generating insights"
+                else -> "Initializing scan"
               }
           }
         }
@@ -117,10 +118,10 @@ fun ShimmeringOverlay(isVisible: Boolean) {
   val transition = rememberInfiniteTransition(label = "ShimmerTransition")
   val translateAnim by transition.animateFloat(
     initialValue = -1000f,
-    targetValue = 1000f,
+    targetValue = 2000f,
     animationSpec =
       infiniteRepeatable(
-        animation = tween(2000, easing = LinearEasing),
+        animation = tween(3000, easing = LinearEasing),
         repeatMode = RepeatMode.Restart,
       ),
     label = "ShimmerTranslate",
@@ -138,8 +139,8 @@ fun ShimmeringOverlay(isVisible: Boolean) {
   val brush =
     Brush.linearGradient(
       colors = shimmerColors,
-      start = Offset(translateAnim, 0f),
-      end = Offset(translateAnim + 500f, 1000f),
+      start = Offset(0f, translateAnim),
+      end = Offset(0f, translateAnim + 500f),
       tileMode = TileMode.Clamp,
     )
 
@@ -162,11 +163,11 @@ fun ShimmeringOverlay(isVisible: Boolean) {
       Box(
         modifier =
           Modifier
-            .fillMaxHeight()
-            .width(2.dp)
+            .fillMaxWidth()
+            .height(2.dp)
             .background(Color(0xFFFFFFFF))
-            .align(Alignment.CenterStart)
-            .offset(x = translateAnim.dp),
+            .align(Alignment.TopCenter)
+            .offset(y = (translateAnim % 2000f).dp),
       )
     }
   }
