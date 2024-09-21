@@ -188,6 +188,17 @@ class MovieViewModel(
     _aiResponse.value = null
     _aiResponseState.value = AIResponseState.Idle
   }
+
+  private val _scrollToIndex = MutableStateFlow<Int?>(null)
+  val scrollToIndex: StateFlow<Int?> = _scrollToIndex.asStateFlow()
+
+  fun setScrollToIndex(index: Int) {
+    _scrollToIndex.value = index
+  }
+
+  fun clearScrollToIndex() {
+    _scrollToIndex.value = null
+  }
 }
 
 sealed class AIResponseState {
