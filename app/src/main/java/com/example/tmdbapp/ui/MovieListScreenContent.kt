@@ -123,11 +123,20 @@ fun MovieListScreenContent(
                 isItemFavorite = { it.isFavorite },
               )
             Constants.VIEW_TYPE_LIST ->
-              MovieListListView(
-                movies = movies,
-                viewModel = viewModel,
-                onMovieClick = onMovieClick,
+              ItemListListView(
+                items = movies,
+                onItemClick = onMovieClick,
                 listState = listState,
+                isLastPage = viewModel.isLastPage,
+                loadMoreItems = viewModel::loadMoreMovies,
+                setLastViewedItemIndex = viewModel::setLastViewedItemIndex,
+                toggleFavorite = viewModel::toggleFavorite,
+                getItemId = { it.id },
+                getItemTitle = { it.title },
+                getItemOverview = { it.overview },
+                getItemPosterPath = { it.posterPath },
+                getItemVoteAverage = { it.voteAverage },
+                isItemFavorite = { it.isFavorite },
               )
           }
         }
