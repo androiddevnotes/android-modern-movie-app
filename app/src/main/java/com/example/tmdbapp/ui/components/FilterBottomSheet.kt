@@ -12,7 +12,7 @@ import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.R
 import com.example.tmdbapp.viewmodel.*
-import java.time.*
+import java.util.Calendar
 
 @Composable
 fun FilterBottomSheet(
@@ -22,9 +22,9 @@ fun FilterBottomSheet(
 ) {
   var selectedGenres by remember { mutableStateOf(currentFilters.genres.toSet()) }
   var selectedYear by remember { mutableStateOf(currentFilters.releaseYear?.toString() ?: "") }
-  var minRating by remember { mutableStateOf(currentFilters.minRating ?: 0f) }
+  var minRating by remember { mutableFloatStateOf(currentFilters.minRating ?: 0f) }
 
-  val currentYear = LocalDate.now().year
+  val currentYear = Calendar.getInstance().get(Calendar.YEAR)
   val recentYears = (currentYear downTo currentYear - 20).toList()
 
   val genres =
