@@ -93,9 +93,11 @@ private fun MainTopBar(
       )
       FilterIcon(onClick = onFilterClick)
       IconButton(onClick = onSettingsClick) {
-        Icon(
-          imageVector = Icons.Default.Settings,
+        Image(
+          painter = painterResource(id = R.drawable.cool_shape_settings),
           contentDescription = stringResource(R.string.settings),
+          contentScale = ContentScale.Fit,
+          modifier = Modifier.size(Constants.ICON_SIZE_SMALL),
         )
       }
     },
