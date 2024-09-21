@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.*
 import com.example.tmdbapp.ui.components.*
 
 @Composable
-fun <T : Any> ItemListGridUi(
+fun <T : Any> ItemGridListUi(
   items: List<T>,
   onItemClick: (T) -> Unit,
   gridState: LazyStaggeredGridState,
