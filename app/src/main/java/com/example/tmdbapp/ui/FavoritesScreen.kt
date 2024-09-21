@@ -4,6 +4,8 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.material.icons.*
+import androidx.compose.material.icons.Icons.AutoMirrored.Filled
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -34,7 +36,7 @@ fun FavoritesScreen(
         navigationIcon = {
           IconButton(onClick = onBackPress) {
             Icon(
-              Icons.Filled.ArrowBack,
+              Filled.ArrowBack,
               contentDescription = Constants.CONTENT_DESC_BACK,
             )
           }

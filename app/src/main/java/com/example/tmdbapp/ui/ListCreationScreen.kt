@@ -5,6 +5,8 @@ import android.content.*
 import android.net.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.*
+import androidx.compose.material.icons.Icons.AutoMirrored.Filled
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -36,7 +38,7 @@ fun ListCreationScreen(
         title = { Text(stringResource(R.string.create_list)) },
         navigationIcon = {
           IconButton(onClick = onNavigateBack) {
-            Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.back))
+            Icon(Filled.ArrowBack, contentDescription = stringResource(R.string.back))
           }
         },
       )

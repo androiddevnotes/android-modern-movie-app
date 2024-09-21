@@ -1,6 +1,5 @@
 package com.example.tmdbapp.ui
 
-import MovieGridItem
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -15,6 +14,7 @@ import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.ui.components.*
+import com.example.tmdbapp.ui.components.MovieGridItem
 import com.example.tmdbapp.ui.theme.*
 import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.viewmodel.*

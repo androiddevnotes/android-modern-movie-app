@@ -1,7 +1,8 @@
 package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.Icons.AutoMirrored.Filled
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -32,7 +33,7 @@ fun SettingsScreen(
         navigationIcon = {
           IconButton(onClick = onBackPress) {
             Icon(
-              Icons.Filled.ArrowBack,
+              Filled.ArrowBack,
               contentDescription = stringResource(R.string.back),
             )
           }
