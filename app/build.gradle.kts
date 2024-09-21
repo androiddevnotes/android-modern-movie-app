@@ -1,9 +1,9 @@
 plugins {
-  id("com.android.application")
-  id("org.jetbrains.kotlin.android")
-  id("io.gitlab.arturbosch.detekt")
-  id("kotlinx-serialization")
-  id("org.jetbrains.kotlin.plugin.compose")
+  alias(libs.plugins.android.application)
+  alias(libs.plugins.kotlin.android)
+  alias(libs.plugins.detekt)
+  alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.compose)
 }
 
 android {

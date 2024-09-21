@@ -1,8 +1,8 @@
 plugins {
-  id("com.android.application") version "8.1.0" apply false
-  id("org.jetbrains.kotlin.android") version "1.9.0" apply false
-  id("io.gitlab.arturbosch.detekt") version "1.23.1"
-  id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
+  alias(libs.plugins.android.application) apply false
+  alias(libs.plugins.kotlin.android) apply false
+  alias(libs.plugins.detekt)
+  alias(libs.plugins.kotlin.serialization) apply false
   alias(libs.plugins.compose) apply false
 }
 
