@@ -31,78 +31,71 @@ fun MovieItem(
     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
     shape = RoundedCornerShape(8.dp),
   ) {
-    Row(
-      modifier =
-        Modifier
-          .fillMaxSize()
-          .background(MaterialTheme.colorScheme.surface),
-    ) {
-      AsyncImage(
-        model = "${Constants.BASE_IMAGE_URL}${movie.posterPath}",
-        contentDescription = movie.title,
-        contentScale = ContentScale.Crop,
+    Box {
+      Row(
         modifier =
           Modifier
-            .width(100.dp)
-            .fillMaxHeight()
-            .clip(
-              RoundedCornerShape(
-                topStart = 8.dp,
-                bottomStart = 8.dp,
-              ),
-            ),
-      )
-      Column(
-        modifier =
-          Modifier
-            .weight(1f)
-            .padding(16.dp),
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface),
       ) {
-        Text(
-          text = movie.title,
-          style = MaterialTheme.typography.titleMedium,
-          fontWeight = FontWeight.Bold,
-          maxLines = 2,
-          overflow = TextOverflow.Ellipsis,
+        AsyncImage(
+          model = "${Constants.BASE_IMAGE_URL}${movie.posterPath}",
+          contentDescription = movie.title,
+          contentScale = ContentScale.Crop,
+          modifier =
+            Modifier
+              .width(100.dp)
+              .fillMaxHeight()
+              .clip(
+                RoundedCornerShape(
+                  topStart = 8.dp,
+                  bottomStart = 8.dp,
+                ),
+              ),
         )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-          text = movie.overview,
-          style = MaterialTheme.typography.bodySmall,
-          maxLines = 3,
-          overflow = TextOverflow.Ellipsis,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Row(
-          verticalAlignment = Alignment.CenterVertically,
+        Column(
+          modifier =
+            Modifier
+              .weight(1f)
+              .padding(16.dp),
         ) {
-          Icon(
-            imageVector = Icons.Filled.Star,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier.size(16.dp),
-          )
-          Spacer(modifier = Modifier.width(4.dp))
           Text(
-            text = String.format("%.1f", movie.voteAverage),
-            style = MaterialTheme.typography.labelMedium,
+            text = movie.title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+          )
+          Spacer(modifier = Modifier.height(4.dp))
+          Text(
+            text = movie.overview,
+            style = MaterialTheme.typography.bodySmall,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
           )
+          Spacer(modifier = Modifier.weight(1f))
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            Icon(
+              imageVector = Icons.Filled.Star,
+              contentDescription = null,
+              tint = MaterialTheme.colorScheme.secondary,
+              modifier = Modifier.size(16.dp),
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+              text = String.format("%.1f", movie.voteAverage),
+              style = MaterialTheme.typography.labelMedium,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+          }
         }
       }
-      IconButton(
-        onClick = onFavoriteClick,
-        modifier =
-          Modifier
-            .align(Alignment.Top),
-      ) {
-        Icon(
-          imageVector = if (movie.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
-          contentDescription = "Favorite",
-          tint = if (movie.isFavorite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
-        )
-      }
+
+      // Add ShimmeringOverlay
+      ShimmeringOverlay(isVisible = true)
     }
   }
 }
