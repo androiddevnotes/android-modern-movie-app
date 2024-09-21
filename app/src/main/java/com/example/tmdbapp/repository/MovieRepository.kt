@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.first
 class MovieRepository(
   context: Context,
 ) {
-  internal val api = ApiService(KtorClient.httpClient)
+  private val api = ApiService(KtorClient.httpClient)
   private val favoritePreferences = FavoritePreferences(context)
   private val sessionManager = SessionManager(context)
   private val apiKeyManager = ApiKeyManager(context)
