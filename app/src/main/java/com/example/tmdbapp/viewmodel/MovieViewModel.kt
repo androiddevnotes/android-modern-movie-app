@@ -1,14 +1,13 @@
 package com.example.tmdbapp.viewmodel
 
 import android.app.*
-import android.content.Context
-import androidx.core.content.edit
 import androidx.lifecycle.*
 import com.example.tmdbapp.*
 import com.example.tmdbapp.data.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.repository.*
 import com.example.tmdbapp.utils.*
+import com.example.tmdbapp.utils.ApiKeyManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -44,29 +43,15 @@ class MovieViewModel(
 
   internal val sessionManager = SessionManager(application)
 
-  private val sharedPreferences = application.getSharedPreferences("ApiKeys", Context.MODE_PRIVATE)
+  private val apiKeyManager = ApiKeyManager(application)
 
-  fun getTmdbApiKey(): String {
-    val savedKey = sharedPreferences.getString("TMDB_API_KEY", null)
-    return if (savedKey.isNullOrEmpty()) "" else savedKey
-  }
+  fun getTmdbApiKey(): String = apiKeyManager.getTmdbApiKey()
 
-  fun setTmdbApiKey(key: String) {
-    sharedPreferences.edit {
-      putString("TMDB_API_KEY", key)
-    }
-  }
+  fun setTmdbApiKey(key: String) = apiKeyManager.setTmdbApiKey(key)
 
-  fun getOpenAiApiKey(): String {
-    val savedKey = sharedPreferences.getString("OPENAI_API_KEY", null)
-    return if (savedKey.isNullOrEmpty()) "" else savedKey
-  }
+  fun getOpenAiApiKey(): String = apiKeyManager.getOpenAiApiKey()
 
-  fun setOpenAiApiKey(key: String) {
-    sharedPreferences.edit {
-      putString("OPENAI_API_KEY", key)
-    }
-  }
+  fun setOpenAiApiKey(key: String) = apiKeyManager.setOpenAiApiKey(key)
 
   init {
     fetchPopularMovies()

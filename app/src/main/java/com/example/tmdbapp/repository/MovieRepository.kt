@@ -6,6 +6,7 @@ import com.example.tmdbapp.data.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.network.*
 import com.example.tmdbapp.utils.*
+import com.example.tmdbapp.utils.ApiKeyManager
 import kotlinx.coroutines.flow.*
 
 class MovieRepository(
@@ -15,11 +16,9 @@ class MovieRepository(
   private val favoritePreferences = FavoritePreferences(context)
   private val sessionManager = SessionManager(context)
   private val sharedPreferences = context.getSharedPreferences("ApiKeys", Context.MODE_PRIVATE)
+  private val apiKeyManager = ApiKeyManager(context)
 
-  private fun getApiKey(): String {
-    val savedKey = sharedPreferences.getString("TMDB_API_KEY", null)
-    return if (savedKey.isNullOrEmpty()) BuildConfig.TMDB_API_KEY else savedKey
-  }
+  private fun getApiKey(): String = apiKeyManager.getTmdbApiKey()
 
   private suspend fun <T> safeApiCall(apiCall: suspend () -> T): Resource<T> =
     try {
