@@ -70,28 +70,29 @@ android {
 }
 
 dependencies {
-  implementation(libs.kotlin.stdlib)
+  implementation(platform(libs.androidx.compose.bom))
+
+  implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.lifecycle.runtime.ktx)
-  implementation(libs.androidx.activity.compose)
-  implementation(platform(libs.androidx.compose.bom))
+  implementation(libs.androidx.lifecycle.viewmodel.compose)
+  implementation(libs.androidx.material)
+  implementation(libs.androidx.material3)
+  implementation(libs.androidx.navigation.compose)
   implementation(libs.androidx.ui)
   implementation(libs.androidx.ui.graphics)
+  implementation(libs.androidx.ui.text.google.fonts)
   implementation(libs.androidx.ui.tooling.preview)
-  implementation(libs.androidx.material3)
-  implementation(libs.androidx.material)
-  implementation(libs.kotlinx.serialization.json)
-  implementation(libs.kotlinx.coroutines.android)
-  implementation(libs.androidx.lifecycle.viewmodel.compose)
-  implementation(libs.okhttp.logging.interceptor)
   implementation(libs.coil.compose)
-  detektPlugins(libs.detekt.formatting)
+  implementation(libs.kotlin.stdlib)
+  implementation(libs.kotlinx.coroutines.android)
+  implementation(libs.kotlinx.serialization.json)
   implementation(libs.ktor.client.android)
   implementation(libs.ktor.client.content.negotiation)
-  implementation(libs.ktor.serialization.kotlinx.json)
   implementation(libs.ktor.client.logging)
-  implementation(libs.androidx.ui.text.google.fonts)
-  implementation(libs.androidx.navigation.compose)
+  implementation(libs.ktor.serialization.kotlinx.json)
+  implementation(libs.okhttp.logging.interceptor)
+  detektPlugins(libs.detekt.formatting)
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
