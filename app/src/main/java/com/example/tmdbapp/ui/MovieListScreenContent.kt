@@ -123,7 +123,7 @@ fun MovieListScreenContent(
                 isItemFavorite = { it.isFavorite },
               )
             Constants.VIEW_TYPE_LIST ->
-              ItemListListView(
+              ItemSimpleListUi(
                 items = movies,
                 onItemClick = onMovieClick,
                 listState = listState,
