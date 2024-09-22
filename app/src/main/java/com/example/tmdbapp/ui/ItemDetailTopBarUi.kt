@@ -13,7 +13,7 @@ import com.example.tmdbapp.R
 import com.example.tmdbapp.utils.Constants
 
 @Composable
-fun DetailTopBarUi(
+fun ItemDetailTopBarUi(
   onBackPress: () -> Unit,
   onFavoriteClick: () -> Unit,
   onDownloadClick: () -> Unit,

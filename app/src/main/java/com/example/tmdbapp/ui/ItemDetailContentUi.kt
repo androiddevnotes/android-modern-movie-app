@@ -23,7 +23,7 @@ import com.example.tmdbapp.utils.Constants
 import kotlinx.coroutines.launch
 
 @Composable
-fun <T : Any> GenericDetailContentUi(
+fun <T : Any> ItemDetailContentUi(
   item: T,
   onBackPress: () -> Unit,
   onFavoriteClick: () -> Unit,
@@ -76,7 +76,7 @@ fun <T : Any> GenericDetailContentUi(
           .verticalScroll(scrollState)
           .padding(bottom = 80.dp),
     ) {
-      DetailTopBarUi(
+      ItemDetailTopBarUi(
         onBackPress = onBackPress,
         onFavoriteClick = onFavoriteClick,
         onDownloadClick = { onDownloadClick(getItemPosterPath(item), context) },

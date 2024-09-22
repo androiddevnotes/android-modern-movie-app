@@ -38,7 +38,7 @@ fun GridItemUi(
   ) {
     Box(modifier = Modifier.fillMaxSize()) {
       GridItemThumbnailUi(imageRequest, title)
-      GridItemInfoUi(
+      ItemInfoGridUi(
         title = title,
         voteAverage = voteAverage,
         modifier =

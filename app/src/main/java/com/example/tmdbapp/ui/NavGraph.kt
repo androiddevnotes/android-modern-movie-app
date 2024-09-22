@@ -62,7 +62,7 @@ fun NavGraph(
       )
     }
     composable("favorites") {
-      FavoritesScreenUi(
+      ItemListFavoriteScreenUi(
         viewModel = itemViewModel,
         onItemClick = { movieId ->
           navController.navigate("movieDetail/$movieId")
@@ -71,7 +71,7 @@ fun NavGraph(
       )
     }
     composable("createList") {
-      ListCreationScreen(
+      ItemListCreationScreen(
         itemViewModel = itemViewModel,
         onNavigateBack = { navController.popBackStack() },
         application = application,

@@ -15,7 +15,7 @@ import com.example.tmdbapp.ui.components.CommonTopBar
 import com.example.tmdbapp.viewmodel.*
 
 @Composable
-fun ListCreationScreen(
+fun ItemListCreationScreen(
   itemViewModel: ItemViewModel,
   onNavigateBack: () -> Unit,
   application: Application,

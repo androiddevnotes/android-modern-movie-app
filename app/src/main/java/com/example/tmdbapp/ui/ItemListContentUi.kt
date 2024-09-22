@@ -16,7 +16,7 @@ import com.example.tmdbapp.utils.Constants
 import kotlinx.coroutines.launch
 
 @Composable
-fun <T : Any> GenericListContentUi(
+fun <T : Any> ItemListContentUi(
   listUiState: ListUiState<List<T>>,
   searchQuery: String,
   currentSortOptions: SortOptions,
@@ -120,7 +120,7 @@ fun <T : Any> GenericListContentUi(
           val items = listUiState.data
           when (viewType) {
             Constants.VIEW_TYPE_GRID ->
-              ItemGridListUi(
+              ItemListGridUi(
                 items = items,
                 onItemClick = onItemClick,
                 gridState = gridState,
@@ -135,7 +135,7 @@ fun <T : Any> GenericListContentUi(
                 isItemFavorite = isItemFavorite,
               )
             Constants.VIEW_TYPE_LIST ->
-              ItemSimpleListUi(
+              ItemListSimpleUi(
                 items = items,
                 onItemClick = onItemClick,
                 listState = listState,

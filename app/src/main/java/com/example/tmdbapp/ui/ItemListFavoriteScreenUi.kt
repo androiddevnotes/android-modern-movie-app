@@ -8,12 +8,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import com.example.tmdbapp.ui.components.CommonTopBar
-import com.example.tmdbapp.ui.components.SimpleItemUi
+import com.example.tmdbapp.ui.components.ItemSimpleUi
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.ItemViewModel
 
 @Composable
-fun FavoritesScreenUi(
+fun ItemListFavoriteScreenUi(
   viewModel: ItemViewModel,
   onItemClick: (Int) -> Unit,
   onBackPress: () -> Unit,
@@ -45,7 +45,7 @@ fun FavoritesScreenUi(
         modifier = Modifier.padding(paddingValues),
       ) {
         items(favorites) { item ->
-          SimpleItemUi(
+          ItemSimpleUi(
             title = item.title,
             overview = item.overview,
             posterPath = item.posterPath,

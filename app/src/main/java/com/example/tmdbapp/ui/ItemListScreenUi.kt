@@ -30,7 +30,7 @@ fun ItemListScreenUi(
     itemViewModel.clearScrollToIndex()
   }
 
-  GenericListContentUi(
+  ItemListContentUi(
     listUiState = uiState,
     searchQuery = searchQuery,
     currentSortOptions = currentSortOption,
