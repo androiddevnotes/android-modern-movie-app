@@ -4,8 +4,10 @@ import android.content.Context
 import com.example.tmdbapp.data.FavoritePreferences
 import com.example.tmdbapp.data.SessionManager
 import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.models.MovieResponse
 import com.example.tmdbapp.network.*
+import com.example.tmdbapp.network.responses.tmdb.CreateListRequest
+import com.example.tmdbapp.network.responses.tmdb.CreateSessionRequest
+import com.example.tmdbapp.network.responses.tmdb.MovieResponse
 import com.example.tmdbapp.utils.ApiKeyManager
 import com.example.tmdbapp.utils.Resource
 import kotlinx.coroutines.flow.first

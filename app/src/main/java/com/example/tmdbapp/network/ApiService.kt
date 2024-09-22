@@ -1,14 +1,13 @@
 package com.example.tmdbapp.network
 
 import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.models.MovieResponse
+import com.example.tmdbapp.network.responses.openai.*
+import com.example.tmdbapp.network.responses.tmdb.*
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.*
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
 class ApiService(
   private val client: HttpClient,
@@ -109,73 +108,3 @@ class ApiService(
       ?.content ?: "No response generated."
   }
 }
-
-@Serializable
-data class RequestTokenResponse(
-  val success: Boolean,
-  @SerialName("expires_at") val expiresAt: String,
-  @SerialName("request_token") val requestToken: String,
-)
-
-@Serializable
-data class CreateSessionRequest(
-  @SerialName("request_token") val requestToken: String,
-)
-
-@Serializable
-data class CreateSessionResponse(
-  val success: Boolean,
-  @SerialName("session_id") val sessionId: String,
-)
-
-@Serializable
-data class CreateListRequest(
-  val name: String,
-  val description: String,
-  val language: String = "en",
-)
-
-@Serializable
-data class CreateListResponse(
-  @SerialName("status_message") val statusMessage: String,
-  val success: Boolean,
-  @SerialName("status_code") val statusCode: Int,
-  @SerialName("list_id") val listId: Int,
-)
-
-@Serializable
-data class OpenAIRequest(
-  val model: String,
-  val messages: List<OpenAIMessage>,
-)
-
-@Serializable
-data class OpenAIResponse(
-  val id: String,
-  val `object`: String,
-  val created: Long,
-  val model: String,
-  @SerialName("system_fingerprint") val systemFingerprint: String?,
-  val choices: List<OpenAIChoice>,
-  val usage: OpenAIUsage,
-)
-
-@Serializable
-data class OpenAIChoice(
-  val index: Int,
-  val message: OpenAIMessage,
-  @SerialName("finish_reason") val finishReason: String,
-)
-
-@Serializable
-data class OpenAIMessage(
-  val role: String,
-  val content: String,
-)
-
-@Serializable
-data class OpenAIUsage(
-  @SerialName("prompt_tokens") val promptTokens: Int,
-  @SerialName("completion_tokens") val completionTokens: Int,
-  @SerialName("total_tokens") val totalTokens: Int,
-)

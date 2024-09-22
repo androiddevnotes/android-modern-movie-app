@@ -2,6 +2,7 @@ package com.example.tmdbapp.viewmodel
 
 import androidx.lifecycle.*
 import com.example.tmdbapp.models.*
+import com.example.tmdbapp.network.responses.tmdb.MovieResponse
 import com.example.tmdbapp.utils.*
 import kotlinx.coroutines.*
 

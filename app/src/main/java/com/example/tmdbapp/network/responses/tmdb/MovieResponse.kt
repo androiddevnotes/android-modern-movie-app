@@ -1,5 +1,6 @@
-package com.example.tmdbapp.models
+package com.example.tmdbapp.network.responses.tmdb
 
+import com.example.tmdbapp.models.Movie
 import kotlinx.serialization.*
 
 @Serializable
