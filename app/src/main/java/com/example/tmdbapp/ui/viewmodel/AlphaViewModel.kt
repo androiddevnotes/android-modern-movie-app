@@ -64,9 +64,9 @@ class AlphaViewModel(
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
       val result = repository.askOpenAi(prompt)
       BetaResultHandler.handleBetaResult(
-        result,
-        _betaPieceUiState,
-        apiKeyManager,
+        result = result,
+        betaPieceUiState = _betaPieceUiState,
+        apiKeyManager = apiKeyManager,
       )
     }
   }
