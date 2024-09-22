@@ -2,6 +2,8 @@ package com.example.tmdbapp.ui.viewmodel
 
 import androidx.lifecycle.*
 import com.example.tmdbapp.models.*
+import com.example.tmdbapp.repository.discoverMovies
+import com.example.tmdbapp.repository.searchMovies
 import com.example.tmdbapp.ui.viewmodel.handlers.AlphaResultHandler
 import kotlinx.coroutines.*
 

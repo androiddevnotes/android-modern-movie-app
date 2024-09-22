@@ -3,6 +3,9 @@ package com.example.tmdbapp.ui.viewmodel
 import androidx.lifecycle.*
 import com.example.tmdbapp.models.AlphaAuthUiState
 import com.example.tmdbapp.models.AlphaCreateListUiState
+import com.example.tmdbapp.repository.*
+import com.example.tmdbapp.repository.createList
+import com.example.tmdbapp.repository.createSession
 import com.example.tmdbapp.utils.*
 import kotlinx.coroutines.*
 
