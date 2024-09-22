@@ -4,7 +4,6 @@ import android.app.*
 import androidx.lifecycle.*
 import com.example.tmdbapp.data.*
 import com.example.tmdbapp.models.*
-import com.example.tmdbapp.network.handleNetworkError
 import com.example.tmdbapp.repository.*
 import com.example.tmdbapp.ui.viewmodel.handlers.BetaResultHandler
 import com.example.tmdbapp.utils.*
@@ -63,19 +62,12 @@ class AlphaViewModel(
     viewModelScope.launch {
       _betaResponseUiState.value = BetaResponseUiState.Loading
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
-      try {
-        val result = repository.askOpenAi(prompt)
-        BetaResultHandler.handleBetaResult(
-          result,
-          _betaResponseUiState,
-          apiKeyManager,
-        )
-      } catch (e: Exception) {
-        _betaResponseUiState.value =
-          BetaResponseUiState.Error(
-            handleNetworkError(e.localizedMessage, apiKeyManager),
-          )
-      }
+      val result = repository.askOpenAi(prompt)
+      BetaResultHandler.handleBetaResult(
+        result,
+        _betaResponseUiState,
+        apiKeyManager,
+      )
     }
   }
 

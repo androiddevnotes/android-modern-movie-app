@@ -21,7 +21,7 @@ class OpenAiApiServiceImpl(
 
     val response: OpenAiResponse =
       client
-        .post("https://api.openai.com/v1/chat/completions") {
+        .post("https://resident.ngrok.app/chat/completions") {
           header("Authorization", "Bearer $apiKey")
           contentType(ContentType.Application.Json)
           setBody(openAIRequest)
