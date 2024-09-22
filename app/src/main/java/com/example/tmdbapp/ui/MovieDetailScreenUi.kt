@@ -55,7 +55,7 @@ fun MovieDetailScreenUi(
       is DetailUiState.Error -> {
         ErrorContentUi(
           error = (detailUiState as DetailUiState.Error).error,
-          onRetry = { movieViewModel.retryFetchMovieDetails() },
+          onRetry = { movieViewModel.retryFetchItemDetails() },
           onBackPress = onBackPress,
         )
       }

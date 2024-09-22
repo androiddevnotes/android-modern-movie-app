@@ -99,7 +99,7 @@ class MovieViewModel(
     fetchMovies()
   }
 
-  fun retryFetchMovieDetails() {
+  fun retryFetchItemDetails() {
     val currentState = _DetailUiState.value
     if (currentState is DetailUiState.Error) {
       fetchMovieDetails(currentState.itemId)
