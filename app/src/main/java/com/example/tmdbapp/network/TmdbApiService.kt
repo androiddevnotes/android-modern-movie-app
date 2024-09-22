@@ -37,10 +37,3 @@ interface TmdbApiService {
     requestBody: CreateListRequest,
   ): CreateListResponse
 }
-
-interface OpenAiApiService {
-  suspend fun askOpenAI(
-    apiKey: String,
-    prompt: String,
-  ): String
-}
