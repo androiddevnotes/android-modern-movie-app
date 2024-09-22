@@ -1,15 +1,9 @@
 package com.example.tmdbapp.viewmodel
 
-import androidx.annotation.*
-import com.example.tmdbapp.*
+import androidx.annotation.StringRes
+import com.example.tmdbapp.R
 
-data class FilterOptions(
-  val genres: List<Int> = emptyList(),
-  val minRating: Float? = null,
-  val releaseYear: Int? = null,
-)
-
-enum class SortOption(
+enum class SortOptions(
   val apiValue: String,
   @StringRes val stringRes: Int,
 ) {

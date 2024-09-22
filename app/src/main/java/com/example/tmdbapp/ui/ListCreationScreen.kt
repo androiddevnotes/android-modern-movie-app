@@ -104,7 +104,7 @@ private fun ListCreationContent(
   listDescription: String,
   onListDescriptionChange: (String) -> Unit,
   onCreateList: () -> Unit,
-  createListState: CreateListState<Int>, // Specify the type parameter here
+  createListState: CreateListState<Int>,
 ) {
   OutlinedTextField(
     value = listName,

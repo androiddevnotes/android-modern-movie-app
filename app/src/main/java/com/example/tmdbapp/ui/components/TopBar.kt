@@ -22,8 +22,8 @@ fun TopBar(
   onSearchIconClick: () -> Unit,
   onCloseSearchClick: () -> Unit,
   expandedDropdown: Boolean,
-  onSortOptionClick: (SortOption) -> Unit,
-  currentSortOption: SortOption,
+  onSortOptionClick: (SortOptions) -> Unit,
+  currentSortOptions: SortOptions,
   onDropdownExpand: () -> Unit,
   onFavoritesClick: () -> Unit,
   onViewTypeChange: (String) -> Unit,
@@ -43,7 +43,7 @@ fun TopBar(
     MainTopBar(
       expandedDropdown = expandedDropdown,
       onSortOptionClick = onSortOptionClick,
-      currentSortOption = currentSortOption,
+      currentSortOptions = currentSortOptions,
       onDropdownExpand = onDropdownExpand,
       onSearchIconClick = onSearchIconClick,
       onFavoritesClick = onFavoritesClick,
@@ -60,8 +60,8 @@ fun TopBar(
 @Composable
 private fun MainTopBar(
   expandedDropdown: Boolean,
-  onSortOptionClick: (SortOption) -> Unit,
-  currentSortOption: SortOption,
+  onSortOptionClick: (SortOptions) -> Unit,
+  currentSortOptions: SortOptions,
   onDropdownExpand: () -> Unit,
   onSearchIconClick: () -> Unit,
   onFavoritesClick: () -> Unit,
@@ -79,7 +79,7 @@ private fun MainTopBar(
       SortDropdown(
         expanded = expandedDropdown,
         onSortOptionClick = onSortOptionClick,
-        currentSortOption = currentSortOption,
+        currentSortOptions = currentSortOptions,
         onDropdownExpand = onDropdownExpand,
       )
       FavoritesIcon(onClick = onFavoritesClick)
@@ -137,8 +137,8 @@ private fun SearchIcon(onClick: () -> Unit) {
 @Composable
 private fun SortDropdown(
   expanded: Boolean,
-  onSortOptionClick: (SortOption) -> Unit,
-  currentSortOption: SortOption,
+  onSortOptionClick: (SortOptions) -> Unit,
+  currentSortOptions: SortOptions,
   onDropdownExpand: () -> Unit,
 ) {
   Box {
@@ -155,7 +155,7 @@ private fun SortDropdown(
       onDismissRequest = onDropdownExpand,
       modifier = Modifier.background(MaterialTheme.colorScheme.surface),
     ) {
-      SortOption.entries.forEach { sortOption ->
+      SortOptions.entries.forEach { sortOption ->
         DropdownMenuItem(
           text = {
             Text(
@@ -166,7 +166,7 @@ private fun SortDropdown(
           },
           onClick = { onSortOptionClick(sortOption) },
           leadingIcon = {
-            if (sortOption == currentSortOption) {
+            if (sortOption == currentSortOptions) {
               Icon(
                 imageVector = Icons.Default.Check,
                 contentDescription = null,

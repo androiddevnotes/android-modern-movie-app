@@ -12,7 +12,7 @@ fun MovieViewModel.fetchMovies() {
     val result =
       repository.discoverMovies(
         page = currentPage,
-        sortBy = _currentSortOption.value.apiValue,
+        sortBy = _currentSortOptions.value.apiValue,
         genres = _filterOptions.value.genres,
         releaseYear = _filterOptions.value.releaseYear,
         minRating = _filterOptions.value.minRating,

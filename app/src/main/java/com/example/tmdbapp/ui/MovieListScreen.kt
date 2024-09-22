@@ -20,7 +20,7 @@ fun MovieListScreen(
 ) {
   val uiState by viewModel.uiState.collectAsState()
   val searchQuery by viewModel.searchQuery.collectAsState()
-  val currentSortOption by viewModel.currentSortOption.collectAsState()
+  val currentSortOption by viewModel.currentSortOptions.collectAsState()
   val currentFilters by viewModel.filterOptions.collectAsState()
 
   val listState = rememberForeverLazyListState(key = "movie_list_${viewType}_$searchQuery")
@@ -33,7 +33,7 @@ fun MovieListScreen(
   GenericListScreenContent(
     uiState = uiState,
     searchQuery = searchQuery,
-    currentSortOption = currentSortOption,
+    currentSortOptions = currentSortOption,
     currentFilters = currentFilters,
     viewType = viewType,
     onItemClick = onMovieClick,

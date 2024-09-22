@@ -19,7 +19,7 @@ class MovieViewModel(
   internal val repository = MovieRepository(application)
   internal var isLastPage = false
 
-  internal val _currentSortOption = MutableStateFlow(SortOption.POPULAR)
+  internal val _currentSortOptions = MutableStateFlow(SortOptions.POPULAR)
   private val _favorites = MutableStateFlow<List<Movie>>(emptyList())
   internal val _filterOptions = MutableStateFlow(FilterOptions())
   private val _lastViewedItemIndex = MutableStateFlow(0)
@@ -28,7 +28,7 @@ class MovieViewModel(
   internal val _authState = MutableStateFlow<AuthState<String>>(AuthState.Idle)
   internal val _createListState = MutableStateFlow<CreateListState<Int>>(CreateListState.Idle)
 
-  val currentSortOption: StateFlow<SortOption> = _currentSortOption
+  val currentSortOptions: StateFlow<SortOptions> = _currentSortOptions
   val favorites: StateFlow<List<Movie>> = _favorites
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
   val searchQuery: StateFlow<String> = _searchQuery
@@ -110,9 +110,9 @@ class MovieViewModel(
     }
   }
 
-  fun setSortOption(sortOption: SortOption) {
-    if (_currentSortOption.value != sortOption) {
-      _currentSortOption.value = sortOption
+  fun setSortOption(sortOptions: SortOptions) {
+    if (_currentSortOptions.value != sortOptions) {
+      _currentSortOptions.value = sortOptions
       currentPage = 1
       isLastPage = false
       _uiState.value = UiState.Loading

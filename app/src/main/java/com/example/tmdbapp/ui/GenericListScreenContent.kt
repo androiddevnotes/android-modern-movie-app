@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 fun <T : Any> GenericListScreenContent(
   uiState: UiState<List<T>>,
   searchQuery: String,
-  currentSortOption: SortOption,
+  currentSortOptions: SortOptions,
   currentFilters: FilterOptions,
   viewType: String,
   onItemClick: (T) -> Unit,
@@ -42,7 +42,7 @@ fun <T : Any> GenericListScreenContent(
   refreshItems: () -> Unit,
   setLastViewedItemIndex: (Int) -> Unit,
   setSearchQuery: (String) -> Unit,
-  setSortOption: (SortOption) -> Unit,
+  setSortOption: (SortOptions) -> Unit,
   setFilterOptions: (FilterOptions) -> Unit,
 ) {
   var isSearchActive by rememberSaveable { mutableStateOf(false) }
@@ -90,7 +90,7 @@ fun <T : Any> GenericListScreenContent(
           setSortOption(it)
           expandedDropdown = false
         },
-        currentSortOption = currentSortOption,
+        currentSortOptions = currentSortOptions,
         onDropdownExpand = { expandedDropdown = !expandedDropdown },
         onFavoritesClick = onFavoritesClick,
         onViewTypeChange = onViewTypeChange,
