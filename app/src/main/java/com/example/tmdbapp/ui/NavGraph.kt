@@ -26,8 +26,8 @@ fun NavGraph(
   NavHost(navController = navController, startDestination = "movieList", modifier = modifier) {
     composable("movieList") {
       MovieListScreenUi(
-        viewModel = movieViewModel,
-        onMovieClick = { movie ->
+        movieViewModel = movieViewModel,
+        onItemClick = { movie ->
           navController.navigate("movieDetail/${movie.id}")
         },
         onFavoritesClick = {
