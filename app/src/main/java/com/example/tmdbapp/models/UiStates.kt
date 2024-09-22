@@ -2,29 +2,29 @@ package com.example.tmdbapp.models
 
 import com.example.tmdbapp.utils.AppError
 
-sealed class ItemListUiState<out T> {
+sealed class AlphaListUiState<out T> {
   data class Error(
     val error: AppError,
-  ) : ItemListUiState<Nothing>()
+  ) : AlphaListUiState<Nothing>()
 
   data class Success<T>(
     val data: T,
-  ) : ItemListUiState<T>()
+  ) : AlphaListUiState<T>()
 
-  data object Loading : ItemListUiState<Nothing>()
+  data object Loading : AlphaListUiState<Nothing>()
 }
 
-sealed class ItemDetailUiState<out T> {
-  data object Loading : ItemDetailUiState<Nothing>()
+sealed class AlphaDetailUiState<out T> {
+  data object Loading : AlphaDetailUiState<Nothing>()
 
   data class Success<T>(
     val data: T,
-  ) : ItemDetailUiState<T>()
+  ) : AlphaDetailUiState<T>()
 
   data class Error(
     val error: AppError,
     val itemId: Int,
-  ) : ItemDetailUiState<Nothing>()
+  ) : AlphaDetailUiState<Nothing>()
 }
 
 sealed class AiResponseUiState<out T> {
@@ -41,32 +41,32 @@ sealed class AiResponseUiState<out T> {
   ) : AiResponseUiState<Nothing>()
 }
 
-sealed class ItemAuthUiState<out T> {
-  data object Idle : ItemAuthUiState<Nothing>()
+sealed class AlphaAuthUiState<out T> {
+  data object Idle : AlphaAuthUiState<Nothing>()
 
-  data object Loading : ItemAuthUiState<Nothing>()
+  data object Loading : AlphaAuthUiState<Nothing>()
 
   data class RequestTokenCreated<T>(
     val data: T,
-  ) : ItemAuthUiState<T>()
+  ) : AlphaAuthUiState<T>()
 
-  data object Authenticated : ItemAuthUiState<Nothing>()
+  data object Authenticated : AlphaAuthUiState<Nothing>()
 
   data class Error(
     val message: String,
-  ) : ItemAuthUiState<Nothing>()
+  ) : AlphaAuthUiState<Nothing>()
 }
 
-sealed class ItemCreateListUiState<out T> {
-  data object Idle : ItemCreateListUiState<Nothing>()
+sealed class AlphaCreateListUiState<out T> {
+  data object Idle : AlphaCreateListUiState<Nothing>()
 
-  data object Loading : ItemCreateListUiState<Nothing>()
+  data object Loading : AlphaCreateListUiState<Nothing>()
 
   data class Success<T>(
     val data: T,
-  ) : ItemCreateListUiState<T>()
+  ) : AlphaCreateListUiState<T>()
 
   data class Error(
     val message: String,
-  ) : ItemCreateListUiState<Nothing>()
+  ) : AlphaCreateListUiState<Nothing>()
 }

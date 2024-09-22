@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun <T : Any> AlphaListContentUi(
-  itemListUiState: ItemListUiState<List<T>>,
+  alphaListUiState: AlphaListUiState<List<T>>,
   searchQuery: String,
   currentSortOptions: SortOptions,
   currentFilters: FilterOptions,
@@ -109,15 +109,15 @@ fun <T : Any> AlphaListContentUi(
           .padding(paddingValues)
           .pullRefresh(pullRefreshState),
     ) {
-      when (itemListUiState) {
-        is ItemListUiState.Loading -> {
+      when (alphaListUiState) {
+        is AlphaListUiState.Loading -> {
           Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
           }
         }
 
-        is ItemListUiState.Success -> {
-          val items = itemListUiState.data
+        is AlphaListUiState.Success -> {
+          val items = alphaListUiState.data
           when (viewType) {
             Constants.VIEW_TYPE_GRID ->
               AlphaListGridUi(
@@ -153,9 +153,9 @@ fun <T : Any> AlphaListContentUi(
           }
         }
 
-        is ItemListUiState.Error -> {
+        is AlphaListUiState.Error -> {
           ErrorContentUi(
-            error = itemListUiState.error,
+            error = alphaListUiState.error,
             onRetry = { loadMoreItems() },
             onSettingsClick = onSettingsClick,
           )
@@ -168,7 +168,7 @@ fun <T : Any> AlphaListContentUi(
       )
       Box(modifier = Modifier.matchParentSize()) {
         ShimmeringOverlayUi(
-          isVisible = isRefreshing || itemListUiState is ItemListUiState.Loading,
+          isVisible = isRefreshing || alphaListUiState is AlphaListUiState.Loading,
         )
       }
     }

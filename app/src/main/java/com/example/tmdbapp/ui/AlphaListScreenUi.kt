@@ -18,7 +18,7 @@ fun AlphaListScreenUi(
   currentThemeMode: ThemeMode,
   onSettingsClick: () -> Unit,
 ) {
-  val uiState by alphaViewModel.itemListUiState.collectAsState()
+  val uiState by alphaViewModel.alphaListUiState.collectAsState()
   val searchQuery by alphaViewModel.searchQuery.collectAsState()
   val currentSortOption by alphaViewModel.currentSortOptions.collectAsState()
   val currentFilters by alphaViewModel.filterOptions.collectAsState()
@@ -31,7 +31,7 @@ fun AlphaListScreenUi(
   }
 
   AlphaListContentUi(
-    itemListUiState = uiState,
+    alphaListUiState = uiState,
     searchQuery = searchQuery,
     currentSortOptions = currentSortOption,
     currentFilters = currentFilters,

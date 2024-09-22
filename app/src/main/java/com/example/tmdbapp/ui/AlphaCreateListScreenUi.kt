@@ -10,7 +10,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.R
-import com.example.tmdbapp.models.ItemAuthUiState
+import com.example.tmdbapp.models.AlphaAuthUiState
 import com.example.tmdbapp.ui.components.CommonTopBar
 import com.example.tmdbapp.viewmodel.*
 
@@ -22,8 +22,8 @@ fun AlphaCreateListScreenUi(
 ) {
   var listName by remember { mutableStateOf("") }
   var listDescription by remember { mutableStateOf("") }
-  val authState by alphaViewModel.itemAuthUiState.collectAsState()
-  val createListState by alphaViewModel.itemCreateListUiState.collectAsState()
+  val authState by alphaViewModel.alphaAuthUiState.collectAsState()
+  val createListState by alphaViewModel.alphaCreateListUiState.collectAsState()
 
   LaunchedEffect(Unit) {
     alphaViewModel.startAuthentication()
@@ -46,19 +46,19 @@ fun AlphaCreateListScreenUi(
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
       when (authState) {
-        is ItemAuthUiState.Loading -> {
+        is AlphaAuthUiState.Loading -> {
           CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         }
 
-        is ItemAuthUiState.Error -> {
+        is AlphaAuthUiState.Error -> {
           Text(
-            text = stringResource(R.string.auth_error, (authState as ItemAuthUiState.Error).message),
+            text = stringResource(R.string.auth_error, (authState as AlphaAuthUiState.Error).message),
             color = MaterialTheme.colorScheme.error,
           )
         }
 
-        is ItemAuthUiState.RequestTokenCreated -> {
-          val token = (authState as ItemAuthUiState.RequestTokenCreated<String>).data
+        is AlphaAuthUiState.RequestTokenCreated -> {
+          val token = (authState as AlphaAuthUiState.RequestTokenCreated<String>).data
           LaunchedEffect(token) {
             val intent =
               Intent(
@@ -74,18 +74,18 @@ fun AlphaCreateListScreenUi(
           }
         }
 
-        is ItemAuthUiState.Authenticated -> {
+        is AlphaAuthUiState.Authenticated -> {
           AlphaCreateListContentUi(
             listName = listName,
             onListNameChange = { listName = it },
             listDescription = listDescription,
             onListDescriptionChange = { listDescription = it },
             onCreateList = { alphaViewModel.createList(listName, listDescription) },
-            itemCreateListUiState = createListState,
+            alphaCreateListUiState = createListState,
           )
         }
 
-        ItemAuthUiState.Idle -> {
+        AlphaAuthUiState.Idle -> {
           // Do nothing or show a placeholder
         }
       }

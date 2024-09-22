@@ -1,6 +1,6 @@
 package com.example.tmdbapp.utils
 
-import com.example.tmdbapp.models.ItemListUiState
+import com.example.tmdbapp.models.AlphaListUiState
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.network.handleNetworkError
 import com.example.tmdbapp.network.responses.tmdb.MovieResponse
@@ -10,7 +10,7 @@ object MovieResultHandler {
   fun handleMovieResult(
     result: Resource<MovieResponse>,
     currentPage: Int,
-    alphaListUiState: MutableStateFlow<ItemListUiState<List<Movie>>>,
+    alphaListUiState: MutableStateFlow<AlphaListUiState<List<Movie>>>,
     apiKeyManager: ApiKeyManager,
     updateCurrentPage: (Int) -> Unit,
     updateIsLastPage: (Boolean) -> Unit,
@@ -20,18 +20,18 @@ object MovieResultHandler {
       is Resource.Success -> {
         val newMovies = result.data?.results ?: emptyList()
         val currentMovies =
-          if (alphaListUiState.value is ItemListUiState.Success && currentPage > 1) {
-            (alphaListUiState.value as ItemListUiState.Success<List<Movie>>).data
+          if (alphaListUiState.value is AlphaListUiState.Success && currentPage > 1) {
+            (alphaListUiState.value as AlphaListUiState.Success<List<Movie>>).data
           } else {
             emptyList()
           }
-        alphaListUiState.value = ItemListUiState.Success(currentMovies + newMovies)
+        alphaListUiState.value = AlphaListUiState.Success(currentMovies + newMovies)
         updateCurrentPage(currentPage + 1)
         updateIsLastPage(newMovies.isEmpty())
       }
 
       is Resource.Error -> {
-        alphaListUiState.value = ItemListUiState.Error(handleNetworkError(result.message, apiKeyManager))
+        alphaListUiState.value = AlphaListUiState.Error(handleNetworkError(result.message, apiKeyManager))
       }
     }
     updateIsLoading(false)

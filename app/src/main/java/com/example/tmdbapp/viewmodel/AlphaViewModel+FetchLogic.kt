@@ -48,7 +48,7 @@ fun AlphaViewModel.fetchPopularMovies() {
 
 internal fun AlphaViewModel.searchMovies(query: String) {
   viewModelScope.launch {
-    _alphaListUiState.value = ItemListUiState.Loading
+    _alphaListUiState.value = AlphaListUiState.Loading
     val result = repository.searchMovies(query, 1)
     MovieResultHandler.handleMovieResult(
       result,

@@ -20,7 +20,7 @@ class AlphaViewModel(
     MutableStateFlow<AiResponseUiState<String>>(AiResponseUiState.Idle)
 
   private val _alphaDetailUiState =
-    MutableStateFlow<ItemDetailUiState<Movie>>(ItemDetailUiState.Loading)
+    MutableStateFlow<AlphaDetailUiState<Movie>>(AlphaDetailUiState.Loading)
 
   private val _favorites = MutableStateFlow<List<Movie>>(emptyList())
   private val _lastViewedItemIndex = MutableStateFlow(0)
@@ -29,13 +29,13 @@ class AlphaViewModel(
   internal var currentPage = 1
   internal var isLastPage = false
   internal var isLoading = false
-  internal val _alphaAuthUiState = MutableStateFlow<ItemAuthUiState<String>>(ItemAuthUiState.Idle)
+  internal val _alphaAuthUiState = MutableStateFlow<AlphaAuthUiState<String>>(AlphaAuthUiState.Idle)
 
   internal val _alphaCreateListUiState =
-    MutableStateFlow<ItemCreateListUiState<Int>>(ItemCreateListUiState.Idle)
+    MutableStateFlow<AlphaCreateListUiState<Int>>(AlphaCreateListUiState.Idle)
 
   internal val _alphaListUiState =
-    MutableStateFlow<ItemListUiState<List<Movie>>>(ItemListUiState.Loading)
+    MutableStateFlow<AlphaListUiState<List<Movie>>>(AlphaListUiState.Loading)
 
   internal val _currentSortOptions = MutableStateFlow(SortOptions.POPULAR)
   internal val _filterOptions = MutableStateFlow(FilterOptions())
@@ -46,10 +46,10 @@ class AlphaViewModel(
   val currentSortOptions: StateFlow<SortOptions> = _currentSortOptions
   val favorites: StateFlow<List<Movie>> = _favorites
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
-  val itemAuthUiState: StateFlow<ItemAuthUiState<String>> = _alphaAuthUiState
-  val itemCreateListUiState: StateFlow<ItemCreateListUiState<Int>> = _alphaCreateListUiState
-  val itemDetailUiState: StateFlow<ItemDetailUiState<Movie>> = _alphaDetailUiState.asStateFlow()
-  val itemListUiState: StateFlow<ItemListUiState<List<Movie>>> = _alphaListUiState.asStateFlow()
+  val alphaAuthUiState: StateFlow<AlphaAuthUiState<String>> = _alphaAuthUiState
+  val alphaCreateListUiState: StateFlow<AlphaCreateListUiState<Int>> = _alphaCreateListUiState
+  val alphaDetailUiState: StateFlow<AlphaDetailUiState<Movie>> = _alphaDetailUiState.asStateFlow()
+  val alphaListUiState: StateFlow<AlphaListUiState<List<Movie>>> = _alphaListUiState.asStateFlow()
   val searchQuery: StateFlow<String> = _searchQuery
 
   init {
@@ -82,17 +82,17 @@ class AlphaViewModel(
 
   fun fetchMovieDetails(movieId: Int) {
     viewModelScope.launch {
-      _alphaDetailUiState.value = ItemDetailUiState.Loading
+      _alphaDetailUiState.value = AlphaDetailUiState.Loading
       try {
         val movie = repository.getMovieDetails(movieId)
         if (movie != null) {
-          _alphaDetailUiState.value = ItemDetailUiState.Success(movie)
+          _alphaDetailUiState.value = AlphaDetailUiState.Success(movie)
         } else {
-          _alphaDetailUiState.value = ItemDetailUiState.Error(AppError.Unknown, movieId)
+          _alphaDetailUiState.value = AlphaDetailUiState.Error(AppError.Unknown, movieId)
         }
       } catch (e: Exception) {
         _alphaDetailUiState.value =
-          ItemDetailUiState.Error(handleNetworkError(e.message, apiKeyManager), movieId)
+          AlphaDetailUiState.Error(handleNetworkError(e.message, apiKeyManager), movieId)
       }
     }
   }
@@ -106,13 +106,13 @@ class AlphaViewModel(
   fun refreshItems() {
     currentPage = 1
     isLastPage = false
-    _alphaListUiState.value = ItemListUiState.Loading
+    _alphaListUiState.value = AlphaListUiState.Loading
     fetchMovies()
   }
 
   fun retryFetchItemDetails() {
     val currentState = _alphaDetailUiState.value
-    if (currentState is ItemDetailUiState.Error) {
+    if (currentState is AlphaDetailUiState.Error) {
       fetchMovieDetails(currentState.itemId)
     }
   }
@@ -121,7 +121,7 @@ class AlphaViewModel(
     _filterOptions.value = options
     currentPage = 1
     isLastPage = false
-    _alphaListUiState.value = ItemListUiState.Loading
+    _alphaListUiState.value = AlphaListUiState.Loading
     fetchMovies()
   }
 
@@ -149,7 +149,7 @@ class AlphaViewModel(
       _currentSortOptions.value = sortOptions
       currentPage = 1
       isLastPage = false
-      _alphaListUiState.value = ItemListUiState.Loading
+      _alphaListUiState.value = AlphaListUiState.Loading
       fetchMovies()
     }
   }
@@ -160,8 +160,8 @@ class AlphaViewModel(
       val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
 
       _alphaDetailUiState.update { currentState ->
-        if (currentState is ItemDetailUiState.Success && currentState.data.id == updatedMovie.id) {
-          ItemDetailUiState.Success(updatedMovie)
+        if (currentState is AlphaDetailUiState.Success && currentState.data.id == updatedMovie.id) {
+          AlphaDetailUiState.Success(updatedMovie)
         } else {
           currentState
         }
@@ -169,12 +169,12 @@ class AlphaViewModel(
 
       _alphaListUiState.update { currentState ->
         when (currentState) {
-          is ItemListUiState.Success -> {
+          is AlphaListUiState.Success -> {
             val updatedMovies =
               currentState.data.map {
                 if (it.id == updatedMovie.id) updatedMovie else it
               }
-            ItemListUiState.Success(updatedMovies)
+            AlphaListUiState.Success(updatedMovies)
           }
 
           else -> currentState

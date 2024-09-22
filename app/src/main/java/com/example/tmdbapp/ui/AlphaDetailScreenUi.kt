@@ -15,7 +15,7 @@ fun AlphaDetailScreenUi(
   alphaViewModel: AlphaViewModel,
   onBackPress: () -> Unit,
 ) {
-  val detailUiState by alphaViewModel.itemDetailUiState.collectAsState()
+  val detailUiState by alphaViewModel.alphaDetailUiState.collectAsState()
   val aiResponseState by alphaViewModel.aiResponseUiState.collectAsState()
 
   DisposableEffect(Unit) {
@@ -26,14 +26,14 @@ fun AlphaDetailScreenUi(
 
   Box(modifier = Modifier.fillMaxSize()) {
     when (detailUiState) {
-      is ItemDetailUiState.Loading -> {
+      is AlphaDetailUiState.Loading -> {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
           CircularProgressIndicator()
         }
       }
 
-      is ItemDetailUiState.Success -> {
-        val item = (detailUiState as ItemDetailUiState.Success<Movie>).data
+      is AlphaDetailUiState.Success -> {
+        val item = (detailUiState as AlphaDetailUiState.Success<Movie>).data
         AlphaDetailContentUi(
           item = item,
           onBackPress = onBackPress,
@@ -52,9 +52,9 @@ fun AlphaDetailScreenUi(
         )
       }
 
-      is ItemDetailUiState.Error -> {
+      is AlphaDetailUiState.Error -> {
         ErrorContentUi(
-          error = (detailUiState as ItemDetailUiState.Error).error,
+          error = (detailUiState as AlphaDetailUiState.Error).error,
           onRetry = { alphaViewModel.retryFetchItemDetails() },
           onBackPress = onBackPress,
         )

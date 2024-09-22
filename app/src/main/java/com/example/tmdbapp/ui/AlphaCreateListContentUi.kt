@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import com.example.tmdbapp.R
-import com.example.tmdbapp.models.ItemCreateListUiState
-import com.example.tmdbapp.models.ItemCreateListUiState.*
+import com.example.tmdbapp.models.AlphaCreateListUiState
+import com.example.tmdbapp.models.AlphaCreateListUiState.*
 
 @Composable
 fun AlphaCreateListContentUi(
@@ -16,7 +16,7 @@ fun AlphaCreateListContentUi(
   listDescription: String,
   onListDescriptionChange: (String) -> Unit,
   onCreateList: () -> Unit,
-  itemCreateListUiState: ItemCreateListUiState<Int>,
+  alphaCreateListUiState: AlphaCreateListUiState<Int>,
 ) {
   OutlinedTextField(
     value = listName,
@@ -38,21 +38,21 @@ fun AlphaCreateListContentUi(
     Text(stringResource(R.string.create_list))
   }
 
-  when (itemCreateListUiState) {
+  when (alphaCreateListUiState) {
     is Loading -> {
       CircularProgressIndicator()
     }
 
     is Success -> {
       Text(
-        text = stringResource(R.string.list_created_success, itemCreateListUiState.data),
+        text = stringResource(R.string.list_created_success, alphaCreateListUiState.data),
         color = MaterialTheme.colorScheme.primary,
       )
     }
 
     is Error -> {
       Text(
-        text = stringResource(R.string.list_creation_error, itemCreateListUiState.message),
+        text = stringResource(R.string.list_creation_error, alphaCreateListUiState.message),
         color = MaterialTheme.colorScheme.error,
       )
     }
