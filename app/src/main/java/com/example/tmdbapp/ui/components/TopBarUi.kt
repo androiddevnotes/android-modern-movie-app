@@ -7,7 +7,10 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.layout.*
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.*
 import com.example.tmdbapp.R
 import com.example.tmdbapp.models.SortOptions
@@ -277,10 +280,20 @@ private fun SearchTopBar(
   onSearchQueryChange: (String) -> Unit,
   onCloseSearchClick: () -> Unit,
 ) {
+  val focusRequester = remember { FocusRequester() }
+  val focusManager = LocalFocusManager.current
+
+  LaunchedEffect(Unit) {
+    focusRequester.requestFocus()
+  }
+
   TextField(
     value = searchQuery,
     onValueChange = onSearchQueryChange,
-    modifier = Modifier.fillMaxWidth(),
+    modifier =
+      Modifier
+        .fillMaxWidth()
+        .focusRequester(focusRequester),
     placeholder = {
       Text(stringResource(R.string.label_search_movies))
     },
@@ -291,7 +304,10 @@ private fun SearchTopBar(
       )
     },
     trailingIcon = {
-      IconButton(onClick = onCloseSearchClick) {
+      IconButton(onClick = {
+        onCloseSearchClick()
+        focusManager.clearFocus()
+      }) {
         Icon(
           imageVector = Icons.Default.Close,
           contentDescription = stringResource(R.string.content_desc_close_search),
