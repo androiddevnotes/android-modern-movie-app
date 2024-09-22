@@ -1,6 +1,7 @@
 package com.example.tmdbapp.ui
 
 import android.content.Context
+import android.graphics.Color.TRANSPARENT
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -59,7 +60,7 @@ fun <T : Any> GenericDetailContentUi(
         result?.let {
           val bitmap = it.toBitmap()
           val palette = Palette.from(bitmap).generate()
-          dominantColor = Color(palette.getDominantColor(android.graphics.Color.TRANSPARENT))
+          dominantColor = Color(palette.getDominantColor(TRANSPARENT))
           textColor = if (dominantColor.luminance() > 0.5f) Color.Black else Color.White
         }
       }
