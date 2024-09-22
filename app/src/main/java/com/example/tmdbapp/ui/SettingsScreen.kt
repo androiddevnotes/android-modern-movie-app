@@ -1,14 +1,13 @@
 package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons.AutoMirrored.Filled
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import com.example.tmdbapp.BuildConfig
 import com.example.tmdbapp.R
+import com.example.tmdbapp.ui.components.CommonTopBar
 import com.example.tmdbapp.utils.ApiKeyManager
 import com.example.tmdbapp.utils.Constants
 
@@ -22,26 +21,9 @@ fun SettingsScreen(
 
   Scaffold(
     topBar = {
-      TopAppBar(
-        title = {
-          Text(
-            stringResource(R.string.settings),
-            style = MaterialTheme.typography.headlineMedium,
-          )
-        },
-        navigationIcon = {
-          IconButton(onClick = onBackPress) {
-            Icon(
-              Filled.ArrowBack,
-              contentDescription = stringResource(R.string.back),
-            )
-          }
-        },
-        colors =
-          TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            titleContentColor = MaterialTheme.colorScheme.onSurface,
-          ),
+      CommonTopBar(
+        title = stringResource(R.string.settings),
+        onBackPress = onBackPress,
       )
     },
   ) { paddingValues ->
