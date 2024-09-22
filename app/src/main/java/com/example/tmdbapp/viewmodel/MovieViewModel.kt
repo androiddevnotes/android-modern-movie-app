@@ -24,7 +24,7 @@ class MovieViewModel(
   internal val _filterOptions = MutableStateFlow(FilterOptions())
   private val _lastViewedItemIndex = MutableStateFlow(0)
   private val _searchQuery = MutableStateFlow("")
-  internal val _uiState = MutableStateFlow<MovieUiState>(MovieUiState.Loading)
+  internal val _uiState = MutableStateFlow<UiState<List<Movie>>>(UiState.Loading)
   internal val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
   internal val _createListState = MutableStateFlow<CreateListState>(CreateListState.Idle)
 
@@ -33,7 +33,7 @@ class MovieViewModel(
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
   val lastViewedItemIndex: StateFlow<Int> = _lastViewedItemIndex.asStateFlow()
   val searchQuery: StateFlow<String> = _searchQuery
-  val uiState: StateFlow<MovieUiState> = _uiState
+  val uiState: StateFlow<UiState<List<Movie>>> = _uiState.asStateFlow()
   val authState: StateFlow<AuthState> = _authState
   val createListState: StateFlow<CreateListState> = _createListState
 
@@ -80,7 +80,7 @@ class MovieViewModel(
   fun refreshMovies() {
     currentPage = 1
     isLastPage = false
-    _uiState.value = MovieUiState.Loading
+    _uiState.value = UiState.Loading
     fetchMovies()
   }
 
@@ -88,7 +88,7 @@ class MovieViewModel(
     _filterOptions.value = options
     currentPage = 1
     isLastPage = false
-    _uiState.value = MovieUiState.Loading
+    _uiState.value = UiState.Loading
     fetchMovies()
   }
 
@@ -116,7 +116,7 @@ class MovieViewModel(
       _currentSortOption.value = sortOption
       currentPage = 1
       isLastPage = false
-      _uiState.value = MovieUiState.Loading
+      _uiState.value = UiState.Loading
       fetchMovies()
     }
   }
@@ -136,12 +136,12 @@ class MovieViewModel(
 
       _uiState.update { currentState ->
         when (currentState) {
-          is MovieUiState.Success -> {
+          is UiState.Success -> {
             val updatedMovies =
-              currentState.movies.map {
+              currentState.data.map {
                 if (it.id == updatedMovie.id) updatedMovie else it
               }
-            MovieUiState.Success(updatedMovies)
+            UiState.Success(updatedMovies)
           }
           else -> currentState
         }

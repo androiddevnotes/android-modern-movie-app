@@ -14,11 +14,12 @@ import com.example.tmdbapp.ui.components.*
 import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.*
+import com.example.tmdbapp.viewmodel.UiState
 import kotlinx.coroutines.launch
 
 @Composable
 fun MovieListScreenContent(
-  uiState: MovieUiState,
+  uiState: UiState<List<Movie>>,
   viewModel: MovieViewModel,
   searchQuery: String,
   currentSortOption: SortOption,
@@ -98,14 +99,14 @@ fun MovieListScreenContent(
           .pullRefresh(pullRefreshState),
     ) {
       when (uiState) {
-        is MovieUiState.Loading -> {
+        is UiState.Loading -> {
           Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
           }
         }
 
-        is MovieUiState.Success -> {
-          val movies = uiState.movies
+        is UiState.Success -> {
+          val movies = uiState.data
           when (viewType) {
             Constants.VIEW_TYPE_GRID ->
               ItemGridListUi(
@@ -141,7 +142,7 @@ fun MovieListScreenContent(
           }
         }
 
-        is MovieUiState.Error -> MovieListErrorView(uiState, viewModel, onSettingsClick)
+        is UiState.Error -> MovieListErrorView<List<Movie>>(uiState, viewModel, onSettingsClick)
       }
       PullRefreshIndicator(
         refreshing = isRefreshing,
@@ -150,7 +151,7 @@ fun MovieListScreenContent(
       )
       Box(modifier = Modifier.matchParentSize()) {
         ShimmeringOverlay(
-          isVisible = isRefreshing || uiState is MovieUiState.Loading,
+          isVisible = isRefreshing || uiState is UiState.Loading,
         )
       }
     }

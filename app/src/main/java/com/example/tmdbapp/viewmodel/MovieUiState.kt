@@ -1,16 +1,18 @@
 package com.example.tmdbapp.viewmodel
 
-import com.example.tmdbapp.models.*
-import com.example.tmdbapp.utils.*
+import com.example.tmdbapp.utils.MovieError
 
-sealed class MovieUiState {
+sealed class UiState<out T> {
   data class Error(
     val error: MovieError,
-  ) : MovieUiState()
+  ) : UiState<Nothing>()
 
-  data class Success(
-    val movies: List<Movie>,
-  ) : MovieUiState()
+  data class Success<T>(
+    val data: T,
+  ) : UiState<T>()
 
-  data object Loading : MovieUiState()
+  data object Loading : UiState<Nothing>()
 }
+
+// Type alias for MovieUiState to maintain backwards compatibility
+typealias MovieUiState = UiState<List<com.example.tmdbapp.models.Movie>>

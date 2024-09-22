@@ -9,12 +9,12 @@ import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.utils.MovieError
-import com.example.tmdbapp.viewmodel.MovieUiState
 import com.example.tmdbapp.viewmodel.MovieViewModel
+import com.example.tmdbapp.viewmodel.UiState
 
 @Composable
-fun MovieListErrorView(
-  errorState: MovieUiState.Error,
+fun <T> MovieListErrorView(
+  errorState: UiState.Error,
   viewModel: MovieViewModel,
   onSettingsClick: () -> Unit,
 ) {
