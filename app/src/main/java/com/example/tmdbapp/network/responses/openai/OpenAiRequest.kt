@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class OpenAiRequest(
-    val messages: List<OpenAiMessage>,
-    val model: String,
+  val messages: List<OpenAiMessage>,
+  val model: String,
 )
