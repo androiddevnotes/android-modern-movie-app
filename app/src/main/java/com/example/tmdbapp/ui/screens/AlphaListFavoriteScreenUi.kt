@@ -20,6 +20,10 @@ fun AlphaListFavoriteScreenUi(
 ) {
   val favorites by viewModel.favorites.collectAsState()
 
+  LaunchedEffect(Unit) {
+    viewModel.loadFavorites()
+  }
+
   Scaffold(
     topBar = {
       CommonTopBar(

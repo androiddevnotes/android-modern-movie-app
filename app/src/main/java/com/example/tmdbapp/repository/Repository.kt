@@ -37,20 +37,8 @@ class Repository(
 
   fun getFavoriteMovies(): Flow<List<Movie>> =
     favoritePreferencesDatastore.getAllFavorites().map { favoriteIds ->
-      safeApiCall {
-        val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
-        tmdbApi.discoverMovies(tmdbApiKey, 1, sortBy = "popularity.desc")
-      }.let { result ->
-        when (result) {
-          is Resource.Success -> {
-            result.data
-              ?.results
-              ?.filter { movie -> favoriteIds.contains(movie.id) }
-              ?.map { it.copy(isFavorite = true) }
-              ?: emptyList()
-          }
-          is Resource.Error -> emptyList()
-        }
+      favoriteIds.mapNotNull { movieId ->
+        getMovieDetails(movieId)
       }
     }
 

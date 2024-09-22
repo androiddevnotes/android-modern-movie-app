@@ -24,6 +24,7 @@ class AlphaViewModel(
     MutableStateFlow<AlphaDetailUiState<Movie>>(AlphaDetailUiState.Loading)
 
   private val _favorites = MutableStateFlow<List<Movie>>(emptyList())
+  val favorites: StateFlow<List<Movie>> = _favorites.asStateFlow()
   private val _lastViewedItemIndex = MutableStateFlow(0)
   private val _scrollToIndex = MutableStateFlow<Int?>(null)
   private val _searchQuery = MutableStateFlow("")
@@ -45,7 +46,6 @@ class AlphaViewModel(
   internal val sessionManagerPreferencesDataStore = SessionManagerPreferencesDataStore(application)
   val betaResponseUiState: StateFlow<BetaResponseUiState<String>> = _betaResponseUiState.asStateFlow()
   val currentSortOptions: StateFlow<SortOptions> = _currentSortOptions
-  val favorites: StateFlow<List<Movie>> = _favorites
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
   val alphaAuthUiState: StateFlow<AlphaAuthUiState<String>> = _alphaAuthUiState
   val alphaCreateListUiState: StateFlow<AlphaCreateListUiState<Int>> = _alphaCreateListUiState
@@ -183,7 +183,6 @@ class AlphaViewModel(
               }
             AlphaListUiState.Success(updatedMovies)
           }
-
           else -> currentState
         }
       }
@@ -192,7 +191,7 @@ class AlphaViewModel(
     }
   }
 
-  private fun loadFavorites() {
+  fun loadFavorites() {
     viewModelScope.launch {
       repository.getFavoriteMovies().collectLatest { favoriteMovies ->
         _favorites.value = favoriteMovies
