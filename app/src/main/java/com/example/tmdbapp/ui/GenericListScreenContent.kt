@@ -156,7 +156,7 @@ fun <T : Any> GenericListScreenContent(
         is UiState.Error ->
           GenericListErrorView(
             errorState = uiState,
-            onRetry = loadMoreItems,
+            onRetry = { loadMoreItems() }, // Provide the retry callback
             onSettingsClick = onSettingsClick,
           )
       }
