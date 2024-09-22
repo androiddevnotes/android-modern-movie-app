@@ -7,8 +7,8 @@ import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.utils.AppError
+import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.UiState
 
 @Composable
