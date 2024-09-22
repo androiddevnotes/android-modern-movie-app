@@ -30,14 +30,14 @@ fun MovieListScreen(
     viewModel.clearScrollToIndex()
   }
 
-  MovieListScreenContent(
+  GenericListScreenContent(
     uiState = uiState,
     viewModel = viewModel,
     searchQuery = searchQuery,
     currentSortOption = currentSortOption,
     currentFilters = currentFilters,
     viewType = viewType,
-    onMovieClick = onMovieClick,
+    onItemClick = onMovieClick,
     onFavoritesClick = onFavoritesClick,
     onViewTypeChange = onViewTypeChange,
     onThemeChange = onThemeChange,
@@ -45,5 +45,12 @@ fun MovieListScreen(
     onSettingsClick = onSettingsClick,
     listState = listState,
     gridState = gridState,
+    getItemId = { it.id },
+    getItemTitle = { it.title },
+    getItemOverview = { it.overview },
+    getItemPosterPath = { it.posterPath },
+    getItemVoteAverage = { it.voteAverage },
+    isItemFavorite = { it.isFavorite },
+    toggleFavorite = viewModel::toggleFavorite, // Add this line
   )
 }
