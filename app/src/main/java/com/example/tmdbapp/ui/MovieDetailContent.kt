@@ -8,26 +8,31 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
 import androidx.compose.ui.platform.*
+import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.ui.components.AiResponseCard
 import com.example.tmdbapp.viewmodel.AIResponseUiState
-import com.example.tmdbapp.viewmodel.AIResponseUiState.*
 
 @Composable
-fun MovieDetailContent(
-  movie: Movie,
+fun <T : Any> GenericDetailContent(
+  item: T,
   onBackPress: () -> Unit,
   onFavoriteClick: () -> Unit,
   onDownloadClick: (String?, Context) -> Unit,
   onAskAIClick: () -> Unit,
   aiResponseUiState: AIResponseUiState<String>,
+  getItemTitle: (T) -> String,
+  getItemOverview: (T) -> String,
+  getItemPosterPath: (T) -> String?,
+  getItemReleaseDate: (T) -> String?,
+  getItemVoteAverage: (T) -> Float,
+  isItemFavorite: (T) -> Boolean,
 ) {
   val context = LocalContext.current
   val scrollState = rememberScrollState()
 
   Box(modifier = Modifier.fillMaxSize()) {
-    MovieBackgroundImage(movie.posterPath)
+    MovieBackgroundImage(getItemPosterPath(item))
     Column(
       modifier =
         Modifier
@@ -38,20 +43,21 @@ fun MovieDetailContent(
       MovieDetailTopBar(
         onBackPress = onBackPress,
         onFavoriteClick = onFavoriteClick,
-        onDownloadClick = { onDownloadClick(movie.posterPath, context) },
+        onDownloadClick = { onDownloadClick(getItemPosterPath(item), context) },
         onAskAIClick = onAskAIClick,
-        isFavorite = movie.isFavorite,
+        isFavorite = isItemFavorite(item),
       )
       Spacer(modifier = Modifier.weight(1f))
-      MovieDetailInfo(movie)
-
-      Spacer(
-        modifier =
-          Modifier
-            .height(16.dp),
+      GenericDetailInfo(
+        title = getItemTitle(item),
+        overview = getItemOverview(item),
+        releaseDate = getItemReleaseDate(item),
+        voteAverage = getItemVoteAverage(item),
       )
+
+      Spacer(modifier = Modifier.height(16.dp))
       when (aiResponseUiState) {
-        is Loading -> {
+        is AIResponseUiState.Loading -> {
           Box(
             modifier =
               Modifier
@@ -61,15 +67,13 @@ fun MovieDetailContent(
             contentAlignment = Alignment.Center,
           ) {
             CircularProgressIndicator(
-              modifier =
-                Modifier
-                  .size(24.dp),
+              modifier = Modifier.size(24.dp),
               color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
           }
         }
 
-        is Error -> {
+        is AIResponseUiState.Error -> {
           Text(
             text = aiResponseUiState.message,
             color = MaterialTheme.colorScheme.error,
@@ -77,14 +81,63 @@ fun MovieDetailContent(
           )
         }
 
-        is Success -> {
+        is AIResponseUiState.Success -> {
           AiResponseCard(response = aiResponseUiState.data)
         }
 
-        Idle -> {
+        AIResponseUiState.Idle -> {
           // Do nothing or show a placeholder
         }
       }
     }
+  }
+}
+
+@Composable
+private fun GenericDetailInfo(
+  title: String,
+  overview: String,
+  releaseDate: String?,
+  voteAverage: Float,
+) {
+  Column(
+    modifier =
+      Modifier
+        .fillMaxWidth()
+        .padding(16.dp),
+  ) {
+    Text(
+      text = title,
+      style = MaterialTheme.typography.headlineLarge,
+      color = MaterialTheme.colorScheme.onSurface,
+      fontWeight = FontWeight.Bold,
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+    releaseDate?.let { date ->
+      Text(
+        text = "Release Date: $date",
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+      Spacer(modifier = Modifier.height(8.dp))
+    }
+    Text(
+      text = "Rating: $voteAverage",
+      style = MaterialTheme.typography.bodyMedium,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    Text(
+      text = "Overview",
+      style = MaterialTheme.typography.titleMedium,
+      color = MaterialTheme.colorScheme.onSurface,
+      fontWeight = FontWeight.Bold,
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+    Text(
+      text = overview,
+      style = MaterialTheme.typography.bodyMedium,
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
   }
 }

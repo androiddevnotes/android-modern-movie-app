@@ -32,13 +32,21 @@ fun MovieDetailScreen(
       }
       is DetailUiState.Success -> {
         val movie = (movieState as DetailUiState.Success<Movie>).data
-        MovieDetailContent(
-          movie = movie,
+        GenericDetailContent(
+          item = movie,
           onBackPress = onBackPress,
           onFavoriteClick = { viewModel.toggleFavorite(movie) },
-          onDownloadClick = viewModel::downloadImage,
+          onDownloadClick = { posterPath, context ->
+            // Implement download logic
+          },
           onAskAIClick = { viewModel.askAIAboutMovie(movie) },
           aiResponseUiState = aiResponseState,
+          getItemTitle = { it.title },
+          getItemOverview = { it.overview },
+          getItemPosterPath = { it.posterPath },
+          getItemReleaseDate = { it.releaseDate },
+          getItemVoteAverage = { it.voteAverage },
+          isItemFavorite = { it.isFavorite },
         )
       }
       is DetailUiState.Error -> {
@@ -47,22 +55,6 @@ fun MovieDetailScreen(
           onRetry = { viewModel.retryFetchMovieDetails() },
           onBackPress = onBackPress,
         )
-      }
-    }
-
-    ShimmeringOverlay(
-      isVisible = aiResponseState is AIResponseUiState.Loading,
-    )
-
-    if (aiResponseState is AIResponseUiState.Loading) {
-      Box(
-        modifier =
-          Modifier
-            .fillMaxSize()
-            .padding(bottom = 32.dp),
-        contentAlignment = Alignment.BottomCenter,
-      ) {
-        AiScanningIndicator()
       }
     }
   }
