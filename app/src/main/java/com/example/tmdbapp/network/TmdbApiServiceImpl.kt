@@ -13,6 +13,8 @@ import kotlinx.serialization.json.Json
 class TmdbApiServiceImpl(
   private val client: HttpClient,
 ) : TmdbApiService {
+  private val json = Json { ignoreUnknownKeys = true }
+
   private suspend inline fun <reified T> get(
     endpoint: String,
     apiKey: String,
@@ -29,7 +31,31 @@ class TmdbApiServiceImpl(
           }
         }.body<String>()
 
-    val json = Json { ignoreUnknownKeys = true }
+    return try {
+      json.decodeFromString<T>(response)
+    } catch (e: SerializationException) {
+      val errorResponse = json.decodeFromString<TmdbErrorResponse>(response)
+      throw Exception(errorResponse.statusMessage)
+    }
+  }
+
+  private suspend inline fun <reified T> post(
+    endpoint: String,
+    apiKey: String,
+    body: Any,
+    additionalParams: Map<String, Any?> = emptyMap(),
+  ): T {
+    val response =
+      client
+        .post(endpoint) {
+          parameter("api_key", apiKey)
+          additionalParams.forEach { (key, value) ->
+            if (value != null) parameter(key, value)
+          }
+          contentType(ContentType.Application.Json)
+          setBody(body)
+        }.body<String>()
+
     return try {
       json.decodeFromString<T>(response)
     } catch (e: SerializationException) {
@@ -69,37 +95,16 @@ class TmdbApiServiceImpl(
     apiKey: String,
   ): Movie = get("movie/$movieId", apiKey, 1)
 
-  override suspend fun createRequestToken(apiKey: String): RequestTokenResponse {
-    val response: RequestTokenResponse? =
-      try {
-        get("authentication/token/new", apiKey, 1)
-      } catch (e: Exception) {
-        null
-      }
-    return response ?: throw Exception("Failed to parse RequestTokenResponse")
-  }
+  override suspend fun createRequestToken(apiKey: String): RequestTokenResponse = get("authentication/token/new", apiKey, 1)
 
   override suspend fun createSession(
     apiKey: String,
     requestBody: CreateSessionRequest,
-  ): CreateSessionResponse =
-    client
-      .post("authentication/session/new") {
-        parameter("api_key", apiKey)
-        contentType(ContentType.Application.Json)
-        setBody(requestBody)
-      }.body()
+  ): CreateSessionResponse = post("authentication/session/new", apiKey, requestBody)
 
   override suspend fun createList(
     apiKey: String,
     sessionId: String,
     requestBody: CreateListRequest,
-  ): CreateListResponse =
-    client
-      .post("list") {
-        parameter("api_key", apiKey)
-        parameter("session_id", sessionId)
-        contentType(ContentType.Application.Json)
-        setBody(requestBody)
-      }.body()
+  ): CreateListResponse = post("list", apiKey, requestBody, mapOf("session_id" to sessionId))
 }
