@@ -2,71 +2,71 @@ package com.example.tmdbapp.viewmodel
 
 import com.example.tmdbapp.utils.AppError
 
-sealed class UiState<out T> {
+sealed class ListUiState<out T> {
   data class Error(
     val error: AppError,
-  ) : UiState<Nothing>()
+  ) : ListUiState<Nothing>()
 
   data class Success<T>(
     val data: T,
-  ) : UiState<T>()
+  ) : ListUiState<T>()
 
-  data object Loading : UiState<Nothing>()
+  data object Loading : ListUiState<Nothing>()
 }
 
-sealed class MovieDetailState<out T> {
-  data object Loading : MovieDetailState<Nothing>()
+sealed class DetailUiState<out T> {
+  data object Loading : DetailUiState<Nothing>()
 
   data class Success<T>(
     val data: T,
-  ) : MovieDetailState<T>()
+  ) : DetailUiState<T>()
 
   data class Error(
     val error: AppError,
     val movieId: Int,
-  ) : MovieDetailState<Nothing>()
+  ) : DetailUiState<Nothing>()
 }
 
-sealed class AIResponseState<out T> {
-  data object Idle : AIResponseState<Nothing>()
+sealed class AIResponseUiState<out T> {
+  data object Idle : AIResponseUiState<Nothing>()
 
-  data object Loading : AIResponseState<Nothing>()
+  data object Loading : AIResponseUiState<Nothing>()
 
   data class Success<T>(
     val data: T,
-  ) : AIResponseState<T>()
+  ) : AIResponseUiState<T>()
 
   data class Error(
     val message: String,
-  ) : AIResponseState<Nothing>()
+  ) : AIResponseUiState<Nothing>()
 }
 
-sealed class AuthState<out T> {
-  data object Idle : AuthState<Nothing>()
+sealed class AuthUiState<out T> {
+  data object Idle : AuthUiState<Nothing>()
 
-  data object Loading : AuthState<Nothing>()
+  data object Loading : AuthUiState<Nothing>()
 
   data class RequestTokenCreated<T>(
     val data: T,
-  ) : AuthState<T>()
+  ) : AuthUiState<T>()
 
-  data object Authenticated : AuthState<Nothing>()
+  data object Authenticated : AuthUiState<Nothing>()
 
   data class Error(
     val message: String,
-  ) : AuthState<Nothing>()
+  ) : AuthUiState<Nothing>()
 }
 
-sealed class CreateListState<out T> {
-  data object Idle : CreateListState<Nothing>()
+sealed class CreateListUiState<out T> {
+  data object Idle : CreateListUiState<Nothing>()
 
-  data object Loading : CreateListState<Nothing>()
+  data object Loading : CreateListUiState<Nothing>()
 
   data class Success<T>(
     val data: T,
-  ) : CreateListState<T>()
+  ) : CreateListUiState<T>()
 
   data class Error(
     val message: String,
-  ) : CreateListState<Nothing>()
+  ) : CreateListUiState<Nothing>()
 }

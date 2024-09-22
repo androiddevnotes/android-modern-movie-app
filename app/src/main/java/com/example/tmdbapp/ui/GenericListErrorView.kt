@@ -9,11 +9,11 @@ import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.utils.AppError
 import com.example.tmdbapp.utils.Constants
-import com.example.tmdbapp.viewmodel.UiState
+import com.example.tmdbapp.viewmodel.ListUiState
 
 @Composable
 fun GenericListErrorView(
-  errorState: UiState.Error,
+  errorState: ListUiState.Error,
   onRetry: () -> Unit, // Replaced MovieViewModel with onRetry callback
   onSettingsClick: () -> Unit,
 ) {

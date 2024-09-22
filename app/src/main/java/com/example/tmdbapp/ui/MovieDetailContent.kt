@@ -11,8 +11,8 @@ import androidx.compose.ui.platform.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.ui.components.AIResponseCard
-import com.example.tmdbapp.viewmodel.AIResponseState
-import com.example.tmdbapp.viewmodel.AIResponseState.*
+import com.example.tmdbapp.viewmodel.AIResponseUiState
+import com.example.tmdbapp.viewmodel.AIResponseUiState.*
 
 @Composable
 fun MovieDetailContent(
@@ -21,7 +21,7 @@ fun MovieDetailContent(
   onFavoriteClick: () -> Unit,
   onDownloadClick: (String?, Context) -> Unit,
   onAskAIClick: () -> Unit,
-  aiResponseState: AIResponseState<String>, // Change to AIResponseState<String>
+  aiResponseUiState: AIResponseUiState<String>,
 ) {
   val context = LocalContext.current
   val scrollState = rememberScrollState()
@@ -50,8 +50,8 @@ fun MovieDetailContent(
           Modifier
             .height(16.dp),
       )
-      when (aiResponseState) {
-        is AIResponseState.Loading -> {
+      when (aiResponseUiState) {
+        is Loading -> {
           Box(
             modifier =
               Modifier
@@ -69,19 +69,19 @@ fun MovieDetailContent(
           }
         }
 
-        is AIResponseState.Error -> {
+        is Error -> {
           Text(
-            text = aiResponseState.message,
+            text = aiResponseUiState.message,
             color = MaterialTheme.colorScheme.error,
             modifier = Modifier.padding(horizontal = 16.dp),
           )
         }
 
-        is AIResponseState.Success -> {
-          AIResponseCard(response = aiResponseState.data)
+        is Success -> {
+          AIResponseCard(response = aiResponseUiState.data)
         }
 
-        AIResponseState.Idle -> {
+        Idle -> {
           // Do nothing or show a placeholder
         }
       }

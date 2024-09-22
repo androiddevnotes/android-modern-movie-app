@@ -22,8 +22,8 @@ fun ListCreationScreen(
 ) {
   var listName by remember { mutableStateOf("") }
   var listDescription by remember { mutableStateOf("") }
-  val authState by viewModel.authState.collectAsState()
-  val createListState by viewModel.createListState.collectAsState()
+  val authState by viewModel.authUiState.collectAsState()
+  val createListState by viewModel.createListUiState.collectAsState()
 
   LaunchedEffect(Unit) {
     viewModel.startAuthentication()
@@ -50,19 +50,19 @@ fun ListCreationScreen(
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
       when (authState) {
-        is AuthState.Loading -> {
+        is AuthUiState.Loading -> {
           CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         }
 
-        is AuthState.Error -> {
+        is AuthUiState.Error -> {
           Text(
-            text = stringResource(R.string.auth_error, (authState as AuthState.Error).message),
+            text = stringResource(R.string.auth_error, (authState as AuthUiState.Error).message),
             color = MaterialTheme.colorScheme.error,
           )
         }
 
-        is AuthState.RequestTokenCreated -> {
-          val token = (authState as AuthState.RequestTokenCreated<String>).data
+        is AuthUiState.RequestTokenCreated -> {
+          val token = (authState as AuthUiState.RequestTokenCreated<String>).data
           LaunchedEffect(token) {
             val intent =
               Intent(
@@ -78,18 +78,18 @@ fun ListCreationScreen(
           }
         }
 
-        is AuthState.Authenticated -> {
+        is AuthUiState.Authenticated -> {
           ListCreationContent(
             listName = listName,
             onListNameChange = { listName = it },
             listDescription = listDescription,
             onListDescriptionChange = { listDescription = it },
             onCreateList = { viewModel.createList(listName, listDescription) },
-            createListState = createListState,
+            createListUiState = createListState,
           )
         }
 
-        AuthState.Idle -> {
+        AuthUiState.Idle -> {
           // Do nothing or show a placeholder
         }
       }
@@ -104,7 +104,7 @@ private fun ListCreationContent(
   listDescription: String,
   onListDescriptionChange: (String) -> Unit,
   onCreateList: () -> Unit,
-  createListState: CreateListState<Int>,
+  createListUiState: CreateListUiState<Int>,
 ) {
   OutlinedTextField(
     value = listName,
@@ -126,26 +126,26 @@ private fun ListCreationContent(
     Text(stringResource(R.string.create_list))
   }
 
-  when (createListState) {
-    is CreateListState.Loading -> {
+  when (createListUiState) {
+    is CreateListUiState.Loading -> {
       CircularProgressIndicator()
     }
 
-    is CreateListState.Success -> {
+    is CreateListUiState.Success -> {
       Text(
-        text = stringResource(R.string.list_created_success, createListState.data),
+        text = stringResource(R.string.list_created_success, createListUiState.data),
         color = MaterialTheme.colorScheme.primary,
       )
     }
 
-    is CreateListState.Error -> {
+    is CreateListUiState.Error -> {
       Text(
-        text = stringResource(R.string.list_creation_error, createListState.message),
+        text = stringResource(R.string.list_creation_error, createListUiState.message),
         color = MaterialTheme.colorScheme.error,
       )
     }
 
-    CreateListState.Idle -> {
+    CreateListUiState.Idle -> {
       // Do nothing or show a placeholder
     }
   }

@@ -24,17 +24,17 @@ class MovieViewModel(
   internal val _filterOptions = MutableStateFlow(FilterOptions())
   private val _lastViewedItemIndex = MutableStateFlow(0)
   private val _searchQuery = MutableStateFlow("")
-  internal val _uiState = MutableStateFlow<UiState<List<Movie>>>(UiState.Loading)
-  internal val _authState = MutableStateFlow<AuthState<String>>(AuthState.Idle)
-  internal val _createListState = MutableStateFlow<CreateListState<Int>>(CreateListState.Idle)
+  internal val _List_uiState = MutableStateFlow<ListUiState<List<Movie>>>(ListUiState.Loading)
+  internal val _authUiState = MutableStateFlow<AuthUiState<String>>(AuthUiState.Idle)
+  internal val _createListUiState = MutableStateFlow<CreateListUiState<Int>>(CreateListUiState.Idle)
 
   val currentSortOptions: StateFlow<SortOptions> = _currentSortOptions
   val favorites: StateFlow<List<Movie>> = _favorites
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
   val searchQuery: StateFlow<String> = _searchQuery
-  val uiState: StateFlow<UiState<List<Movie>>> = _uiState.asStateFlow()
-  val authState: StateFlow<AuthState<String>> = _authState
-  val createListState: StateFlow<CreateListState<Int>> = _createListState
+  val listUiState: StateFlow<ListUiState<List<Movie>>> = _List_uiState.asStateFlow()
+  val authUiState: StateFlow<AuthUiState<String>> = _authUiState
+  val createListUiState: StateFlow<CreateListUiState<Int>> = _createListUiState
 
   internal val sessionManager = SessionManager(application)
 
@@ -46,28 +46,28 @@ class MovieViewModel(
     checkAuthenticationStatus()
   }
 
-  private val _movieDetailState = MutableStateFlow<MovieDetailState<Movie>>(MovieDetailState.Loading)
-  val movieDetailState: StateFlow<MovieDetailState<Movie>> = _movieDetailState.asStateFlow()
+  private val _DetailUiState = MutableStateFlow<DetailUiState<Movie>>(DetailUiState.Loading)
+  val detailUiState: StateFlow<DetailUiState<Movie>> = _DetailUiState.asStateFlow()
 
   fun fetchMovieDetails(movieId: Int) {
     viewModelScope.launch {
-      _movieDetailState.value = MovieDetailState.Loading
+      _DetailUiState.value = DetailUiState.Loading
       try {
         val movie = repository.getMovieDetails(movieId)
         if (movie != null) {
-          _movieDetailState.value = MovieDetailState.Success(movie)
+          _DetailUiState.value = DetailUiState.Success(movie)
         } else {
-          _movieDetailState.value = MovieDetailState.Error(AppError.Unknown, movieId)
+          _DetailUiState.value = DetailUiState.Error(AppError.Unknown, movieId)
         }
       } catch (e: Exception) {
-        _movieDetailState.value = MovieDetailState.Error(handleError(e.message, apiKeyManager), movieId)
+        _DetailUiState.value = DetailUiState.Error(handleError(e.message, apiKeyManager), movieId)
       }
     }
   }
 
   fun retryFetchMovieDetails() {
-    val currentState = _movieDetailState.value
-    if (currentState is MovieDetailState.Error) {
+    val currentState = _DetailUiState.value
+    if (currentState is DetailUiState.Error) {
       fetchMovieDetails(currentState.movieId)
     }
   }
@@ -79,7 +79,7 @@ class MovieViewModel(
   fun refreshMovies() {
     currentPage = 1
     isLastPage = false
-    _uiState.value = UiState.Loading
+    _List_uiState.value = ListUiState.Loading
     fetchMovies()
   }
 
@@ -87,7 +87,7 @@ class MovieViewModel(
     _filterOptions.value = options
     currentPage = 1
     isLastPage = false
-    _uiState.value = UiState.Loading
+    _List_uiState.value = ListUiState.Loading
     fetchMovies()
   }
 
@@ -115,7 +115,7 @@ class MovieViewModel(
       _currentSortOptions.value = sortOptions
       currentPage = 1
       isLastPage = false
-      _uiState.value = UiState.Loading
+      _List_uiState.value = ListUiState.Loading
       fetchMovies()
     }
   }
@@ -125,22 +125,22 @@ class MovieViewModel(
       repository.toggleFavorite(movie)
       val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
 
-      _movieDetailState.update { currentState ->
-        if (currentState is MovieDetailState.Success && currentState.data.id == updatedMovie.id) {
-          MovieDetailState.Success(updatedMovie)
+      _DetailUiState.update { currentState ->
+        if (currentState is DetailUiState.Success && currentState.data.id == updatedMovie.id) {
+          DetailUiState.Success(updatedMovie)
         } else {
           currentState
         }
       }
 
-      _uiState.update { currentState ->
+      _List_uiState.update { currentState ->
         when (currentState) {
-          is UiState.Success -> {
+          is ListUiState.Success -> {
             val updatedMovies =
               currentState.data.map {
                 if (it.id == updatedMovie.id) updatedMovie else it
               }
-            UiState.Success(updatedMovies)
+            ListUiState.Success(updatedMovies)
           }
           else -> currentState
         }
@@ -163,24 +163,24 @@ class MovieViewModel(
 
   fun isFavorite(movieId: Int): Boolean = favorites.value.any { it.id == movieId }
 
-  private val _aiResponseState = MutableStateFlow<AIResponseState<String>>(AIResponseState.Idle)
-  val aiResponseState: StateFlow<AIResponseState<String>> = _aiResponseState.asStateFlow()
+  private val _aiResponseUiState = MutableStateFlow<AIResponseUiState<String>>(AIResponseUiState.Idle)
+  val aiResponseUiState: StateFlow<AIResponseUiState<String>> = _aiResponseUiState.asStateFlow()
 
   fun askAIAboutMovie(movie: Movie) {
     viewModelScope.launch {
-      _aiResponseState.value = AIResponseState.Loading
+      _aiResponseUiState.value = AIResponseUiState.Loading
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
       try {
         val response = repository.askOpenAI(prompt)
-        _aiResponseState.value = AIResponseState.Success(response)
+        _aiResponseUiState.value = AIResponseUiState.Success(response)
       } catch (e: Exception) {
-        _aiResponseState.value = AIResponseState.Error(e.localizedMessage ?: "Unknown error occurred")
+        _aiResponseUiState.value = AIResponseUiState.Error(e.localizedMessage ?: "Unknown error occurred")
       }
     }
   }
 
   fun clearAIResponse() {
-    _aiResponseState.value = AIResponseState.Idle
+    _aiResponseUiState.value = AIResponseUiState.Idle
   }
 
   private val _scrollToIndex = MutableStateFlow<Int?>(null)

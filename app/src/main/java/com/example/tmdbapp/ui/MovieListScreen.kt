@@ -18,7 +18,7 @@ fun MovieListScreen(
   currentThemeMode: ThemeMode,
   onSettingsClick: () -> Unit,
 ) {
-  val uiState by viewModel.uiState.collectAsState()
+  val uiState by viewModel.listUiState.collectAsState()
   val searchQuery by viewModel.searchQuery.collectAsState()
   val currentSortOption by viewModel.currentSortOptions.collectAsState()
   val currentFilters by viewModel.filterOptions.collectAsState()
@@ -31,7 +31,7 @@ fun MovieListScreen(
   }
 
   GenericListScreenContent(
-    uiState = uiState,
+    listUiState = uiState,
     searchQuery = searchQuery,
     currentSortOptions = currentSortOption,
     currentFilters = currentFilters,

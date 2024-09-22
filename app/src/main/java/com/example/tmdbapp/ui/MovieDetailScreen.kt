@@ -14,8 +14,8 @@ fun MovieDetailScreen(
   viewModel: MovieViewModel,
   onBackPress: () -> Unit,
 ) {
-  val movieState by viewModel.movieDetailState.collectAsState()
-  val aiResponseState by viewModel.aiResponseState.collectAsState()
+  val movieState by viewModel.detailUiState.collectAsState()
+  val aiResponseState by viewModel.aiResponseUiState.collectAsState()
 
   DisposableEffect(Unit) {
     onDispose {
@@ -25,26 +25,26 @@ fun MovieDetailScreen(
 
   Box(modifier = Modifier.fillMaxSize()) {
     when (movieState) {
-      is MovieDetailState.Loading -> {
+      is DetailUiState.Loading -> {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
           CircularProgressIndicator()
         }
       }
-      is MovieDetailState.Success -> {
-        val movie = (movieState as MovieDetailState.Success<Movie>).data
+      is DetailUiState.Success -> {
+        val movie = (movieState as DetailUiState.Success<Movie>).data
         MovieDetailContent(
           movie = movie,
           onBackPress = onBackPress,
           onFavoriteClick = { viewModel.toggleFavorite(movie) },
           onDownloadClick = viewModel::downloadImage,
           onAskAIClick = { viewModel.askAIAboutMovie(movie) },
-          aiResponseState = aiResponseState,
+          aiResponseUiState = aiResponseState,
           // Remove the aiResponse parameter
         )
       }
-      is MovieDetailState.Error -> {
+      is DetailUiState.Error -> {
         ErrorContent(
-          error = (movieState as MovieDetailState.Error).error,
+          error = (movieState as DetailUiState.Error).error,
           onRetry = { viewModel.retryFetchMovieDetails() },
           onBackPress = onBackPress,
         )
@@ -52,10 +52,10 @@ fun MovieDetailScreen(
     }
 
     ShimmeringOverlay(
-      isVisible = aiResponseState is AIResponseState.Loading,
+      isVisible = aiResponseState is AIResponseUiState.Loading,
     )
 
-    if (aiResponseState is AIResponseState.Loading) {
+    if (aiResponseState is AIResponseUiState.Loading) {
       Box(
         modifier =
           Modifier

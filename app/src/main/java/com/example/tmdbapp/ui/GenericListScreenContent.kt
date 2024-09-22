@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun <T : Any> GenericListScreenContent(
-  uiState: UiState<List<T>>,
+  listUiState: ListUiState<List<T>>,
   searchQuery: String,
   currentSortOptions: SortOptions,
   currentFilters: FilterOptions,
@@ -109,15 +109,15 @@ fun <T : Any> GenericListScreenContent(
           .padding(paddingValues)
           .pullRefresh(pullRefreshState),
     ) {
-      when (uiState) {
-        is UiState.Loading -> {
+      when (listUiState) {
+        is ListUiState.Loading -> {
           Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
           }
         }
 
-        is UiState.Success -> {
-          val items = uiState.data
+        is ListUiState.Success -> {
+          val items = listUiState.data
           when (viewType) {
             Constants.VIEW_TYPE_GRID ->
               ItemGridListUi(
@@ -153,9 +153,9 @@ fun <T : Any> GenericListScreenContent(
           }
         }
 
-        is UiState.Error ->
+        is ListUiState.Error ->
           GenericListErrorView(
-            errorState = uiState,
+            errorState = listUiState,
             onRetry = { loadMoreItems() }, // Provide the retry callback
             onSettingsClick = onSettingsClick,
           )
@@ -167,7 +167,7 @@ fun <T : Any> GenericListScreenContent(
       )
       Box(modifier = Modifier.matchParentSize()) {
         ShimmeringOverlay(
-          isVisible = isRefreshing || uiState is UiState.Loading,
+          isVisible = isRefreshing || listUiState is ListUiState.Loading,
         )
       }
     }
