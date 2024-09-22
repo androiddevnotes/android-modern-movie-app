@@ -44,15 +44,15 @@ fun FavoritesScreenUi(
         verticalArrangement = Arrangement.spacedBy(Constants.PADDING_SMALL),
         modifier = Modifier.padding(paddingValues),
       ) {
-        items(favorites) { movie ->
+        items(favorites) { item ->
           SimpleItemUi(
-            title = movie.title,
-            overview = movie.overview,
-            posterPath = movie.posterPath,
-            voteAverage = movie.voteAverage,
-            isFavorite = movie.isFavorite,
-            modifier = Modifier.clickable { onItemClick(movie.id) },
-            onFavoriteClick = { viewModel.toggleFavorite(movie) },
+            title = item.title,
+            overview = item.overview,
+            posterPath = item.posterPath,
+            voteAverage = item.voteAverage,
+            isFavorite = item.isFavorite,
+            modifier = Modifier.clickable { onItemClick(item.id) },
+            onFavoriteClick = { viewModel.toggleFavorite(item) },
           )
         }
       }

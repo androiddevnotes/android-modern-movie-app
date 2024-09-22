@@ -52,7 +52,7 @@ fun DetailTopBarUi(
       IconButton(onClick = onAskAIClick) {
         Image(
           painter = painterResource(id = R.drawable.cool_shape_ai),
-          contentDescription = stringResource(R.string.ask_ai_about_movie),
+          contentDescription = stringResource(R.string.ask_ai_about_item),
           modifier = Modifier.size(Constants.ICON_SIZE_SMALL),
         )
       }

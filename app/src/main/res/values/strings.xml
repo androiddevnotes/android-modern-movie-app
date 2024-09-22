@@ -55,7 +55,7 @@
     <string name="server_error">Server error occurred. Please try again later.</string>
     <string name="parse_error">Error parsing data. Please try again.</string>
     <string name="unknown_error">An unknown error occurred. Please try again.</string>
-    <string name="ask_ai_about_movie">Ask AI about this movie</string>
+    <string name="ask_ai_about_item">Ask AI about this movie</string>
     <string name="retry_ai_request">Retry AI Request</string>
     <string name="settings">Settings</string>
     <string name="retry">Retry</string>
