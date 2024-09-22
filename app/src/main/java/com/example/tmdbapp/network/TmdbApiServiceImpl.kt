@@ -9,7 +9,6 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import timber.log.Timber
 
 class TmdbApiServiceImpl(
   private val client: HttpClient,
@@ -34,7 +33,6 @@ class TmdbApiServiceImpl(
     return try {
       json.decodeFromString<T>(response)
     } catch (e: SerializationException) {
-      Timber.e("Deserialization error: ${e.message}")
       val errorResponse = json.decodeFromString<ErrorResponse>(response)
       throw Exception(errorResponse.statusMessage)
     }
