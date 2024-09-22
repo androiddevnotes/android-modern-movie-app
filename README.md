@@ -5,6 +5,9 @@
 This Android app interacts with The Movie Database (TMDB) API. Every line of code has been generated
 or suggested by AI using a large language model.
 
+Alpha = TMDB
+Beta = OpenAI
+
 ## Current state
 
 The codebase evolves as the AI generates more and more code.
