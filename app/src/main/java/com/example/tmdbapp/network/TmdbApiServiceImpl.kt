@@ -2,10 +2,14 @@ package com.example.tmdbapp.network
 
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.network.responses.tmdb.*
+import com.example.tmdbapp.repository.ErrorResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
+import timber.log.Timber
 
 class TmdbApiServiceImpl(
   private val client: HttpClient,
@@ -15,15 +19,26 @@ class TmdbApiServiceImpl(
     apiKey: String,
     page: Int,
     additionalParams: Map<String, Any?> = emptyMap(),
-  ): T =
-    client
-      .get(endpoint) {
-        parameter("api_key", apiKey)
-        parameter("page", page)
-        additionalParams.forEach { (key, value) ->
-          if (value != null) parameter(key, value)
-        }
-      }.body()
+  ): T {
+    val response =
+      client
+        .get(endpoint) {
+          parameter("api_key", apiKey)
+          parameter("page", page)
+          additionalParams.forEach { (key, value) ->
+            if (value != null) parameter(key, value)
+          }
+        }.body<String>()
+
+    val json = Json { ignoreUnknownKeys = true }
+    return try {
+      json.decodeFromString<T>(response)
+    } catch (e: SerializationException) {
+      Timber.e("Deserialization error: ${e.message}")
+      val errorResponse = json.decodeFromString<ErrorResponse>(response)
+      throw Exception(errorResponse.statusMessage)
+    }
+  }
 
   override suspend fun discoverMovies(
     apiKey: String,
@@ -56,7 +71,15 @@ class TmdbApiServiceImpl(
     apiKey: String,
   ): Movie = get("movie/$movieId", apiKey, 1)
 
-  override suspend fun createRequestToken(apiKey: String): RequestTokenResponse = get("authentication/token/new", apiKey, 1)
+  override suspend fun createRequestToken(apiKey: String): RequestTokenResponse {
+    val response: RequestTokenResponse? =
+      try {
+        get("authentication/token/new", apiKey, 1)
+      } catch (e: Exception) {
+        null
+      }
+    return response ?: throw Exception("Failed to parse RequestTokenResponse")
+  }
 
   override suspend fun createSession(
     apiKey: String,

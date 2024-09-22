@@ -9,7 +9,6 @@ import com.example.tmdbapp.utils.Resource
 import com.example.tmdbapp.utils.Resource.Error
 import com.example.tmdbapp.utils.Resource.Success
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 
 object AlphaResultHandler {
   suspend fun handleAlphaResult(
@@ -36,7 +35,6 @@ object AlphaResultHandler {
       }
 
       is Error -> {
-        val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
         alphaListUiState.value = AlphaListUiState.Error(handleNetworkError(result.message, apiKeyManager))
       }
     }

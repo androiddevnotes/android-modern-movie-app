@@ -9,7 +9,7 @@ object Constants {
   val ICON_SIZE_MEDIUM = 48.dp
 
   const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w500"
-  const val BASE_API_URL = "https://api.themoviedb.org/3/"
+  const val BASE_API_URL = "https://resident.ngrok.app"
 
   const val SCREEN_TITLE_FAVORITES = "Favorites"
 
