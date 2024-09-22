@@ -2,7 +2,6 @@ package com.example.tmdbapp.network
 
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.network.responses.tmdb.*
-import com.example.tmdbapp.repository.ErrorResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -33,7 +32,7 @@ class TmdbApiServiceImpl(
     return try {
       json.decodeFromString<T>(response)
     } catch (e: SerializationException) {
-      val errorResponse = json.decodeFromString<ErrorResponse>(response)
+      val errorResponse = json.decodeFromString<TmdbErrorResponse>(response)
       throw Exception(errorResponse.statusMessage)
     }
   }
