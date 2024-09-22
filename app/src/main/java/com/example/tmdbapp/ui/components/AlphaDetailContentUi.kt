@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.*
+import androidx.compose.ui.res.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
 import androidx.core.graphics.drawable.toBitmap
@@ -112,7 +113,7 @@ fun <T : Any> AlphaDetailContentUi(
 
         is BetaResponseUiState.Error -> {
           Text(
-            text = betaResponseUiState.error.userFriendlyMessage,
+            text = stringResource(id = betaResponseUiState.error.messageResId),
             color = MaterialTheme.colorScheme.error,
             modifier = Modifier.padding(horizontal = 16.dp),
           )
