@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.*
 import com.example.tmdbapp.ui.theme.*
 
 @Composable
-fun BetaResponseCardUi(
+fun BetaPieceCardUi(
   response: String,
   visible: Boolean = true,
 ) {

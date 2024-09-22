@@ -16,7 +16,7 @@ import androidx.palette.graphics.Palette
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.example.tmdbapp.models.BetaAiUiState
+import com.example.tmdbapp.models.BetaPieceUiState
 import com.example.tmdbapp.utils.Constants
 import kotlinx.coroutines.launch
 
@@ -27,7 +27,7 @@ fun <T : Any> AlphaDetailContentUi(
   onFavoriteClick: () -> Unit,
   onDownloadClick: (String?, Context) -> Unit,
   onAskAiClick: () -> Unit,
-  betaAiUiState: BetaAiUiState<String>,
+  betaPieceUiState: BetaPieceUiState<String>,
   getItemTitle: (T) -> String,
   getItemOverview: (T) -> String,
   getItemPosterPath: (T) -> String?,
@@ -92,8 +92,8 @@ fun <T : Any> AlphaDetailContentUi(
       )
 
       Spacer(modifier = Modifier.height(16.dp))
-      when (betaAiUiState) {
-        is BetaAiUiState.Loading -> {
+      when (betaPieceUiState) {
+        is BetaPieceUiState.Loading -> {
           Box(
             modifier =
               Modifier
@@ -109,15 +109,15 @@ fun <T : Any> AlphaDetailContentUi(
           }
         }
 
-        is BetaAiUiState.Error -> {
-          ErrorTextUi(error = betaAiUiState.error)
+        is BetaPieceUiState.Error -> {
+          ErrorTextUi(error = betaPieceUiState.error)
         }
 
-        is BetaAiUiState.Success -> {
-          BetaResponseCardUi(response = betaAiUiState.data)
+        is BetaPieceUiState.Success -> {
+          BetaPieceCardUi(response = betaPieceUiState.data)
         }
 
-        BetaAiUiState.Idle -> {
+        BetaPieceUiState.Idle -> {
         }
       }
     }

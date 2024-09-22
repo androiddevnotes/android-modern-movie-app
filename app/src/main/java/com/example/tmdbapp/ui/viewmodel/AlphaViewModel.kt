@@ -16,8 +16,8 @@ class AlphaViewModel(
 ) : AndroidViewModel(application) {
   private var searchJob: Job? = null
 
-  private val _betaAiUiState =
-    MutableStateFlow<BetaAiUiState<String>>(BetaAiUiState.Idle)
+  private val _betaPieceUiState =
+    MutableStateFlow<BetaPieceUiState<String>>(BetaPieceUiState.Idle)
 
   internal val _alphaDetailUiState =
     MutableStateFlow<AlphaDetailUiState<Movie>>(AlphaDetailUiState.Loading)
@@ -43,7 +43,7 @@ class AlphaViewModel(
   internal val apiKeyManager = ApiKeyManager(application)
   internal val repository = Repository(application)
   internal val sessionManagerPreferencesDataStore = SessionManagerPreferencesDataStore(application)
-  val betaAiUiState: StateFlow<BetaAiUiState<String>> = _betaAiUiState.asStateFlow()
+  val betaPieceUiState: StateFlow<BetaPieceUiState<String>> = _betaPieceUiState.asStateFlow()
   val currentSortOptions: StateFlow<SortOptions> = _currentSortOptions
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
   val alphaAuthUiState: StateFlow<AlphaAuthUiState<String>> = _alphaAuthUiState
@@ -60,19 +60,19 @@ class AlphaViewModel(
 
   fun askAIAboutItem(movie: Movie) {
     viewModelScope.launch {
-      _betaAiUiState.value = BetaAiUiState.Loading
+      _betaPieceUiState.value = BetaPieceUiState.Loading
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
       val result = repository.askOpenAi(prompt)
       BetaResultHandler.handleBetaResult(
         result,
-        _betaAiUiState,
+        _betaPieceUiState,
         apiKeyManager,
       )
     }
   }
 
   fun clearAIResponse() {
-    _betaAiUiState.value = BetaAiUiState.Idle
+    _betaPieceUiState.value = BetaPieceUiState.Idle
   }
 
   fun clearScrollToIndex() {

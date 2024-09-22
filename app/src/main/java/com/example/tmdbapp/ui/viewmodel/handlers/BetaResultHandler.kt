@@ -1,6 +1,6 @@
 package com.example.tmdbapp.ui.viewmodel.handlers
 
-import com.example.tmdbapp.models.BetaAiUiState
+import com.example.tmdbapp.models.BetaPieceUiState
 import com.example.tmdbapp.network.handleNetworkError
 import com.example.tmdbapp.utils.ApiKeyManager
 import com.example.tmdbapp.utils.Resource
@@ -10,20 +10,20 @@ import timber.log.Timber
 object BetaResultHandler {
   suspend fun handleBetaResult(
     result: Resource<String>,
-    betaAiUiState: MutableStateFlow<BetaAiUiState<String>>,
+    betaPieceUiState: MutableStateFlow<BetaPieceUiState<String>>,
     apiKeyManager: ApiKeyManager,
   ) {
     when (result) {
       is Resource.Success -> {
         result.data?.let { response ->
-          betaAiUiState.value = BetaAiUiState.Success(response)
+          betaPieceUiState.value = BetaPieceUiState.Success(response)
         } ?: run {
-          betaAiUiState.value = BetaAiUiState.Error(handleNetworkError("No data received", apiKeyManager))
+          betaPieceUiState.value = BetaPieceUiState.Error(handleNetworkError("No data received", apiKeyManager))
         }
       }
       is Resource.Error -> {
         Timber.e("Error fetching beta result: ${result.message}")
-        betaAiUiState.value = BetaAiUiState.Error(handleNetworkError(result.message, apiKeyManager))
+        betaPieceUiState.value = BetaPieceUiState.Error(handleNetworkError(result.message, apiKeyManager))
       }
     }
   }
