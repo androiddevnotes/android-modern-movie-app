@@ -9,6 +9,7 @@ import androidx.navigation.compose.*
 import com.example.tmdbapp.ui.screens.*
 import com.example.tmdbapp.ui.theme.*
 import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
+import com.example.tmdbapp.ui.viewmodel.fetchMovieDetails
 import com.example.tmdbapp.utils.ApiKeyManager
 
 @Composable

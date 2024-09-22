@@ -20,7 +20,7 @@ class AlphaViewModel(
   private val _betaResponseUiState =
     MutableStateFlow<BetaResponseUiState<String>>(BetaResponseUiState.Idle)
 
-  private val _alphaDetailUiState =
+  internal val _alphaDetailUiState =
     MutableStateFlow<AlphaDetailUiState<Movie>>(AlphaDetailUiState.Loading)
 
   private val _favorites = MutableStateFlow<List<Movie>>(emptyList())
@@ -85,23 +85,6 @@ class AlphaViewModel(
 
   fun clearScrollToIndex() {
     _scrollToIndex.value = null
-  }
-
-  fun fetchMovieDetails(movieId: Int) {
-    viewModelScope.launch {
-      _alphaDetailUiState.value = AlphaDetailUiState.Loading
-      try {
-        val movie = repository.getMovieDetails(movieId)
-        if (movie != null) {
-          _alphaDetailUiState.value = AlphaDetailUiState.Success(movie)
-        } else {
-          _alphaDetailUiState.value = AlphaDetailUiState.Error(AppError.Unknown, movieId)
-        }
-      } catch (e: Exception) {
-        _alphaDetailUiState.value =
-          AlphaDetailUiState.Error(handleNetworkError(e.message, apiKeyManager), movieId)
-      }
-    }
   }
 
   fun isFavorite(movieId: Int): Boolean = favorites.value.any { it.id == movieId }

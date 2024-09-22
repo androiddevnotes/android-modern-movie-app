@@ -4,6 +4,7 @@ import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.network.responses.tmdb.*
 import com.example.tmdbapp.utils.Resource
 import kotlinx.coroutines.flow.*
+import timber.log.Timber
 
 suspend fun Repository.addFavoriteStatus(movies: List<Movie>): List<Movie> {
   val favorites = favoritePreferencesDatastore.getAllFavorites().first()
@@ -15,7 +16,13 @@ suspend fun Repository.addFavoriteStatus(movies: List<Movie>): List<Movie> {
 fun Repository.getFavoriteMovies(): Flow<List<Movie>> =
   favoritePreferencesDatastore.getAllFavorites().map { favoriteIds ->
     favoriteIds.mapNotNull { movieId ->
-      getMovieDetails(movieId)
+      when (val result = getMovieDetails(movieId)) {
+        is Resource.Success -> result.data
+        is Resource.Error -> {
+          Timber.e("Error fetching movie details for ID $movieId: ${result.message}")
+          null
+        }
+      }
     }
   }
 
@@ -33,13 +40,11 @@ suspend fun Repository.searchMovies(
     response.copy(results = addFavoriteStatus(response.results))
   }
 
-suspend fun Repository.getMovieDetails(movieId: Int): Movie? =
-  try {
+suspend fun Repository.getMovieDetails(movieId: Int): Resource<Movie> =
+  safeApiCall {
     val response = tmdbApi.getMovieDetails(movieId, apiKeyManager.tmdbApiKeyFlow.first())
     val isFavorite = favoritePreferencesDatastore.isFavorite(response.id).first()
     response.copy(isFavorite = isFavorite)
-  } catch (e: Exception) {
-    null
   }
 
 suspend fun Repository.createRequestToken(): Resource<String> =

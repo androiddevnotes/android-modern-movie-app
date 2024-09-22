@@ -1,5 +1,6 @@
 package com.example.tmdbapp.ui.viewmodel.handlers
 
+import com.example.tmdbapp.models.AlphaDetailUiState
 import com.example.tmdbapp.models.AlphaListUiState
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.network.handleNetworkError
@@ -39,5 +40,25 @@ object AlphaResultHandler {
       }
     }
     updateIsLoading(false)
+  }
+
+  suspend fun handleAlphaDetailResult(
+    result: Resource<Movie>,
+    alphaDetailUiState: MutableStateFlow<AlphaDetailUiState<Movie>>,
+    apiKeyManager: ApiKeyManager,
+    movieId: Int,
+  ) {
+    when (result) {
+      is Resource.Success -> {
+        result.data?.let { movie ->
+          alphaDetailUiState.value = AlphaDetailUiState.Success(movie)
+        } ?: run {
+          alphaDetailUiState.value = AlphaDetailUiState.Error(handleNetworkError("No data received", apiKeyManager), movieId)
+        }
+      }
+      is Resource.Error -> {
+        alphaDetailUiState.value = AlphaDetailUiState.Error(handleNetworkError(result.message, apiKeyManager), movieId)
+      }
+    }
   }
 }
