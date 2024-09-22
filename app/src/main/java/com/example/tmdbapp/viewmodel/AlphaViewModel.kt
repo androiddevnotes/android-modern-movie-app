@@ -8,6 +8,7 @@ import com.example.tmdbapp.network.handleNetworkError
 import com.example.tmdbapp.repository.*
 import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.utils.ApiKeyManager
+import com.example.tmdbapp.utils.OpenAiResultHandler
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -63,11 +64,17 @@ class AlphaViewModel(
       _betaResponseUiState.value = BetaResponseUiState.Loading
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
       try {
-        val response = repository.askOpenAi(prompt)
-        _betaResponseUiState.value = BetaResponseUiState.Success(response)
+        val result = repository.askOpenAi(prompt)
+        OpenAiResultHandler.handleOpenAiResult(
+          result,
+          _betaResponseUiState,
+          apiKeyManager,
+        )
       } catch (e: Exception) {
         _betaResponseUiState.value =
-          BetaResponseUiState.Error(e.localizedMessage ?: "Unknown error occurred")
+          BetaResponseUiState.Error(
+            handleNetworkError(e.localizedMessage, apiKeyManager),
+          )
       }
     }
   }

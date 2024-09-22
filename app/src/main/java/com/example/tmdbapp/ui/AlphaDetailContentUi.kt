@@ -113,7 +113,7 @@ fun <T : Any> AlphaDetailContentUi(
 
         is BetaResponseUiState.Error -> {
           Text(
-            text = betaResponseUiState.message,
+            text = betaResponseUiState.error.userFriendlyMessage,
             color = MaterialTheme.colorScheme.error,
             modifier = Modifier.padding(horizontal = 16.dp),
           )

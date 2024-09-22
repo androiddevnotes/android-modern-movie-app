@@ -144,5 +144,8 @@ class Repository(
     }
   }
 
-  suspend fun askOpenAi(prompt: String): String = openAiApi.askOpenAi(apiKeyManager.getOpenAiApiKey(), prompt)
+  suspend fun askOpenAi(prompt: String): Resource<String> =
+    safeApiCall {
+      openAiApi.askOpenAi(apiKeyManager.getOpenAiApiKey(), prompt)
+    }
 }

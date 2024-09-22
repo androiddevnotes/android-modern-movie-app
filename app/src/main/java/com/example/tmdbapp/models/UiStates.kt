@@ -37,7 +37,7 @@ sealed class BetaResponseUiState<out T> {
   ) : BetaResponseUiState<T>()
 
   data class Error(
-    val message: String,
+    val error: AppError,
   ) : BetaResponseUiState<Nothing>()
 }
 
