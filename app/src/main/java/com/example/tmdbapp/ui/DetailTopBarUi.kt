@@ -22,6 +22,7 @@ fun DetailTopBarUi(
   onDownloadClick: () -> Unit,
   onAskAIClick: () -> Unit,
   isFavorite: Boolean,
+  textColor: Color,
 ) {
   TopAppBar(
     title = { },
@@ -30,7 +31,7 @@ fun DetailTopBarUi(
         Icon(
           Filled.ArrowBack,
           contentDescription = stringResource(R.string.back),
-          tint = Color.White,
+          tint = textColor,
         )
       }
     },
@@ -39,7 +40,7 @@ fun DetailTopBarUi(
         Icon(
           imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
           contentDescription = stringResource(R.string.favorite),
-          tint = if (isFavorite) MaterialTheme.colorScheme.primary else Color.White,
+          tint = if (isFavorite) MaterialTheme.colorScheme.primary else textColor,
         )
       }
       IconButton(onClick = onDownloadClick) {
@@ -47,6 +48,7 @@ fun DetailTopBarUi(
           painter = painterResource(id = R.drawable.my_shape_poly12),
           contentDescription = stringResource(R.string.download_image),
           modifier = Modifier.size(Constants.ICON_SIZE_SMALL),
+          colorFilter = ColorFilter.tint(textColor),
         )
       }
       IconButton(onClick = onAskAIClick) {
@@ -54,15 +56,16 @@ fun DetailTopBarUi(
           painter = painterResource(id = R.drawable.cool_shape_ai),
           contentDescription = stringResource(R.string.ask_ai_about_item),
           modifier = Modifier.size(Constants.ICON_SIZE_SMALL),
+          colorFilter = ColorFilter.tint(textColor),
         )
       }
     },
     colors =
       TopAppBarDefaults.topAppBarColors(
         containerColor = Color.Transparent,
-        titleContentColor = Color.White,
-        navigationIconContentColor = Color.White,
-        actionIconContentColor = Color.White,
+        titleContentColor = textColor,
+        navigationIconContentColor = textColor,
+        actionIconContentColor = textColor,
       ),
   )
 }

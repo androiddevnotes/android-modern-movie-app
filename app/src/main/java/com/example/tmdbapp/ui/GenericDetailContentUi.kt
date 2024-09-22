@@ -5,13 +5,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
+import androidx.core.graphics.drawable.toBitmap
+import androidx.palette.graphics.Palette
+import coil.ImageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.example.tmdbapp.models.AIResponseUiState
 import com.example.tmdbapp.ui.components.AiResponseCardUi
+import com.example.tmdbapp.utils.Constants
+import kotlinx.coroutines.launch
 
 @Composable
 fun <T : Any> GenericDetailContentUi(
@@ -30,6 +38,33 @@ fun <T : Any> GenericDetailContentUi(
 ) {
   val context = LocalContext.current
   val scrollState = rememberScrollState()
+  val coroutineScope = rememberCoroutineScope()
+
+  var dominantColor by remember { mutableStateOf(Color.Transparent) }
+  var textColor by remember { mutableStateOf(Color.White) }
+
+  LaunchedEffect(getItemPosterPath(item)) {
+    coroutineScope.launch {
+      getItemPosterPath(item)?.let { posterPath ->
+        val imageUrl = "${Constants.BASE_IMAGE_URL}$posterPath"
+        val loader = ImageLoader(context)
+        val request =
+          ImageRequest
+            .Builder(context)
+            .data(imageUrl)
+            .allowHardware(false)
+            .build()
+
+        val result = (loader.execute(request) as? SuccessResult)?.drawable
+        result?.let {
+          val bitmap = it.toBitmap()
+          val palette = Palette.from(bitmap).generate()
+          dominantColor = Color(palette.getDominantColor(android.graphics.Color.TRANSPARENT))
+          textColor = if (dominantColor.luminance() > 0.5f) Color.Black else Color.White
+        }
+      }
+    }
+  }
 
   Box(modifier = Modifier.fillMaxSize()) {
     DetailBackgroundImage(getItemPosterPath(item))
@@ -46,6 +81,7 @@ fun <T : Any> GenericDetailContentUi(
         onDownloadClick = { onDownloadClick(getItemPosterPath(item), context) },
         onAskAIClick = onAskAIClick,
         isFavorite = isItemFavorite(item),
+        textColor = textColor,
       )
       Spacer(modifier = Modifier.weight(1f))
       GenericDetailInfo(
@@ -53,6 +89,7 @@ fun <T : Any> GenericDetailContentUi(
         overview = getItemOverview(item),
         releaseDate = getItemReleaseDate(item),
         voteAverage = getItemVoteAverage(item),
+        textColor = textColor,
       )
 
       Spacer(modifier = Modifier.height(16.dp))
@@ -99,6 +136,7 @@ private fun GenericDetailInfo(
   overview: String,
   releaseDate: String?,
   voteAverage: Float,
+  textColor: Color,
 ) {
   Column(
     modifier =
@@ -109,7 +147,7 @@ private fun GenericDetailInfo(
     Text(
       text = title,
       style = MaterialTheme.typography.headlineLarge,
-      color = MaterialTheme.colorScheme.onSurface,
+      color = textColor,
       fontWeight = FontWeight.Bold,
     )
     Spacer(modifier = Modifier.height(8.dp))
@@ -117,27 +155,27 @@ private fun GenericDetailInfo(
       Text(
         text = "Release Date: $date",
         style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        color = textColor.copy(alpha = 0.7f),
       )
       Spacer(modifier = Modifier.height(8.dp))
     }
     Text(
       text = "Rating: $voteAverage",
       style = MaterialTheme.typography.bodyMedium,
-      color = MaterialTheme.colorScheme.onSurfaceVariant,
+      color = textColor.copy(alpha = 0.7f),
     )
     Spacer(modifier = Modifier.height(16.dp))
     Text(
       text = "Overview",
       style = MaterialTheme.typography.titleMedium,
-      color = MaterialTheme.colorScheme.onSurface,
+      color = textColor,
       fontWeight = FontWeight.Bold,
     )
     Spacer(modifier = Modifier.height(8.dp))
     Text(
       text = overview,
       style = MaterialTheme.typography.bodyMedium,
-      color = MaterialTheme.colorScheme.onSurfaceVariant,
+      color = textColor.copy(alpha = 0.9f),
     )
   }
 }

@@ -93,6 +93,7 @@ dependencies {
   implementation(libs.ktor.serialization.kotlinx.json)
   detektPlugins(libs.detekt.formatting)
   implementation(libs.androidx.datastore.preferences)
+  implementation(libs.androidx.palette.ktx)
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
