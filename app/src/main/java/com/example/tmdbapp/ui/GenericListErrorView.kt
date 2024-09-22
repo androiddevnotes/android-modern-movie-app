@@ -8,7 +8,7 @@ import androidx.compose.ui.res.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.utils.Constants
-import com.example.tmdbapp.utils.MovieError
+import com.example.tmdbapp.utils.AppError
 import com.example.tmdbapp.viewmodel.UiState
 
 @Composable
@@ -22,7 +22,7 @@ fun GenericListErrorView(
       Text(
         text =
           when (val error = errorState.error) {
-            is MovieError.ApiError -> stringResource(error.messageResId, error.errorMessage)
+            is AppError.ApiError -> stringResource(error.messageResId, error.errorMessage)
             else -> stringResource(error.messageResId)
           },
         style = MaterialTheme.typography.bodyLarge,
@@ -36,7 +36,7 @@ fun GenericListErrorView(
         Text("Retry")
       }
 
-      if (errorState.error is MovieError.ApiKeyMissing) {
+      if (errorState.error is AppError.ApiKeyMissing) {
         Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
         Button(onClick = onSettingsClick) {
           Text("Go to Settings")

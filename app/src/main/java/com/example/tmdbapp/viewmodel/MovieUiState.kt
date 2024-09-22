@@ -1,10 +1,10 @@
 package com.example.tmdbapp.viewmodel
 
-import com.example.tmdbapp.utils.MovieError
+import com.example.tmdbapp.utils.AppError
 
 sealed class UiState<out T> {
   data class Error(
-    val error: MovieError,
+    val error: AppError,
   ) : UiState<Nothing>()
 
   data class Success<T>(

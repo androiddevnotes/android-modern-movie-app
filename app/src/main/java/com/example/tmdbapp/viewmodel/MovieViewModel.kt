@@ -57,7 +57,7 @@ class MovieViewModel(
         if (movie != null) {
           _movieDetailState.value = MovieDetailState.Success(movie)
         } else {
-          _movieDetailState.value = MovieDetailState.Error(MovieError.Unknown, movieId)
+          _movieDetailState.value = MovieDetailState.Error(AppError.Unknown, movieId)
         }
       } catch (e: Exception) {
         _movieDetailState.value = MovieDetailState.Error(handleError(e.message, apiKeyManager), movieId)
@@ -215,7 +215,7 @@ sealed class MovieDetailState {
   ) : MovieDetailState()
 
   data class Error(
-    val error: MovieError,
+    val error: AppError,
     val movieId: Int,
   ) : MovieDetailState()
 }

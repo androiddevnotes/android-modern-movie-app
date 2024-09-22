@@ -8,11 +8,11 @@ import androidx.compose.ui.res.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.R
-import com.example.tmdbapp.utils.MovieError
+import com.example.tmdbapp.utils.AppError
 
 @Composable
 fun ErrorContent(
-  error: MovieError,
+  error: AppError,
   onRetry: () -> Unit,
   onBackPress: () -> Unit,
 ) {
