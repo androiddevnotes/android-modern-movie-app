@@ -1,6 +1,5 @@
 package com.example.tmdbapp.viewmodel
 
-import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.utils.AppError
 
 sealed class UiState<out T> {
@@ -15,6 +14,19 @@ sealed class UiState<out T> {
   data object Loading : UiState<Nothing>()
 }
 
+sealed class MovieDetailState<out T> {
+  data object Loading : MovieDetailState<Nothing>()
+
+  data class Success<T>(
+    val data: T,
+  ) : MovieDetailState<T>()
+
+  data class Error(
+    val error: AppError,
+    val movieId: Int,
+  ) : MovieDetailState<Nothing>()
+}
+
 sealed class AIResponseState {
   data object Idle : AIResponseState()
 
@@ -25,19 +37,6 @@ sealed class AIResponseState {
   data class Error(
     val message: String,
   ) : AIResponseState()
-}
-
-sealed class MovieDetailState {
-  data object Loading : MovieDetailState()
-
-  data class Success(
-    val movie: Movie,
-  ) : MovieDetailState()
-
-  data class Error(
-    val error: AppError,
-    val movieId: Int,
-  ) : MovieDetailState()
 }
 
 sealed class AuthState {

@@ -46,8 +46,8 @@ class MovieViewModel(
     checkAuthenticationStatus()
   }
 
-  private val _movieDetailState = MutableStateFlow<MovieDetailState>(MovieDetailState.Loading)
-  val movieDetailState: StateFlow<MovieDetailState> = _movieDetailState.asStateFlow()
+  private val _movieDetailState = MutableStateFlow<MovieDetailState<Movie>>(MovieDetailState.Loading)
+  val movieDetailState: StateFlow<MovieDetailState<Movie>> = _movieDetailState.asStateFlow()
 
   fun fetchMovieDetails(movieId: Int) {
     viewModelScope.launch {
@@ -126,7 +126,7 @@ class MovieViewModel(
       val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
 
       _movieDetailState.update { currentState ->
-        if (currentState is MovieDetailState.Success && currentState.movie.id == updatedMovie.id) {
+        if (currentState is MovieDetailState.Success && currentState.data.id == updatedMovie.id) {
           MovieDetailState.Success(updatedMovie)
         } else {
           currentState

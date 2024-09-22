@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
+import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.ui.components.*
 import com.example.tmdbapp.viewmodel.*
 import com.example.tmdbapp.viewmodel.AIResponseState.Loading
@@ -33,7 +34,7 @@ fun MovieDetailScreen(
         }
       }
       is MovieDetailState.Success -> {
-        val movie = (movieState as MovieDetailState.Success).movie
+        val movie = (movieState as MovieDetailState.Success<Movie>).data
         MovieDetailContent(
           movie = movie,
           onBackPress = onBackPress,
@@ -44,9 +45,9 @@ fun MovieDetailScreen(
           aiResponseState = aiResponseState,
         )
       }
-      is Error -> {
+      is MovieDetailState.Error -> {
         ErrorContent(
-          error = (movieState as Error).error,
+          error = (movieState as MovieDetailState.Error).error,
           onRetry = { viewModel.retryFetchMovieDetails() },
           onBackPress = onBackPress,
         )
