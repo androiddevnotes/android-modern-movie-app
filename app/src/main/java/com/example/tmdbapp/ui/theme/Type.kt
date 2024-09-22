@@ -14,7 +14,7 @@ val provider =
     certificates = R.array.com_google_android_gms_fonts_certs,
   )
 
-val jacquardaBastardaFont = GoogleFont("Jacquarda Bastarda 9")
+val jacquardaBastardaFont = GoogleFont("Questrial")
 
 val JacquardaBastardaFontFamily =
   FontFamily(

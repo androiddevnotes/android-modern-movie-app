@@ -25,16 +25,7 @@ fun ErrorContentUi(
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    Text(
-      text =
-        when (error) {
-          is AppError.ApiError -> stringResource(error.messageResId, error.errorMessage)
-          else -> stringResource(error.messageResId)
-        },
-      style = MaterialTheme.typography.headlineSmall,
-      textAlign = TextAlign.Center,
-      color = MaterialTheme.colorScheme.error,
-    )
+    ErrorTextUi(error)
     Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
     Button(onClick = onRetry) {
       Text(stringResource(R.string.retry))

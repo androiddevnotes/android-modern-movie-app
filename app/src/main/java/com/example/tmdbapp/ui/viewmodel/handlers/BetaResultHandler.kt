@@ -1,27 +1,29 @@
 package com.example.tmdbapp.ui.viewmodel.handlers
 
-import com.example.tmdbapp.models.BetaResponseUiState
+import com.example.tmdbapp.models.BetaAiUiState
 import com.example.tmdbapp.network.handleNetworkError
 import com.example.tmdbapp.utils.ApiKeyManager
 import com.example.tmdbapp.utils.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
+import timber.log.Timber
 
 object BetaResultHandler {
   suspend fun handleBetaResult(
     result: Resource<String>,
-    betaResponseUiState: MutableStateFlow<BetaResponseUiState<String>>,
+    betaAiUiState: MutableStateFlow<BetaAiUiState<String>>,
     apiKeyManager: ApiKeyManager,
   ) {
     when (result) {
       is Resource.Success -> {
         result.data?.let { response ->
-          betaResponseUiState.value = BetaResponseUiState.Success(response)
+          betaAiUiState.value = BetaAiUiState.Success(response)
         } ?: run {
-          betaResponseUiState.value = BetaResponseUiState.Error(handleNetworkError("No data received", apiKeyManager))
+          betaAiUiState.value = BetaAiUiState.Error(handleNetworkError("No data received", apiKeyManager))
         }
       }
       is Resource.Error -> {
-        betaResponseUiState.value = BetaResponseUiState.Error(handleNetworkError(result.message, apiKeyManager))
+        Timber.e("Error fetching beta result: ${result.message}")
+        betaAiUiState.value = BetaAiUiState.Error(handleNetworkError(result.message, apiKeyManager))
       }
     }
   }
