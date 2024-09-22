@@ -147,7 +147,12 @@ fun <T : Any> GenericListScreenContent(
           }
         }
 
-        is UiState.Error -> GenericListErrorView(uiState, viewModel, onSettingsClick)
+        is UiState.Error ->
+          GenericListErrorView(
+            errorState = uiState,
+            onRetry = { viewModel.loadMoreMovies() }, // Provide the retry callback
+            onSettingsClick = onSettingsClick,
+          )
       }
       PullRefreshIndicator(
         refreshing = isRefreshing,

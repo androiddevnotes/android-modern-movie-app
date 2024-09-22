@@ -142,7 +142,12 @@ fun MovieListScreenContent(
           }
         }
 
-        is UiState.Error -> MovieListErrorView<List<Movie>>(uiState, viewModel, onSettingsClick)
+        is UiState.Error ->
+          MovieListErrorView<List<Movie>>(
+            errorState = uiState,
+            onRetry = { viewModel.loadMoreMovies() }, // Provide the retry callback
+            onSettingsClick = onSettingsClick,
+          )
       }
       PullRefreshIndicator(
         refreshing = isRefreshing,

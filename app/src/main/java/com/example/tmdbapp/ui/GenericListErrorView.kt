@@ -9,13 +9,12 @@ import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.utils.MovieError
-import com.example.tmdbapp.viewmodel.MovieViewModel
 import com.example.tmdbapp.viewmodel.UiState
 
 @Composable
 fun GenericListErrorView(
   errorState: UiState.Error,
-  viewModel: MovieViewModel,
+  onRetry: () -> Unit, // Replaced MovieViewModel with onRetry callback
   onSettingsClick: () -> Unit,
 ) {
   Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -32,7 +31,8 @@ fun GenericListErrorView(
         modifier = Modifier.padding(horizontal = 16.dp),
       )
       Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
-      Button(onClick = { viewModel.loadMoreMovies() }) {
+      Button(onClick = onRetry) {
+        // Updated to use onRetry callback
         Text("Retry")
       }
 
