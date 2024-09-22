@@ -12,20 +12,20 @@ import com.example.tmdbapp.viewmodel.downloadImage
 
 @Composable
 fun MovieDetailScreenUi(
-  viewModel: MovieViewModel,
+  movieViewModel: MovieViewModel,
   onBackPress: () -> Unit,
 ) {
-  val movieState by viewModel.detailUiState.collectAsState()
-  val aiResponseState by viewModel.aiResponseUiState.collectAsState()
+  val detailUiState by movieViewModel.detailUiState.collectAsState()
+  val aiResponseState by movieViewModel.aiResponseUiState.collectAsState()
 
   DisposableEffect(Unit) {
     onDispose {
-      viewModel.clearAIResponse()
+      movieViewModel.clearAIResponse()
     }
   }
 
   Box(modifier = Modifier.fillMaxSize()) {
-    when (movieState) {
+    when (detailUiState) {
       is DetailUiState.Loading -> {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
           CircularProgressIndicator()
@@ -33,15 +33,15 @@ fun MovieDetailScreenUi(
       }
 
       is DetailUiState.Success -> {
-        val movie = (movieState as DetailUiState.Success<Movie>).data
+        val item = (detailUiState as DetailUiState.Success<Movie>).data
         GenericDetailContentUi(
-          item = movie,
+          item = item,
           onBackPress = onBackPress,
-          onFavoriteClick = { viewModel.toggleFavorite(movie) },
+          onFavoriteClick = { movieViewModel.toggleFavorite(item) },
           onDownloadClick = { posterPath, context ->
-            viewModel.downloadImage(posterPath, context)
+            movieViewModel.downloadImage(posterPath, context)
           },
-          onAskAIClick = { viewModel.askAIAboutMovie(movie) },
+          onAskAIClick = { movieViewModel.askAIAboutItem(item) },
           aiResponseUiState = aiResponseState,
           getItemTitle = { it.title },
           getItemOverview = { it.overview },
@@ -54,8 +54,8 @@ fun MovieDetailScreenUi(
 
       is DetailUiState.Error -> {
         ErrorContentUi(
-          error = (movieState as DetailUiState.Error).error,
-          onRetry = { viewModel.retryFetchMovieDetails() },
+          error = (detailUiState as DetailUiState.Error).error,
+          onRetry = { movieViewModel.retryFetchMovieDetails() },
           onBackPress = onBackPress,
         )
       }

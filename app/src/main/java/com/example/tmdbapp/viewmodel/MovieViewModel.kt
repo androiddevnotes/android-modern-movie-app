@@ -48,7 +48,7 @@ class MovieViewModel(
     checkAuthenticationStatus()
   }
 
-  fun askAIAboutMovie(movie: Movie) {
+  fun askAIAboutItem(movie: Movie) {
     viewModelScope.launch {
       _aiResponseUiState.value = AIResponseUiState.Loading
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."

@@ -57,7 +57,7 @@ fun NavGraph(
         movieViewModel.fetchMovieDetails(movieId)
       }
       MovieDetailScreenUi(
-        viewModel = movieViewModel,
+        movieViewModel = movieViewModel,
         onBackPress = { navController.popBackStack() },
       )
     }
