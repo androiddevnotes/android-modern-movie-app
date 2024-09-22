@@ -13,42 +13,44 @@ import com.example.tmdbapp.utils.Constants
 
 @Composable
 fun ErrorContent(
-    error: AppError,
-    onRetry: () -> Unit,
-    onBackPress: (() -> Unit)? = null,
-    onSettingsClick: (() -> Unit)? = null
+  error: AppError,
+  onRetry: () -> Unit,
+  onBackPress: (() -> Unit)? = null,
+  onSettingsClick: (() -> Unit)? = null,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(Constants.PADDING_MEDIUM),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = when (error) {
-                is AppError.ApiError -> stringResource(error.messageResId, error.errorMessage)
-                else -> stringResource(error.messageResId)
-            },
-            style = MaterialTheme.typography.headlineSmall,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.error
-        )
-        Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
-        Button(onClick = onRetry) {
-            Text(stringResource(R.string.retry))
-        }
-        if (error is AppError.ApiKeyMissing && onSettingsClick != null) {
-            Spacer(modifier = Modifier.height(Constants.PADDING_SMALL))
-            Button(onClick = onSettingsClick) {
-                Text(stringResource(R.string.settings))
-            }
-        }
-        if (onBackPress != null) {
-            Spacer(modifier = Modifier.height(Constants.PADDING_SMALL))
-            TextButton(onClick = onBackPress) {
-                Text(stringResource(R.string.back))
-            }
-        }
+  Column(
+    modifier =
+      Modifier
+        .fillMaxSize()
+        .padding(Constants.PADDING_MEDIUM),
+    verticalArrangement = Arrangement.Center,
+    horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    Text(
+      text =
+        when (error) {
+          is AppError.ApiError -> stringResource(error.messageResId, error.errorMessage)
+          else -> stringResource(error.messageResId)
+        },
+      style = MaterialTheme.typography.headlineSmall,
+      textAlign = TextAlign.Center,
+      color = MaterialTheme.colorScheme.error,
+    )
+    Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
+    Button(onClick = onRetry) {
+      Text(stringResource(R.string.retry))
     }
+    if (error is AppError.ApiKeyMissing && onSettingsClick != null) {
+      Spacer(modifier = Modifier.height(Constants.PADDING_SMALL))
+      Button(onClick = onSettingsClick) {
+        Text(stringResource(R.string.settings))
+      }
+    }
+    if (onBackPress != null) {
+      Spacer(modifier = Modifier.height(Constants.PADDING_SMALL))
+      TextButton(onClick = onBackPress) {
+        Text(stringResource(R.string.back))
+      }
+    }
+  }
 }

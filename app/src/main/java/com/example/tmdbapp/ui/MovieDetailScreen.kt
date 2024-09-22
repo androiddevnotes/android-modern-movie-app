@@ -45,7 +45,7 @@ fun MovieDetailScreen(
         ErrorContent(
           error = (movieState as DetailUiState.Error).error,
           onRetry = { viewModel.retryFetchMovieDetails() },
-          onBackPress = onBackPress
+          onBackPress = onBackPress,
         )
       }
     }

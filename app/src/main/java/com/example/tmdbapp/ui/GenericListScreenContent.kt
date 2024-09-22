@@ -157,7 +157,7 @@ fun <T : Any> GenericListScreenContent(
           ErrorContent(
             error = listUiState.error,
             onRetry = { loadMoreItems() },
-            onSettingsClick = onSettingsClick
+            onSettingsClick = onSettingsClick,
           )
         }
       }
