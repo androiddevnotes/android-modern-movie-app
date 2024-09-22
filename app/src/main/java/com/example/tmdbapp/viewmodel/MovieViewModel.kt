@@ -146,18 +146,15 @@ class MovieViewModel(
         }
       }
 
-      if (updatedMovie.isFavorite) {
-        _favorites.update { it + updatedMovie }
-      } else {
-        _favorites.update { it.filter { m -> m.id != updatedMovie.id } }
-      }
+      loadFavorites()
     }
   }
 
   private fun loadFavorites() {
     viewModelScope.launch {
-      val favoriteMovies = repository.getFavoriteMovies()
-      _favorites.value = favoriteMovies
+      repository.getFavoriteMovies().collectLatest { favoriteMovies ->
+        _favorites.value = favoriteMovies
+      }
     }
   }
 

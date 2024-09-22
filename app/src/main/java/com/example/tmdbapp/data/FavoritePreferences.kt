@@ -1,23 +1,41 @@
 package com.example.tmdbapp.data
 
-import android.content.*
-import androidx.core.content.*
-import com.example.tmdbapp.utils.*
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.preferencesDataStore
+import com.example.tmdbapp.utils.Constants
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constants.PREFS_NAME_FAVORITES)
 
 class FavoritePreferences(
-  context: Context,
+  private val context: Context,
 ) {
-  private val prefs =
-    context.getSharedPreferences(Constants.PREFS_NAME_FAVORITES, Context.MODE_PRIVATE)
-
-  fun setFavorite(
+  suspend fun setFavorite(
     movieId: Int,
     isFavorite: Boolean,
   ) {
-    prefs.edit {
-      putBoolean(movieId.toString(), isFavorite)
+    context.dataStore.edit { preferences ->
+      preferences[booleanPreferencesKey(movieId.toString())] = isFavorite
     }
   }
 
-  fun isFavorite(movieId: Int): Boolean = prefs.getBoolean(movieId.toString(), false)
+  fun isFavorite(movieId: Int): Flow<Boolean> =
+    context.dataStore.data
+      .map { preferences ->
+        preferences[booleanPreferencesKey(movieId.toString())] ?: false
+      }
+
+  fun getAllFavorites(): Flow<Set<Int>> =
+    context.dataStore.data
+      .map { preferences ->
+        preferences
+          .asMap()
+          .filterValues { it == true }
+          .keys
+          .mapNotNull { it.name.toIntOrNull() }
+          .toSet()
+      }
 }

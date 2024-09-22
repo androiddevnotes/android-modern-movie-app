@@ -9,7 +9,9 @@ import com.example.tmdbapp.network.KtorClient
 import com.example.tmdbapp.network.responses.tmdb.*
 import com.example.tmdbapp.utils.ApiKeyManager
 import com.example.tmdbapp.utils.Resource
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 class MovieRepository(
   context: Context,
@@ -26,26 +28,25 @@ class MovieRepository(
       Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
     }
 
-  private fun addFavoriteStatus(movies: List<Movie>): List<Movie> =
-    movies.map { movie ->
-      movie.copy(isFavorite = favoritePreferences.isFavorite(movie.id))
+  private suspend fun addFavoriteStatus(movies: List<Movie>): List<Movie> {
+    val favorites = favoritePreferences.getAllFavorites().first()
+    return movies.map { movie ->
+      movie.copy(isFavorite = favorites.contains(movie.id))
     }
+  }
 
   suspend fun getPopularMovies(page: Int): Resource<MovieResponse> = discoverMovies(page, sortBy = "popularity.desc")
 
-  suspend fun getFavoriteMovies(): List<Movie> =
-    try {
-      val response =
-        api.discoverMovies(apiKeyManager.getTmdbApiKey(), 1, sortBy = "popularity.desc")
-      response.results
-        .filter { movie ->
-          favoritePreferences.isFavorite(movie.id)
-        }.map { it.copy(isFavorite = true) }
-    } catch (e: Exception) {
-      emptyList()
+  fun getFavoriteMovies(): Flow<List<Movie>> =
+    favoritePreferences.getAllFavorites().map { favoriteIds ->
+      api
+        .discoverMovies(apiKeyManager.getTmdbApiKey(), 1, sortBy = "popularity.desc")
+        .results
+        .filter { movie -> favoriteIds.contains(movie.id) }
+        .map { it.copy(isFavorite = true) }
     }
 
-  fun toggleFavorite(movie: Movie) {
+  suspend fun toggleFavorite(movie: Movie) {
     val newFavoriteStatus = !movie.isFavorite
     favoritePreferences.setFavorite(movie.id, newFavoriteStatus)
   }
@@ -82,7 +83,8 @@ class MovieRepository(
   suspend fun getMovieDetails(movieId: Int): Movie? =
     try {
       val response = api.getMovieDetails(movieId, apiKeyManager.getTmdbApiKey())
-      response.copy(isFavorite = favoritePreferences.isFavorite(response.id))
+      val isFavorite = favoritePreferences.isFavorite(response.id).first()
+      response.copy(isFavorite = isFavorite)
     } catch (e: Exception) {
       null
     }
