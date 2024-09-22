@@ -92,6 +92,7 @@ dependencies {
   implementation(libs.ktor.client.logging)
   implementation(libs.ktor.serialization.kotlinx.json)
   detektPlugins(libs.detekt.formatting)
+  implementation(libs.androidx.datastore.preferences)
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
