@@ -88,11 +88,11 @@ class MovieViewModel(
 
   fun isFavorite(movieId: Int): Boolean = favorites.value.any { it.id == movieId }
 
-  fun loadMoreMovies() {
+  fun loadMoreItems() {
     fetchMovies()
   }
 
-  fun refreshMovies() {
+  fun refreshItems() {
     currentPage = 1
     isLastPage = false
     _List_uiState.value = ListUiState.Loading
@@ -129,7 +129,7 @@ class MovieViewModel(
           searchMovies(query)
         }
     } else if (oldQuery.isNotEmpty() && query.isEmpty()) {
-      refreshMovies()
+      refreshItems()
     }
   }
 
