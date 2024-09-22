@@ -31,7 +31,6 @@ class MovieViewModel(
   val currentSortOption: StateFlow<SortOption> = _currentSortOption
   val favorites: StateFlow<List<Movie>> = _favorites
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
-  val lastViewedItemIndex: StateFlow<Int> = _lastViewedItemIndex.asStateFlow()
   val searchQuery: StateFlow<String> = _searchQuery
   val uiState: StateFlow<UiState<List<Movie>>> = _uiState.asStateFlow()
   val authState: StateFlow<AuthState> = _authState
@@ -190,11 +189,6 @@ class MovieViewModel(
   }
 
   private val _scrollToIndex = MutableStateFlow<Int?>(null)
-  val scrollToIndex: StateFlow<Int?> = _scrollToIndex.asStateFlow()
-
-  fun setScrollToIndex(index: Int) {
-    _scrollToIndex.value = index
-  }
 
   fun clearScrollToIndex() {
     _scrollToIndex.value = null
