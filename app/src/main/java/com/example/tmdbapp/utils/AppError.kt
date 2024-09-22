@@ -15,4 +15,3 @@ sealed class AppError(
   data object Unknown : AppError(R.string.error_unknown)
 }
 
-// Remove the handleNetworkError function
