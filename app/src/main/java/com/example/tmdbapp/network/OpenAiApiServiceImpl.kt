@@ -9,17 +9,17 @@ import io.ktor.http.*
 class OpenAiApiServiceImpl(
   private val client: HttpClient,
 ) : OpenAiApiService {
-  override suspend fun askOpenAI(
+  override suspend fun askOpenAi(
     apiKey: String,
     prompt: String,
   ): String {
     val openAIRequest =
-      OpenAIRequest(
+      OpenAiRequest(
         model = "gpt-3.5-turbo",
-        messages = listOf(OpenAIMessage(role = "user", content = prompt)),
+        messages = listOf(OpenAiMessage(role = "user", content = prompt)),
       )
 
-    val response: OpenAIResponse =
+    val response: OpenAiResponse =
       client
         .post("https://api.openai.com/v1/chat/completions") {
           header("Authorization", "Bearer $apiKey")

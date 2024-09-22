@@ -53,7 +53,7 @@ class AlphaViewModel(
       _aiResponseUiState.value = AiResponseUiState.Loading
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
       try {
-        val response = repository.askOpenAI(prompt)
+        val response = repository.askOpenAi(prompt)
         _aiResponseUiState.value = AiResponseUiState.Success(response)
       } catch (e: Exception) {
         _aiResponseUiState.value =

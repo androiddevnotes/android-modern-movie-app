@@ -17,7 +17,7 @@ fun AlphaDetailTopBarUi(
   onBackPress: () -> Unit,
   onFavoriteClick: () -> Unit,
   onDownloadClick: () -> Unit,
-  onAskAIClick: () -> Unit,
+  onAskAiClick: () -> Unit,
   isFavorite: Boolean,
   textColor: Color,
 ) {
@@ -54,7 +54,7 @@ fun AlphaDetailTopBarUi(
           modifier = Modifier.size(Constants.ICON_SIZE_SMALL),
         )
       }
-      IconButton(onClick = onAskAIClick) {
+      IconButton(onClick = onAskAiClick) {
         Image(
           painter = painterResource(id = R.drawable.cool_shape_ai),
           contentDescription = stringResource(R.string.ask_ai_about_item),

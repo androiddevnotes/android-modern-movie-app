@@ -41,7 +41,7 @@ fun AlphaDetailScreenUi(
           onDownloadClick = { posterPath, context ->
             alphaViewModel.downloadImage(posterPath, context)
           },
-          onAskAIClick = { alphaViewModel.askAIAboutItem(item) },
+          onAskAiClick = { alphaViewModel.askAIAboutItem(item) },
           aiResponseUiState = aiResponseState,
           getItemTitle = { it.title },
           getItemOverview = { it.overview },

@@ -1,7 +1,7 @@
 package com.example.tmdbapp.network
 
 interface OpenAiApiService {
-  suspend fun askOpenAI(
+  suspend fun askOpenAi(
     apiKey: String,
     prompt: String,
   ): String

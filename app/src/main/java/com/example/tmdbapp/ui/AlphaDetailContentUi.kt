@@ -28,7 +28,7 @@ fun <T : Any> AlphaDetailContentUi(
   onBackPress: () -> Unit,
   onFavoriteClick: () -> Unit,
   onDownloadClick: (String?, Context) -> Unit,
-  onAskAIClick: () -> Unit,
+  onAskAiClick: () -> Unit,
   aiResponseUiState: AiResponseUiState<String>,
   getItemTitle: (T) -> String,
   getItemOverview: (T) -> String,
@@ -80,7 +80,7 @@ fun <T : Any> AlphaDetailContentUi(
         onBackPress = onBackPress,
         onFavoriteClick = onFavoriteClick,
         onDownloadClick = { onDownloadClick(getItemPosterPath(item), context) },
-        onAskAIClick = onAskAIClick,
+        onAskAiClick = onAskAiClick,
         isFavorite = isItemFavorite(item),
         textColor = textColor,
       )

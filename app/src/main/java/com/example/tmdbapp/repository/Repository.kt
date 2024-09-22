@@ -16,7 +16,7 @@ class Repository(
   context: Context,
 ) {
   private val tmdbApi = TmdbApiServiceImpl(KtorClient.httpClient)
-  private val openAIApi = OpenAiApiServiceImpl(KtorClient.httpClient)
+  private val openAiApi = OpenAiApiServiceImpl(KtorClient.httpClient)
   private val favoritePreferencesDatastore = FavoritePreferencesDatastore(context)
   private val sessionManagerPreferencesDataStore = SessionManagerPreferencesDataStore(context)
   private val apiKeyManager = ApiKeyManager(context)
@@ -146,5 +146,5 @@ class Repository(
     }
   }
 
-  suspend fun askOpenAI(prompt: String): String = openAIApi.askOpenAI(apiKeyManager.getOpenAiApiKey(), prompt)
+  suspend fun askOpenAi(prompt: String): String = openAiApi.askOpenAi(apiKeyManager.getOpenAiApiKey(), prompt)
 }

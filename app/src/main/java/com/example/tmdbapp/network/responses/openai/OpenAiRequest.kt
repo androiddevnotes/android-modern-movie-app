@@ -3,7 +3,7 @@ package com.example.tmdbapp.network.responses.openai
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class OpenAIRequest(
-  val model: String,
-  val messages: List<OpenAIMessage>,
+data class OpenAiRequest(
+    val messages: List<OpenAiMessage>,
+    val model: String,
 )
