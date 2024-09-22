@@ -39,11 +39,20 @@ class MovieRepository(
 
   fun getFavoriteMovies(): Flow<List<Movie>> =
     favoritePreferences.getAllFavorites().map { favoriteIds ->
-      api
-        .discoverMovies(apiKeyManager.getTmdbApiKey(), 1, sortBy = "popularity.desc")
-        .results
-        .filter { movie -> favoriteIds.contains(movie.id) }
-        .map { it.copy(isFavorite = true) }
+      safeApiCall {
+        api.discoverMovies(apiKeyManager.getTmdbApiKey(), 1, sortBy = "popularity.desc")
+      }.let { result ->
+        when (result) {
+          is Resource.Success -> {
+            result.data
+              ?.results
+              ?.filter { movie -> favoriteIds.contains(movie.id) }
+              ?.map { it.copy(isFavorite = true) }
+              ?: emptyList()
+          }
+          is Resource.Error -> emptyList()
+        }
+      }
     }
 
   suspend fun toggleFavorite(movie: Movie) {
