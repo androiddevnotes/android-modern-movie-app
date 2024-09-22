@@ -12,7 +12,7 @@ import com.example.tmdbapp.utils.ApiKeyManager
 import com.example.tmdbapp.utils.Constants
 
 @Composable
-fun SettingsScreen(
+fun SettingsScreenUi(
   apiKeyManager: ApiKeyManager,
   onBackPress: () -> Unit,
 ) {

@@ -79,7 +79,7 @@ fun NavGraph(
     }
 
     composable("settings") {
-      SettingsScreen(
+      SettingsScreenUi(
         apiKeyManager = apiKeyManager,
         onBackPress = { navController.popBackStack() },
       )
