@@ -8,7 +8,7 @@ import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
 import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
-fun MovieListScreen(
+fun MovieListScreenUi(
   viewModel: MovieViewModel,
   onMovieClick: (Movie) -> Unit,
   onFavoritesClick: () -> Unit,

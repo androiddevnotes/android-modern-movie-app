@@ -32,7 +32,7 @@ fun <T : Any> GenericDetailContentUi(
   val scrollState = rememberScrollState()
 
   Box(modifier = Modifier.fillMaxSize()) {
-    MovieBackgroundImage(getItemPosterPath(item))
+    DetailBackgroundImage(getItemPosterPath(item))
     Column(
       modifier =
         Modifier
@@ -40,7 +40,7 @@ fun <T : Any> GenericDetailContentUi(
           .verticalScroll(scrollState)
           .padding(bottom = 80.dp),
     ) {
-      MovieDetailTopBar(
+      DetailTopBarUi(
         onBackPress = onBackPress,
         onFavoriteClick = onFavoriteClick,
         onDownloadClick = { onDownloadClick(getItemPosterPath(item), context) },

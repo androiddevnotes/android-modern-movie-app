@@ -25,7 +25,7 @@ fun NavGraph(
 
   NavHost(navController = navController, startDestination = "movieList", modifier = modifier) {
     composable("movieList") {
-      MovieListScreen(
+      MovieListScreenUi(
         viewModel = movieViewModel,
         onMovieClick = { movie ->
           navController.navigate("movieDetail/${movie.id}")
@@ -56,13 +56,13 @@ fun NavGraph(
       LaunchedEffect(movieId) {
         movieViewModel.fetchMovieDetails(movieId)
       }
-      MovieDetailScreen(
+      MovieDetailScreenUi(
         viewModel = movieViewModel,
         onBackPress = { navController.popBackStack() },
       )
     }
     composable("favorites") {
-      FavoritesScreen(
+      FavoritesScreenUi(
         viewModel = movieViewModel,
         onItemClick = { movieId ->
           navController.navigate("movieDetail/$movieId")

@@ -13,8 +13,6 @@ object Constants {
 
   const val SCREEN_TITLE_FAVORITES = "Favorites"
 
-  const val CONTENT_DESC_BACK = "Back"
-
   const val MESSAGE_NO_FAVORITES = "No favorites yet"
 
   const val VIEW_TYPE_GRID = "grid"

@@ -13,7 +13,7 @@ import com.example.tmdbapp.utils.Constants
 import com.example.tmdbapp.viewmodel.MovieViewModel
 
 @Composable
-fun FavoritesScreen(
+fun FavoritesScreenUi(
   viewModel: MovieViewModel,
   onItemClick: (Int) -> Unit,
   onBackPress: () -> Unit,

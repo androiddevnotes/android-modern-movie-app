@@ -10,7 +10,7 @@ import com.example.tmdbapp.ui.components.*
 import com.example.tmdbapp.viewmodel.*
 
 @Composable
-fun MovieDetailScreen(
+fun MovieDetailScreenUi(
   viewModel: MovieViewModel,
   onBackPress: () -> Unit,
 ) {
