@@ -29,23 +29,6 @@ fun AlphaViewModel.fetchMovies() {
   }
 }
 
-fun AlphaViewModel.fetchPopularMovies() {
-  if (isLoading || isLastPage) return
-  isLoading = true
-  viewModelScope.launch {
-    val result = repository.getPopularMovies(currentPage)
-    MovieResultHandler.handleMovieResult(
-      result,
-      currentPage,
-      _alphaListUiState,
-      apiKeyManager,
-      { currentPage = it },
-      { isLastPage = it },
-      { isLoading = it },
-    )
-  }
-}
-
 internal fun AlphaViewModel.searchMovies(query: String) {
   viewModelScope.launch {
     _alphaListUiState.value = AlphaListUiState.Loading

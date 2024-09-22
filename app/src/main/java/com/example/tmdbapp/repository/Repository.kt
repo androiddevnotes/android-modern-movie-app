@@ -35,8 +35,6 @@ class Repository(
     }
   }
 
-  suspend fun getPopularMovies(page: Int): Resource<MovieResponse> = discoverMovies(page, sortBy = "popularity.desc")
-
   fun getFavoriteMovies(): Flow<List<Movie>> =
     favoritePreferencesDatastore.getAllFavorites().map { favoriteIds ->
       safeApiCall {

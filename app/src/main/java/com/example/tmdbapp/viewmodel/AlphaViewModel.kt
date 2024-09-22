@@ -53,7 +53,7 @@ class AlphaViewModel(
   val searchQuery: StateFlow<String> = _searchQuery
 
   init {
-    fetchPopularMovies()
+    fetchMovies() // This will fetch popular movies by default
     loadFavorites()
     checkAuthenticationStatus()
   }
