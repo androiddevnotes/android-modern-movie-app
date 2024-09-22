@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.map
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = Constants.PREFS_NAME_FAVORITES)
 
-class FavoritePreferences(
+class FavoritePreferencesDatastore(
   private val context: Context,
 ) {
   suspend fun setFavorite(

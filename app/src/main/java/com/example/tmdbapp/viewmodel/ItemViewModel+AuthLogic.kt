@@ -1,41 +1,41 @@
 package com.example.tmdbapp.viewmodel
 
 import androidx.lifecycle.*
-import com.example.tmdbapp.models.AuthUiState
-import com.example.tmdbapp.models.CreateListUiState
+import com.example.tmdbapp.models.ItemAuthUiState
+import com.example.tmdbapp.models.ItemCreateListUiState
 import com.example.tmdbapp.utils.*
 import kotlinx.coroutines.*
 
 fun ItemViewModel.startAuthentication() {
   viewModelScope.launch {
-    if (_authUiState.value == AuthUiState.Authenticated) return@launch
+    if (_Item_authUiState.value == ItemAuthUiState.Authenticated) return@launch
 
-    _authUiState.value = AuthUiState.Loading
+    _Item_authUiState.value = ItemAuthUiState.Loading
     when (val tokenResult = repository.createRequestToken()) {
       is Resource.Success -> {
         val token = tokenResult.data
         if (token != null) {
-          _authUiState.value = AuthUiState.RequestTokenCreated(token)
+          _Item_authUiState.value = ItemAuthUiState.RequestTokenCreated(token)
         } else {
-          _authUiState.value = AuthUiState.Error("Failed to create request token")
+          _Item_authUiState.value = ItemAuthUiState.Error("Failed to create request token")
         }
       }
 
       is Resource.Error ->
-        _authUiState.value =
-          AuthUiState.Error(tokenResult.message ?: "Unknown error")
+        _Item_authUiState.value =
+          ItemAuthUiState.Error(tokenResult.message ?: "Unknown error")
     }
   }
 }
 
 fun ItemViewModel.createSession(approvedToken: String) {
   viewModelScope.launch {
-    _authUiState.value = AuthUiState.Loading
+    _Item_authUiState.value = ItemAuthUiState.Loading
     when (val sessionResult = repository.createSession(approvedToken)) {
-      is Resource.Success -> _authUiState.value = AuthUiState.Authenticated
+      is Resource.Success -> _Item_authUiState.value = ItemAuthUiState.Authenticated
       is Resource.Error ->
-        _authUiState.value =
-          AuthUiState.Error(sessionResult.message ?: "Failed to create session")
+        _Item_authUiState.value =
+          ItemAuthUiState.Error(sessionResult.message ?: "Failed to create session")
     }
   }
 }
@@ -45,27 +45,27 @@ fun ItemViewModel.createList(
   description: String,
 ) {
   viewModelScope.launch {
-    _createListUiState.value = CreateListUiState.Loading
+    _Item_createListUiState.value = ItemCreateListUiState.Loading
     when (val result = repository.createList(name, description)) {
       is Resource.Success ->
-        _createListUiState.value =
-          result.data?.let { CreateListUiState.Success(it) }!!
+        _Item_createListUiState.value =
+          result.data?.let { ItemCreateListUiState.Success(it) }!!
 
       is Resource.Error ->
-        _createListUiState.value =
-          result.message?.let { CreateListUiState.Error(it) }!!
+        _Item_createListUiState.value =
+          result.message?.let { ItemCreateListUiState.Error(it) }!!
     }
   }
 }
 
 internal fun ItemViewModel.checkAuthenticationStatus() {
   viewModelScope.launch {
-    sessionManager.sessionIdFlow.collect { sessionId ->
-      _authUiState.value =
+    sessionManagerPreferencesDataStore.sessionIdFlow.collect { sessionId ->
+      _Item_authUiState.value =
         if (sessionId != null) {
-          AuthUiState.Authenticated
+          ItemAuthUiState.Authenticated
         } else {
-          AuthUiState.Idle
+          ItemAuthUiState.Idle
         }
     }
   }

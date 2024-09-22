@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import com.example.tmdbapp.R
-import com.example.tmdbapp.models.CreateListUiState
-import com.example.tmdbapp.models.CreateListUiState.*
+import com.example.tmdbapp.models.ItemCreateListUiState
+import com.example.tmdbapp.models.ItemCreateListUiState.*
 
 @Composable
 fun ListCreationContentUi(
@@ -16,7 +16,7 @@ fun ListCreationContentUi(
   listDescription: String,
   onListDescriptionChange: (String) -> Unit,
   onCreateList: () -> Unit,
-  createListUiState: CreateListUiState<Int>,
+  itemCreateListUiState: ItemCreateListUiState<Int>,
 ) {
   OutlinedTextField(
     value = listName,
@@ -38,21 +38,21 @@ fun ListCreationContentUi(
     Text(stringResource(R.string.create_list))
   }
 
-  when (createListUiState) {
+  when (itemCreateListUiState) {
     is Loading -> {
       CircularProgressIndicator()
     }
 
     is Success -> {
       Text(
-        text = stringResource(R.string.list_created_success, createListUiState.data),
+        text = stringResource(R.string.list_created_success, itemCreateListUiState.data),
         color = MaterialTheme.colorScheme.primary,
       )
     }
 
     is Error -> {
       Text(
-        text = stringResource(R.string.list_creation_error, createListUiState.message),
+        text = stringResource(R.string.list_creation_error, itemCreateListUiState.message),
         color = MaterialTheme.colorScheme.error,
       )
     }

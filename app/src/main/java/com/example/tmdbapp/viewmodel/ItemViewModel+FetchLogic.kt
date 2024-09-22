@@ -33,7 +33,7 @@ fun ItemViewModel.fetchPopularMovies() {
 
 internal fun ItemViewModel.searchMovies(query: String) {
   viewModelScope.launch {
-    _listUiState.value = ListUiState.Loading
+    _Item_listUiState.value = ItemListUiState.Loading
     val result = repository.searchMovies(query, 1)
     handleMovieResult(result)
   }
@@ -44,18 +44,18 @@ private fun ItemViewModel.handleMovieResult(result: Resource<MovieResponse>) {
     is Resource.Success -> {
       val newMovies = result.data?.results ?: emptyList()
       val currentMovies =
-        if (_listUiState.value is ListUiState.Success && currentPage > 1) {
-          (_listUiState.value as ListUiState.Success<List<Movie>>).data
+        if (_Item_listUiState.value is ItemListUiState.Success && currentPage > 1) {
+          (_Item_listUiState.value as ItemListUiState.Success<List<Movie>>).data
         } else {
           emptyList()
         }
-      _listUiState.value = ListUiState.Success(currentMovies + newMovies)
+      _Item_listUiState.value = ItemListUiState.Success(currentMovies + newMovies)
       currentPage++
       isLastPage = newMovies.isEmpty()
     }
 
     is Resource.Error -> {
-      _listUiState.value = ListUiState.Error(handleNetworkError(result.message, apiKeyManager))
+      _Item_listUiState.value = ItemListUiState.Error(handleNetworkError(result.message, apiKeyManager))
     }
   }
   isLoading = false

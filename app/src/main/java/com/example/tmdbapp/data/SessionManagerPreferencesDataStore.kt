@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 
 private val Context.sessionDataStore: DataStore<Preferences> by preferencesDataStore(name = "TMDBSessionPrefs")
 
-class SessionManager(
+class SessionManagerPreferencesDataStore(
   private val context: Context,
 ) {
   private val SESSION_ID_KEY = stringPreferencesKey("session_id")

@@ -15,7 +15,7 @@ fun ItemDetailScreenUi(
   itemViewModel: ItemViewModel,
   onBackPress: () -> Unit,
 ) {
-  val detailUiState by itemViewModel.detailUiState.collectAsState()
+  val detailUiState by itemViewModel.itemDetailUiState.collectAsState()
   val aiResponseState by itemViewModel.aiResponseUiState.collectAsState()
 
   DisposableEffect(Unit) {
@@ -26,14 +26,14 @@ fun ItemDetailScreenUi(
 
   Box(modifier = Modifier.fillMaxSize()) {
     when (detailUiState) {
-      is DetailUiState.Loading -> {
+      is ItemDetailUiState.Loading -> {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
           CircularProgressIndicator()
         }
       }
 
-      is DetailUiState.Success -> {
-        val item = (detailUiState as DetailUiState.Success<Movie>).data
+      is ItemDetailUiState.Success -> {
+        val item = (detailUiState as ItemDetailUiState.Success<Movie>).data
         ItemDetailContentUi(
           item = item,
           onBackPress = onBackPress,
@@ -52,19 +52,19 @@ fun ItemDetailScreenUi(
         )
       }
 
-      is DetailUiState.Error -> {
+      is ItemDetailUiState.Error -> {
         ErrorContentUi(
-          error = (detailUiState as DetailUiState.Error).error,
+          error = (detailUiState as ItemDetailUiState.Error).error,
           onRetry = { itemViewModel.retryFetchItemDetails() },
           onBackPress = onBackPress,
         )
       }
     }
     ShimmeringOverlayUi(
-      isVisible = aiResponseState is AIResponseUiState.Loading,
+      isVisible = aiResponseState is AiResponseUiState.Loading,
     )
 
-    if (aiResponseState is AIResponseUiState.Loading) {
+    if (aiResponseState is AiResponseUiState.Loading) {
       Box(
         modifier =
           Modifier

@@ -17,7 +17,7 @@ import androidx.palette.graphics.Palette
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.example.tmdbapp.models.AIResponseUiState
+import com.example.tmdbapp.models.AiResponseUiState
 import com.example.tmdbapp.ui.components.AiResponseCardUi
 import com.example.tmdbapp.utils.Constants
 import kotlinx.coroutines.launch
@@ -29,7 +29,7 @@ fun <T : Any> ItemDetailContentUi(
   onFavoriteClick: () -> Unit,
   onDownloadClick: (String?, Context) -> Unit,
   onAskAIClick: () -> Unit,
-  aiResponseUiState: AIResponseUiState<String>,
+  aiResponseUiState: AiResponseUiState<String>,
   getItemTitle: (T) -> String,
   getItemOverview: (T) -> String,
   getItemPosterPath: (T) -> String?,
@@ -95,7 +95,7 @@ fun <T : Any> ItemDetailContentUi(
 
       Spacer(modifier = Modifier.height(16.dp))
       when (aiResponseUiState) {
-        is AIResponseUiState.Loading -> {
+        is AiResponseUiState.Loading -> {
           Box(
             modifier =
               Modifier
@@ -111,7 +111,7 @@ fun <T : Any> ItemDetailContentUi(
           }
         }
 
-        is AIResponseUiState.Error -> {
+        is AiResponseUiState.Error -> {
           Text(
             text = aiResponseUiState.message,
             color = MaterialTheme.colorScheme.error,
@@ -119,11 +119,11 @@ fun <T : Any> ItemDetailContentUi(
           )
         }
 
-        is AIResponseUiState.Success -> {
+        is AiResponseUiState.Success -> {
           AiResponseCardUi(response = aiResponseUiState.data)
         }
 
-        AIResponseUiState.Idle -> {
+        AiResponseUiState.Idle -> {
           // Do nothing or show a placeholder
         }
       }

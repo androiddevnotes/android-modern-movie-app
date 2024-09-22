@@ -1,8 +1,8 @@
 package com.example.tmdbapp.repository
 
 import android.content.Context
-import com.example.tmdbapp.data.FavoritePreferences
-import com.example.tmdbapp.data.SessionManager
+import com.example.tmdbapp.data.FavoritePreferencesDatastore
+import com.example.tmdbapp.data.SessionManagerPreferencesDataStore
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.network.ApiService
 import com.example.tmdbapp.network.KtorClient
@@ -13,12 +13,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-class ItemRepository(
+class Repository(
   context: Context,
 ) {
   private val api = ApiService(KtorClient.httpClient)
-  private val favoritePreferences = FavoritePreferences(context)
-  private val sessionManager = SessionManager(context)
+  private val favoritePreferencesDatastore = FavoritePreferencesDatastore(context)
+  private val sessionManagerPreferencesDataStore = SessionManagerPreferencesDataStore(context)
   private val apiKeyManager = ApiKeyManager(context)
 
   private suspend fun <T> safeApiCall(apiCall: suspend () -> T): Resource<T> =
@@ -29,7 +29,7 @@ class ItemRepository(
     }
 
   private suspend fun addFavoriteStatus(movies: List<Movie>): List<Movie> {
-    val favorites = favoritePreferences.getAllFavorites().first()
+    val favorites = favoritePreferencesDatastore.getAllFavorites().first()
     return movies.map { movie ->
       movie.copy(isFavorite = favorites.contains(movie.id))
     }
@@ -38,7 +38,7 @@ class ItemRepository(
   suspend fun getPopularMovies(page: Int): Resource<MovieResponse> = discoverMovies(page, sortBy = "popularity.desc")
 
   fun getFavoriteMovies(): Flow<List<Movie>> =
-    favoritePreferences.getAllFavorites().map { favoriteIds ->
+    favoritePreferencesDatastore.getAllFavorites().map { favoriteIds ->
       safeApiCall {
         api.discoverMovies(apiKeyManager.getTmdbApiKey(), 1, sortBy = "popularity.desc")
       }.let { result ->
@@ -57,7 +57,7 @@ class ItemRepository(
 
   suspend fun toggleFavorite(movie: Movie) {
     val newFavoriteStatus = !movie.isFavorite
-    favoritePreferences.setFavorite(movie.id, newFavoriteStatus)
+    favoritePreferencesDatastore.setFavorite(movie.id, newFavoriteStatus)
   }
 
   suspend fun discoverMovies(
@@ -92,7 +92,7 @@ class ItemRepository(
   suspend fun getMovieDetails(movieId: Int): Movie? =
     try {
       val response = api.getMovieDetails(movieId, apiKeyManager.getTmdbApiKey())
-      val isFavorite = favoritePreferences.isFavorite(response.id).first()
+      val isFavorite = favoritePreferencesDatastore.isFavorite(response.id).first()
       response.copy(isFavorite = isFavorite)
     } catch (e: Exception) {
       null
@@ -115,7 +115,7 @@ class ItemRepository(
       val response =
         api.createSession(apiKeyManager.getTmdbApiKey(), CreateSessionRequest(approvedToken))
       if (response.success) {
-        sessionManager.saveSessionId(response.sessionId)
+        sessionManagerPreferencesDataStore.saveSessionId(response.sessionId)
         Resource.Success(response.sessionId)
       } else {
         Resource.Error("Failed to create session")
@@ -129,7 +129,7 @@ class ItemRepository(
     description: String,
   ): Resource<Int> {
     return try {
-      val sessionId = sessionManager.sessionIdFlow.first() ?: return Resource.Error("No active session")
+      val sessionId = sessionManagerPreferencesDataStore.sessionIdFlow.first() ?: return Resource.Error("No active session")
       val response =
         api.createList(
           apiKeyManager.getTmdbApiKey(),

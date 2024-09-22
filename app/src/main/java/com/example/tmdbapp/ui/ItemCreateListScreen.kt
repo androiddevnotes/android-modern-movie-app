@@ -10,20 +10,20 @@ import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.R
-import com.example.tmdbapp.models.AuthUiState
+import com.example.tmdbapp.models.ItemAuthUiState
 import com.example.tmdbapp.ui.components.CommonTopBar
 import com.example.tmdbapp.viewmodel.*
 
 @Composable
-fun ItemListCreationScreen(
+fun ItemCreateListScreen(
   itemViewModel: ItemViewModel,
   onNavigateBack: () -> Unit,
   application: Application,
 ) {
   var listName by remember { mutableStateOf("") }
   var listDescription by remember { mutableStateOf("") }
-  val authState by itemViewModel.authUiState.collectAsState()
-  val createListState by itemViewModel.createListUiState.collectAsState()
+  val authState by itemViewModel.itemAuthUiState.collectAsState()
+  val createListState by itemViewModel.itemCreateListUiState.collectAsState()
 
   LaunchedEffect(Unit) {
     itemViewModel.startAuthentication()
@@ -46,19 +46,19 @@ fun ItemListCreationScreen(
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
       when (authState) {
-        is AuthUiState.Loading -> {
+        is ItemAuthUiState.Loading -> {
           CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         }
 
-        is AuthUiState.Error -> {
+        is ItemAuthUiState.Error -> {
           Text(
-            text = stringResource(R.string.auth_error, (authState as AuthUiState.Error).message),
+            text = stringResource(R.string.auth_error, (authState as ItemAuthUiState.Error).message),
             color = MaterialTheme.colorScheme.error,
           )
         }
 
-        is AuthUiState.RequestTokenCreated -> {
-          val token = (authState as AuthUiState.RequestTokenCreated<String>).data
+        is ItemAuthUiState.RequestTokenCreated -> {
+          val token = (authState as ItemAuthUiState.RequestTokenCreated<String>).data
           LaunchedEffect(token) {
             val intent =
               Intent(
@@ -74,18 +74,18 @@ fun ItemListCreationScreen(
           }
         }
 
-        is AuthUiState.Authenticated -> {
+        is ItemAuthUiState.Authenticated -> {
           ListCreationContentUi(
             listName = listName,
             onListNameChange = { listName = it },
             listDescription = listDescription,
             onListDescriptionChange = { listDescription = it },
             onCreateList = { itemViewModel.createList(listName, listDescription) },
-            createListUiState = createListState,
+            itemCreateListUiState = createListState,
           )
         }
 
-        AuthUiState.Idle -> {
+        ItemAuthUiState.Idle -> {
           // Do nothing or show a placeholder
         }
       }

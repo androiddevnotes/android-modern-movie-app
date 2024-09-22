@@ -71,7 +71,7 @@ fun NavGraph(
       )
     }
     composable("createList") {
-      ItemListCreationScreen(
+      ItemCreateListScreen(
         itemViewModel = itemViewModel,
         onNavigateBack = { navController.popBackStack() },
         application = application,

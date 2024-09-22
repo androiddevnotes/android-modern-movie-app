@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun <T : Any> ItemListContentUi(
-  listUiState: ListUiState<List<T>>,
+  itemListUiState: ItemListUiState<List<T>>,
   searchQuery: String,
   currentSortOptions: SortOptions,
   currentFilters: FilterOptions,
@@ -109,15 +109,15 @@ fun <T : Any> ItemListContentUi(
           .padding(paddingValues)
           .pullRefresh(pullRefreshState),
     ) {
-      when (listUiState) {
-        is ListUiState.Loading -> {
+      when (itemListUiState) {
+        is ItemListUiState.Loading -> {
           Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
           }
         }
 
-        is ListUiState.Success -> {
-          val items = listUiState.data
+        is ItemListUiState.Success -> {
+          val items = itemListUiState.data
           when (viewType) {
             Constants.VIEW_TYPE_GRID ->
               ItemListGridUi(
@@ -153,9 +153,9 @@ fun <T : Any> ItemListContentUi(
           }
         }
 
-        is ListUiState.Error -> {
+        is ItemListUiState.Error -> {
           ErrorContentUi(
-            error = listUiState.error,
+            error = itemListUiState.error,
             onRetry = { loadMoreItems() },
             onSettingsClick = onSettingsClick,
           )
@@ -168,7 +168,7 @@ fun <T : Any> ItemListContentUi(
       )
       Box(modifier = Modifier.matchParentSize()) {
         ShimmeringOverlayUi(
-          isVisible = isRefreshing || listUiState is ListUiState.Loading,
+          isVisible = isRefreshing || itemListUiState is ItemListUiState.Loading,
         )
       }
     }
