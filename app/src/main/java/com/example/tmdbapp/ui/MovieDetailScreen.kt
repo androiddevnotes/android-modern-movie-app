@@ -57,5 +57,20 @@ fun MovieDetailScreen(
         )
       }
     }
+    ShimmeringOverlay(
+      isVisible = aiResponseState is AIResponseUiState.Loading,
+    )
+
+    if (aiResponseState is AIResponseUiState.Loading) {
+      Box(
+        modifier =
+          Modifier
+            .fillMaxSize()
+            .padding(bottom = 32.dp),
+        contentAlignment = Alignment.BottomCenter,
+      ) {
+        AiScanningIndicator()
+      }
+    }
   }
 }
