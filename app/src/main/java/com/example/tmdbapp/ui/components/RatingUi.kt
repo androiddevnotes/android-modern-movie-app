@@ -8,8 +8,8 @@ import androidx.compose.ui.unit.*
 @Composable
 fun RatingUi(voteAverage: Float) {
   Row(verticalAlignment = Alignment.CenterVertically) {
-    RatingIcon()
+    RatingIconUi()
     Spacer(modifier = Modifier.width(4.dp))
-    RatingText(voteAverage)
+    RatingTextUi(voteAverage)
   }
 }

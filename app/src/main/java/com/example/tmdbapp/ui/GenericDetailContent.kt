@@ -10,7 +10,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.ui.components.AiResponseCard
+import com.example.tmdbapp.ui.components.AiResponseCardUi
 import com.example.tmdbapp.viewmodel.AIResponseUiState
 
 @Composable
@@ -82,7 +82,7 @@ fun <T : Any> GenericDetailContent(
         }
 
         is AIResponseUiState.Success -> {
-          AiResponseCard(response = aiResponseUiState.data)
+          AiResponseCardUi(response = aiResponseUiState.data)
         }
 
         AIResponseUiState.Idle -> {

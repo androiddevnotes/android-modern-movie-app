@@ -154,7 +154,7 @@ fun <T : Any> GenericListScreenContent(
         }
 
         is ListUiState.Error -> {
-          ErrorContent(
+          ErrorContentUi(
             error = listUiState.error,
             onRetry = { loadMoreItems() },
             onSettingsClick = onSettingsClick,
@@ -167,7 +167,7 @@ fun <T : Any> GenericListScreenContent(
         modifier = Modifier.align(Alignment.TopCenter),
       )
       Box(modifier = Modifier.matchParentSize()) {
-        ShimmeringOverlay(
+        ShimmeringOverlayUi(
           isVisible = isRefreshing || listUiState is ListUiState.Loading,
         )
       }

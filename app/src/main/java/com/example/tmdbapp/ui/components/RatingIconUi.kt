@@ -7,11 +7,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.Color.*
 import androidx.compose.ui.unit.*
 
 @Composable
-internal fun RatingIcon() {
+internal fun RatingIconUi() {
   Icon(
     imageVector = Icons.Default.Star,
     contentDescription = "Rating",

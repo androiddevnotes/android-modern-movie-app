@@ -37,7 +37,7 @@ fun GridItemUi(
     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
   ) {
     Box(modifier = Modifier.fillMaxSize()) {
-      MoviePoster(imageRequest, title)
+      GridItemThumbnailUi(imageRequest, title)
       GridItemInfoUi(
         title = title,
         voteAverage = voteAverage,

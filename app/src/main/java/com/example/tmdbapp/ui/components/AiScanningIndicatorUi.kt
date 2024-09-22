@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.*
 import com.example.tmdbapp.ui.theme.*
 
 @Composable
-fun AiScanningIndicator() {
+fun AiScanningIndicatorUi() {
   val scanningTexts =
     listOf(
       "Initializing scan",

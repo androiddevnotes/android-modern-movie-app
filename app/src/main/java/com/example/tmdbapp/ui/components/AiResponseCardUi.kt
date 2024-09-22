@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.*
 import com.example.tmdbapp.ui.theme.*
 
 @Composable
-fun AiResponseCard(
+fun AiResponseCardUi(
   response: String,
   visible: Boolean = true,
 ) {

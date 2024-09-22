@@ -50,14 +50,14 @@ fun MovieDetailScreen(
         )
       }
       is DetailUiState.Error -> {
-        ErrorContent(
+        ErrorContentUi(
           error = (movieState as DetailUiState.Error).error,
           onRetry = { viewModel.retryFetchMovieDetails() },
           onBackPress = onBackPress,
         )
       }
     }
-    ShimmeringOverlay(
+    ShimmeringOverlayUi(
       isVisible = aiResponseState is AIResponseUiState.Loading,
     )
 
@@ -69,7 +69,7 @@ fun MovieDetailScreen(
             .padding(bottom = 32.dp),
         contentAlignment = Alignment.BottomCenter,
       ) {
-        AiScanningIndicator()
+        AiScanningIndicatorUi()
       }
     }
   }

@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 
 @Composable
-fun ShimmeringOverlay(isVisible: Boolean) {
+fun ShimmeringOverlayUi(isVisible: Boolean) {
   val transition = rememberInfiniteTransition(label = "ShimmerTransition")
   val progress by transition.animateFloat(
     initialValue = 0f,

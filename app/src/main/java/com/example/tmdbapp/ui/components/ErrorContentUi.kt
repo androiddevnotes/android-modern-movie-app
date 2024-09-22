@@ -6,13 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.style.*
-import androidx.compose.ui.unit.*
 import com.example.tmdbapp.R
 import com.example.tmdbapp.utils.AppError
 import com.example.tmdbapp.utils.Constants
 
 @Composable
-fun ErrorContent(
+fun ErrorContentUi(
   error: AppError,
   onRetry: () -> Unit,
   onBackPress: (() -> Unit)? = null,
