@@ -1,4 +1,4 @@
-package com.example.tmdbapp.ui
+package com.example.tmdbapp.ui.nav
 
 import android.app.*
 import androidx.compose.runtime.*
@@ -6,9 +6,10 @@ import androidx.compose.ui.*
 import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
+import com.example.tmdbapp.ui.screens.*
 import com.example.tmdbapp.ui.theme.*
+import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
 import com.example.tmdbapp.utils.ApiKeyManager
-import com.example.tmdbapp.viewmodel.*
 
 @Composable
 fun NavGraph(

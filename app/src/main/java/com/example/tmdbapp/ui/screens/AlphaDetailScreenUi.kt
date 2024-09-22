@@ -1,4 +1,4 @@
-package com.example.tmdbapp.ui
+package com.example.tmdbapp.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
@@ -7,8 +7,9 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.ui.components.*
-import com.example.tmdbapp.viewmodel.AlphaViewModel
-import com.example.tmdbapp.viewmodel.downloadImage
+import com.example.tmdbapp.ui.components.AlphaDetailContentUi
+import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
+import com.example.tmdbapp.ui.viewmodel.downloadImage
 
 @Composable
 fun AlphaDetailScreenUi(

@@ -1,4 +1,4 @@
-package com.example.tmdbapp.ui
+package com.example.tmdbapp.ui.screens
 
 import android.app.Application
 import android.content.Intent
@@ -11,8 +11,9 @@ import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.R
 import com.example.tmdbapp.models.AlphaAuthUiState
+import com.example.tmdbapp.ui.components.AlphaCreateListContentUi
 import com.example.tmdbapp.ui.components.CommonTopBar
-import com.example.tmdbapp.viewmodel.*
+import com.example.tmdbapp.ui.viewmodel.*
 
 @Composable
 fun AlphaCreateListScreenUi(

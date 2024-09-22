@@ -1,4 +1,4 @@
-package com.example.tmdbapp.ui
+package com.example.tmdbapp.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

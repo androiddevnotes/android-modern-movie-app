@@ -1,9 +1,13 @@
-package com.example.tmdbapp.utils
+package com.example.tmdbapp.ui.viewmodel.handlers
 
 import com.example.tmdbapp.models.AlphaListUiState
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.network.handleNetworkError
 import com.example.tmdbapp.network.responses.tmdb.MovieResponse
+import com.example.tmdbapp.utils.ApiKeyManager
+import com.example.tmdbapp.utils.Resource
+import com.example.tmdbapp.utils.Resource.Error
+import com.example.tmdbapp.utils.Resource.Success
 import kotlinx.coroutines.flow.MutableStateFlow
 
 object AlphaResultHandler {
@@ -17,7 +21,7 @@ object AlphaResultHandler {
     updateIsLoading: (Boolean) -> Unit,
   ) {
     when (result) {
-      is Resource.Success -> {
+      is Success -> {
         val newMovies = result.data?.results ?: emptyList()
         val currentMovies =
           if (alphaListUiState.value is AlphaListUiState.Success && currentPage > 1) {
@@ -30,7 +34,7 @@ object AlphaResultHandler {
         updateIsLastPage(newMovies.isEmpty())
       }
 
-      is Resource.Error -> {
+      is Error -> {
         alphaListUiState.value = AlphaListUiState.Error(handleNetworkError(result.message, apiKeyManager))
       }
     }

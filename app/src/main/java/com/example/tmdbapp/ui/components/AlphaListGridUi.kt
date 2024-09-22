@@ -1,10 +1,9 @@
-package com.example.tmdbapp.ui
+package com.example.tmdbapp.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.ui.components.*
 
 @Composable
 fun <T : Any> AlphaListGridUi(

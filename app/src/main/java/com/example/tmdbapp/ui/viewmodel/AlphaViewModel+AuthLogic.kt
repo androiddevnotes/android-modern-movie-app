@@ -1,4 +1,4 @@
-package com.example.tmdbapp.viewmodel
+package com.example.tmdbapp.ui.viewmodel
 
 import androidx.lifecycle.*
 import com.example.tmdbapp.models.AlphaAuthUiState

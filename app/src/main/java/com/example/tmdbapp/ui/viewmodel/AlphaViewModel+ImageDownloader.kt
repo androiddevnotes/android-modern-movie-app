@@ -1,4 +1,4 @@
-package com.example.tmdbapp.viewmodel
+package com.example.tmdbapp.ui.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope

@@ -10,11 +10,11 @@ import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
 import androidx.lifecycle.*
 import androidx.navigation.compose.*
-import com.example.tmdbapp.ui.*
 import com.example.tmdbapp.ui.components.*
+import com.example.tmdbapp.ui.nav.NavGraph
 import com.example.tmdbapp.ui.theme.*
+import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
 import com.example.tmdbapp.utils.*
-import com.example.tmdbapp.viewmodel.*
 
 class MainActivity : ComponentActivity() {
   private lateinit var alphaViewModel: AlphaViewModel

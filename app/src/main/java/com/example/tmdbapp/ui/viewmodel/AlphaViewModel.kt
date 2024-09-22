@@ -1,4 +1,4 @@
-package com.example.tmdbapp.viewmodel
+package com.example.tmdbapp.ui.viewmodel
 
 import android.app.*
 import androidx.lifecycle.*
@@ -6,9 +6,9 @@ import com.example.tmdbapp.data.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.network.handleNetworkError
 import com.example.tmdbapp.repository.*
+import com.example.tmdbapp.ui.viewmodel.handlers.BetaResultHandler
 import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.utils.ApiKeyManager
-import com.example.tmdbapp.utils.BetaResultHandler
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 

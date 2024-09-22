@@ -1,8 +1,8 @@
-package com.example.tmdbapp.viewmodel
+package com.example.tmdbapp.ui.viewmodel
 
 import androidx.lifecycle.*
 import com.example.tmdbapp.models.*
-import com.example.tmdbapp.utils.*
+import com.example.tmdbapp.ui.viewmodel.handlers.AlphaResultHandler
 import kotlinx.coroutines.*
 
 fun AlphaViewModel.fetchMovies() {

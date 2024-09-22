@@ -1,4 +1,4 @@
-package com.example.tmdbapp.ui
+package com.example.tmdbapp.ui.components
 
 import android.content.Context
 import android.graphics.Color.TRANSPARENT
@@ -18,7 +18,6 @@ import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.example.tmdbapp.models.BetaResponseUiState
-import com.example.tmdbapp.ui.components.BetaResponseCardUi
 import com.example.tmdbapp.utils.Constants
 import kotlinx.coroutines.launch
 

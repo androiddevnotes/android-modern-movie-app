@@ -1,4 +1,4 @@
-package com.example.tmdbapp.ui
+package com.example.tmdbapp.ui.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,8 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import com.example.tmdbapp.ui.components.CommonTopBar
 import com.example.tmdbapp.ui.components.ItemSimpleUi
+import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
 import com.example.tmdbapp.utils.Constants
-import com.example.tmdbapp.viewmodel.AlphaViewModel
 
 @Composable
 fun AlphaListFavoriteScreenUi(

@@ -1,11 +1,12 @@
-package com.example.tmdbapp.ui
+package com.example.tmdbapp.ui.screens
 
 import androidx.compose.runtime.*
 import com.example.tmdbapp.models.Movie
+import com.example.tmdbapp.ui.components.AlphaListContentUi
 import com.example.tmdbapp.ui.theme.ThemeMode
+import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
 import com.example.tmdbapp.utils.rememberForeverLazyListState
 import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
-import com.example.tmdbapp.viewmodel.AlphaViewModel
 
 @Composable
 fun AlphaListScreenUi(
