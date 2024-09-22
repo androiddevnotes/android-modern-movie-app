@@ -104,7 +104,7 @@ private fun ListCreationContent(
   listDescription: String,
   onListDescriptionChange: (String) -> Unit,
   onCreateList: () -> Unit,
-  createListState: CreateListState,
+  createListState: CreateListState<Int>, // Specify the type parameter here
 ) {
   OutlinedTextField(
     value = listName,
@@ -133,7 +133,7 @@ private fun ListCreationContent(
 
     is CreateListState.Success -> {
       Text(
-        text = stringResource(R.string.list_created_success, createListState.listId),
+        text = stringResource(R.string.list_created_success, createListState.data),
         color = MaterialTheme.colorScheme.primary,
       )
     }
@@ -145,6 +145,8 @@ private fun ListCreationContent(
       )
     }
 
-    else -> {}
+    CreateListState.Idle -> {
+      // Do nothing or show a placeholder
+    }
   }
 }

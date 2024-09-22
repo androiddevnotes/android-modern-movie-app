@@ -26,7 +26,7 @@ class MovieViewModel(
   private val _searchQuery = MutableStateFlow("")
   internal val _uiState = MutableStateFlow<UiState<List<Movie>>>(UiState.Loading)
   internal val _authState = MutableStateFlow<AuthState<String>>(AuthState.Idle)
-  internal val _createListState = MutableStateFlow<CreateListState>(CreateListState.Idle)
+  internal val _createListState = MutableStateFlow<CreateListState<Int>>(CreateListState.Idle)
 
   val currentSortOption: StateFlow<SortOption> = _currentSortOption
   val favorites: StateFlow<List<Movie>> = _favorites
@@ -34,7 +34,7 @@ class MovieViewModel(
   val searchQuery: StateFlow<String> = _searchQuery
   val uiState: StateFlow<UiState<List<Movie>>> = _uiState.asStateFlow()
   val authState: StateFlow<AuthState<String>> = _authState
-  val createListState: StateFlow<CreateListState> = _createListState
+  val createListState: StateFlow<CreateListState<Int>> = _createListState
 
   internal val sessionManager = SessionManager(application)
 

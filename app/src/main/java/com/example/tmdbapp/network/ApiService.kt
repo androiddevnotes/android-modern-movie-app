@@ -68,6 +68,7 @@ class ApiService(
     client
       .post("authentication/session/new") {
         parameter("api_key", apiKey)
+        contentType(ContentType.Application.Json) // Add this line
         setBody(requestBody)
       }.body()
 
@@ -80,6 +81,7 @@ class ApiService(
       .post("list") {
         parameter("api_key", apiKey)
         parameter("session_id", sessionId)
+        contentType(ContentType.Application.Json) // Add this line
         setBody(requestBody)
       }.body()
 

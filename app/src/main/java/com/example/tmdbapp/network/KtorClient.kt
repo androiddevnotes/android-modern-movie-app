@@ -21,6 +21,7 @@ object KtorClient {
             prettyPrint = true
             isLenient = true
             ignoreUnknownKeys = true
+            encodeDefaults = true // Add this line if not already present
           },
         )
       }

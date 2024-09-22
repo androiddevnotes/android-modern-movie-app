@@ -57,16 +57,16 @@ sealed class AuthState<out T> {
   ) : AuthState<Nothing>()
 }
 
-sealed class CreateListState {
-  data object Idle : CreateListState()
+sealed class CreateListState<out T> {
+  data object Idle : CreateListState<Nothing>()
 
-  data object Loading : CreateListState()
+  data object Loading : CreateListState<Nothing>()
 
-  data class Success(
-    val listId: Int,
-  ) : CreateListState()
+  data class Success<T>(
+    val data: T,
+  ) : CreateListState<T>()
 
   data class Error(
     val message: String,
-  ) : CreateListState()
+  ) : CreateListState<Nothing>()
 }

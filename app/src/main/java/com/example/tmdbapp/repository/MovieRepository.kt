@@ -97,9 +97,9 @@ class MovieRepository(
       Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
     }
 
-  suspend fun createSession(requestToken: String): Resource<String> =
+  suspend fun createSession(approvedToken: String): Resource<String> =
     try {
-      val response = api.createSession(apiKeyManager.getTmdbApiKey(), CreateSessionRequest(requestToken))
+      val response = api.createSession(apiKeyManager.getTmdbApiKey(), CreateSessionRequest(approvedToken))
       if (response.success) {
         sessionManager.saveSessionId(response.sessionId)
         Resource.Success(response.sessionId)
@@ -107,7 +107,7 @@ class MovieRepository(
         Resource.Error("Failed to create session")
       }
     } catch (e: Exception) {
-      Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
+      Resource.Error(e.localizedMessage ?: "An unknown error occurred")
     }
 
   suspend fun createList(
@@ -115,9 +115,13 @@ class MovieRepository(
     description: String,
   ): Resource<Int> {
     return try {
-      val sessionId =
-        sessionManager.sessionIdFlow.first() ?: return Resource.Error("No active session")
-      val response = api.createList(apiKeyManager.getTmdbApiKey(), sessionId, CreateListRequest(name, description))
+      val sessionId = sessionManager.sessionIdFlow.first() ?: return Resource.Error("No active session")
+      val response =
+        api.createList(
+          apiKeyManager.getTmdbApiKey(),
+          sessionId,
+          CreateListRequest(name = name, description = description),
+        )
       if (response.success) {
         Resource.Success(response.listId)
       } else {
