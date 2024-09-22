@@ -39,14 +39,13 @@ fun MovieDetailScreen(
           onDownloadClick = viewModel::downloadImage,
           onAskAIClick = { viewModel.askAIAboutMovie(movie) },
           aiResponseUiState = aiResponseState,
-          // Remove the aiResponse parameter
         )
       }
       is DetailUiState.Error -> {
         ErrorContent(
           error = (movieState as DetailUiState.Error).error,
           onRetry = { viewModel.retryFetchMovieDetails() },
-          onBackPress = onBackPress,
+          onBackPress = onBackPress
         )
       }
     }

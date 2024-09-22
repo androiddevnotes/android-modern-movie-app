@@ -153,12 +153,13 @@ fun <T : Any> GenericListScreenContent(
           }
         }
 
-        is ListUiState.Error ->
-          GenericListErrorView(
-            errorState = listUiState,
-            onRetry = { loadMoreItems() }, // Provide the retry callback
-            onSettingsClick = onSettingsClick,
+        is ListUiState.Error -> {
+          ErrorContent(
+            error = listUiState.error,
+            onRetry = { loadMoreItems() },
+            onSettingsClick = onSettingsClick
           )
+        }
       }
       PullRefreshIndicator(
         refreshing = isRefreshing,
