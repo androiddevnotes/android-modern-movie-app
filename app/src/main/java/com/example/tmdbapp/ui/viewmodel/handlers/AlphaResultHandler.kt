@@ -49,14 +49,14 @@ object AlphaResultHandler {
     movieId: Int,
   ) {
     when (result) {
-      is Resource.Success -> {
+      is Success -> {
         result.data?.let { movie ->
           alphaDetailUiState.value = AlphaDetailUiState.Success(movie)
         } ?: run {
           alphaDetailUiState.value = AlphaDetailUiState.Error(handleNetworkError("No data received", apiKeyManager), movieId)
         }
       }
-      is Resource.Error -> {
+      is Error -> {
         alphaDetailUiState.value = AlphaDetailUiState.Error(handleNetworkError(result.message, apiKeyManager), movieId)
       }
     }
