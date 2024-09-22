@@ -16,8 +16,7 @@ object BetaResultHandler {
         betaResponseUiState.value = BetaResponseUiState.Success(response)
       }
       is Resource.Error -> {
-        val error = handleNetworkError(result.message, apiKeyManager)
-        betaResponseUiState.value = BetaResponseUiState.Error(error)
+        betaResponseUiState.value = BetaResponseUiState.Error(handleNetworkError(result.message, apiKeyManager))
       }
     }
   }
