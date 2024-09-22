@@ -23,7 +23,7 @@ sealed class DetailUiState<out T> {
 
   data class Error(
     val error: AppError,
-    val movieId: Int,
+    val itemId: Int,
   ) : DetailUiState<Nothing>()
 }
 

@@ -1,13 +1,14 @@
 package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.ui.components.*
-import com.example.tmdbapp.viewmodel.*
+import com.example.tmdbapp.viewmodel.MovieViewModel
+import com.example.tmdbapp.viewmodel.downloadImage
 
 @Composable
 fun MovieDetailScreenUi(
@@ -30,6 +31,7 @@ fun MovieDetailScreenUi(
           CircularProgressIndicator()
         }
       }
+
       is DetailUiState.Success -> {
         val movie = (movieState as DetailUiState.Success<Movie>).data
         GenericDetailContentUi(
@@ -49,6 +51,7 @@ fun MovieDetailScreenUi(
           isItemFavorite = { it.isFavorite },
         )
       }
+
       is DetailUiState.Error -> {
         ErrorContentUi(
           error = (movieState as DetailUiState.Error).error,

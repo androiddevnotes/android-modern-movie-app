@@ -13,32 +13,34 @@ import kotlinx.coroutines.flow.*
 class MovieViewModel(
   application: Application,
 ) : AndroidViewModel(application) {
-  internal var currentPage = 1
-  internal var isLoading = false
   private var searchJob: Job? = null
-  internal val repository = ItemRepository(application)
-  internal var isLastPage = false
-
-  internal val _currentSortOptions = MutableStateFlow(SortOptions.POPULAR)
+  private val _DetailUiState = MutableStateFlow<DetailUiState<Movie>>(DetailUiState.Loading)
+  private val _aiResponseUiState =
+    MutableStateFlow<AIResponseUiState<String>>(AIResponseUiState.Idle)
   private val _favorites = MutableStateFlow<List<Movie>>(emptyList())
-  internal val _filterOptions = MutableStateFlow(FilterOptions())
   private val _lastViewedItemIndex = MutableStateFlow(0)
+  private val _scrollToIndex = MutableStateFlow<Int?>(null)
   private val _searchQuery = MutableStateFlow("")
+  internal var currentPage = 1
+  internal var isLastPage = false
+  internal var isLoading = false
   internal val _List_uiState = MutableStateFlow<ListUiState<List<Movie>>>(ListUiState.Loading)
   internal val _authUiState = MutableStateFlow<AuthUiState<String>>(AuthUiState.Idle)
   internal val _createListUiState = MutableStateFlow<CreateListUiState<Int>>(CreateListUiState.Idle)
-
-  val currentSortOptions: StateFlow<SortOptions> = _currentSortOptions
-  val favorites: StateFlow<List<Movie>> = _favorites
-  val filterOptions: StateFlow<FilterOptions> = _filterOptions
-  val searchQuery: StateFlow<String> = _searchQuery
-  val listUiState: StateFlow<ListUiState<List<Movie>>> = _List_uiState.asStateFlow()
+  internal val _currentSortOptions = MutableStateFlow(SortOptions.POPULAR)
+  internal val _filterOptions = MutableStateFlow(FilterOptions())
+  internal val apiKeyManager = ApiKeyManager(application)
+  internal val repository = ItemRepository(application)
+  internal val sessionManager = SessionManager(application)
+  val aiResponseUiState: StateFlow<AIResponseUiState<String>> = _aiResponseUiState.asStateFlow()
   val authUiState: StateFlow<AuthUiState<String>> = _authUiState
   val createListUiState: StateFlow<CreateListUiState<Int>> = _createListUiState
-
-  internal val sessionManager = SessionManager(application)
-
-  internal val apiKeyManager = ApiKeyManager(application)
+  val currentSortOptions: StateFlow<SortOptions> = _currentSortOptions
+  val detailUiState: StateFlow<DetailUiState<Movie>> = _DetailUiState.asStateFlow()
+  val favorites: StateFlow<List<Movie>> = _favorites
+  val filterOptions: StateFlow<FilterOptions> = _filterOptions
+  val listUiState: StateFlow<ListUiState<List<Movie>>> = _List_uiState.asStateFlow()
+  val searchQuery: StateFlow<String> = _searchQuery
 
   init {
     fetchPopularMovies()
@@ -46,8 +48,27 @@ class MovieViewModel(
     checkAuthenticationStatus()
   }
 
-  private val _DetailUiState = MutableStateFlow<DetailUiState<Movie>>(DetailUiState.Loading)
-  val detailUiState: StateFlow<DetailUiState<Movie>> = _DetailUiState.asStateFlow()
+  fun askAIAboutMovie(movie: Movie) {
+    viewModelScope.launch {
+      _aiResponseUiState.value = AIResponseUiState.Loading
+      val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
+      try {
+        val response = repository.askOpenAI(prompt)
+        _aiResponseUiState.value = AIResponseUiState.Success(response)
+      } catch (e: Exception) {
+        _aiResponseUiState.value =
+          AIResponseUiState.Error(e.localizedMessage ?: "Unknown error occurred")
+      }
+    }
+  }
+
+  fun clearAIResponse() {
+    _aiResponseUiState.value = AIResponseUiState.Idle
+  }
+
+  fun clearScrollToIndex() {
+    _scrollToIndex.value = null
+  }
 
   fun fetchMovieDetails(movieId: Int) {
     viewModelScope.launch {
@@ -65,12 +86,7 @@ class MovieViewModel(
     }
   }
 
-  fun retryFetchMovieDetails() {
-    val currentState = _DetailUiState.value
-    if (currentState is DetailUiState.Error) {
-      fetchMovieDetails(currentState.movieId)
-    }
-  }
+  fun isFavorite(movieId: Int): Boolean = favorites.value.any { it.id == movieId }
 
   fun loadMoreMovies() {
     fetchMovies()
@@ -81,6 +97,13 @@ class MovieViewModel(
     isLastPage = false
     _List_uiState.value = ListUiState.Loading
     fetchMovies()
+  }
+
+  fun retryFetchMovieDetails() {
+    val currentState = _DetailUiState.value
+    if (currentState is DetailUiState.Error) {
+      fetchMovieDetails(currentState.itemId)
+    }
   }
 
   fun setFilterOptions(options: FilterOptions) {
@@ -142,6 +165,7 @@ class MovieViewModel(
               }
             ListUiState.Success(updatedMovies)
           }
+
           else -> currentState
         }
       }
@@ -156,33 +180,5 @@ class MovieViewModel(
         _favorites.value = favoriteMovies
       }
     }
-  }
-
-  fun isFavorite(movieId: Int): Boolean = favorites.value.any { it.id == movieId }
-
-  private val _aiResponseUiState = MutableStateFlow<AIResponseUiState<String>>(AIResponseUiState.Idle)
-  val aiResponseUiState: StateFlow<AIResponseUiState<String>> = _aiResponseUiState.asStateFlow()
-
-  fun askAIAboutMovie(movie: Movie) {
-    viewModelScope.launch {
-      _aiResponseUiState.value = AIResponseUiState.Loading
-      val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
-      try {
-        val response = repository.askOpenAI(prompt)
-        _aiResponseUiState.value = AIResponseUiState.Success(response)
-      } catch (e: Exception) {
-        _aiResponseUiState.value = AIResponseUiState.Error(e.localizedMessage ?: "Unknown error occurred")
-      }
-    }
-  }
-
-  fun clearAIResponse() {
-    _aiResponseUiState.value = AIResponseUiState.Idle
-  }
-
-  private val _scrollToIndex = MutableStateFlow<Int?>(null)
-
-  fun clearScrollToIndex() {
-    _scrollToIndex.value = null
   }
 }
