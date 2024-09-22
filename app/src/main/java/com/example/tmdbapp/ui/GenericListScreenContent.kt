@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun <T : Any> GenericListScreenContent(
   uiState: UiState<List<T>>,
-  viewModel: MovieViewModel,
   searchQuery: String,
   currentSortOption: SortOption,
   currentFilters: FilterOptions,
@@ -37,7 +36,14 @@ fun <T : Any> GenericListScreenContent(
   getItemPosterPath: (T) -> String?,
   getItemVoteAverage: (T) -> Float,
   isItemFavorite: (T) -> Boolean,
-  toggleFavorite: (T) -> Unit, // Add this line
+  toggleFavorite: (T) -> Unit,
+  isLastPage: Boolean,
+  loadMoreItems: () -> Unit,
+  refreshItems: () -> Unit,
+  setLastViewedItemIndex: (Int) -> Unit,
+  setSearchQuery: (String) -> Unit,
+  setSortOption: (SortOption) -> Unit,
+  setFilterOptions: (FilterOptions) -> Unit,
 ) {
   var isSearchActive by rememberSaveable { mutableStateOf(false) }
   var showFilterBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -52,7 +58,7 @@ fun <T : Any> GenericListScreenContent(
       onRefresh = {
         coroutineScope.launch {
           isRefreshing = true
-          viewModel.refreshMovies()
+          refreshItems()
           isRefreshing = false
         }
       },
@@ -63,7 +69,7 @@ fun <T : Any> GenericListScreenContent(
       currentFilters = currentFilters,
       onDismiss = { showFilterBottomSheet = false },
       onApply = { newFilters ->
-        viewModel.setFilterOptions(newFilters)
+        setFilterOptions(newFilters)
       },
     )
   }
@@ -73,15 +79,15 @@ fun <T : Any> GenericListScreenContent(
       TopBar(
         isSearchActive = isSearchActive,
         searchQuery = searchQuery,
-        onSearchQueryChange = { viewModel.setSearchQuery(it) },
+        onSearchQueryChange = { setSearchQuery(it) },
         onSearchIconClick = { isSearchActive = true },
         onCloseSearchClick = {
           isSearchActive = false
-          viewModel.setSearchQuery("")
+          setSearchQuery("")
         },
         expandedDropdown = expandedDropdown,
         onSortOptionClick = {
-          viewModel.setSortOption(it)
+          setSortOption(it)
           expandedDropdown = false
         },
         currentSortOption = currentSortOption,
@@ -118,10 +124,10 @@ fun <T : Any> GenericListScreenContent(
                 items = items,
                 onItemClick = onItemClick,
                 gridState = gridState,
-                isLastPage = viewModel.isLastPage,
-                loadMoreItems = viewModel::loadMoreMovies,
-                setLastViewedItemIndex = viewModel::setLastViewedItemIndex,
-                toggleFavorite = toggleFavorite, // Use the new parameter here
+                isLastPage = isLastPage,
+                loadMoreItems = loadMoreItems,
+                setLastViewedItemIndex = setLastViewedItemIndex,
+                toggleFavorite = toggleFavorite,
                 getItemId = getItemId,
                 getItemTitle = getItemTitle,
                 getItemPosterPath = getItemPosterPath,
@@ -133,10 +139,10 @@ fun <T : Any> GenericListScreenContent(
                 items = items,
                 onItemClick = onItemClick,
                 listState = listState,
-                isLastPage = viewModel.isLastPage,
-                loadMoreItems = viewModel::loadMoreMovies,
-                setLastViewedItemIndex = viewModel::setLastViewedItemIndex,
-                toggleFavorite = toggleFavorite, // Use the new parameter here
+                isLastPage = isLastPage,
+                loadMoreItems = loadMoreItems,
+                setLastViewedItemIndex = setLastViewedItemIndex,
+                toggleFavorite = toggleFavorite,
                 getItemId = getItemId,
                 getItemTitle = getItemTitle,
                 getItemOverview = getItemOverview,
@@ -150,7 +156,7 @@ fun <T : Any> GenericListScreenContent(
         is UiState.Error ->
           GenericListErrorView(
             errorState = uiState,
-            onRetry = { viewModel.loadMoreMovies() }, // Provide the retry callback
+            onRetry = loadMoreItems,
             onSettingsClick = onSettingsClick,
           )
       }

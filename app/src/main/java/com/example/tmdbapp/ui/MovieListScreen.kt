@@ -32,7 +32,6 @@ fun MovieListScreen(
 
   GenericListScreenContent(
     uiState = uiState,
-    viewModel = viewModel,
     searchQuery = searchQuery,
     currentSortOption = currentSortOption,
     currentFilters = currentFilters,
@@ -51,6 +50,13 @@ fun MovieListScreen(
     getItemPosterPath = { it.posterPath },
     getItemVoteAverage = { it.voteAverage },
     isItemFavorite = { it.isFavorite },
-    toggleFavorite = viewModel::toggleFavorite, // Add this line
+    toggleFavorite = viewModel::toggleFavorite,
+    isLastPage = viewModel.isLastPage,
+    loadMoreItems = viewModel::loadMoreMovies,
+    refreshItems = viewModel::refreshMovies,
+    setLastViewedItemIndex = viewModel::setLastViewedItemIndex,
+    setSearchQuery = viewModel::setSearchQuery,
+    setSortOption = viewModel::setSortOption,
+    setFilterOptions = viewModel::setFilterOptions,
   )
 }
