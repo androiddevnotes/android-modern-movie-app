@@ -6,7 +6,7 @@ import com.example.tmdbapp.models.CreateListUiState
 import com.example.tmdbapp.utils.*
 import kotlinx.coroutines.*
 
-fun MovieViewModel.startAuthentication() {
+fun ItemViewModel.startAuthentication() {
   viewModelScope.launch {
     if (_authUiState.value == AuthUiState.Authenticated) return@launch
 
@@ -28,7 +28,7 @@ fun MovieViewModel.startAuthentication() {
   }
 }
 
-fun MovieViewModel.createSession(approvedToken: String) {
+fun ItemViewModel.createSession(approvedToken: String) {
   viewModelScope.launch {
     _authUiState.value = AuthUiState.Loading
     when (val sessionResult = repository.createSession(approvedToken)) {
@@ -40,7 +40,7 @@ fun MovieViewModel.createSession(approvedToken: String) {
   }
 }
 
-fun MovieViewModel.createList(
+fun ItemViewModel.createList(
   name: String,
   description: String,
 ) {
@@ -58,7 +58,7 @@ fun MovieViewModel.createList(
   }
 }
 
-internal fun MovieViewModel.checkAuthenticationStatus() {
+internal fun ItemViewModel.checkAuthenticationStatus() {
   viewModelScope.launch {
     sessionManager.sessionIdFlow.collect { sessionId ->
       _authUiState.value =

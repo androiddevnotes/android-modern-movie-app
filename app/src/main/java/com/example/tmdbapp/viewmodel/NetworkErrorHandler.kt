@@ -3,7 +3,7 @@ package com.example.tmdbapp.viewmodel
 import com.example.tmdbapp.utils.ApiKeyManager
 import com.example.tmdbapp.utils.AppError
 
-fun handleError(
+fun handleNetworkError(
   errorMessage: String?,
   apiKeyManager: ApiKeyManager,
 ): AppError =

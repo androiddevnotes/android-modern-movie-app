@@ -6,7 +6,7 @@ import com.example.tmdbapp.network.responses.tmdb.MovieResponse
 import com.example.tmdbapp.utils.*
 import kotlinx.coroutines.*
 
-fun MovieViewModel.fetchMovies() {
+fun ItemViewModel.fetchMovies() {
   if (isLoading || isLastPage) return
   isLoading = true
   viewModelScope.launch {
@@ -22,7 +22,7 @@ fun MovieViewModel.fetchMovies() {
   }
 }
 
-fun MovieViewModel.fetchPopularMovies() {
+fun ItemViewModel.fetchPopularMovies() {
   if (isLoading || isLastPage) return
   isLoading = true
   viewModelScope.launch {
@@ -31,31 +31,31 @@ fun MovieViewModel.fetchPopularMovies() {
   }
 }
 
-internal fun MovieViewModel.searchMovies(query: String) {
+internal fun ItemViewModel.searchMovies(query: String) {
   viewModelScope.launch {
-    _List_uiState.value = ListUiState.Loading
+    _listUiState.value = ListUiState.Loading
     val result = repository.searchMovies(query, 1)
     handleMovieResult(result)
   }
 }
 
-private fun MovieViewModel.handleMovieResult(result: Resource<MovieResponse>) {
+private fun ItemViewModel.handleMovieResult(result: Resource<MovieResponse>) {
   when (result) {
     is Resource.Success -> {
       val newMovies = result.data?.results ?: emptyList()
       val currentMovies =
-        if (_List_uiState.value is ListUiState.Success && currentPage > 1) {
-          (_List_uiState.value as ListUiState.Success<List<Movie>>).data
+        if (_listUiState.value is ListUiState.Success && currentPage > 1) {
+          (_listUiState.value as ListUiState.Success<List<Movie>>).data
         } else {
           emptyList()
         }
-      _List_uiState.value = ListUiState.Success(currentMovies + newMovies)
+      _listUiState.value = ListUiState.Success(currentMovies + newMovies)
       currentPage++
       isLastPage = newMovies.isEmpty()
     }
 
     is Resource.Error -> {
-      _List_uiState.value = ListUiState.Error(handleError(result.message, apiKeyManager))
+      _listUiState.value = ListUiState.Error(handleNetworkError(result.message, apiKeyManager))
     }
   }
   isLoading = false

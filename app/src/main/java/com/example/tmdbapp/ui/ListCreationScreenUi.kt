@@ -16,17 +16,17 @@ import com.example.tmdbapp.viewmodel.*
 
 @Composable
 fun ListCreationScreen(
-  movieViewModel: MovieViewModel,
+  itemViewModel: ItemViewModel,
   onNavigateBack: () -> Unit,
   application: Application,
 ) {
   var listName by remember { mutableStateOf("") }
   var listDescription by remember { mutableStateOf("") }
-  val authState by movieViewModel.authUiState.collectAsState()
-  val createListState by movieViewModel.createListUiState.collectAsState()
+  val authState by itemViewModel.authUiState.collectAsState()
+  val createListState by itemViewModel.createListUiState.collectAsState()
 
   LaunchedEffect(Unit) {
-    movieViewModel.startAuthentication()
+    itemViewModel.startAuthentication()
   }
 
   Scaffold(
@@ -69,7 +69,7 @@ fun ListCreationScreen(
             application.startActivity(intent)
           }
           Text(stringResource(R.string.approve_request))
-          Button(onClick = { movieViewModel.createSession(token) }) {
+          Button(onClick = { itemViewModel.createSession(token) }) {
             Text(stringResource(R.string.approved_request))
           }
         }
@@ -80,7 +80,7 @@ fun ListCreationScreen(
             onListNameChange = { listName = it },
             listDescription = listDescription,
             onListDescriptionChange = { listDescription = it },
-            onCreateList = { movieViewModel.createList(listName, listDescription) },
+            onCreateList = { itemViewModel.createList(listName, listDescription) },
             createListUiState = createListState,
           )
         }

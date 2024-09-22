@@ -17,13 +17,13 @@ import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.viewmodel.*
 
 class MainActivity : ComponentActivity() {
-  private lateinit var movieViewModel: MovieViewModel
+  private lateinit var itemViewModel: ItemViewModel
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    movieViewModel =
-      ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))[MovieViewModel::class.java]
+    itemViewModel =
+      ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))[ItemViewModel::class.java]
 
     setContent {
       var themeMode by rememberSaveable { mutableStateOf(ThemeMode.SYSTEM) }
@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
         ) { innerPadding ->
           NavGraph(
             navController = navController,
-            movieViewModel = movieViewModel,
+            itemViewModel = itemViewModel,
             currentThemeMode = themeMode,
             onThemeChange = { themeMode = themeMode.next() },
             viewType = viewType,

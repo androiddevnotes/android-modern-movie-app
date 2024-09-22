@@ -14,7 +14,7 @@ import com.example.tmdbapp.utils.*
 import kotlinx.coroutines.*
 import java.io.*
 
-fun MovieViewModel.downloadImage(
+fun ItemViewModel.downloadImage(
   posterPath: String?,
   context: Context,
 ) {

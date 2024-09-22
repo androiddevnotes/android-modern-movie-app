@@ -7,20 +7,20 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.ui.components.*
-import com.example.tmdbapp.viewmodel.MovieViewModel
+import com.example.tmdbapp.viewmodel.ItemViewModel
 import com.example.tmdbapp.viewmodel.downloadImage
 
 @Composable
-fun MovieDetailScreenUi(
-  movieViewModel: MovieViewModel,
+fun ItemDetailScreenUi(
+  itemViewModel: ItemViewModel,
   onBackPress: () -> Unit,
 ) {
-  val detailUiState by movieViewModel.detailUiState.collectAsState()
-  val aiResponseState by movieViewModel.aiResponseUiState.collectAsState()
+  val detailUiState by itemViewModel.detailUiState.collectAsState()
+  val aiResponseState by itemViewModel.aiResponseUiState.collectAsState()
 
   DisposableEffect(Unit) {
     onDispose {
-      movieViewModel.clearAIResponse()
+      itemViewModel.clearAIResponse()
     }
   }
 
@@ -37,11 +37,11 @@ fun MovieDetailScreenUi(
         GenericDetailContentUi(
           item = item,
           onBackPress = onBackPress,
-          onFavoriteClick = { movieViewModel.toggleFavorite(item) },
+          onFavoriteClick = { itemViewModel.toggleFavorite(item) },
           onDownloadClick = { posterPath, context ->
-            movieViewModel.downloadImage(posterPath, context)
+            itemViewModel.downloadImage(posterPath, context)
           },
-          onAskAIClick = { movieViewModel.askAIAboutItem(item) },
+          onAskAIClick = { itemViewModel.askAIAboutItem(item) },
           aiResponseUiState = aiResponseState,
           getItemTitle = { it.title },
           getItemOverview = { it.overview },
@@ -55,7 +55,7 @@ fun MovieDetailScreenUi(
       is DetailUiState.Error -> {
         ErrorContentUi(
           error = (detailUiState as DetailUiState.Error).error,
-          onRetry = { movieViewModel.retryFetchItemDetails() },
+          onRetry = { itemViewModel.retryFetchItemDetails() },
           onBackPress = onBackPress,
         )
       }

@@ -13,7 +13,7 @@ import com.example.tmdbapp.viewmodel.*
 @Composable
 fun NavGraph(
   navController: NavHostController,
-  movieViewModel: MovieViewModel,
+  itemViewModel: ItemViewModel,
   currentThemeMode: ThemeMode,
   onThemeChange: () -> Unit,
   viewType: String,
@@ -25,8 +25,8 @@ fun NavGraph(
 
   NavHost(navController = navController, startDestination = "movieList", modifier = modifier) {
     composable("movieList") {
-      MovieListScreenUi(
-        movieViewModel = movieViewModel,
+      ItemListScreenUi(
+        itemViewModel = itemViewModel,
         onItemClick = { movie ->
           navController.navigate("movieDetail/${movie.id}")
         },
@@ -54,16 +54,16 @@ fun NavGraph(
     ) { backStackEntry ->
       val movieId = backStackEntry.arguments?.getInt("movieId") ?: return@composable
       LaunchedEffect(movieId) {
-        movieViewModel.fetchMovieDetails(movieId)
+        itemViewModel.fetchMovieDetails(movieId)
       }
-      MovieDetailScreenUi(
-        movieViewModel = movieViewModel,
+      ItemDetailScreenUi(
+        itemViewModel = itemViewModel,
         onBackPress = { navController.popBackStack() },
       )
     }
     composable("favorites") {
       FavoritesScreenUi(
-        viewModel = movieViewModel,
+        viewModel = itemViewModel,
         onItemClick = { movieId ->
           navController.navigate("movieDetail/$movieId")
         },
@@ -72,7 +72,7 @@ fun NavGraph(
     }
     composable("createList") {
       ListCreationScreen(
-        movieViewModel = movieViewModel,
+        itemViewModel = itemViewModel,
         onNavigateBack = { navController.popBackStack() },
         application = application,
       )

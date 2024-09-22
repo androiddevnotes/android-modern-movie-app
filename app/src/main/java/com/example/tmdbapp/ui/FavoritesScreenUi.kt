@@ -10,11 +10,11 @@ import androidx.compose.ui.*
 import com.example.tmdbapp.ui.components.CommonTopBar
 import com.example.tmdbapp.ui.components.SimpleItemUi
 import com.example.tmdbapp.utils.Constants
-import com.example.tmdbapp.viewmodel.MovieViewModel
+import com.example.tmdbapp.viewmodel.ItemViewModel
 
 @Composable
 fun FavoritesScreenUi(
-  viewModel: MovieViewModel,
+  viewModel: ItemViewModel,
   onItemClick: (Int) -> Unit,
   onBackPress: () -> Unit,
 ) {

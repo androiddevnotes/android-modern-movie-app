@@ -10,11 +10,11 @@ import com.example.tmdbapp.utils.ApiKeyManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-class MovieViewModel(
+class ItemViewModel(
   application: Application,
 ) : AndroidViewModel(application) {
   private var searchJob: Job? = null
-  private val _DetailUiState = MutableStateFlow<DetailUiState<Movie>>(DetailUiState.Loading)
+  private val _detailUiState = MutableStateFlow<DetailUiState<Movie>>(DetailUiState.Loading)
   private val _aiResponseUiState =
     MutableStateFlow<AIResponseUiState<String>>(AIResponseUiState.Idle)
   private val _favorites = MutableStateFlow<List<Movie>>(emptyList())
@@ -24,7 +24,7 @@ class MovieViewModel(
   internal var currentPage = 1
   internal var isLastPage = false
   internal var isLoading = false
-  internal val _List_uiState = MutableStateFlow<ListUiState<List<Movie>>>(ListUiState.Loading)
+  internal val _listUiState = MutableStateFlow<ListUiState<List<Movie>>>(ListUiState.Loading)
   internal val _authUiState = MutableStateFlow<AuthUiState<String>>(AuthUiState.Idle)
   internal val _createListUiState = MutableStateFlow<CreateListUiState<Int>>(CreateListUiState.Idle)
   internal val _currentSortOptions = MutableStateFlow(SortOptions.POPULAR)
@@ -36,10 +36,10 @@ class MovieViewModel(
   val authUiState: StateFlow<AuthUiState<String>> = _authUiState
   val createListUiState: StateFlow<CreateListUiState<Int>> = _createListUiState
   val currentSortOptions: StateFlow<SortOptions> = _currentSortOptions
-  val detailUiState: StateFlow<DetailUiState<Movie>> = _DetailUiState.asStateFlow()
+  val detailUiState: StateFlow<DetailUiState<Movie>> = _detailUiState.asStateFlow()
   val favorites: StateFlow<List<Movie>> = _favorites
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
-  val listUiState: StateFlow<ListUiState<List<Movie>>> = _List_uiState.asStateFlow()
+  val listUiState: StateFlow<ListUiState<List<Movie>>> = _listUiState.asStateFlow()
   val searchQuery: StateFlow<String> = _searchQuery
 
   init {
@@ -72,16 +72,16 @@ class MovieViewModel(
 
   fun fetchMovieDetails(movieId: Int) {
     viewModelScope.launch {
-      _DetailUiState.value = DetailUiState.Loading
+      _detailUiState.value = DetailUiState.Loading
       try {
         val movie = repository.getMovieDetails(movieId)
         if (movie != null) {
-          _DetailUiState.value = DetailUiState.Success(movie)
+          _detailUiState.value = DetailUiState.Success(movie)
         } else {
-          _DetailUiState.value = DetailUiState.Error(AppError.Unknown, movieId)
+          _detailUiState.value = DetailUiState.Error(AppError.Unknown, movieId)
         }
       } catch (e: Exception) {
-        _DetailUiState.value = DetailUiState.Error(handleError(e.message, apiKeyManager), movieId)
+        _detailUiState.value = DetailUiState.Error(handleNetworkError(e.message, apiKeyManager), movieId)
       }
     }
   }
@@ -95,12 +95,12 @@ class MovieViewModel(
   fun refreshItems() {
     currentPage = 1
     isLastPage = false
-    _List_uiState.value = ListUiState.Loading
+    _listUiState.value = ListUiState.Loading
     fetchMovies()
   }
 
   fun retryFetchItemDetails() {
-    val currentState = _DetailUiState.value
+    val currentState = _detailUiState.value
     if (currentState is DetailUiState.Error) {
       fetchMovieDetails(currentState.itemId)
     }
@@ -110,7 +110,7 @@ class MovieViewModel(
     _filterOptions.value = options
     currentPage = 1
     isLastPage = false
-    _List_uiState.value = ListUiState.Loading
+    _listUiState.value = ListUiState.Loading
     fetchMovies()
   }
 
@@ -138,7 +138,7 @@ class MovieViewModel(
       _currentSortOptions.value = sortOptions
       currentPage = 1
       isLastPage = false
-      _List_uiState.value = ListUiState.Loading
+      _listUiState.value = ListUiState.Loading
       fetchMovies()
     }
   }
@@ -148,7 +148,7 @@ class MovieViewModel(
       repository.toggleFavorite(movie)
       val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
 
-      _DetailUiState.update { currentState ->
+      _detailUiState.update { currentState ->
         if (currentState is DetailUiState.Success && currentState.data.id == updatedMovie.id) {
           DetailUiState.Success(updatedMovie)
         } else {
@@ -156,7 +156,7 @@ class MovieViewModel(
         }
       }
 
-      _List_uiState.update { currentState ->
+      _listUiState.update { currentState ->
         when (currentState) {
           is ListUiState.Success -> {
             val updatedMovies =

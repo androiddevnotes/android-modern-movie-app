@@ -5,11 +5,11 @@ import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.utils.rememberForeverLazyListState
 import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
-import com.example.tmdbapp.viewmodel.MovieViewModel
+import com.example.tmdbapp.viewmodel.ItemViewModel
 
 @Composable
-fun MovieListScreenUi(
-  movieViewModel: MovieViewModel,
+fun ItemListScreenUi(
+  itemViewModel: ItemViewModel,
   onItemClick: (Movie) -> Unit,
   onFavoritesClick: () -> Unit,
   viewType: String,
@@ -18,16 +18,16 @@ fun MovieListScreenUi(
   currentThemeMode: ThemeMode,
   onSettingsClick: () -> Unit,
 ) {
-  val uiState by movieViewModel.listUiState.collectAsState()
-  val searchQuery by movieViewModel.searchQuery.collectAsState()
-  val currentSortOption by movieViewModel.currentSortOptions.collectAsState()
-  val currentFilters by movieViewModel.filterOptions.collectAsState()
+  val uiState by itemViewModel.listUiState.collectAsState()
+  val searchQuery by itemViewModel.searchQuery.collectAsState()
+  val currentSortOption by itemViewModel.currentSortOptions.collectAsState()
+  val currentFilters by itemViewModel.filterOptions.collectAsState()
 
   val listState = rememberForeverLazyListState(key = "item_list_${viewType}_$searchQuery")
   val gridState = rememberForeverLazyStaggeredGridState(key = "item_grid_${viewType}_$searchQuery")
 
   LaunchedEffect(viewType) {
-    movieViewModel.clearScrollToIndex()
+    itemViewModel.clearScrollToIndex()
   }
 
   GenericListContentUi(
@@ -50,13 +50,13 @@ fun MovieListScreenUi(
     getItemPosterPath = { it.posterPath },
     getItemVoteAverage = { it.voteAverage },
     isItemFavorite = { it.isFavorite },
-    toggleFavorite = movieViewModel::toggleFavorite,
-    isLastPage = movieViewModel.isLastPage,
-    loadMoreItems = movieViewModel::loadMoreItems,
-    refreshItems = movieViewModel::refreshItems,
-    setLastViewedItemIndex = movieViewModel::setLastViewedItemIndex,
-    setSearchQuery = movieViewModel::setSearchQuery,
-    setSortOption = movieViewModel::setSortOption,
-    setFilterOptions = movieViewModel::setFilterOptions,
+    toggleFavorite = itemViewModel::toggleFavorite,
+    isLastPage = itemViewModel.isLastPage,
+    loadMoreItems = itemViewModel::loadMoreItems,
+    refreshItems = itemViewModel::refreshItems,
+    setLastViewedItemIndex = itemViewModel::setLastViewedItemIndex,
+    setSearchQuery = itemViewModel::setSearchQuery,
+    setSortOption = itemViewModel::setSortOption,
+    setFilterOptions = itemViewModel::setFilterOptions,
   )
 }
