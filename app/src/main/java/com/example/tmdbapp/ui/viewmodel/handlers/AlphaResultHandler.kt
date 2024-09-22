@@ -3,13 +3,13 @@ package com.example.tmdbapp.ui.viewmodel.handlers
 import com.example.tmdbapp.models.AlphaDetailUiState
 import com.example.tmdbapp.models.AlphaListUiState
 import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.network.handleNetworkError
 import com.example.tmdbapp.network.responses.tmdb.MovieResponse
-import com.example.tmdbapp.utils.ApiKeyManager
-import com.example.tmdbapp.utils.Resource
+import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.utils.Resource.Error
 import com.example.tmdbapp.utils.Resource.Success
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
+import timber.log.Timber
 
 object AlphaResultHandler {
   suspend fun handleAlphaResult(
@@ -36,7 +36,19 @@ object AlphaResultHandler {
       }
 
       is Error -> {
-        alphaListUiState.value = AlphaListUiState.Error(handleNetworkError(result.message, apiKeyManager))
+        val appError =
+          when {
+            apiKeyManager.tmdbApiKeyFlow.first().isBlank() -> AppError.ApiKeyMissing
+            result.message == null -> {
+              Timber.e("Error message is null")
+              AppError.Unknown
+            }
+            else -> {
+              Timber.e("Unhandled error: ${result.message}")
+              AppError.ApiError(result.message)
+            }
+          }
+        alphaListUiState.value = AlphaListUiState.Error(appError)
       }
     }
     updateIsLoading(false)
@@ -53,11 +65,24 @@ object AlphaResultHandler {
         result.data?.let { movie ->
           alphaDetailUiState.value = AlphaDetailUiState.Success(movie)
         } ?: run {
-          alphaDetailUiState.value = AlphaDetailUiState.Error(handleNetworkError("No data received", apiKeyManager), movieId)
+          val appError = AppError.ApiError("No data received")
+          alphaDetailUiState.value = AlphaDetailUiState.Error(appError, movieId)
         }
       }
       is Error -> {
-        alphaDetailUiState.value = AlphaDetailUiState.Error(handleNetworkError(result.message, apiKeyManager), movieId)
+        val appError =
+          when {
+            apiKeyManager.tmdbApiKeyFlow.first().isBlank() -> AppError.ApiKeyMissing
+            result.message == null -> {
+              Timber.e("Error message is null")
+              AppError.Unknown
+            }
+            else -> {
+              Timber.e("Unhandled error: ${result.message}")
+              AppError.ApiError(result.message)
+            }
+          }
+        alphaDetailUiState.value = AlphaDetailUiState.Error(appError, movieId)
       }
     }
   }
