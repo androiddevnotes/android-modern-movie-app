@@ -37,7 +37,7 @@ fun MovieDetailScreen(
           onBackPress = onBackPress,
           onFavoriteClick = { viewModel.toggleFavorite(movie) },
           onDownloadClick = { posterPath, context ->
-            // Implement download logic
+            viewModel.downloadImage(posterPath, context)
           },
           onAskAIClick = { viewModel.askAIAboutMovie(movie) },
           aiResponseUiState = aiResponseState,
