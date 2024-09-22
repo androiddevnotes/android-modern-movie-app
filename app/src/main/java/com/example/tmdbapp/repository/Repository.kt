@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.map
 class Repository(
   context: Context,
 ) {
-  private val tmdbApi = TmdbApiService(KtorClient.httpClient)
-  private val openAIApi = OpenAIApiService(KtorClient.httpClient)
+  private val tmdbApi = TmdbTmdbApiServiceImpl(KtorClient.httpClient)
+  private val openAIApi = OpenAiApiApiServiceImpl(KtorClient.httpClient)
   private val favoritePreferencesDatastore = FavoritePreferencesDatastore(context)
   private val sessionManagerPreferencesDataStore = SessionManagerPreferencesDataStore(context)
   private val apiKeyManager = ApiKeyManager(context)

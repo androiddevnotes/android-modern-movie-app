@@ -6,9 +6,9 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 
-class OpenAIApiService(
+class OpenAiApiApiServiceImpl(
   private val client: HttpClient,
-) : OpenAIService {
+) : OpenAiApiService {
   override suspend fun askOpenAI(
     apiKey: String,
     prompt: String,
