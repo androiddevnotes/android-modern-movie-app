@@ -63,7 +63,7 @@ fun MovieDetailScreen(
             .padding(bottom = 32.dp),
         contentAlignment = Alignment.BottomCenter,
       ) {
-        AIScanningIndicator()
+        AiScanningIndicator()
       }
     }
   }

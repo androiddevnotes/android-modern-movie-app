@@ -10,7 +10,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.ui.components.AIResponseCard
+import com.example.tmdbapp.ui.components.AiResponseCard
 import com.example.tmdbapp.viewmodel.AIResponseUiState
 import com.example.tmdbapp.viewmodel.AIResponseUiState.*
 
@@ -78,7 +78,7 @@ fun MovieDetailContent(
         }
 
         is Success -> {
-          AIResponseCard(response = aiResponseUiState.data)
+          AiResponseCard(response = aiResponseUiState.data)
         }
 
         Idle -> {

@@ -4,10 +4,9 @@ import android.content.Context
 import com.example.tmdbapp.data.FavoritePreferences
 import com.example.tmdbapp.data.SessionManager
 import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.network.*
-import com.example.tmdbapp.network.responses.tmdb.CreateListRequest
-import com.example.tmdbapp.network.responses.tmdb.CreateSessionRequest
-import com.example.tmdbapp.network.responses.tmdb.MovieResponse
+import com.example.tmdbapp.network.ApiService
+import com.example.tmdbapp.network.KtorClient
+import com.example.tmdbapp.network.responses.tmdb.*
 import com.example.tmdbapp.utils.ApiKeyManager
 import com.example.tmdbapp.utils.Resource
 import kotlinx.coroutines.flow.first
@@ -36,7 +35,8 @@ class MovieRepository(
 
   suspend fun getFavoriteMovies(): List<Movie> =
     try {
-      val response = api.discoverMovies(apiKeyManager.getTmdbApiKey(), 1, sortBy = "popularity.desc")
+      val response =
+        api.discoverMovies(apiKeyManager.getTmdbApiKey(), 1, sortBy = "popularity.desc")
       response.results
         .filter { movie ->
           favoritePreferences.isFavorite(movie.id)
@@ -101,7 +101,8 @@ class MovieRepository(
 
   suspend fun createSession(approvedToken: String): Resource<String> =
     try {
-      val response = api.createSession(apiKeyManager.getTmdbApiKey(), CreateSessionRequest(approvedToken))
+      val response =
+        api.createSession(apiKeyManager.getTmdbApiKey(), CreateSessionRequest(approvedToken))
       if (response.success) {
         sessionManager.saveSessionId(response.sessionId)
         Resource.Success(response.sessionId)
@@ -117,7 +118,8 @@ class MovieRepository(
     description: String,
   ): Resource<Int> {
     return try {
-      val sessionId = sessionManager.sessionIdFlow.first() ?: return Resource.Error("No active session")
+      val sessionId =
+        sessionManager.sessionIdFlow.first() ?: return Resource.Error("No active session")
       val response =
         api.createList(
           apiKeyManager.getTmdbApiKey(),
