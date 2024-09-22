@@ -2,11 +2,8 @@ package com.example.tmdbapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.AutoMirrored.Filled
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
@@ -37,10 +34,17 @@ fun DetailTopBarUi(
     },
     actions = {
       IconButton(onClick = onFavoriteClick) {
-        Icon(
-          imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+        Image(
+          painter =
+            if (isFavorite) {
+              painterResource(
+                id = R.drawable.cool_shape_fav,
+              )
+            } else {
+              painterResource(id = R.drawable.cool_shape_placeholder)
+            },
           contentDescription = stringResource(R.string.favorite),
-          tint = if (isFavorite) MaterialTheme.colorScheme.primary else textColor,
+          modifier = Modifier.size(Constants.ICON_SIZE_SMALL),
         )
       }
       IconButton(onClick = onDownloadClick) {
