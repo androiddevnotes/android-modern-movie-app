@@ -2,13 +2,14 @@ package com.example.tmdbapp.network
 
 import com.example.tmdbapp.utils.ApiKeyManager
 import com.example.tmdbapp.utils.AppError
+import kotlinx.coroutines.flow.first
 
-fun handleNetworkError(
+suspend fun handleNetworkError(
   errorMessage: String?,
   apiKeyManager: ApiKeyManager,
 ): AppError =
   when {
-    apiKeyManager.getTmdbApiKey().isBlank() -> AppError.ApiKeyMissing
+    apiKeyManager.tmdbApiKeyFlow.first().isBlank() -> AppError.ApiKeyMissing
     errorMessage?.contains("UnknownHostException") == true -> AppError.NoInternet
     errorMessage?.contains("IOException") == true -> AppError.Network
     errorMessage?.contains("ResponseException") == true -> {

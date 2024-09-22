@@ -9,7 +9,7 @@ import com.example.tmdbapp.utils.Resource.Success
 import kotlinx.coroutines.flow.MutableStateFlow
 
 object BetaResultHandler {
-  fun handleBetaResult(
+  suspend fun handleBetaResult(
     result: Resource<String>,
     betaResponseUiState: MutableStateFlow<BetaResponseUiState<String>>,
     apiKeyManager: ApiKeyManager,

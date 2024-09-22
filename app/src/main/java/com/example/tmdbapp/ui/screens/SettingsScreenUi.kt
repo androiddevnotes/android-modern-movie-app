@@ -10,14 +10,22 @@ import com.example.tmdbapp.R
 import com.example.tmdbapp.ui.components.CommonTopBar
 import com.example.tmdbapp.utils.ApiKeyManager
 import com.example.tmdbapp.utils.Constants
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreenUi(
   apiKeyManager: ApiKeyManager,
   onBackPress: () -> Unit,
 ) {
-  var tmdbApiKey by remember { mutableStateOf(apiKeyManager.getTmdbApiKey()) }
-  var openAiApiKey by remember { mutableStateOf(apiKeyManager.getOpenAiApiKey()) }
+  var tmdbApiKey by remember { mutableStateOf("") }
+  var openAiApiKey by remember { mutableStateOf("") }
+  val scope = rememberCoroutineScope()
+
+  LaunchedEffect(apiKeyManager) {
+    tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
+    openAiApiKey = apiKeyManager.openAiApiKeyFlow.first()
+  }
 
   Scaffold(
     topBar = {
@@ -36,9 +44,11 @@ fun SettingsScreenUi(
     ) {
       OutlinedTextField(
         value = if (tmdbApiKey == BuildConfig.TMDB_API_KEY) "" else tmdbApiKey,
-        onValueChange = {
-          tmdbApiKey = it
-          apiKeyManager.setTmdbApiKey(it)
+        onValueChange = { newValue ->
+          tmdbApiKey = newValue
+          scope.launch {
+            apiKeyManager.setTmdbApiKey(newValue)
+          }
         },
         label = { Text(stringResource(R.string.tmdb_api_key)) },
         placeholder = { Text(stringResource(R.string.enter_your_api_key)) },
@@ -49,14 +59,30 @@ fun SettingsScreenUi(
 
       OutlinedTextField(
         value = if (openAiApiKey == BuildConfig.OPENAI_API_KEY) "" else openAiApiKey,
-        onValueChange = {
-          openAiApiKey = it
-          apiKeyManager.setOpenAiApiKey(it)
+        onValueChange = { newValue ->
+          openAiApiKey = newValue
+          scope.launch {
+            apiKeyManager.setOpenAiApiKey(newValue)
+          }
         },
         label = { Text(stringResource(R.string.openai_api_key)) },
         placeholder = { Text(stringResource(R.string.enter_your_api_key)) },
         modifier = Modifier.fillMaxWidth(),
       )
+
+      Spacer(modifier = Modifier.height(Constants.PADDING_MEDIUM))
+
+      Button(
+        onClick = {
+          scope.launch {
+            apiKeyManager.setTmdbApiKey(tmdbApiKey)
+            apiKeyManager.setOpenAiApiKey(openAiApiKey)
+          }
+        },
+        modifier = Modifier.align(Alignment.CenterHorizontally),
+      ) {
+        Text("Save API Keys")
+      }
     }
   }
 }

@@ -38,7 +38,8 @@ class Repository(
   fun getFavoriteMovies(): Flow<List<Movie>> =
     favoritePreferencesDatastore.getAllFavorites().map { favoriteIds ->
       safeApiCall {
-        tmdbApi.discoverMovies(apiKeyManager.getTmdbApiKey(), 1, sortBy = "popularity.desc")
+        val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
+        tmdbApi.discoverMovies(tmdbApiKey, 1, sortBy = "popularity.desc")
       }.let { result ->
         when (result) {
           is Resource.Success -> {
@@ -66,9 +67,10 @@ class Repository(
     minRating: Float? = null,
   ): Resource<MovieResponse> =
     safeApiCall {
+      val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
       val response =
         tmdbApi.discoverMovies(
-          apiKeyManager.getTmdbApiKey(),
+          tmdbApiKey,
           page,
           sortBy,
           genres?.joinToString(","),
@@ -83,13 +85,15 @@ class Repository(
     page: Int,
   ): Resource<MovieResponse> =
     safeApiCall {
-      val response = tmdbApi.searchMovies(apiKeyManager.getTmdbApiKey(), query, page)
+      val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
+      val response = tmdbApi.searchMovies(tmdbApiKey, query, page)
       response.copy(results = addFavoriteStatus(response.results))
     }
 
   suspend fun getMovieDetails(movieId: Int): Movie? =
     try {
-      val response = tmdbApi.getMovieDetails(movieId, apiKeyManager.getTmdbApiKey())
+      val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
+      val response = tmdbApi.getMovieDetails(movieId, tmdbApiKey)
       val isFavorite = favoritePreferencesDatastore.isFavorite(response.id).first()
       response.copy(isFavorite = isFavorite)
     } catch (e: Exception) {
@@ -98,7 +102,8 @@ class Repository(
 
   suspend fun createRequestToken(): Resource<String> =
     try {
-      val response = tmdbApi.createRequestToken(apiKeyManager.getTmdbApiKey())
+      val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
+      val response = tmdbApi.createRequestToken(tmdbApiKey)
       if (response.success) {
         Resource.Success(response.requestToken)
       } else {
@@ -110,8 +115,9 @@ class Repository(
 
   suspend fun createSession(approvedToken: String): Resource<String> =
     try {
+      val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
       val response =
-        tmdbApi.createSession(apiKeyManager.getTmdbApiKey(), CreateSessionRequest(approvedToken))
+        tmdbApi.createSession(tmdbApiKey, CreateSessionRequest(approvedToken))
       if (response.success) {
         sessionManagerPreferencesDataStore.saveSessionId(response.sessionId)
         Resource.Success(response.sessionId)
@@ -128,9 +134,10 @@ class Repository(
   ): Resource<Int> {
     return try {
       val sessionId = sessionManagerPreferencesDataStore.sessionIdFlow.first() ?: return Resource.Error("No active session")
+      val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
       val response =
         tmdbApi.createList(
-          apiKeyManager.getTmdbApiKey(),
+          tmdbApiKey,
           sessionId,
           CreateListRequest(name = name, description = description),
         )
@@ -146,6 +153,7 @@ class Repository(
 
   suspend fun askOpenAi(prompt: String): Resource<String> =
     safeApiCall {
-      openAiApi.askOpenAi(apiKeyManager.getOpenAiApiKey(), prompt)
+      val openAiApiKey = apiKeyManager.openAiApiKeyFlow.first()
+      openAiApi.askOpenAi(openAiApiKey, prompt)
     }
 }
