@@ -48,7 +48,6 @@ fun DetailTopBarUi(
           painter = painterResource(id = R.drawable.my_shape_poly12),
           contentDescription = stringResource(R.string.download_image),
           modifier = Modifier.size(Constants.ICON_SIZE_SMALL),
-          colorFilter = ColorFilter.tint(textColor),
         )
       }
       IconButton(onClick = onAskAIClick) {
@@ -56,7 +55,6 @@ fun DetailTopBarUi(
           painter = painterResource(id = R.drawable.cool_shape_ai),
           contentDescription = stringResource(R.string.ask_ai_about_item),
           modifier = Modifier.size(Constants.ICON_SIZE_SMALL),
-          colorFilter = ColorFilter.tint(textColor),
         )
       }
     },
