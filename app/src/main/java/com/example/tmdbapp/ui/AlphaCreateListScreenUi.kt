@@ -15,18 +15,18 @@ import com.example.tmdbapp.ui.components.CommonTopBar
 import com.example.tmdbapp.viewmodel.*
 
 @Composable
-fun ItemCreateListScreen(
-  itemViewModel: ItemViewModel,
+fun AlphaCreateListScreenUi(
+  alphaViewModel: AlphaViewModel,
   onNavigateBack: () -> Unit,
   application: Application,
 ) {
   var listName by remember { mutableStateOf("") }
   var listDescription by remember { mutableStateOf("") }
-  val authState by itemViewModel.itemAuthUiState.collectAsState()
-  val createListState by itemViewModel.itemCreateListUiState.collectAsState()
+  val authState by alphaViewModel.itemAuthUiState.collectAsState()
+  val createListState by alphaViewModel.itemCreateListUiState.collectAsState()
 
   LaunchedEffect(Unit) {
-    itemViewModel.startAuthentication()
+    alphaViewModel.startAuthentication()
   }
 
   Scaffold(
@@ -69,18 +69,18 @@ fun ItemCreateListScreen(
             application.startActivity(intent)
           }
           Text(stringResource(R.string.approve_request))
-          Button(onClick = { itemViewModel.createSession(token) }) {
+          Button(onClick = { alphaViewModel.createSession(token) }) {
             Text(stringResource(R.string.approved_request))
           }
         }
 
         is ItemAuthUiState.Authenticated -> {
-          ListCreationContentUi(
+          AlphaCreateListContentUi(
             listName = listName,
             onListNameChange = { listName = it },
             listDescription = listDescription,
             onListDescriptionChange = { listDescription = it },
-            onCreateList = { itemViewModel.createList(listName, listDescription) },
+            onCreateList = { alphaViewModel.createList(listName, listDescription) },
             itemCreateListUiState = createListState,
           )
         }

@@ -10,7 +10,7 @@ import com.example.tmdbapp.utils.ApiKeyManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-class ItemViewModel(
+class AlphaViewModel(
   application: Application,
 ) : AndroidViewModel(application) {
   private var searchJob: Job? = null

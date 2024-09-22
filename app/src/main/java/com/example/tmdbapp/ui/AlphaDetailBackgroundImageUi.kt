@@ -7,7 +7,7 @@ import androidx.compose.ui.layout.*
 import coil.compose.AsyncImage
 
 @Composable
-fun DetailBackgroundImage(posterPath: String?) {
+fun AlphaDetailBackgroundImageUi(posterPath: String?) {
   AsyncImage(
     model = "https://image.tmdb.org/t/p/w500$posterPath",
     contentDescription = null,

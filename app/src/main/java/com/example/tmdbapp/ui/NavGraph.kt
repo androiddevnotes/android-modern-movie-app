@@ -13,7 +13,7 @@ import com.example.tmdbapp.viewmodel.*
 @Composable
 fun NavGraph(
   navController: NavHostController,
-  itemViewModel: ItemViewModel,
+  alphaViewModel: AlphaViewModel,
   currentThemeMode: ThemeMode,
   onThemeChange: () -> Unit,
   viewType: String,
@@ -25,8 +25,8 @@ fun NavGraph(
 
   NavHost(navController = navController, startDestination = "movieList", modifier = modifier) {
     composable("movieList") {
-      ItemListScreenUi(
-        itemViewModel = itemViewModel,
+      AlphaListScreenUi(
+        alphaViewModel = alphaViewModel,
         onItemClick = { movie ->
           navController.navigate("movieDetail/${movie.id}")
         },
@@ -54,16 +54,16 @@ fun NavGraph(
     ) { backStackEntry ->
       val movieId = backStackEntry.arguments?.getInt("movieId") ?: return@composable
       LaunchedEffect(movieId) {
-        itemViewModel.fetchMovieDetails(movieId)
+        alphaViewModel.fetchMovieDetails(movieId)
       }
-      ItemDetailScreenUi(
-        itemViewModel = itemViewModel,
+      AlphaDetailScreenUi(
+        alphaViewModel = alphaViewModel,
         onBackPress = { navController.popBackStack() },
       )
     }
     composable("favorites") {
-      ItemListFavoriteScreenUi(
-        viewModel = itemViewModel,
+      AlphaListFavoriteScreenUi(
+        viewModel = alphaViewModel,
         onItemClick = { movieId ->
           navController.navigate("movieDetail/$movieId")
         },
@@ -71,8 +71,8 @@ fun NavGraph(
       )
     }
     composable("createList") {
-      ItemCreateListScreen(
-        itemViewModel = itemViewModel,
+      AlphaCreateListScreenUi(
+        alphaViewModel = alphaViewModel,
         onNavigateBack = { navController.popBackStack() },
         application = application,
       )

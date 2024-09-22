@@ -10,7 +10,7 @@ import com.example.tmdbapp.models.ItemCreateListUiState
 import com.example.tmdbapp.models.ItemCreateListUiState.*
 
 @Composable
-fun ListCreationContentUi(
+fun AlphaCreateListContentUi(
   listName: String,
   onListNameChange: (String) -> Unit,
   listDescription: String,

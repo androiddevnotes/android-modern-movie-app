@@ -23,7 +23,7 @@ import com.example.tmdbapp.utils.Constants
 import kotlinx.coroutines.launch
 
 @Composable
-fun <T : Any> ItemDetailContentUi(
+fun <T : Any> AlphaDetailContentUi(
   item: T,
   onBackPress: () -> Unit,
   onFavoriteClick: () -> Unit,
@@ -68,7 +68,7 @@ fun <T : Any> ItemDetailContentUi(
   }
 
   Box(modifier = Modifier.fillMaxSize()) {
-    DetailBackgroundImage(getItemPosterPath(item))
+    AlphaDetailBackgroundImageUi(getItemPosterPath(item))
     Column(
       modifier =
         Modifier
@@ -76,7 +76,7 @@ fun <T : Any> ItemDetailContentUi(
           .verticalScroll(scrollState)
           .padding(bottom = 80.dp),
     ) {
-      ItemDetailTopBarUi(
+      AlphaDetailTopBarUi(
         onBackPress = onBackPress,
         onFavoriteClick = onFavoriteClick,
         onDownloadClick = { onDownloadClick(getItemPosterPath(item), context) },

@@ -7,20 +7,20 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.ui.components.*
-import com.example.tmdbapp.viewmodel.ItemViewModel
+import com.example.tmdbapp.viewmodel.AlphaViewModel
 import com.example.tmdbapp.viewmodel.downloadImage
 
 @Composable
-fun ItemDetailScreenUi(
-  itemViewModel: ItemViewModel,
+fun AlphaDetailScreenUi(
+  alphaViewModel: AlphaViewModel,
   onBackPress: () -> Unit,
 ) {
-  val detailUiState by itemViewModel.itemDetailUiState.collectAsState()
-  val aiResponseState by itemViewModel.aiResponseUiState.collectAsState()
+  val detailUiState by alphaViewModel.itemDetailUiState.collectAsState()
+  val aiResponseState by alphaViewModel.aiResponseUiState.collectAsState()
 
   DisposableEffect(Unit) {
     onDispose {
-      itemViewModel.clearAIResponse()
+      alphaViewModel.clearAIResponse()
     }
   }
 
@@ -34,14 +34,14 @@ fun ItemDetailScreenUi(
 
       is ItemDetailUiState.Success -> {
         val item = (detailUiState as ItemDetailUiState.Success<Movie>).data
-        ItemDetailContentUi(
+        AlphaDetailContentUi(
           item = item,
           onBackPress = onBackPress,
-          onFavoriteClick = { itemViewModel.toggleFavorite(item) },
+          onFavoriteClick = { alphaViewModel.toggleFavorite(item) },
           onDownloadClick = { posterPath, context ->
-            itemViewModel.downloadImage(posterPath, context)
+            alphaViewModel.downloadImage(posterPath, context)
           },
-          onAskAIClick = { itemViewModel.askAIAboutItem(item) },
+          onAskAIClick = { alphaViewModel.askAIAboutItem(item) },
           aiResponseUiState = aiResponseState,
           getItemTitle = { it.title },
           getItemOverview = { it.overview },
@@ -55,7 +55,7 @@ fun ItemDetailScreenUi(
       is ItemDetailUiState.Error -> {
         ErrorContentUi(
           error = (detailUiState as ItemDetailUiState.Error).error,
-          onRetry = { itemViewModel.retryFetchItemDetails() },
+          onRetry = { alphaViewModel.retryFetchItemDetails() },
           onBackPress = onBackPress,
         )
       }

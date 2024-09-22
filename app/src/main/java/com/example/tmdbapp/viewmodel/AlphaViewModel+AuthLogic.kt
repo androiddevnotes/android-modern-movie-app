@@ -6,7 +6,7 @@ import com.example.tmdbapp.models.ItemCreateListUiState
 import com.example.tmdbapp.utils.*
 import kotlinx.coroutines.*
 
-fun ItemViewModel.startAuthentication() {
+fun AlphaViewModel.startAuthentication() {
   viewModelScope.launch {
     if (_Item_authUiState.value == ItemAuthUiState.Authenticated) return@launch
 
@@ -28,7 +28,7 @@ fun ItemViewModel.startAuthentication() {
   }
 }
 
-fun ItemViewModel.createSession(approvedToken: String) {
+fun AlphaViewModel.createSession(approvedToken: String) {
   viewModelScope.launch {
     _Item_authUiState.value = ItemAuthUiState.Loading
     when (val sessionResult = repository.createSession(approvedToken)) {
@@ -40,7 +40,7 @@ fun ItemViewModel.createSession(approvedToken: String) {
   }
 }
 
-fun ItemViewModel.createList(
+fun AlphaViewModel.createList(
   name: String,
   description: String,
 ) {
@@ -58,7 +58,7 @@ fun ItemViewModel.createList(
   }
 }
 
-internal fun ItemViewModel.checkAuthenticationStatus() {
+internal fun AlphaViewModel.checkAuthenticationStatus() {
   viewModelScope.launch {
     sessionManagerPreferencesDataStore.sessionIdFlow.collect { sessionId ->
       _Item_authUiState.value =

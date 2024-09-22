@@ -5,11 +5,11 @@ import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.utils.rememberForeverLazyListState
 import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
-import com.example.tmdbapp.viewmodel.ItemViewModel
+import com.example.tmdbapp.viewmodel.AlphaViewModel
 
 @Composable
-fun ItemListScreenUi(
-  itemViewModel: ItemViewModel,
+fun AlphaListScreenUi(
+  alphaViewModel: AlphaViewModel,
   onItemClick: (Movie) -> Unit,
   onFavoritesClick: () -> Unit,
   viewType: String,
@@ -18,19 +18,19 @@ fun ItemListScreenUi(
   currentThemeMode: ThemeMode,
   onSettingsClick: () -> Unit,
 ) {
-  val uiState by itemViewModel.itemListUiState.collectAsState()
-  val searchQuery by itemViewModel.searchQuery.collectAsState()
-  val currentSortOption by itemViewModel.currentSortOptions.collectAsState()
-  val currentFilters by itemViewModel.filterOptions.collectAsState()
+  val uiState by alphaViewModel.itemListUiState.collectAsState()
+  val searchQuery by alphaViewModel.searchQuery.collectAsState()
+  val currentSortOption by alphaViewModel.currentSortOptions.collectAsState()
+  val currentFilters by alphaViewModel.filterOptions.collectAsState()
 
   val listState = rememberForeverLazyListState(key = "item_list_${viewType}_$searchQuery")
   val gridState = rememberForeverLazyStaggeredGridState(key = "item_grid_${viewType}_$searchQuery")
 
   LaunchedEffect(viewType) {
-    itemViewModel.clearScrollToIndex()
+    alphaViewModel.clearScrollToIndex()
   }
 
-  ItemListContentUi(
+  AlphaListContentUi(
     itemListUiState = uiState,
     searchQuery = searchQuery,
     currentSortOptions = currentSortOption,
@@ -50,13 +50,13 @@ fun ItemListScreenUi(
     getItemPosterPath = { it.posterPath },
     getItemVoteAverage = { it.voteAverage },
     isItemFavorite = { it.isFavorite },
-    toggleFavorite = itemViewModel::toggleFavorite,
-    isLastPage = itemViewModel.isLastPage,
-    loadMoreItems = itemViewModel::loadMoreItems,
-    refreshItems = itemViewModel::refreshItems,
-    setLastViewedItemIndex = itemViewModel::setLastViewedItemIndex,
-    setSearchQuery = itemViewModel::setSearchQuery,
-    setSortOption = itemViewModel::setSortOption,
-    setFilterOptions = itemViewModel::setFilterOptions,
+    toggleFavorite = alphaViewModel::toggleFavorite,
+    isLastPage = alphaViewModel.isLastPage,
+    loadMoreItems = alphaViewModel::loadMoreItems,
+    refreshItems = alphaViewModel::refreshItems,
+    setLastViewedItemIndex = alphaViewModel::setLastViewedItemIndex,
+    setSearchQuery = alphaViewModel::setSearchQuery,
+    setSortOption = alphaViewModel::setSortOption,
+    setFilterOptions = alphaViewModel::setFilterOptions,
   )
 }

@@ -6,7 +6,7 @@ import com.example.tmdbapp.network.responses.tmdb.MovieResponse
 import com.example.tmdbapp.utils.*
 import kotlinx.coroutines.*
 
-fun ItemViewModel.fetchMovies() {
+fun AlphaViewModel.fetchMovies() {
   if (isLoading || isLastPage) return
   isLoading = true
   viewModelScope.launch {
@@ -22,7 +22,7 @@ fun ItemViewModel.fetchMovies() {
   }
 }
 
-fun ItemViewModel.fetchPopularMovies() {
+fun AlphaViewModel.fetchPopularMovies() {
   if (isLoading || isLastPage) return
   isLoading = true
   viewModelScope.launch {
@@ -31,7 +31,7 @@ fun ItemViewModel.fetchPopularMovies() {
   }
 }
 
-internal fun ItemViewModel.searchMovies(query: String) {
+internal fun AlphaViewModel.searchMovies(query: String) {
   viewModelScope.launch {
     _Item_listUiState.value = ItemListUiState.Loading
     val result = repository.searchMovies(query, 1)
@@ -39,7 +39,7 @@ internal fun ItemViewModel.searchMovies(query: String) {
   }
 }
 
-private fun ItemViewModel.handleMovieResult(result: Resource<MovieResponse>) {
+private fun AlphaViewModel.handleMovieResult(result: Resource<MovieResponse>) {
   when (result) {
     is Resource.Success -> {
       val newMovies = result.data?.results ?: emptyList()

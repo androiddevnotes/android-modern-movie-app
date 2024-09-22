@@ -10,11 +10,11 @@ import androidx.compose.ui.*
 import com.example.tmdbapp.ui.components.CommonTopBar
 import com.example.tmdbapp.ui.components.ItemSimpleUi
 import com.example.tmdbapp.utils.Constants
-import com.example.tmdbapp.viewmodel.ItemViewModel
+import com.example.tmdbapp.viewmodel.AlphaViewModel
 
 @Composable
-fun ItemListFavoriteScreenUi(
-  viewModel: ItemViewModel,
+fun AlphaListFavoriteScreenUi(
+  viewModel: AlphaViewModel,
   onItemClick: (Int) -> Unit,
   onBackPress: () -> Unit,
 ) {
