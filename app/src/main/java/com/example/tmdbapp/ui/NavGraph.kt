@@ -72,7 +72,7 @@ fun NavGraph(
     }
     composable("createList") {
       ListCreationScreen(
-        viewModel = movieViewModel,
+        movieViewModel = movieViewModel,
         onNavigateBack = { navController.popBackStack() },
         application = application,
       )

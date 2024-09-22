@@ -11,23 +11,22 @@ import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.R
 import com.example.tmdbapp.models.AuthUiState
-import com.example.tmdbapp.models.CreateListUiState
 import com.example.tmdbapp.ui.components.CommonTopBar
 import com.example.tmdbapp.viewmodel.*
 
 @Composable
 fun ListCreationScreen(
-  viewModel: MovieViewModel,
+  movieViewModel: MovieViewModel,
   onNavigateBack: () -> Unit,
   application: Application,
 ) {
   var listName by remember { mutableStateOf("") }
   var listDescription by remember { mutableStateOf("") }
-  val authState by viewModel.authUiState.collectAsState()
-  val createListState by viewModel.createListUiState.collectAsState()
+  val authState by movieViewModel.authUiState.collectAsState()
+  val createListState by movieViewModel.createListUiState.collectAsState()
 
   LaunchedEffect(Unit) {
-    viewModel.startAuthentication()
+    movieViewModel.startAuthentication()
   }
 
   Scaffold(
@@ -70,18 +69,18 @@ fun ListCreationScreen(
             application.startActivity(intent)
           }
           Text(stringResource(R.string.approve_request))
-          Button(onClick = { viewModel.createSession(token) }) {
+          Button(onClick = { movieViewModel.createSession(token) }) {
             Text(stringResource(R.string.approved_request))
           }
         }
 
         is AuthUiState.Authenticated -> {
-          ListCreationContent(
+          ListCreationContentUi(
             listName = listName,
             onListNameChange = { listName = it },
             listDescription = listDescription,
             onListDescriptionChange = { listDescription = it },
-            onCreateList = { viewModel.createList(listName, listDescription) },
+            onCreateList = { movieViewModel.createList(listName, listDescription) },
             createListUiState = createListState,
           )
         }
@@ -90,60 +89,6 @@ fun ListCreationScreen(
           // Do nothing or show a placeholder
         }
       }
-    }
-  }
-}
-
-@Composable
-private fun ListCreationContent(
-  listName: String,
-  onListNameChange: (String) -> Unit,
-  listDescription: String,
-  onListDescriptionChange: (String) -> Unit,
-  onCreateList: () -> Unit,
-  createListUiState: CreateListUiState<Int>,
-) {
-  OutlinedTextField(
-    value = listName,
-    onValueChange = onListNameChange,
-    label = { Text(stringResource(R.string.list_name)) },
-    modifier = Modifier.fillMaxWidth(),
-  )
-
-  OutlinedTextField(
-    value = listDescription,
-    onValueChange = onListDescriptionChange,
-    label = { Text(stringResource(R.string.list_description)) },
-    modifier = Modifier.fillMaxWidth(),
-  )
-
-  Button(
-    onClick = onCreateList,
-  ) {
-    Text(stringResource(R.string.create_list))
-  }
-
-  when (createListUiState) {
-    is CreateListUiState.Loading -> {
-      CircularProgressIndicator()
-    }
-
-    is CreateListUiState.Success -> {
-      Text(
-        text = stringResource(R.string.list_created_success, createListUiState.data),
-        color = MaterialTheme.colorScheme.primary,
-      )
-    }
-
-    is CreateListUiState.Error -> {
-      Text(
-        text = stringResource(R.string.list_creation_error, createListUiState.message),
-        color = MaterialTheme.colorScheme.error,
-      )
-    }
-
-    CreateListUiState.Idle -> {
-      // Do nothing or show a placeholder
     }
   }
 }
