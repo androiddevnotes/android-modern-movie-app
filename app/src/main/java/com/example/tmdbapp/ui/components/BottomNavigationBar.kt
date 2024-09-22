@@ -10,19 +10,7 @@ import androidx.compose.ui.unit.*
 import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
-import com.example.tmdbapp.R
-
-sealed class BottomNavItem(
-  val route: String,
-  val label: String,
-  val icon: Int,
-) {
-  data object Discover : BottomNavItem("movieList", "Discover", R.drawable.cool_shape_movie)
-
-  data object Favorites : BottomNavItem("favorites", "Favorites", R.drawable.cool_shape_fav)
-
-  data object CreateList : BottomNavItem("createList", "Create List", R.drawable.cool_shape_plus)
-}
+import com.example.tmdbapp.models.BottomNavItem
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
