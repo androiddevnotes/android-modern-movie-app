@@ -53,7 +53,7 @@ sealed class AlphaAuthUiState<out T> {
   data object Authenticated : AlphaAuthUiState<Nothing>()
 
   data class Error(
-    val message: String,
+    val error: AppError,
   ) : AlphaAuthUiState<Nothing>()
 }
 
@@ -67,6 +67,6 @@ sealed class AlphaCreateListUiState<out T> {
   ) : AlphaCreateListUiState<T>()
 
   data class Error(
-    val message: String,
+    val error: AppError,
   ) : AlphaCreateListUiState<Nothing>()
 }

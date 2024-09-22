@@ -11,8 +11,7 @@ import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.R
 import com.example.tmdbapp.models.AlphaAuthUiState
-import com.example.tmdbapp.ui.components.AlphaCreateListContentUi
-import com.example.tmdbapp.ui.components.CommonTopBar
+import com.example.tmdbapp.ui.components.*
 import com.example.tmdbapp.ui.viewmodel.*
 
 @Composable
@@ -52,10 +51,7 @@ fun AlphaCreateListScreenUi(
         }
 
         is AlphaAuthUiState.Error -> {
-          Text(
-            text = stringResource(R.string.auth_error, (authState as AlphaAuthUiState.Error).message),
-            color = MaterialTheme.colorScheme.error,
-          )
+          ErrorTextUi(error = (authState as AlphaAuthUiState.Error).error)
         }
 
         is AlphaAuthUiState.RequestTokenCreated -> {

@@ -8,6 +8,7 @@ import androidx.compose.ui.res.*
 import com.example.tmdbapp.R
 import com.example.tmdbapp.models.AlphaCreateListUiState
 import com.example.tmdbapp.models.AlphaCreateListUiState.*
+import com.example.tmdbapp.utils.AppError
 
 @Composable
 fun AlphaCreateListContentUi(
@@ -51,10 +52,12 @@ fun AlphaCreateListContentUi(
     }
 
     is Error -> {
-      Text(
-        text = stringResource(R.string.list_creation_error, alphaCreateListUiState.message),
-        color = MaterialTheme.colorScheme.error,
-      )
+      val errorMessage =
+        when (val error = alphaCreateListUiState.error) {
+          is AppError.ApiError -> stringResource(error.messageResId, error.errorMessage)
+          else -> stringResource(error.messageResId)
+        }
+      ErrorTextUi(alphaCreateListUiState.error)
     }
 
     Idle -> {
