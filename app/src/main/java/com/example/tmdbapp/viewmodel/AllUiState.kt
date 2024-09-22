@@ -41,20 +41,20 @@ sealed class AIResponseState<out T> {
   ) : AIResponseState<Nothing>()
 }
 
-sealed class AuthState {
-  data object Idle : AuthState()
+sealed class AuthState<out T> {
+  data object Idle : AuthState<Nothing>()
 
-  data object Loading : AuthState()
+  data object Loading : AuthState<Nothing>()
 
-  data class RequestTokenCreated(
-    val token: String,
-  ) : AuthState()
+  data class RequestTokenCreated<T>(
+    val data: T,
+  ) : AuthState<T>()
 
-  data object Authenticated : AuthState()
+  data object Authenticated : AuthState<Nothing>()
 
   data class Error(
     val message: String,
-  ) : AuthState()
+  ) : AuthState<Nothing>()
 }
 
 sealed class CreateListState {

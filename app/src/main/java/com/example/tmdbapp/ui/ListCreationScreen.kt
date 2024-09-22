@@ -62,7 +62,7 @@ fun ListCreationScreen(
         }
 
         is AuthState.RequestTokenCreated -> {
-          val token = (authState as AuthState.RequestTokenCreated).token
+          val token = (authState as AuthState.RequestTokenCreated<String>).data
           LaunchedEffect(token) {
             val intent =
               Intent(
@@ -89,7 +89,9 @@ fun ListCreationScreen(
           )
         }
 
-        else -> {}
+        AuthState.Idle -> {
+          // Do nothing or show a placeholder
+        }
       }
     }
   }
