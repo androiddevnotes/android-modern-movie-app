@@ -9,10 +9,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.*
+import com.example.tmdbapp.models.*
 import com.example.tmdbapp.ui.components.*
 import com.example.tmdbapp.ui.theme.ThemeMode
 import com.example.tmdbapp.utils.Constants
-import com.example.tmdbapp.viewmodel.*
 import kotlinx.coroutines.launch
 
 @Composable

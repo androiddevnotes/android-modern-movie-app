@@ -10,6 +10,8 @@ import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.R
+import com.example.tmdbapp.models.AuthUiState
+import com.example.tmdbapp.models.CreateListUiState
 import com.example.tmdbapp.ui.components.CommonTopBar
 import com.example.tmdbapp.viewmodel.*
 

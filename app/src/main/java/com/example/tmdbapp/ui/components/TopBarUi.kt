@@ -10,9 +10,9 @@ import androidx.compose.ui.*
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.res.*
 import com.example.tmdbapp.R
+import com.example.tmdbapp.models.SortOptions
 import com.example.tmdbapp.ui.theme.*
 import com.example.tmdbapp.utils.*
-import com.example.tmdbapp.viewmodel.*
 
 @Composable
 fun TopBarUi(

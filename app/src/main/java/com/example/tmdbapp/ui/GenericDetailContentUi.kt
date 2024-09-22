@@ -10,8 +10,8 @@ import androidx.compose.ui.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
+import com.example.tmdbapp.models.AIResponseUiState
 import com.example.tmdbapp.ui.components.AiResponseCardUi
-import com.example.tmdbapp.viewmodel.AIResponseUiState
 
 @Composable
 fun <T : Any> GenericDetailContentUi(

@@ -1,4 +1,4 @@
-package com.example.tmdbapp.viewmodel
+package com.example.tmdbapp.models
 
 data class FilterOptions(
   val genres: List<Int> = emptyList(),

@@ -11,7 +11,7 @@ import androidx.compose.ui.res.*
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.R
-import com.example.tmdbapp.viewmodel.*
+import com.example.tmdbapp.models.FilterOptions
 import java.util.Calendar
 
 @Composable

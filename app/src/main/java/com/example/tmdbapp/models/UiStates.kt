@@ -1,4 +1,4 @@
-package com.example.tmdbapp.viewmodel
+package com.example.tmdbapp.models
 
 import com.example.tmdbapp.utils.AppError
 

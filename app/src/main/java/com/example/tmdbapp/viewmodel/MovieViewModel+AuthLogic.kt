@@ -1,6 +1,8 @@
 package com.example.tmdbapp.viewmodel
 
 import androidx.lifecycle.*
+import com.example.tmdbapp.models.AuthUiState
+import com.example.tmdbapp.models.CreateListUiState
 import com.example.tmdbapp.utils.*
 import kotlinx.coroutines.*
 

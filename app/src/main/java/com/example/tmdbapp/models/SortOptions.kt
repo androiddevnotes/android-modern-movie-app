@@ -1,4 +1,4 @@
-package com.example.tmdbapp.viewmodel
+package com.example.tmdbapp.models
 
 import androidx.annotation.StringRes
 import com.example.tmdbapp.R

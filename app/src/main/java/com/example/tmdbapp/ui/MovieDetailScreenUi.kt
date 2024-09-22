@@ -5,7 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
-import com.example.tmdbapp.models.Movie
+import com.example.tmdbapp.models.*
 import com.example.tmdbapp.ui.components.*
 import com.example.tmdbapp.viewmodel.*
 
