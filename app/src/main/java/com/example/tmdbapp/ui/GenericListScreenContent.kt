@@ -76,7 +76,7 @@ fun <T : Any> GenericListScreenContent(
 
   Scaffold(
     topBar = {
-      TopBar(
+      TopBarUi(
         isSearchActive = isSearchActive,
         searchQuery = searchQuery,
         onSearchQueryChange = { setSearchQuery(it) },

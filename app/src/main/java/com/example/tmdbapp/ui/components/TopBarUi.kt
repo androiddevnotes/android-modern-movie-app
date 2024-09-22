@@ -15,7 +15,7 @@ import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.viewmodel.*
 
 @Composable
-fun TopBar(
+fun TopBarUi(
   isSearchActive: Boolean,
   searchQuery: String,
   onSearchQueryChange: (String) -> Unit,
