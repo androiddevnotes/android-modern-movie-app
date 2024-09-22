@@ -4,8 +4,7 @@ import android.content.Context
 import com.example.tmdbapp.data.FavoritePreferencesDatastore
 import com.example.tmdbapp.data.SessionManagerPreferencesDataStore
 import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.network.ApiService
-import com.example.tmdbapp.network.KtorClient
+import com.example.tmdbapp.network.*
 import com.example.tmdbapp.network.responses.tmdb.*
 import com.example.tmdbapp.utils.ApiKeyManager
 import com.example.tmdbapp.utils.Resource
@@ -16,7 +15,8 @@ import kotlinx.coroutines.flow.map
 class Repository(
   context: Context,
 ) {
-  private val api = ApiService(KtorClient.httpClient)
+  private val tmdbApi = TmdbApiService(KtorClient.httpClient)
+  private val openAIApi = OpenAIApiService(KtorClient.httpClient)
   private val favoritePreferencesDatastore = FavoritePreferencesDatastore(context)
   private val sessionManagerPreferencesDataStore = SessionManagerPreferencesDataStore(context)
   private val apiKeyManager = ApiKeyManager(context)
@@ -40,7 +40,7 @@ class Repository(
   fun getFavoriteMovies(): Flow<List<Movie>> =
     favoritePreferencesDatastore.getAllFavorites().map { favoriteIds ->
       safeApiCall {
-        api.discoverMovies(apiKeyManager.getTmdbApiKey(), 1, sortBy = "popularity.desc")
+        tmdbApi.discoverMovies(apiKeyManager.getTmdbApiKey(), 1, sortBy = "popularity.desc")
       }.let { result ->
         when (result) {
           is Resource.Success -> {
@@ -69,7 +69,7 @@ class Repository(
   ): Resource<MovieResponse> =
     safeApiCall {
       val response =
-        api.discoverMovies(
+        tmdbApi.discoverMovies(
           apiKeyManager.getTmdbApiKey(),
           page,
           sortBy,
@@ -85,13 +85,13 @@ class Repository(
     page: Int,
   ): Resource<MovieResponse> =
     safeApiCall {
-      val response = api.searchMovies(apiKeyManager.getTmdbApiKey(), query, page)
+      val response = tmdbApi.searchMovies(apiKeyManager.getTmdbApiKey(), query, page)
       response.copy(results = addFavoriteStatus(response.results))
     }
 
   suspend fun getMovieDetails(movieId: Int): Movie? =
     try {
-      val response = api.getMovieDetails(movieId, apiKeyManager.getTmdbApiKey())
+      val response = tmdbApi.getMovieDetails(movieId, apiKeyManager.getTmdbApiKey())
       val isFavorite = favoritePreferencesDatastore.isFavorite(response.id).first()
       response.copy(isFavorite = isFavorite)
     } catch (e: Exception) {
@@ -100,7 +100,7 @@ class Repository(
 
   suspend fun createRequestToken(): Resource<String> =
     try {
-      val response = api.createRequestToken(apiKeyManager.getTmdbApiKey())
+      val response = tmdbApi.createRequestToken(apiKeyManager.getTmdbApiKey())
       if (response.success) {
         Resource.Success(response.requestToken)
       } else {
@@ -113,7 +113,7 @@ class Repository(
   suspend fun createSession(approvedToken: String): Resource<String> =
     try {
       val response =
-        api.createSession(apiKeyManager.getTmdbApiKey(), CreateSessionRequest(approvedToken))
+        tmdbApi.createSession(apiKeyManager.getTmdbApiKey(), CreateSessionRequest(approvedToken))
       if (response.success) {
         sessionManagerPreferencesDataStore.saveSessionId(response.sessionId)
         Resource.Success(response.sessionId)
@@ -131,7 +131,7 @@ class Repository(
     return try {
       val sessionId = sessionManagerPreferencesDataStore.sessionIdFlow.first() ?: return Resource.Error("No active session")
       val response =
-        api.createList(
+        tmdbApi.createList(
           apiKeyManager.getTmdbApiKey(),
           sessionId,
           CreateListRequest(name = name, description = description),
@@ -146,5 +146,5 @@ class Repository(
     }
   }
 
-  suspend fun askOpenAI(prompt: String): String = api.askOpenAI(apiKeyManager.getOpenAiApiKey(), prompt)
+  suspend fun askOpenAI(prompt: String): String = openAIApi.askOpenAI(apiKeyManager.getOpenAiApiKey(), prompt)
 }

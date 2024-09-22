@@ -1,32 +1,9 @@
 package com.example.tmdbapp.network
 
 import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.network.responses.openai.*
 import com.example.tmdbapp.network.responses.tmdb.*
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.request.*
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
 
-class ApiService(
-  private val client: HttpClient,
-) {
-  private suspend inline fun <reified T> get(
-    endpoint: String,
-    apiKey: String,
-    page: Int,
-    additionalParams: Map<String, Any?> = emptyMap(),
-  ): T =
-    client
-      .get(endpoint) {
-        parameter("api_key", apiKey)
-        parameter("page", page)
-        additionalParams.forEach { (key, value) ->
-          if (value != null) parameter(key, value)
-        }
-      }.body()
-
+interface ApiService {
   suspend fun discoverMovies(
     apiKey: String,
     page: Int,
@@ -34,77 +11,36 @@ class ApiService(
     genres: String? = null,
     releaseYear: Int? = null,
     minRating: Float? = null,
-  ): MovieResponse =
-    get(
-      "discover/movie",
-      apiKey,
-      page,
-      mapOf(
-        "sort_by" to sortBy,
-        "with_genres" to genres,
-        "primary_release_year" to releaseYear,
-        "vote_average.gte" to minRating,
-      ),
-    )
+  ): MovieResponse
 
   suspend fun searchMovies(
     apiKey: String,
     query: String,
     page: Int,
-  ): MovieResponse = get("search/movie", apiKey, page, mapOf("query" to query))
+  ): MovieResponse
 
   suspend fun getMovieDetails(
     movieId: Int,
     apiKey: String,
-  ): Movie = get("movie/$movieId", apiKey, 1)
+  ): Movie
 
-  suspend fun createRequestToken(apiKey: String): RequestTokenResponse = get("authentication/token/new", apiKey, 1)
+  suspend fun createRequestToken(apiKey: String): RequestTokenResponse
 
   suspend fun createSession(
     apiKey: String,
     requestBody: CreateSessionRequest,
-  ): CreateSessionResponse =
-    client
-      .post("authentication/session/new") {
-        parameter("api_key", apiKey)
-        contentType(ContentType.Application.Json) // Add this line
-        setBody(requestBody)
-      }.body()
+  ): CreateSessionResponse
 
   suspend fun createList(
     apiKey: String,
     sessionId: String,
     requestBody: CreateListRequest,
-  ): CreateListResponse =
-    client
-      .post("list") {
-        parameter("api_key", apiKey)
-        parameter("session_id", sessionId)
-        contentType(ContentType.Application.Json) // Add this line
-        setBody(requestBody)
-      }.body()
+  ): CreateListResponse
+}
 
+interface OpenAIService {
   suspend fun askOpenAI(
     apiKey: String,
     prompt: String,
-  ): String {
-    val openAIRequest =
-      OpenAIRequest(
-        model = "gpt-3.5-turbo",
-        messages = listOf(OpenAIMessage(role = "user", content = prompt)),
-      )
-
-    val response: OpenAIResponse =
-      client
-        .post("https://api.openai.com/v1/chat/completions") {
-          header("Authorization", "Bearer $apiKey")
-          contentType(ContentType.Application.Json)
-          setBody(openAIRequest)
-        }.body()
-
-    return response.choices
-      .firstOrNull()
-      ?.message
-      ?.content ?: "No response generated."
-  }
+  ): String
 }
