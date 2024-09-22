@@ -29,15 +29,13 @@ suspend fun Repository.searchMovies(
   page: Int,
 ): Resource<MovieResponse> =
   safeApiCall {
-    val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
-    val response = tmdbApi.searchMovies(tmdbApiKey, query, page)
+    val response = tmdbApi.searchMovies(apiKeyManager.tmdbApiKeyFlow.first(), query, page)
     response.copy(results = addFavoriteStatus(response.results))
   }
 
 suspend fun Repository.getMovieDetails(movieId: Int): Movie? =
   try {
-    val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
-    val response = tmdbApi.getMovieDetails(movieId, tmdbApiKey)
+    val response = tmdbApi.getMovieDetails(movieId, apiKeyManager.tmdbApiKeyFlow.first())
     val isFavorite = favoritePreferencesDatastore.isFavorite(response.id).first()
     response.copy(isFavorite = isFavorite)
   } catch (e: Exception) {
@@ -46,8 +44,7 @@ suspend fun Repository.getMovieDetails(movieId: Int): Movie? =
 
 suspend fun Repository.createRequestToken(): Resource<String> =
   try {
-    val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
-    val response = tmdbApi.createRequestToken(tmdbApiKey)
+    val response = tmdbApi.createRequestToken(apiKeyManager.tmdbApiKeyFlow.first())
     if (response.success) {
       Resource.Success(response.requestToken)
     } else {
@@ -59,9 +56,8 @@ suspend fun Repository.createRequestToken(): Resource<String> =
 
 suspend fun Repository.createSession(approvedToken: String): Resource<String> =
   try {
-    val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
     val response =
-      tmdbApi.createSession(tmdbApiKey, CreateSessionRequest(approvedToken))
+      tmdbApi.createSession(apiKeyManager.tmdbApiKeyFlow.first(), CreateSessionRequest(approvedToken))
     if (response.success) {
       sessionManagerPreferencesDataStore.saveSessionId(response.sessionId)
       Resource.Success(response.sessionId)
@@ -78,10 +74,9 @@ suspend fun Repository.createList(
 ): Resource<Int> {
   return try {
     val sessionId = sessionManagerPreferencesDataStore.sessionIdFlow.first() ?: return Resource.Error("No active session")
-    val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
     val response =
       tmdbApi.createList(
-        tmdbApiKey,
+        apiKeyManager.tmdbApiKeyFlow.first(),
         sessionId,
         CreateListRequest(name = name, description = description),
       )
@@ -103,10 +98,9 @@ suspend fun Repository.discoverMovies(
   minRating: Float? = null,
 ): Resource<MovieResponse> =
   safeApiCall {
-    val tmdbApiKey = apiKeyManager.tmdbApiKeyFlow.first()
     val response =
       tmdbApi.discoverMovies(
-        tmdbApiKey,
+        apiKeyManager.tmdbApiKeyFlow.first(),
         page,
         sortBy,
         genres?.joinToString(","),

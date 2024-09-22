@@ -5,6 +5,5 @@ import kotlinx.coroutines.flow.first
 
 suspend fun Repository.askOpenAi(prompt: String): Resource<String> =
   safeApiCall {
-    val openAiApiKey = apiKeyManager.openAiApiKeyFlow.first()
-    openAiApi.askOpenAi(openAiApiKey, prompt)
+    openAiApi.askOpenAi(apiKeyManager.openAiApiKeyFlow.first(), prompt)
   }
