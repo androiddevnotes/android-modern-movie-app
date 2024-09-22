@@ -48,52 +48,44 @@ suspend fun Repository.getMovieDetails(movieId: Int): Resource<Movie> =
   }
 
 suspend fun Repository.createRequestToken(): Resource<String> =
-  try {
+  safeApiCall {
     val response = tmdbApi.createRequestToken(apiKeyManager.tmdbApiKeyFlow.first())
     if (response.success) {
-      Resource.Success(response.requestToken)
+      response.requestToken
     } else {
-      Resource.Error("Failed to create request token")
+      throw Exception("Failed to create request token")
     }
-  } catch (e: Exception) {
-    Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
   }
 
 suspend fun Repository.createSession(approvedToken: String): Resource<String> =
-  try {
-    val response =
-      tmdbApi.createSession(apiKeyManager.tmdbApiKeyFlow.first(), CreateSessionRequest(approvedToken))
+  safeApiCall {
+    val response = tmdbApi.createSession(apiKeyManager.tmdbApiKeyFlow.first(), CreateSessionRequest(approvedToken))
     if (response.success) {
       sessionManagerPreferencesDataStore.saveSessionId(response.sessionId)
-      Resource.Success(response.sessionId)
+      response.sessionId
     } else {
-      Resource.Error("Failed to create session")
+      throw Exception("Failed to create session")
     }
-  } catch (e: Exception) {
-    Resource.Error(e.localizedMessage ?: "An unknown error occurred")
   }
 
 suspend fun Repository.createList(
   name: String,
   description: String,
-): Resource<Int> {
-  return try {
-    val sessionId = sessionManagerPreferencesDataStore.sessionIdFlow.first() ?: return Resource.Error("No active session")
+): Resource<Int> =
+  safeApiCall {
+    val sessionId = sessionManagerPreferencesDataStore.sessionIdFlow.first() ?: throw Exception("No active session")
     val response =
       tmdbApi.createList(
         apiKeyManager.tmdbApiKeyFlow.first(),
         sessionId,
         CreateListRequest(name = name, description = description),
       )
-    if (response.success) {
-      Resource.Success(response.listId)
+    if (response.success && response.listId != null) {
+      response.listId
     } else {
-      Resource.Error(response.statusMessage)
+      throw Exception(response.statusMessage ?: "Failed to create list")
     }
-  } catch (e: Exception) {
-    Resource.Error(e.localizedMessage ?: "An unexpected error occurred")
   }
-}
 
 suspend fun Repository.discoverMovies(
   page: Int,

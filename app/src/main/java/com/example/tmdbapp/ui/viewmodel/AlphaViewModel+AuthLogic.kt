@@ -23,9 +23,9 @@ fun AlphaViewModel.startAuthentication() {
           _alphaAuthUiState.value = AlphaAuthUiState.Error(AppError.Unknown)
         }
       }
-
-      is Resource.Error ->
+      is Resource.Error -> {
         _alphaAuthUiState.value = AlphaAuthUiState.Error(AppError.ApiError(tokenResult.message ?: "Unknown error"))
+      }
     }
   }
 }
@@ -36,7 +36,8 @@ fun AlphaViewModel.createSession(approvedToken: String) {
     when (val sessionResult = repository.createSession(approvedToken)) {
       is Resource.Success -> _alphaAuthUiState.value = AlphaAuthUiState.Authenticated
       is Resource.Error ->
-        _alphaAuthUiState.value = AlphaAuthUiState.Error(AppError.ApiError(sessionResult.message ?: "Failed to create session"))
+        _alphaAuthUiState.value =
+          AlphaAuthUiState.Error(AppError.ApiError(sessionResult.message ?: "Failed to create session"))
     }
   }
 }
@@ -48,12 +49,17 @@ fun AlphaViewModel.createList(
   viewModelScope.launch {
     _alphaCreateListUiState.value = AlphaCreateListUiState.Loading
     when (val result = repository.createList(name, description)) {
-      is Resource.Success ->
-        _alphaCreateListUiState.value =
-          result.data?.let { AlphaCreateListUiState.Success(it) } ?: AlphaCreateListUiState.Error(AppError.Unknown)
-
+      is Resource.Success -> {
+        val listId = result.data
+        if (listId != null) {
+          _alphaCreateListUiState.value = AlphaCreateListUiState.Success(listId)
+        } else {
+          _alphaCreateListUiState.value = AlphaCreateListUiState.Error(AppError.Unknown)
+        }
+      }
       is Resource.Error ->
-        _alphaCreateListUiState.value = AlphaCreateListUiState.Error(AppError.ApiError(result.message ?: "Unknown error"))
+        _alphaCreateListUiState.value =
+          AlphaCreateListUiState.Error(AppError.ApiError(result.message ?: "Unknown error"))
     }
   }
 }

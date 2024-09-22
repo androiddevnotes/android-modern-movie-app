@@ -55,7 +55,7 @@ fun AlphaCreateListScreenUi(
         }
 
         is AlphaAuthUiState.RequestTokenCreated -> {
-          val token = (authState as AlphaAuthUiState.RequestTokenCreated<String>).data
+          val token = (authState as AlphaAuthUiState.RequestTokenCreated).data
           LaunchedEffect(token) {
             val intent =
               Intent(

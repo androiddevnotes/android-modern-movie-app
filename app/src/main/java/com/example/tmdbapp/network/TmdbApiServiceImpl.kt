@@ -2,10 +2,11 @@ package com.example.tmdbapp.network
 
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.network.responses.tmdb.*
-import io.ktor.client.*
-import io.ktor.client.call.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 

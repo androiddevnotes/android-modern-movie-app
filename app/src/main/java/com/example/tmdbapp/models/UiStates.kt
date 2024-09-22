@@ -46,9 +46,9 @@ sealed class AlphaAuthUiState<out T> {
 
   data object Loading : AlphaAuthUiState<Nothing>()
 
-  data class RequestTokenCreated<T>(
-    val data: T,
-  ) : AlphaAuthUiState<T>()
+  data class RequestTokenCreated(
+    val data: String,
+  ) : AlphaAuthUiState<String>()
 
   data object Authenticated : AlphaAuthUiState<Nothing>()
 
