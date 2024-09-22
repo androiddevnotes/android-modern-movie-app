@@ -13,6 +13,3 @@ sealed class UiState<out T> {
 
   data object Loading : UiState<Nothing>()
 }
-
-// Type alias for MovieUiState to maintain backwards compatibility
-typealias MovieUiState = UiState<List<com.example.tmdbapp.models.Movie>>
