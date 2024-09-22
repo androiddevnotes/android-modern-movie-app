@@ -6,8 +6,8 @@ import com.example.tmdbapp.network.handleNetworkError
 import com.example.tmdbapp.network.responses.tmdb.MovieResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 
-object MovieResultHandler {
-  fun handleMovieResult(
+object AlphaResultHandler {
+  fun handleAlphaResult(
     result: Resource<MovieResponse>,
     currentPage: Int,
     alphaListUiState: MutableStateFlow<AlphaListUiState<List<Movie>>>,

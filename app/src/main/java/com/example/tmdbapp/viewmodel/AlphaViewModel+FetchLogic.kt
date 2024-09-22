@@ -17,7 +17,7 @@ fun AlphaViewModel.fetchMovies() {
         releaseYear = _filterOptions.value.releaseYear,
         minRating = _filterOptions.value.minRating,
       )
-    MovieResultHandler.handleMovieResult(
+    AlphaResultHandler.handleAlphaResult(
       result,
       currentPage,
       _alphaListUiState,
@@ -33,7 +33,7 @@ internal fun AlphaViewModel.searchMovies(query: String) {
   viewModelScope.launch {
     _alphaListUiState.value = AlphaListUiState.Loading
     val result = repository.searchMovies(query, 1)
-    MovieResultHandler.handleMovieResult(
+    AlphaResultHandler.handleAlphaResult(
       result,
       currentPage,
       _alphaListUiState,

@@ -8,7 +8,7 @@ import com.example.tmdbapp.network.handleNetworkError
 import com.example.tmdbapp.repository.*
 import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.utils.ApiKeyManager
-import com.example.tmdbapp.utils.OpenAiResultHandler
+import com.example.tmdbapp.utils.BetaResultHandler
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -65,7 +65,7 @@ class AlphaViewModel(
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
       try {
         val result = repository.askOpenAi(prompt)
-        OpenAiResultHandler.handleOpenAiResult(
+        BetaResultHandler.handleBetaResult(
           result,
           _betaResponseUiState,
           apiKeyManager,

@@ -4,8 +4,8 @@ import com.example.tmdbapp.models.BetaResponseUiState
 import com.example.tmdbapp.network.handleNetworkError
 import kotlinx.coroutines.flow.MutableStateFlow
 
-object OpenAiResultHandler {
-  fun handleOpenAiResult(
+object BetaResultHandler {
+  fun handleBetaResult(
     result: Resource<String>,
     betaResponseUiState: MutableStateFlow<BetaResponseUiState<String>>,
     apiKeyManager: ApiKeyManager,
