@@ -21,8 +21,7 @@ fun MovieDetailContent(
   onFavoriteClick: () -> Unit,
   onDownloadClick: (String?, Context) -> Unit,
   onAskAIClick: () -> Unit,
-  aiResponse: String?,
-  aiResponseState: AIResponseState,
+  aiResponseState: AIResponseState<String>, // Change to AIResponseState<String>
 ) {
   val context = LocalContext.current
   val scrollState = rememberScrollState()
@@ -52,7 +51,7 @@ fun MovieDetailContent(
             .height(16.dp),
       )
       when (aiResponseState) {
-        Loading -> {
+        is AIResponseState.Loading -> {
           Box(
             modifier =
               Modifier
@@ -70,7 +69,7 @@ fun MovieDetailContent(
           }
         }
 
-        is Error -> {
+        is AIResponseState.Error -> {
           Text(
             text = aiResponseState.message,
             color = MaterialTheme.colorScheme.error,
@@ -78,13 +77,12 @@ fun MovieDetailContent(
           )
         }
 
-        Success -> {
-          aiResponse?.let { response ->
-            AIResponseCard(response = response)
-          }
+        is AIResponseState.Success -> {
+          AIResponseCard(response = aiResponseState.data)
         }
 
-        else -> {
+        AIResponseState.Idle -> {
+          // Do nothing or show a placeholder
         }
       }
     }

@@ -8,8 +8,6 @@ import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.ui.components.*
 import com.example.tmdbapp.viewmodel.*
-import com.example.tmdbapp.viewmodel.AIResponseState.Loading
-import com.example.tmdbapp.viewmodel.MovieDetailState.Error
 
 @Composable
 fun MovieDetailScreen(
@@ -17,7 +15,6 @@ fun MovieDetailScreen(
   onBackPress: () -> Unit,
 ) {
   val movieState by viewModel.movieDetailState.collectAsState()
-  val aiResponse by viewModel.aiResponse.collectAsState()
   val aiResponseState by viewModel.aiResponseState.collectAsState()
 
   DisposableEffect(Unit) {
@@ -41,8 +38,8 @@ fun MovieDetailScreen(
           onFavoriteClick = { viewModel.toggleFavorite(movie) },
           onDownloadClick = viewModel::downloadImage,
           onAskAIClick = { viewModel.askAIAboutMovie(movie) },
-          aiResponse = aiResponse,
           aiResponseState = aiResponseState,
+          // Remove the aiResponse parameter
         )
       }
       is MovieDetailState.Error -> {
@@ -55,10 +52,10 @@ fun MovieDetailScreen(
     }
 
     ShimmeringOverlay(
-      isVisible = aiResponseState == Loading,
+      isVisible = aiResponseState is AIResponseState.Loading,
     )
 
-    if (aiResponseState == Loading) {
+    if (aiResponseState is AIResponseState.Loading) {
       Box(
         modifier =
           Modifier

@@ -163,11 +163,8 @@ class MovieViewModel(
 
   fun isFavorite(movieId: Int): Boolean = favorites.value.any { it.id == movieId }
 
-  private val _aiResponse = MutableStateFlow<String?>(null)
-  val aiResponse: StateFlow<String?> = _aiResponse.asStateFlow()
-
-  private val _aiResponseState = MutableStateFlow<AIResponseState>(AIResponseState.Idle)
-  val aiResponseState: StateFlow<AIResponseState> = _aiResponseState.asStateFlow()
+  private val _aiResponseState = MutableStateFlow<AIResponseState<String>>(AIResponseState.Idle)
+  val aiResponseState: StateFlow<AIResponseState<String>> = _aiResponseState.asStateFlow()
 
   fun askAIAboutMovie(movie: Movie) {
     viewModelScope.launch {
@@ -175,8 +172,7 @@ class MovieViewModel(
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
       try {
         val response = repository.askOpenAI(prompt)
-        _aiResponse.value = response
-        _aiResponseState.value = AIResponseState.Success
+        _aiResponseState.value = AIResponseState.Success(response)
       } catch (e: Exception) {
         _aiResponseState.value = AIResponseState.Error(e.localizedMessage ?: "Unknown error occurred")
       }
@@ -184,7 +180,6 @@ class MovieViewModel(
   }
 
   fun clearAIResponse() {
-    _aiResponse.value = null
     _aiResponseState.value = AIResponseState.Idle
   }
 

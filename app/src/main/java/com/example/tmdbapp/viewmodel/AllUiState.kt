@@ -27,16 +27,18 @@ sealed class MovieDetailState<out T> {
   ) : MovieDetailState<Nothing>()
 }
 
-sealed class AIResponseState {
-  data object Idle : AIResponseState()
+sealed class AIResponseState<out T> {
+  data object Idle : AIResponseState<Nothing>()
 
-  data object Loading : AIResponseState()
+  data object Loading : AIResponseState<Nothing>()
 
-  data object Success : AIResponseState()
+  data class Success<T>(
+    val data: T,
+  ) : AIResponseState<T>()
 
   data class Error(
     val message: String,
-  ) : AIResponseState()
+  ) : AIResponseState<Nothing>()
 }
 
 sealed class AuthState {
