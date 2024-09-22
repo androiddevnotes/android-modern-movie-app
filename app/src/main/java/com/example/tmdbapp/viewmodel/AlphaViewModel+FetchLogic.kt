@@ -34,7 +34,7 @@ fun AlphaViewModel.fetchPopularMovies() {
 
 internal fun AlphaViewModel.searchMovies(query: String) {
   viewModelScope.launch {
-    _Item_listUiState.value = ItemListUiState.Loading
+    _alphaListUiState.value = ItemListUiState.Loading
     val result = repository.searchMovies(query, 1)
     handleMovieResult(result)
   }
@@ -45,18 +45,18 @@ private fun AlphaViewModel.handleMovieResult(result: Resource<MovieResponse>) {
     is Resource.Success -> {
       val newMovies = result.data?.results ?: emptyList()
       val currentMovies =
-        if (_Item_listUiState.value is ItemListUiState.Success && currentPage > 1) {
-          (_Item_listUiState.value as ItemListUiState.Success<List<Movie>>).data
+        if (_alphaListUiState.value is ItemListUiState.Success && currentPage > 1) {
+          (_alphaListUiState.value as ItemListUiState.Success<List<Movie>>).data
         } else {
           emptyList()
         }
-      _Item_listUiState.value = ItemListUiState.Success(currentMovies + newMovies)
+      _alphaListUiState.value = ItemListUiState.Success(currentMovies + newMovies)
       currentPage++
       isLastPage = newMovies.isEmpty()
     }
 
     is Resource.Error -> {
-      _Item_listUiState.value = ItemListUiState.Error(handleNetworkError(result.message, apiKeyManager))
+      _alphaListUiState.value = ItemListUiState.Error(handleNetworkError(result.message, apiKeyManager))
     }
   }
   isLoading = false

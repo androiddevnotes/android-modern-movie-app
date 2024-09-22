@@ -15,9 +15,13 @@ class AlphaViewModel(
   application: Application,
 ) : AndroidViewModel(application) {
   private var searchJob: Job? = null
-  private val _Item_detailUiState = MutableStateFlow<ItemDetailUiState<Movie>>(ItemDetailUiState.Loading)
+
   private val _aiResponseUiState =
     MutableStateFlow<AiResponseUiState<String>>(AiResponseUiState.Idle)
+
+  private val _alphaDetailUiState =
+    MutableStateFlow<ItemDetailUiState<Movie>>(ItemDetailUiState.Loading)
+
   private val _favorites = MutableStateFlow<List<Movie>>(emptyList())
   private val _lastViewedItemIndex = MutableStateFlow(0)
   private val _scrollToIndex = MutableStateFlow<Int?>(null)
@@ -25,22 +29,27 @@ class AlphaViewModel(
   internal var currentPage = 1
   internal var isLastPage = false
   internal var isLoading = false
-  internal val _Item_listUiState = MutableStateFlow<ItemListUiState<List<Movie>>>(ItemListUiState.Loading)
-  internal val _Item_authUiState = MutableStateFlow<ItemAuthUiState<String>>(ItemAuthUiState.Idle)
-  internal val _Item_createListUiState = MutableStateFlow<ItemCreateListUiState<Int>>(ItemCreateListUiState.Idle)
+  internal val _alphaAuthUiState = MutableStateFlow<ItemAuthUiState<String>>(ItemAuthUiState.Idle)
+
+  internal val _alphaCreateListUiState =
+    MutableStateFlow<ItemCreateListUiState<Int>>(ItemCreateListUiState.Idle)
+
+  internal val _alphaListUiState =
+    MutableStateFlow<ItemListUiState<List<Movie>>>(ItemListUiState.Loading)
+
   internal val _currentSortOptions = MutableStateFlow(SortOptions.POPULAR)
   internal val _filterOptions = MutableStateFlow(FilterOptions())
   internal val apiKeyManager = ApiKeyManager(application)
   internal val repository = Repository(application)
   internal val sessionManagerPreferencesDataStore = SessionManagerPreferencesDataStore(application)
   val aiResponseUiState: StateFlow<AiResponseUiState<String>> = _aiResponseUiState.asStateFlow()
-  val itemAuthUiState: StateFlow<ItemAuthUiState<String>> = _Item_authUiState
-  val itemCreateListUiState: StateFlow<ItemCreateListUiState<Int>> = _Item_createListUiState
   val currentSortOptions: StateFlow<SortOptions> = _currentSortOptions
-  val itemDetailUiState: StateFlow<ItemDetailUiState<Movie>> = _Item_detailUiState.asStateFlow()
   val favorites: StateFlow<List<Movie>> = _favorites
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
-  val itemListUiState: StateFlow<ItemListUiState<List<Movie>>> = _Item_listUiState.asStateFlow()
+  val itemAuthUiState: StateFlow<ItemAuthUiState<String>> = _alphaAuthUiState
+  val itemCreateListUiState: StateFlow<ItemCreateListUiState<Int>> = _alphaCreateListUiState
+  val itemDetailUiState: StateFlow<ItemDetailUiState<Movie>> = _alphaDetailUiState.asStateFlow()
+  val itemListUiState: StateFlow<ItemListUiState<List<Movie>>> = _alphaListUiState.asStateFlow()
   val searchQuery: StateFlow<String> = _searchQuery
 
   init {
@@ -73,16 +82,17 @@ class AlphaViewModel(
 
   fun fetchMovieDetails(movieId: Int) {
     viewModelScope.launch {
-      _Item_detailUiState.value = ItemDetailUiState.Loading
+      _alphaDetailUiState.value = ItemDetailUiState.Loading
       try {
         val movie = repository.getMovieDetails(movieId)
         if (movie != null) {
-          _Item_detailUiState.value = ItemDetailUiState.Success(movie)
+          _alphaDetailUiState.value = ItemDetailUiState.Success(movie)
         } else {
-          _Item_detailUiState.value = ItemDetailUiState.Error(AppError.Unknown, movieId)
+          _alphaDetailUiState.value = ItemDetailUiState.Error(AppError.Unknown, movieId)
         }
       } catch (e: Exception) {
-        _Item_detailUiState.value = ItemDetailUiState.Error(handleNetworkError(e.message, apiKeyManager), movieId)
+        _alphaDetailUiState.value =
+          ItemDetailUiState.Error(handleNetworkError(e.message, apiKeyManager), movieId)
       }
     }
   }
@@ -96,12 +106,12 @@ class AlphaViewModel(
   fun refreshItems() {
     currentPage = 1
     isLastPage = false
-    _Item_listUiState.value = ItemListUiState.Loading
+    _alphaListUiState.value = ItemListUiState.Loading
     fetchMovies()
   }
 
   fun retryFetchItemDetails() {
-    val currentState = _Item_detailUiState.value
+    val currentState = _alphaDetailUiState.value
     if (currentState is ItemDetailUiState.Error) {
       fetchMovieDetails(currentState.itemId)
     }
@@ -111,7 +121,7 @@ class AlphaViewModel(
     _filterOptions.value = options
     currentPage = 1
     isLastPage = false
-    _Item_listUiState.value = ItemListUiState.Loading
+    _alphaListUiState.value = ItemListUiState.Loading
     fetchMovies()
   }
 
@@ -139,7 +149,7 @@ class AlphaViewModel(
       _currentSortOptions.value = sortOptions
       currentPage = 1
       isLastPage = false
-      _Item_listUiState.value = ItemListUiState.Loading
+      _alphaListUiState.value = ItemListUiState.Loading
       fetchMovies()
     }
   }
@@ -149,7 +159,7 @@ class AlphaViewModel(
       repository.toggleFavorite(movie)
       val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
 
-      _Item_detailUiState.update { currentState ->
+      _alphaDetailUiState.update { currentState ->
         if (currentState is ItemDetailUiState.Success && currentState.data.id == updatedMovie.id) {
           ItemDetailUiState.Success(updatedMovie)
         } else {
@@ -157,7 +167,7 @@ class AlphaViewModel(
         }
       }
 
-      _Item_listUiState.update { currentState ->
+      _alphaListUiState.update { currentState ->
         when (currentState) {
           is ItemListUiState.Success -> {
             val updatedMovies =
