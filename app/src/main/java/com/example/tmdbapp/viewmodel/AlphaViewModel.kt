@@ -16,8 +16,8 @@ class AlphaViewModel(
 ) : AndroidViewModel(application) {
   private var searchJob: Job? = null
 
-  private val _aiResponseUiState =
-    MutableStateFlow<AiResponseUiState<String>>(AiResponseUiState.Idle)
+  private val _betaResponseUiState =
+    MutableStateFlow<BetaResponseUiState<String>>(BetaResponseUiState.Idle)
 
   private val _alphaDetailUiState =
     MutableStateFlow<AlphaDetailUiState<Movie>>(AlphaDetailUiState.Loading)
@@ -42,7 +42,7 @@ class AlphaViewModel(
   internal val apiKeyManager = ApiKeyManager(application)
   internal val repository = Repository(application)
   internal val sessionManagerPreferencesDataStore = SessionManagerPreferencesDataStore(application)
-  val aiResponseUiState: StateFlow<AiResponseUiState<String>> = _aiResponseUiState.asStateFlow()
+  val betaResponseUiState: StateFlow<BetaResponseUiState<String>> = _betaResponseUiState.asStateFlow()
   val currentSortOptions: StateFlow<SortOptions> = _currentSortOptions
   val favorites: StateFlow<List<Movie>> = _favorites
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
@@ -60,20 +60,20 @@ class AlphaViewModel(
 
   fun askAIAboutItem(movie: Movie) {
     viewModelScope.launch {
-      _aiResponseUiState.value = AiResponseUiState.Loading
+      _betaResponseUiState.value = BetaResponseUiState.Loading
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
       try {
         val response = repository.askOpenAi(prompt)
-        _aiResponseUiState.value = AiResponseUiState.Success(response)
+        _betaResponseUiState.value = BetaResponseUiState.Success(response)
       } catch (e: Exception) {
-        _aiResponseUiState.value =
-          AiResponseUiState.Error(e.localizedMessage ?: "Unknown error occurred")
+        _betaResponseUiState.value =
+          BetaResponseUiState.Error(e.localizedMessage ?: "Unknown error occurred")
       }
     }
   }
 
   fun clearAIResponse() {
-    _aiResponseUiState.value = AiResponseUiState.Idle
+    _betaResponseUiState.value = BetaResponseUiState.Idle
   }
 
   fun clearScrollToIndex() {

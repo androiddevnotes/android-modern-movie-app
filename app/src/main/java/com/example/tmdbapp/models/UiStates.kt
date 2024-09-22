@@ -27,18 +27,18 @@ sealed class AlphaDetailUiState<out T> {
   ) : AlphaDetailUiState<Nothing>()
 }
 
-sealed class AiResponseUiState<out T> {
-  data object Idle : AiResponseUiState<Nothing>()
+sealed class BetaResponseUiState<out T> {
+  data object Idle : BetaResponseUiState<Nothing>()
 
-  data object Loading : AiResponseUiState<Nothing>()
+  data object Loading : BetaResponseUiState<Nothing>()
 
   data class Success<T>(
     val data: T,
-  ) : AiResponseUiState<T>()
+  ) : BetaResponseUiState<T>()
 
   data class Error(
     val message: String,
-  ) : AiResponseUiState<Nothing>()
+  ) : BetaResponseUiState<Nothing>()
 }
 
 sealed class AlphaAuthUiState<out T> {

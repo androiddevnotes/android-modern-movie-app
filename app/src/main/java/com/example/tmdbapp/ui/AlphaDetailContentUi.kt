@@ -17,8 +17,8 @@ import androidx.palette.graphics.Palette
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.example.tmdbapp.models.AiResponseUiState
-import com.example.tmdbapp.ui.components.AiResponseCardUi
+import com.example.tmdbapp.models.BetaResponseUiState
+import com.example.tmdbapp.ui.components.BetaResponseCardUi
 import com.example.tmdbapp.utils.Constants
 import kotlinx.coroutines.launch
 
@@ -29,7 +29,7 @@ fun <T : Any> AlphaDetailContentUi(
   onFavoriteClick: () -> Unit,
   onDownloadClick: (String?, Context) -> Unit,
   onAskAiClick: () -> Unit,
-  aiResponseUiState: AiResponseUiState<String>,
+  betaResponseUiState: BetaResponseUiState<String>,
   getItemTitle: (T) -> String,
   getItemOverview: (T) -> String,
   getItemPosterPath: (T) -> String?,
@@ -94,8 +94,8 @@ fun <T : Any> AlphaDetailContentUi(
       )
 
       Spacer(modifier = Modifier.height(16.dp))
-      when (aiResponseUiState) {
-        is AiResponseUiState.Loading -> {
+      when (betaResponseUiState) {
+        is BetaResponseUiState.Loading -> {
           Box(
             modifier =
               Modifier
@@ -111,19 +111,19 @@ fun <T : Any> AlphaDetailContentUi(
           }
         }
 
-        is AiResponseUiState.Error -> {
+        is BetaResponseUiState.Error -> {
           Text(
-            text = aiResponseUiState.message,
+            text = betaResponseUiState.message,
             color = MaterialTheme.colorScheme.error,
             modifier = Modifier.padding(horizontal = 16.dp),
           )
         }
 
-        is AiResponseUiState.Success -> {
-          AiResponseCardUi(response = aiResponseUiState.data)
+        is BetaResponseUiState.Success -> {
+          BetaResponseCardUi(response = betaResponseUiState.data)
         }
 
-        AiResponseUiState.Idle -> {
+        BetaResponseUiState.Idle -> {
           // Do nothing or show a placeholder
         }
       }

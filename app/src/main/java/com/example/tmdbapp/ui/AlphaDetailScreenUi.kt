@@ -16,7 +16,7 @@ fun AlphaDetailScreenUi(
   onBackPress: () -> Unit,
 ) {
   val detailUiState by alphaViewModel.alphaDetailUiState.collectAsState()
-  val aiResponseState by alphaViewModel.aiResponseUiState.collectAsState()
+  val aiResponseState by alphaViewModel.betaResponseUiState.collectAsState()
 
   DisposableEffect(Unit) {
     onDispose {
@@ -42,7 +42,7 @@ fun AlphaDetailScreenUi(
             alphaViewModel.downloadImage(posterPath, context)
           },
           onAskAiClick = { alphaViewModel.askAIAboutItem(item) },
-          aiResponseUiState = aiResponseState,
+          betaResponseUiState = aiResponseState,
           getItemTitle = { it.title },
           getItemOverview = { it.overview },
           getItemPosterPath = { it.posterPath },
@@ -61,10 +61,10 @@ fun AlphaDetailScreenUi(
       }
     }
     ShimmeringOverlayUi(
-      isVisible = aiResponseState is AiResponseUiState.Loading,
+      isVisible = aiResponseState is BetaResponseUiState.Loading,
     )
 
-    if (aiResponseState is AiResponseUiState.Loading) {
+    if (aiResponseState is BetaResponseUiState.Loading) {
       Box(
         modifier =
           Modifier
@@ -72,7 +72,7 @@ fun AlphaDetailScreenUi(
             .padding(bottom = 32.dp),
         contentAlignment = Alignment.BottomCenter,
       ) {
-        AiScanningIndicatorUi()
+        ScanningIndicatorUi()
       }
     }
   }
