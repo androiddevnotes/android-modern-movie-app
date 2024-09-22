@@ -16,7 +16,7 @@ class MovieViewModel(
   internal var currentPage = 1
   internal var isLoading = false
   private var searchJob: Job? = null
-  internal val repository = MovieRepository(application)
+  internal val repository = ItemRepository(application)
   internal var isLastPage = false
 
   internal val _currentSortOptions = MutableStateFlow(SortOptions.POPULAR)

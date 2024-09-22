@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-class MovieRepository(
+class ItemRepository(
   context: Context,
 ) {
   private val api = ApiService(KtorClient.httpClient)
