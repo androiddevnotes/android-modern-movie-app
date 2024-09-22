@@ -15,7 +15,6 @@ sealed class UiState<out T> {
   data object Loading : UiState<Nothing>()
 }
 
-
 sealed class AIResponseState {
   data object Idle : AIResponseState()
 
@@ -40,7 +39,6 @@ sealed class MovieDetailState {
     val movieId: Int,
   ) : MovieDetailState()
 }
-
 
 sealed class AuthState {
   data object Idle : AuthState()

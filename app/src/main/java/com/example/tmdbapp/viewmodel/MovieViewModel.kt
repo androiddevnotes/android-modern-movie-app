@@ -194,4 +194,3 @@ class MovieViewModel(
     _scrollToIndex.value = null
   }
 }
-
