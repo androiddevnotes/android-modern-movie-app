@@ -17,6 +17,7 @@ coroutines = "1.8.1"
 coil = "2.6.0"
 navigation-compose = "2.8.1"
 paletteKtx = "1.0.0"
+timber = "5.0.1"
 uiTextGoogleFonts = "1.7.2"
 
 [libraries]
@@ -43,6 +44,7 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation-compose" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
