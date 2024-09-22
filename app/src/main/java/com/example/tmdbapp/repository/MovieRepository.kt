@@ -120,8 +120,7 @@ class MovieRepository(
     description: String,
   ): Resource<Int> {
     return try {
-      val sessionId =
-        sessionManager.sessionIdFlow.first() ?: return Resource.Error("No active session")
+      val sessionId = sessionManager.sessionIdFlow.first() ?: return Resource.Error("No active session")
       val response =
         api.createList(
           apiKeyManager.getTmdbApiKey(),

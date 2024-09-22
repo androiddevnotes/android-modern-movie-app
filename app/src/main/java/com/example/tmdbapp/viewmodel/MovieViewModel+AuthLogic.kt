@@ -60,9 +60,13 @@ fun MovieViewModel.createList(
 
 internal fun MovieViewModel.checkAuthenticationStatus() {
   viewModelScope.launch {
-    val sessionId = sessionManager.getSessionId()
-    if (sessionId != null) {
-      _authUiState.value = AuthUiState.Authenticated
+    sessionManager.sessionIdFlow.collect { sessionId ->
+      _authUiState.value =
+        if (sessionId != null) {
+          AuthUiState.Authenticated
+        } else {
+          AuthUiState.Idle
+        }
     }
   }
 }

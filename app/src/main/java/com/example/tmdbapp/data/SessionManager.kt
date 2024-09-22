@@ -1,31 +1,36 @@
 package com.example.tmdbapp.data
 
-import android.content.*
-import kotlinx.coroutines.flow.*
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+private val Context.sessionDataStore: DataStore<Preferences> by preferencesDataStore(name = "TMDBSessionPrefs")
 
 class SessionManager(
-  context: Context,
+  private val context: Context,
 ) {
-  private val prefs: SharedPreferences =
-    context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-  private val editor: SharedPreferences.Editor = prefs.edit()
+  private val SESSION_ID_KEY = stringPreferencesKey("session_id")
 
-  private val _sessionIdFlow = MutableStateFlow<String?>(null)
-  val sessionIdFlow: Flow<String?> = _sessionIdFlow.asStateFlow()
+  val sessionIdFlow: Flow<String?> =
+    context.sessionDataStore.data
+      .map { preferences ->
+        preferences[SESSION_ID_KEY]
+      }
 
-  init {
-    _sessionIdFlow.value = prefs.getString(SESSION_ID_KEY, null)
+  suspend fun saveSessionId(sessionId: String) {
+    context.sessionDataStore.edit { preferences ->
+      preferences[SESSION_ID_KEY] = sessionId
+    }
   }
 
-  fun saveSessionId(sessionId: String) {
-    editor.putString(SESSION_ID_KEY, sessionId).apply()
-    _sessionIdFlow.value = sessionId
-  }
-
-  fun getSessionId(): String? = prefs.getString(SESSION_ID_KEY, null)
-
-  companion object {
-    private const val PREF_NAME = "TMDBSessionPrefs"
-    private const val SESSION_ID_KEY = "session_id"
+  suspend fun clearSessionId() {
+    context.sessionDataStore.edit { preferences ->
+      preferences.remove(SESSION_ID_KEY)
+    }
   }
 }
