@@ -4,6 +4,7 @@ import android.app.*
 import androidx.lifecycle.*
 import com.example.tmdbapp.data.*
 import com.example.tmdbapp.models.*
+import com.example.tmdbapp.network.handleNetworkError
 import com.example.tmdbapp.repository.*
 import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.utils.ApiKeyManager

@@ -1,4 +1,4 @@
-package com.example.tmdbapp.viewmodel
+package com.example.tmdbapp.network
 
 import com.example.tmdbapp.utils.ApiKeyManager
 import com.example.tmdbapp.utils.AppError
