@@ -16,7 +16,7 @@ import com.example.tmdbapp.viewmodel.*
 import kotlinx.coroutines.launch
 
 @Composable
-fun <T : Any> GenericListScreenContent(
+fun <T : Any> GenericListContentUi(
   listUiState: ListUiState<List<T>>,
   searchQuery: String,
   currentSortOptions: SortOptions,

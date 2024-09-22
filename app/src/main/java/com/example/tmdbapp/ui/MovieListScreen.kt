@@ -30,7 +30,7 @@ fun MovieListScreen(
     viewModel.clearScrollToIndex()
   }
 
-  GenericListScreenContent(
+  GenericListContentUi(
     listUiState = uiState,
     searchQuery = searchQuery,
     currentSortOptions = currentSortOption,

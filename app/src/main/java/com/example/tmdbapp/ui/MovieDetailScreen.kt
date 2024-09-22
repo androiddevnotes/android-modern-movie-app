@@ -32,7 +32,7 @@ fun MovieDetailScreen(
       }
       is DetailUiState.Success -> {
         val movie = (movieState as DetailUiState.Success<Movie>).data
-        GenericDetailContent(
+        GenericDetailContentUi(
           item = movie,
           onBackPress = onBackPress,
           onFavoriteClick = { viewModel.toggleFavorite(movie) },

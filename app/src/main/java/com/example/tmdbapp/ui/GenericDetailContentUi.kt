@@ -14,7 +14,7 @@ import com.example.tmdbapp.ui.components.AiResponseCardUi
 import com.example.tmdbapp.viewmodel.AIResponseUiState
 
 @Composable
-fun <T : Any> GenericDetailContent(
+fun <T : Any> GenericDetailContentUi(
   item: T,
   onBackPress: () -> Unit,
   onFavoriteClick: () -> Unit,
