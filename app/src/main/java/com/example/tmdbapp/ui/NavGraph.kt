@@ -64,7 +64,7 @@ fun NavGraph(
     composable("favorites") {
       FavoritesScreen(
         viewModel = movieViewModel,
-        onMovieClick = { movieId ->
+        onItemClick = { movieId ->
           navController.navigate("movieDetail/$movieId")
         },
         onBackPress = { navController.popBackStack() },

@@ -18,7 +18,7 @@ import com.example.tmdbapp.viewmodel.MovieViewModel
 @Composable
 fun FavoritesScreen(
   viewModel: MovieViewModel,
-  onMovieClick: (Int) -> Unit,
+  onItemClick: (Int) -> Unit,
   onBackPress: () -> Unit,
 ) {
   val favorites by viewModel.favorites.collectAsState()
@@ -71,7 +71,7 @@ fun FavoritesScreen(
             posterPath = movie.posterPath,
             voteAverage = movie.voteAverage,
             isFavorite = movie.isFavorite,
-            modifier = Modifier.clickable { onMovieClick(movie.id) },
+            modifier = Modifier.clickable { onItemClick(movie.id) },
             onFavoriteClick = { viewModel.toggleFavorite(movie) },
           )
         }
