@@ -96,6 +96,14 @@ dependencies {
   implementation(libs.androidx.palette.ktx)
   implementation(libs.timber)
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+
+  // Test dependencies
+  testImplementation("junit:junit:4.13.2")
+  testImplementation("io.mockk:mockk:1.13.8")
+  testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+  testImplementation("androidx.arch.core:core-testing:2.2.0")
+  testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.0")
+  testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.0")
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
