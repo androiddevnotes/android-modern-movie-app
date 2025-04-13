@@ -1,7 +1,7 @@
 package com.example.tmdbapp.ui.viewmodel.handlers
 
 import com.example.tmdbapp.models.TmdbDetailUiState
-import com.example.tmdbapp.models.AlphaListUiState
+import com.example.tmdbapp.models.TmdbListUiState
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.network.responses.tmdb.MovieResponse
 import com.example.tmdbapp.utils.*
@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.first
 import timber.log.Timber
 
 object TmdbResultHandler {
-  suspend fun handleAlphaResult(
+  suspend fun handleTmdbResult(
     result: Resource<MovieResponse>,
     currentPage: Int,
-    alphaListUiState: MutableStateFlow<AlphaListUiState<List<Movie>>>,
+    tmdbListUiState: MutableStateFlow<TmdbListUiState<List<Movie>>>,
     apiKeyManager: ApiKeyManager,
     updateCurrentPage: (Int) -> Unit,
     updateIsLastPage: (Boolean) -> Unit,
@@ -25,12 +25,12 @@ object TmdbResultHandler {
       is Success -> {
         val newMovies = result.data?.results ?: emptyList()
         val currentMovies =
-          if (alphaListUiState.value is AlphaListUiState.Success && currentPage > 1) {
-            (alphaListUiState.value as AlphaListUiState.Success<List<Movie>>).data
+          if (tmdbListUiState.value is TmdbListUiState.Success && currentPage > 1) {
+            (tmdbListUiState.value as TmdbListUiState.Success<List<Movie>>).data
           } else {
             emptyList()
           }
-        alphaListUiState.value = AlphaListUiState.Success(currentMovies + newMovies)
+        tmdbListUiState.value = TmdbListUiState.Success(currentMovies + newMovies)
         updateCurrentPage(currentPage + 1)
         updateIsLastPage(newMovies.isEmpty())
       }
@@ -48,13 +48,13 @@ object TmdbResultHandler {
               AppError.ApiError(result.message)
             }
           }
-        alphaListUiState.value = AlphaListUiState.Error(appError)
+        tmdbListUiState.value = TmdbListUiState.Error(appError)
       }
     }
     updateIsLoading(false)
   }
 
-  suspend fun handleAlphaDetailResult(
+  suspend fun handleTmdbDetailResult(
       result: Resource<Movie>,
       tmdbDetailUiState: MutableStateFlow<TmdbDetailUiState<Movie>>,
       apiKeyManager: ApiKeyManager,

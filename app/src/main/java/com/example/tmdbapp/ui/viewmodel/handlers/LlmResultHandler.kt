@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import timber.log.Timber
 
-object BetaResultHandler {
-  suspend fun handleBetaResult(
+object LlmResultHandler {
+  suspend fun handleLlmResult(
     result: Resource<String>,
     betaPieceUiState: MutableStateFlow<BetaPieceUiState<String>>,
     apiKeyManager: ApiKeyManager,

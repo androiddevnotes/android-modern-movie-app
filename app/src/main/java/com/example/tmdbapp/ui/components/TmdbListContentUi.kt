@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun <T : Any> TmdbListContentUi(
-  alphaListUiState: AlphaListUiState<List<T>>,
+  tmdbListUiState: TmdbListUiState<List<T>>,
   searchQuery: String,
   currentSortOptions: SortOptions,
   currentFilters: FilterOptions,
@@ -108,15 +108,15 @@ fun <T : Any> TmdbListContentUi(
           .padding(paddingValues)
           .pullRefresh(pullRefreshState),
     ) {
-      when (alphaListUiState) {
-        is AlphaListUiState.Loading -> {
+      when (tmdbListUiState) {
+        is TmdbListUiState.Loading -> {
           Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
           }
         }
 
-        is AlphaListUiState.Success -> {
-          val items = alphaListUiState.data
+        is TmdbListUiState.Success -> {
+          val items = tmdbListUiState.data
           when (viewType) {
             Constants.VIEW_TYPE_GRID ->
               TmdbListGridUi(
@@ -152,9 +152,9 @@ fun <T : Any> TmdbListContentUi(
           }
         }
 
-        is AlphaListUiState.Error -> {
+        is TmdbListUiState.Error -> {
           ErrorContentUi(
-            error = alphaListUiState.error,
+            error = tmdbListUiState.error,
             onRetry = { loadMoreItems() },
             onSettingsClick = onSettingsClick,
           )
@@ -167,7 +167,7 @@ fun <T : Any> TmdbListContentUi(
       )
       Box(modifier = Modifier.matchParentSize()) {
         ShimmeringOverlayUi(
-          isVisible = isRefreshing || alphaListUiState is AlphaListUiState.Loading,
+          isVisible = isRefreshing || tmdbListUiState is TmdbListUiState.Loading,
         )
       }
     }

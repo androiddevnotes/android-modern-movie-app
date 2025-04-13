@@ -2,7 +2,7 @@ package com.example.tmdbapp.ui.viewmodel
 
 import androidx.lifecycle.*
 import com.example.tmdbapp.models.TmdbAuthUiState
-import com.example.tmdbapp.models.AlphaCreateListUiState
+import com.example.tmdbapp.models.TmdbCreateListUiState
 import com.example.tmdbapp.repository.*
 import com.example.tmdbapp.repository.createList
 import com.example.tmdbapp.repository.createSession
@@ -47,19 +47,19 @@ fun TmdbViewModel.createList(
   description: String,
 ) {
   viewModelScope.launch {
-    _alphaCreateListUiState.value = AlphaCreateListUiState.Loading
+    _tmdbCreateListUiState.value = TmdbCreateListUiState.Loading
     when (val result = repository.createList(name, description)) {
       is Resource.Success -> {
         val listId = result.data
         if (listId != null) {
-          _alphaCreateListUiState.value = AlphaCreateListUiState.Success(listId)
+          _tmdbCreateListUiState.value = TmdbCreateListUiState.Success(listId)
         } else {
-          _alphaCreateListUiState.value = AlphaCreateListUiState.Error(AppError.Unknown)
+          _tmdbCreateListUiState.value = TmdbCreateListUiState.Error(AppError.Unknown)
         }
       }
       is Resource.Error ->
-        _alphaCreateListUiState.value =
-          AlphaCreateListUiState.Error(AppError.ApiError(result.message ?: "Unknown error"))
+        _tmdbCreateListUiState.value =
+          TmdbCreateListUiState.Error(AppError.ApiError(result.message ?: "Unknown error"))
     }
   }
 }

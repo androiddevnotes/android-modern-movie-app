@@ -19,7 +19,7 @@ fun TmdbListScreenUi(
     currentThemeMode: ThemeMode,
     onSettingsClick: () -> Unit,
 ) {
-  val uiState by tmdbViewModel.alphaListUiState.collectAsState()
+  val uiState by tmdbViewModel.tmdbListUiState.collectAsState()
   val searchQuery by tmdbViewModel.searchQuery.collectAsState()
   val currentSortOption by tmdbViewModel.currentSortOptions.collectAsState()
   val currentFilters by tmdbViewModel.filterOptions.collectAsState()
@@ -32,7 +32,7 @@ fun TmdbListScreenUi(
   }
 
   TmdbListContentUi(
-    alphaListUiState = uiState,
+    tmdbListUiState = uiState,
     searchQuery = searchQuery,
     currentSortOptions = currentSortOption,
     currentFilters = currentFilters,

@@ -114,7 +114,7 @@ fun <T : Any> TmdbDetailContentUi(
         }
 
         is BetaPieceUiState.Success -> {
-          BetaPieceCardUi(response = betaPieceUiState.data)
+          LlmPieceCardUi(response = betaPieceUiState.data)
         }
 
         BetaPieceUiState.Idle -> {

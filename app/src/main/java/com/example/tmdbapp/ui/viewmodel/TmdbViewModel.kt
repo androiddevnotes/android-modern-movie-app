@@ -5,7 +5,7 @@ import androidx.lifecycle.*
 import com.example.tmdbapp.data.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.repository.*
-import com.example.tmdbapp.ui.viewmodel.handlers.BetaResultHandler
+import com.example.tmdbapp.ui.viewmodel.handlers.LlmResultHandler
 import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.utils.ApiKeyManager
 import kotlinx.coroutines.*
@@ -48,11 +48,11 @@ class TmdbViewModel(
   internal var isLoading = false
   internal val _tmdbAuthUiState = MutableStateFlow<TmdbAuthUiState<String>>(TmdbAuthUiState.Idle)
 
-  internal val _alphaCreateListUiState =
-    MutableStateFlow<AlphaCreateListUiState<Int>>(AlphaCreateListUiState.Idle)
+  internal val _tmdbCreateListUiState =
+    MutableStateFlow<TmdbCreateListUiState<Int>>(TmdbCreateListUiState.Idle)
 
-  internal val _alphaListUiState =
-    MutableStateFlow<AlphaListUiState<List<Movie>>>(AlphaListUiState.Loading)
+  internal val _tmdbListUiState =
+    MutableStateFlow<TmdbListUiState<List<Movie>>>(TmdbListUiState.Loading)
 
   internal val _currentSortOptions = MutableStateFlow(SortOptions.POPULAR)
   internal val _filterOptions = MutableStateFlow(FilterOptions())
@@ -61,9 +61,9 @@ class TmdbViewModel(
   val currentSortOptions: StateFlow<SortOptions> = _currentSortOptions
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
   val tmdbAuthUiState: StateFlow<TmdbAuthUiState<String>> = _tmdbAuthUiState
-  val alphaCreateListUiState: StateFlow<AlphaCreateListUiState<Int>> = _alphaCreateListUiState
+  val tmdbCreateListUiState: StateFlow<TmdbCreateListUiState<Int>> = _tmdbCreateListUiState
   val tmdbDetailUiState: StateFlow<TmdbDetailUiState<Movie>> = _tmdbDetailUiState.asStateFlow()
-  val alphaListUiState: StateFlow<AlphaListUiState<List<Movie>>> = _alphaListUiState.asStateFlow()
+  val tmdbListUiState: StateFlow<TmdbListUiState<List<Movie>>> = _tmdbListUiState.asStateFlow()
   val searchQuery: StateFlow<String> = _searchQuery
 
   init {
@@ -72,12 +72,12 @@ class TmdbViewModel(
     checkAuthenticationStatus()
   }
 
-  fun askAIAboutItem(movie: Movie) {
+  fun askLlmAboutItem(movie: Movie) {
     viewModelScope.launch {
       _betaPieceUiState.value = BetaPieceUiState.Loading
       val prompt = "Tell me about the movie '${movie.title}' in a brief paragraph."
       val result = repository.askOpenAi(prompt)
-      BetaResultHandler.handleBetaResult(
+      LlmResultHandler.handleLlmResult(
         result = result,
         betaPieceUiState = _betaPieceUiState,
         apiKeyManager = apiKeyManager,
@@ -102,7 +102,7 @@ class TmdbViewModel(
   fun refreshItems() {
     currentPage = 1
     isLastPage = false
-    _alphaListUiState.value = AlphaListUiState.Loading
+    _tmdbListUiState.value = TmdbListUiState.Loading
     fetchMovies()
   }
 
@@ -117,7 +117,7 @@ class TmdbViewModel(
     _filterOptions.value = options
     currentPage = 1
     isLastPage = false
-    _alphaListUiState.value = AlphaListUiState.Loading
+    _tmdbListUiState.value = TmdbListUiState.Loading
     fetchMovies()
   }
 
@@ -145,7 +145,7 @@ class TmdbViewModel(
       _currentSortOptions.value = sortOptions
       currentPage = 1
       isLastPage = false
-      _alphaListUiState.value = AlphaListUiState.Loading
+      _tmdbListUiState.value = TmdbListUiState.Loading
       fetchMovies()
     }
   }
@@ -163,14 +163,14 @@ class TmdbViewModel(
         }
       }
 
-      _alphaListUiState.update { currentState ->
+      _tmdbListUiState.update { currentState ->
         when (currentState) {
-          is AlphaListUiState.Success -> {
+          is TmdbListUiState.Success -> {
             val updatedMovies =
               currentState.data.map {
                 if (it.id == updatedMovie.id) updatedMovie else it
               }
-            AlphaListUiState.Success(updatedMovies)
+            TmdbListUiState.Success(updatedMovies)
           }
           else -> currentState
         }

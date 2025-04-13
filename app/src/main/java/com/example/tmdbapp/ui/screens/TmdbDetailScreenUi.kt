@@ -42,7 +42,7 @@ fun TmdbDetailScreenUi(
           onDownloadClick = { posterPath, context ->
             tmdbViewModel.downloadImage(posterPath, context)
           },
-          onAskAiClick = { tmdbViewModel.askAIAboutItem(item) },
+          onAskAiClick = { tmdbViewModel.askLlmAboutItem(item) },
           betaPieceUiState = aiResponseState,
           getItemTitle = { it.title },
           getItemOverview = { it.overview },

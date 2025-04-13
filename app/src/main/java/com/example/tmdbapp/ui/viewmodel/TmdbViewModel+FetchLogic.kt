@@ -18,10 +18,10 @@ fun TmdbViewModel.fetchMovies() {
         releaseYear = _filterOptions.value.releaseYear,
         minRating = _filterOptions.value.minRating,
       )
-    TmdbResultHandler.handleAlphaResult(
+    TmdbResultHandler.handleTmdbResult(
       result,
       currentPage,
-      _alphaListUiState,
+      _tmdbListUiState,
       apiKeyManager,
       { currentPage = it },
       { isLastPage = it },
@@ -34,7 +34,7 @@ fun TmdbViewModel.fetchMovieDetails(movieId: Int) {
   viewModelScope.launch {
     _tmdbDetailUiState.value = TmdbDetailUiState.Loading
     val result = repository.getMovieDetails(movieId)
-    TmdbResultHandler.handleAlphaDetailResult(
+    TmdbResultHandler.handleTmdbDetailResult(
       result,
       _tmdbDetailUiState,
       apiKeyManager,
@@ -45,12 +45,12 @@ fun TmdbViewModel.fetchMovieDetails(movieId: Int) {
 
 internal fun TmdbViewModel.searchMovies(query: String) {
   viewModelScope.launch {
-    _alphaListUiState.value = AlphaListUiState.Loading
+    _tmdbListUiState.value = TmdbListUiState.Loading
     val result = repository.searchMovies(query, 1)
-    TmdbResultHandler.handleAlphaResult(
+    TmdbResultHandler.handleTmdbResult(
       result,
       currentPage,
-      _alphaListUiState,
+      _tmdbListUiState,
       apiKeyManager,
       { currentPage = it },
       { isLastPage = it },

@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import com.example.tmdbapp.R
-import com.example.tmdbapp.models.AlphaCreateListUiState
-import com.example.tmdbapp.models.AlphaCreateListUiState.*
+import com.example.tmdbapp.models.TmdbCreateListUiState
+import com.example.tmdbapp.models.TmdbCreateListUiState.*
 import com.example.tmdbapp.utils.AppError
 
 @Composable
@@ -17,7 +17,7 @@ fun TmdbCreateListContentUi(
   listDescription: String,
   onListDescriptionChange: (String) -> Unit,
   onCreateList: () -> Unit,
-  alphaCreateListUiState: AlphaCreateListUiState<Int>,
+  tmdbCreateListUiState: TmdbCreateListUiState<Int>,
 ) {
   OutlinedTextField(
     value = listName,
@@ -39,25 +39,25 @@ fun TmdbCreateListContentUi(
     Text(stringResource(R.string.create_list))
   }
 
-  when (alphaCreateListUiState) {
+  when (tmdbCreateListUiState) {
     is Loading -> {
       CircularProgressIndicator()
     }
 
     is Success -> {
       Text(
-        text = stringResource(R.string.list_created_success, alphaCreateListUiState.data),
+        text = stringResource(R.string.list_created_success, tmdbCreateListUiState.data),
         color = MaterialTheme.colorScheme.primary,
       )
     }
 
     is Error -> {
       val errorMessage =
-        when (val error = alphaCreateListUiState.error) {
+        when (val error = tmdbCreateListUiState.error) {
           is AppError.ApiError -> stringResource(error.messageResId, error.errorMessage)
           else -> stringResource(error.messageResId)
         }
-      ErrorTextUi(alphaCreateListUiState.error)
+      ErrorTextUi(tmdbCreateListUiState.error)
     }
 
     Idle -> {

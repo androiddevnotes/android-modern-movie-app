@@ -23,7 +23,7 @@ fun TmdbCreateListScreenUi(
   var listName by remember { mutableStateOf("") }
   var listDescription by remember { mutableStateOf("") }
   val authState by tmdbViewModel.tmdbAuthUiState.collectAsState()
-  val createListState by tmdbViewModel.alphaCreateListUiState.collectAsState()
+  val createListState by tmdbViewModel.tmdbCreateListUiState.collectAsState()
 
   LaunchedEffect(Unit) {
     tmdbViewModel.startAuthentication()
@@ -78,7 +78,7 @@ fun TmdbCreateListScreenUi(
             listDescription = listDescription,
             onListDescriptionChange = { listDescription = it },
             onCreateList = { tmdbViewModel.createList(listName, listDescription) },
-            alphaCreateListUiState = createListState,
+            tmdbCreateListUiState = createListState,
           )
         }
 

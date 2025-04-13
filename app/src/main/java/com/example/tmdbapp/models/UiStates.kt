@@ -2,16 +2,16 @@ package com.example.tmdbapp.models
 
 import com.example.tmdbapp.utils.AppError
 
-sealed class AlphaListUiState<out T> {
+sealed class TmdbListUiState<out T> {
   data class Error(
     val error: AppError,
-  ) : AlphaListUiState<Nothing>()
+  ) : TmdbListUiState<Nothing>()
 
   data class Success<T>(
     val data: T,
-  ) : AlphaListUiState<T>()
+  ) : TmdbListUiState<T>()
 
-  data object Loading : AlphaListUiState<Nothing>()
+  data object Loading : TmdbListUiState<Nothing>()
 }
 
 sealed class TmdbDetailUiState<out T> {
@@ -57,16 +57,16 @@ sealed class TmdbAuthUiState<out T> {
   ) : TmdbAuthUiState<Nothing>()
 }
 
-sealed class AlphaCreateListUiState<out T> {
-  data object Idle : AlphaCreateListUiState<Nothing>()
+sealed class TmdbCreateListUiState<out T> {
+  data object Idle : TmdbCreateListUiState<Nothing>()
 
-  data object Loading : AlphaCreateListUiState<Nothing>()
+  data object Loading : TmdbCreateListUiState<Nothing>()
 
   data class Success<T>(
     val data: T,
-  ) : AlphaCreateListUiState<T>()
+  ) : TmdbCreateListUiState<T>()
 
   data class Error(
     val error: AppError,
-  ) : AlphaCreateListUiState<Nothing>()
+  ) : TmdbCreateListUiState<Nothing>()
 }
