@@ -14,17 +14,17 @@ sealed class AlphaListUiState<out T> {
   data object Loading : AlphaListUiState<Nothing>()
 }
 
-sealed class AlphaDetailUiState<out T> {
-  data object Loading : AlphaDetailUiState<Nothing>()
+sealed class TmdbDetailUiState<out T> {
+  data object Loading : TmdbDetailUiState<Nothing>()
 
   data class Success<T>(
     val data: T,
-  ) : AlphaDetailUiState<T>()
+  ) : TmdbDetailUiState<T>()
 
   data class Error(
     val error: AppError,
     val itemId: Int,
-  ) : AlphaDetailUiState<Nothing>()
+  ) : TmdbDetailUiState<Nothing>()
 }
 
 sealed class BetaPieceUiState<out T> {
@@ -41,20 +41,20 @@ sealed class BetaPieceUiState<out T> {
   ) : BetaPieceUiState<Nothing>()
 }
 
-sealed class AlphaAuthUiState<out T> {
-  data object Idle : AlphaAuthUiState<Nothing>()
+sealed class TmdbAuthUiState<out T> {
+  data object Idle : TmdbAuthUiState<Nothing>()
 
-  data object Loading : AlphaAuthUiState<Nothing>()
+  data object Loading : TmdbAuthUiState<Nothing>()
 
   data class RequestTokenCreated(
     val data: String,
-  ) : AlphaAuthUiState<String>()
+  ) : TmdbAuthUiState<String>()
 
-  data object Authenticated : AlphaAuthUiState<Nothing>()
+  data object Authenticated : TmdbAuthUiState<Nothing>()
 
   data class Error(
     val error: AppError,
-  ) : AlphaAuthUiState<Nothing>()
+  ) : TmdbAuthUiState<Nothing>()
 }
 
 sealed class AlphaCreateListUiState<out T> {

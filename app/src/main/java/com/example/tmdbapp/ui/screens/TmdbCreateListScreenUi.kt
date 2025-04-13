@@ -10,23 +10,23 @@ import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.R
-import com.example.tmdbapp.models.AlphaAuthUiState
+import com.example.tmdbapp.models.TmdbAuthUiState
 import com.example.tmdbapp.ui.components.*
 import com.example.tmdbapp.ui.viewmodel.*
 
 @Composable
-fun AlphaCreateListScreenUi(
-  alphaViewModel: AlphaViewModel,
+fun TmdbCreateListScreenUi(
+  tmdbViewModel: TmdbViewModel,
   onNavigateBack: () -> Unit,
   application: Application,
 ) {
   var listName by remember { mutableStateOf("") }
   var listDescription by remember { mutableStateOf("") }
-  val authState by alphaViewModel.alphaAuthUiState.collectAsState()
-  val createListState by alphaViewModel.alphaCreateListUiState.collectAsState()
+  val authState by tmdbViewModel.tmdbAuthUiState.collectAsState()
+  val createListState by tmdbViewModel.alphaCreateListUiState.collectAsState()
 
   LaunchedEffect(Unit) {
-    alphaViewModel.startAuthentication()
+    tmdbViewModel.startAuthentication()
   }
 
   Scaffold(
@@ -46,16 +46,16 @@ fun AlphaCreateListScreenUi(
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
       when (authState) {
-        is AlphaAuthUiState.Loading -> {
+        is TmdbAuthUiState.Loading -> {
           CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         }
 
-        is AlphaAuthUiState.Error -> {
-          ErrorTextUi(error = (authState as AlphaAuthUiState.Error).error)
+        is TmdbAuthUiState.Error -> {
+          ErrorTextUi(error = (authState as TmdbAuthUiState.Error).error)
         }
 
-        is AlphaAuthUiState.RequestTokenCreated -> {
-          val token = (authState as AlphaAuthUiState.RequestTokenCreated).data
+        is TmdbAuthUiState.RequestTokenCreated -> {
+          val token = (authState as TmdbAuthUiState.RequestTokenCreated).data
           LaunchedEffect(token) {
             val intent =
               Intent(
@@ -66,23 +66,23 @@ fun AlphaCreateListScreenUi(
             application.startActivity(intent)
           }
           Text(stringResource(R.string.approve_request))
-          Button(onClick = { alphaViewModel.createSession(token) }) {
+          Button(onClick = { tmdbViewModel.createSession(token) }) {
             Text(stringResource(R.string.approved_request))
           }
         }
 
-        is AlphaAuthUiState.Authenticated -> {
-          AlphaCreateListContentUi(
+        is TmdbAuthUiState.Authenticated -> {
+          TmdbCreateListContentUi(
             listName = listName,
             onListNameChange = { listName = it },
             listDescription = listDescription,
             onListDescriptionChange = { listDescription = it },
-            onCreateList = { alphaViewModel.createList(listName, listDescription) },
+            onCreateList = { tmdbViewModel.createList(listName, listDescription) },
             alphaCreateListUiState = createListState,
           )
         }
 
-        AlphaAuthUiState.Idle -> {
+        TmdbAuthUiState.Idle -> {
           // Do nothing or show a placeholder
         }
       }

@@ -2,36 +2,36 @@ package com.example.tmdbapp.ui.screens
 
 import androidx.compose.runtime.*
 import com.example.tmdbapp.models.Movie
-import com.example.tmdbapp.ui.components.AlphaListContentUi
+import com.example.tmdbapp.ui.components.TmdbListContentUi
 import com.example.tmdbapp.ui.theme.ThemeMode
-import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
+import com.example.tmdbapp.ui.viewmodel.TmdbViewModel
 import com.example.tmdbapp.utils.rememberForeverLazyListState
 import com.example.tmdbapp.utils.rememberForeverLazyStaggeredGridState
 
 @Composable
-fun AlphaListScreenUi(
-  alphaViewModel: AlphaViewModel,
-  onItemClick: (Movie) -> Unit,
-  onFavoritesClick: () -> Unit,
-  viewType: String,
-  onViewTypeChange: (String) -> Unit,
-  onThemeChange: () -> Unit,
-  currentThemeMode: ThemeMode,
-  onSettingsClick: () -> Unit,
+fun TmdbListScreenUi(
+    tmdbViewModel: TmdbViewModel,
+    onItemClick: (Movie) -> Unit,
+    onFavoritesClick: () -> Unit,
+    viewType: String,
+    onViewTypeChange: (String) -> Unit,
+    onThemeChange: () -> Unit,
+    currentThemeMode: ThemeMode,
+    onSettingsClick: () -> Unit,
 ) {
-  val uiState by alphaViewModel.alphaListUiState.collectAsState()
-  val searchQuery by alphaViewModel.searchQuery.collectAsState()
-  val currentSortOption by alphaViewModel.currentSortOptions.collectAsState()
-  val currentFilters by alphaViewModel.filterOptions.collectAsState()
+  val uiState by tmdbViewModel.alphaListUiState.collectAsState()
+  val searchQuery by tmdbViewModel.searchQuery.collectAsState()
+  val currentSortOption by tmdbViewModel.currentSortOptions.collectAsState()
+  val currentFilters by tmdbViewModel.filterOptions.collectAsState()
 
   val listState = rememberForeverLazyListState(key = "item_list_${viewType}_$searchQuery")
   val gridState = rememberForeverLazyStaggeredGridState(key = "item_grid_${viewType}_$searchQuery")
 
   LaunchedEffect(viewType) {
-    alphaViewModel.clearScrollToIndex()
+    tmdbViewModel.clearScrollToIndex()
   }
 
-  AlphaListContentUi(
+  TmdbListContentUi(
     alphaListUiState = uiState,
     searchQuery = searchQuery,
     currentSortOptions = currentSortOption,
@@ -51,13 +51,13 @@ fun AlphaListScreenUi(
     getItemPosterPath = { it.posterPath },
     getItemVoteAverage = { it.voteAverage },
     isItemFavorite = { it.isFavorite },
-    toggleFavorite = alphaViewModel::toggleFavorite,
-    isLastPage = alphaViewModel.isLastPage,
-    loadMoreItems = alphaViewModel::loadMoreItems,
-    refreshItems = alphaViewModel::refreshItems,
-    setLastViewedItemIndex = alphaViewModel::setLastViewedItemIndex,
-    setSearchQuery = alphaViewModel::setSearchQuery,
-    setSortOption = alphaViewModel::setSortOption,
-    setFilterOptions = alphaViewModel::setFilterOptions,
+    toggleFavorite = tmdbViewModel::toggleFavorite,
+    isLastPage = tmdbViewModel.isLastPage,
+    loadMoreItems = tmdbViewModel::loadMoreItems,
+    refreshItems = tmdbViewModel::refreshItems,
+    setLastViewedItemIndex = tmdbViewModel::setLastViewedItemIndex,
+    setSearchQuery = tmdbViewModel::setSearchQuery,
+    setSortOption = tmdbViewModel::setSortOption,
+    setFilterOptions = tmdbViewModel::setFilterOptions,
   )
 }

@@ -4,9 +4,8 @@ import com.example.tmdbapp.data.FavoritePreferencesDatastore
 import com.example.tmdbapp.data.SessionManagerPreferencesDataStore
 import com.example.tmdbapp.network.*
 import com.example.tmdbapp.repository.Repository
-import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
+import com.example.tmdbapp.ui.viewmodel.TmdbViewModel
 import com.example.tmdbapp.utils.ApiKeyManager
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -39,7 +38,7 @@ val appModule = module {
     
     // ViewModels
     viewModel { 
-        AlphaViewModel(
+        TmdbViewModel(
             application = get(),
             repository = get(),
             apiKeyManager = get(),

@@ -8,7 +8,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import com.example.tmdbapp.ui.screens.*
 import com.example.tmdbapp.ui.theme.*
-import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
+import com.example.tmdbapp.ui.viewmodel.TmdbViewModel
 import com.example.tmdbapp.ui.viewmodel.fetchMovieDetails
 import com.example.tmdbapp.utils.ApiKeyManager
 import org.koin.androidx.compose.get
@@ -16,7 +16,7 @@ import org.koin.androidx.compose.get
 @Composable
 fun NavGraph(
   navController: NavHostController,
-  alphaViewModel: AlphaViewModel,
+  tmdbViewModel: TmdbViewModel,
   currentThemeMode: ThemeMode,
   onThemeChange: () -> Unit,
   viewType: String,
@@ -28,8 +28,8 @@ fun NavGraph(
 
   NavHost(navController = navController, startDestination = "movieList", modifier = modifier) {
     composable("movieList") {
-      AlphaListScreenUi(
-        alphaViewModel = alphaViewModel,
+      TmdbListScreenUi(
+        tmdbViewModel = tmdbViewModel,
         onItemClick = { movie ->
           navController.navigate("movieDetail/${movie.id}")
         },
@@ -57,16 +57,16 @@ fun NavGraph(
     ) { backStackEntry ->
       val movieId = backStackEntry.arguments?.getInt("movieId") ?: return@composable
       LaunchedEffect(movieId) {
-        alphaViewModel.fetchMovieDetails(movieId)
+        tmdbViewModel.fetchMovieDetails(movieId)
       }
-      AlphaDetailScreenUi(
-        alphaViewModel = alphaViewModel,
+      TmdbDetailScreenUi(
+        tmdbViewModel = tmdbViewModel,
         onBackPress = { navController.popBackStack() },
       )
     }
     composable("favorites") {
-      AlphaListFavoriteScreenUi(
-        viewModel = alphaViewModel,
+      TmdbListFavoriteScreenUi(
+        viewModel = tmdbViewModel,
         onItemClick = { movieId ->
           navController.navigate("movieDetail/$movieId")
         },
@@ -74,8 +74,8 @@ fun NavGraph(
       )
     }
     composable("createList") {
-      AlphaCreateListScreenUi(
-        alphaViewModel = alphaViewModel,
+      TmdbCreateListScreenUi(
+        tmdbViewModel = tmdbViewModel,
         onNavigateBack = { navController.popBackStack() },
         application = application,
       )

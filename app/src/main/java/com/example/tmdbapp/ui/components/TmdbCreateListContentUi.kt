@@ -11,7 +11,7 @@ import com.example.tmdbapp.models.AlphaCreateListUiState.*
 import com.example.tmdbapp.utils.AppError
 
 @Composable
-fun AlphaCreateListContentUi(
+fun TmdbCreateListContentUi(
   listName: String,
   onListNameChange: (String) -> Unit,
   listDescription: String,

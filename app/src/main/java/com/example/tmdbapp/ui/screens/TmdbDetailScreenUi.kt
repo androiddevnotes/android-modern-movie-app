@@ -7,42 +7,42 @@ import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
 import com.example.tmdbapp.models.*
 import com.example.tmdbapp.ui.components.*
-import com.example.tmdbapp.ui.components.AlphaDetailContentUi
-import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
+import com.example.tmdbapp.ui.components.TmdbDetailContentUi
+import com.example.tmdbapp.ui.viewmodel.TmdbViewModel
 import com.example.tmdbapp.ui.viewmodel.downloadImage
 
 @Composable
-fun AlphaDetailScreenUi(
-  alphaViewModel: AlphaViewModel,
-  onBackPress: () -> Unit,
+fun TmdbDetailScreenUi(
+    tmdbViewModel: TmdbViewModel,
+    onBackPress: () -> Unit,
 ) {
-  val detailUiState by alphaViewModel.alphaDetailUiState.collectAsState()
-  val aiResponseState by alphaViewModel.betaPieceUiState.collectAsState()
+  val detailUiState by tmdbViewModel.tmdbDetailUiState.collectAsState()
+  val aiResponseState by tmdbViewModel.betaPieceUiState.collectAsState()
 
   DisposableEffect(Unit) {
     onDispose {
-      alphaViewModel.clearAIResponse()
+      tmdbViewModel.clearAIResponse()
     }
   }
 
   Box(modifier = Modifier.fillMaxSize()) {
     when (detailUiState) {
-      is AlphaDetailUiState.Loading -> {
+      is TmdbDetailUiState.Loading -> {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
           CircularProgressIndicator()
         }
       }
 
-      is AlphaDetailUiState.Success -> {
-        val item = (detailUiState as AlphaDetailUiState.Success<Movie>).data
-        AlphaDetailContentUi(
+      is TmdbDetailUiState.Success -> {
+        val item = (detailUiState as TmdbDetailUiState.Success<Movie>).data
+        TmdbDetailContentUi(
           item = item,
           onBackPress = onBackPress,
-          onFavoriteClick = { alphaViewModel.toggleFavorite(item) },
+          onFavoriteClick = { tmdbViewModel.toggleFavorite(item) },
           onDownloadClick = { posterPath, context ->
-            alphaViewModel.downloadImage(posterPath, context)
+            tmdbViewModel.downloadImage(posterPath, context)
           },
-          onAskAiClick = { alphaViewModel.askAIAboutItem(item) },
+          onAskAiClick = { tmdbViewModel.askAIAboutItem(item) },
           betaPieceUiState = aiResponseState,
           getItemTitle = { it.title },
           getItemOverview = { it.overview },
@@ -53,10 +53,10 @@ fun AlphaDetailScreenUi(
         )
       }
 
-      is AlphaDetailUiState.Error -> {
+      is TmdbDetailUiState.Error -> {
         ErrorContentUi(
-          error = (detailUiState as AlphaDetailUiState.Error).error,
-          onRetry = { alphaViewModel.retryFetchItemDetails() },
+          error = (detailUiState as TmdbDetailUiState.Error).error,
+          onRetry = { tmdbViewModel.retryFetchItemDetails() },
           onBackPress = onBackPress,
         )
       }

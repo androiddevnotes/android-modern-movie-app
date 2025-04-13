@@ -10,7 +10,7 @@ import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
 
 @Composable
-internal fun AlphaDetailInfoUi(
+internal fun TmdbDetailInfoUi(
   title: String,
   overview: String,
   releaseDate: String?,

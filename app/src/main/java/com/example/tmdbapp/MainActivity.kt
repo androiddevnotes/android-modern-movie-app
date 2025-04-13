@@ -8,17 +8,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
-import androidx.lifecycle.*
 import androidx.navigation.compose.*
 import com.example.tmdbapp.ui.components.*
 import com.example.tmdbapp.ui.nav.NavGraph
 import com.example.tmdbapp.ui.theme.*
-import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
+import com.example.tmdbapp.ui.viewmodel.TmdbViewModel
 import com.example.tmdbapp.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
-  private val alphaViewModel: AlphaViewModel by viewModel()
+  private val tmdbViewModel: TmdbViewModel by viewModel()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -35,7 +34,7 @@ class MainActivity : ComponentActivity() {
         ) { innerPadding ->
           NavGraph(
             navController = navController,
-            alphaViewModel = alphaViewModel,
+            tmdbViewModel = tmdbViewModel,
             currentThemeMode = themeMode,
             onThemeChange = { themeMode = themeMode.next() },
             viewType = viewType,

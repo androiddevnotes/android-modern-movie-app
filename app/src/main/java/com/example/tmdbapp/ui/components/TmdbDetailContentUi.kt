@@ -21,7 +21,7 @@ import com.example.tmdbapp.utils.Constants
 import kotlinx.coroutines.launch
 
 @Composable
-fun <T : Any> AlphaDetailContentUi(
+fun <T : Any> TmdbDetailContentUi(
   item: T,
   onBackPress: () -> Unit,
   onFavoriteClick: () -> Unit,
@@ -66,7 +66,7 @@ fun <T : Any> AlphaDetailContentUi(
   }
 
   Box(modifier = Modifier.fillMaxSize()) {
-    AlphaDetailBackgroundImageUi(getItemPosterPath(item))
+    TmdbDetailBackgroundImageUi(getItemPosterPath(item))
     Column(
       modifier =
         Modifier
@@ -74,7 +74,7 @@ fun <T : Any> AlphaDetailContentUi(
           .verticalScroll(scrollState)
           .padding(bottom = 80.dp),
     ) {
-      AlphaDetailTopBarUi(
+      TmdbDetailTopBarUi(
         onBackPress = onBackPress,
         onFavoriteClick = onFavoriteClick,
         onDownloadClick = { onDownloadClick(getItemPosterPath(item), context) },
@@ -83,7 +83,7 @@ fun <T : Any> AlphaDetailContentUi(
         textColor = textColor,
       )
       Spacer(modifier = Modifier.weight(1f))
-      AlphaDetailInfoUi(
+      TmdbDetailInfoUi(
         title = getItemTitle(item),
         overview = getItemOverview(item),
         releaseDate = getItemReleaseDate(item),

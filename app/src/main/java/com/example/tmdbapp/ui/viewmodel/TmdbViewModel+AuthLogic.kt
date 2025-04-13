@@ -1,7 +1,7 @@
 package com.example.tmdbapp.ui.viewmodel
 
 import androidx.lifecycle.*
-import com.example.tmdbapp.models.AlphaAuthUiState
+import com.example.tmdbapp.models.TmdbAuthUiState
 import com.example.tmdbapp.models.AlphaCreateListUiState
 import com.example.tmdbapp.repository.*
 import com.example.tmdbapp.repository.createList
@@ -9,40 +9,40 @@ import com.example.tmdbapp.repository.createSession
 import com.example.tmdbapp.utils.*
 import kotlinx.coroutines.*
 
-fun AlphaViewModel.startAuthentication() {
+fun TmdbViewModel.startAuthentication() {
   viewModelScope.launch {
-    if (_alphaAuthUiState.value == AlphaAuthUiState.Authenticated) return@launch
+    if (_tmdbAuthUiState.value == TmdbAuthUiState.Authenticated) return@launch
 
-    _alphaAuthUiState.value = AlphaAuthUiState.Loading
+    _tmdbAuthUiState.value = TmdbAuthUiState.Loading
     when (val tokenResult = repository.createRequestToken()) {
       is Resource.Success -> {
         val token = tokenResult.data
         if (token != null) {
-          _alphaAuthUiState.value = AlphaAuthUiState.RequestTokenCreated(token)
+          _tmdbAuthUiState.value = TmdbAuthUiState.RequestTokenCreated(token)
         } else {
-          _alphaAuthUiState.value = AlphaAuthUiState.Error(AppError.Unknown)
+          _tmdbAuthUiState.value = TmdbAuthUiState.Error(AppError.Unknown)
         }
       }
       is Resource.Error -> {
-        _alphaAuthUiState.value = AlphaAuthUiState.Error(AppError.ApiError(tokenResult.message ?: "Unknown error"))
+        _tmdbAuthUiState.value = TmdbAuthUiState.Error(AppError.ApiError(tokenResult.message ?: "Unknown error"))
       }
     }
   }
 }
 
-fun AlphaViewModel.createSession(approvedToken: String) {
+fun TmdbViewModel.createSession(approvedToken: String) {
   viewModelScope.launch {
-    _alphaAuthUiState.value = AlphaAuthUiState.Loading
+    _tmdbAuthUiState.value = TmdbAuthUiState.Loading
     when (val sessionResult = repository.createSession(approvedToken)) {
-      is Resource.Success -> _alphaAuthUiState.value = AlphaAuthUiState.Authenticated
+      is Resource.Success -> _tmdbAuthUiState.value = TmdbAuthUiState.Authenticated
       is Resource.Error ->
-        _alphaAuthUiState.value =
-          AlphaAuthUiState.Error(AppError.ApiError(sessionResult.message ?: "Failed to create session"))
+        _tmdbAuthUiState.value =
+          TmdbAuthUiState.Error(AppError.ApiError(sessionResult.message ?: "Failed to create session"))
     }
   }
 }
 
-fun AlphaViewModel.createList(
+fun TmdbViewModel.createList(
   name: String,
   description: String,
 ) {
@@ -64,14 +64,14 @@ fun AlphaViewModel.createList(
   }
 }
 
-internal fun AlphaViewModel.checkAuthenticationStatus() {
+internal fun TmdbViewModel.checkAuthenticationStatus() {
   viewModelScope.launch {
     sessionManagerPreferencesDataStore.sessionIdFlow.collect { sessionId ->
-      _alphaAuthUiState.value =
+      _tmdbAuthUiState.value =
         if (sessionId != null) {
-          AlphaAuthUiState.Authenticated
+          TmdbAuthUiState.Authenticated
         } else {
-          AlphaAuthUiState.Idle
+          TmdbAuthUiState.Idle
         }
     }
   }

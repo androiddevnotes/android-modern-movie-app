@@ -9,14 +9,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import com.example.tmdbapp.ui.components.CommonTopBar
 import com.example.tmdbapp.ui.components.ItemSimpleUi
-import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
+import com.example.tmdbapp.ui.viewmodel.TmdbViewModel
 import com.example.tmdbapp.utils.Constants
 
 @Composable
-fun AlphaListFavoriteScreenUi(
-  viewModel: AlphaViewModel,
-  onItemClick: (Int) -> Unit,
-  onBackPress: () -> Unit,
+fun TmdbListFavoriteScreenUi(
+    viewModel: TmdbViewModel,
+    onItemClick: (Int) -> Unit,
+    onBackPress: () -> Unit,
 ) {
   val favorites by viewModel.favorites.collectAsState()
 

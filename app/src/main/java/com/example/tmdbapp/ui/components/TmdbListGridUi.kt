@@ -1,32 +1,31 @@
 package com.example.tmdbapp.ui.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.*
 
 @Composable
-fun <T : Any> AlphaListSimpleUi(
+fun <T : Any> TmdbListGridUi(
   items: List<T>,
   onItemClick: (T) -> Unit,
-  listState: LazyListState,
+  gridState: LazyStaggeredGridState,
   isLastPage: Boolean,
   loadMoreItems: () -> Unit,
   setLastViewedItemIndex: (Int) -> Unit,
   toggleFavorite: (T) -> Unit,
   getItemId: (T) -> Any,
   getItemTitle: (T) -> String,
-  getItemOverview: (T) -> String,
   getItemPosterPath: (T) -> String?,
   getItemVoteAverage: (T) -> Float,
   isItemFavorite: (T) -> Boolean,
 ) {
-  LazyColumn(
-    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-    verticalArrangement = Arrangement.spacedBy(16.dp),
-    state = listState,
+  LazyVerticalStaggeredGrid(
+    columns = StaggeredGridCells.Fixed(3),
+    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
+    verticalItemSpacing = 8.dp,
+    state = gridState,
   ) {
     itemsIndexed(
       items = items,
@@ -35,20 +34,16 @@ fun <T : Any> AlphaListSimpleUi(
       if (index >= items.size - 1 && !isLastPage) {
         loadMoreItems()
       }
-      ItemSimpleUi(
+      GridItemUi(
         title = getItemTitle(item),
-        overview = getItemOverview(item),
         posterPath = getItemPosterPath(item),
         voteAverage = getItemVoteAverage(item),
         isFavorite = isItemFavorite(item),
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .clickable {
-              setLastViewedItemIndex(index)
-              onItemClick(item)
-            },
-        onFavoriteClick = {
+        onClick = {
+          setLastViewedItemIndex(index)
+          onItemClick(item)
+        },
+        onLongClick = {
           toggleFavorite(item)
         },
       )

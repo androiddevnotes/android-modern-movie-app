@@ -15,7 +15,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel { 
-        AlphaViewModel(
+        TmdbViewModel(
             application = get(),
             repository = get(),
             apiKeyManager = get(),
@@ -24,7 +24,7 @@ val viewModelModule = module {
     }
 }
 
-class AlphaViewModel(
+class TmdbViewModel(
   application: Application,
   internal val repository: Repository,
   internal val apiKeyManager: ApiKeyManager,
@@ -35,8 +35,8 @@ class AlphaViewModel(
   private val _betaPieceUiState =
     MutableStateFlow<BetaPieceUiState<String>>(BetaPieceUiState.Idle)
 
-  internal val _alphaDetailUiState =
-    MutableStateFlow<AlphaDetailUiState<Movie>>(AlphaDetailUiState.Loading)
+  internal val _tmdbDetailUiState =
+    MutableStateFlow<TmdbDetailUiState<Movie>>(TmdbDetailUiState.Loading)
 
   private val _favorites = MutableStateFlow<List<Movie>>(emptyList())
   val favorites: StateFlow<List<Movie>> = _favorites.asStateFlow()
@@ -46,7 +46,7 @@ class AlphaViewModel(
   internal var currentPage = 1
   internal var isLastPage = false
   internal var isLoading = false
-  internal val _alphaAuthUiState = MutableStateFlow<AlphaAuthUiState<String>>(AlphaAuthUiState.Idle)
+  internal val _tmdbAuthUiState = MutableStateFlow<TmdbAuthUiState<String>>(TmdbAuthUiState.Idle)
 
   internal val _alphaCreateListUiState =
     MutableStateFlow<AlphaCreateListUiState<Int>>(AlphaCreateListUiState.Idle)
@@ -60,9 +60,9 @@ class AlphaViewModel(
   val betaPieceUiState: StateFlow<BetaPieceUiState<String>> = _betaPieceUiState.asStateFlow()
   val currentSortOptions: StateFlow<SortOptions> = _currentSortOptions
   val filterOptions: StateFlow<FilterOptions> = _filterOptions
-  val alphaAuthUiState: StateFlow<AlphaAuthUiState<String>> = _alphaAuthUiState
+  val tmdbAuthUiState: StateFlow<TmdbAuthUiState<String>> = _tmdbAuthUiState
   val alphaCreateListUiState: StateFlow<AlphaCreateListUiState<Int>> = _alphaCreateListUiState
-  val alphaDetailUiState: StateFlow<AlphaDetailUiState<Movie>> = _alphaDetailUiState.asStateFlow()
+  val tmdbDetailUiState: StateFlow<TmdbDetailUiState<Movie>> = _tmdbDetailUiState.asStateFlow()
   val alphaListUiState: StateFlow<AlphaListUiState<List<Movie>>> = _alphaListUiState.asStateFlow()
   val searchQuery: StateFlow<String> = _searchQuery
 
@@ -107,8 +107,8 @@ class AlphaViewModel(
   }
 
   fun retryFetchItemDetails() {
-    val currentState = _alphaDetailUiState.value
-    if (currentState is AlphaDetailUiState.Error) {
+    val currentState = _tmdbDetailUiState.value
+    if (currentState is TmdbDetailUiState.Error) {
       fetchMovieDetails(currentState.itemId)
     }
   }
@@ -155,9 +155,9 @@ class AlphaViewModel(
       repository.toggleFavorite(movie)
       val updatedMovie = movie.copy(isFavorite = !movie.isFavorite)
 
-      _alphaDetailUiState.update { currentState ->
-        if (currentState is AlphaDetailUiState.Success && currentState.data.id == updatedMovie.id) {
-          AlphaDetailUiState.Success(updatedMovie)
+      _tmdbDetailUiState.update { currentState ->
+        if (currentState is TmdbDetailUiState.Success && currentState.data.id == updatedMovie.id) {
+          TmdbDetailUiState.Success(updatedMovie)
         } else {
           currentState
         }

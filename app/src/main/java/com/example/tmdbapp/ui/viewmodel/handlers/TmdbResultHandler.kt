@@ -1,6 +1,6 @@
 package com.example.tmdbapp.ui.viewmodel.handlers
 
-import com.example.tmdbapp.models.AlphaDetailUiState
+import com.example.tmdbapp.models.TmdbDetailUiState
 import com.example.tmdbapp.models.AlphaListUiState
 import com.example.tmdbapp.models.Movie
 import com.example.tmdbapp.network.responses.tmdb.MovieResponse
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import timber.log.Timber
 
-object AlphaResultHandler {
+object TmdbResultHandler {
   suspend fun handleAlphaResult(
     result: Resource<MovieResponse>,
     currentPage: Int,
@@ -55,18 +55,18 @@ object AlphaResultHandler {
   }
 
   suspend fun handleAlphaDetailResult(
-    result: Resource<Movie>,
-    alphaDetailUiState: MutableStateFlow<AlphaDetailUiState<Movie>>,
-    apiKeyManager: ApiKeyManager,
-    movieId: Int,
+      result: Resource<Movie>,
+      tmdbDetailUiState: MutableStateFlow<TmdbDetailUiState<Movie>>,
+      apiKeyManager: ApiKeyManager,
+      movieId: Int,
   ) {
     when (result) {
       is Success -> {
         result.data?.let { movie ->
-          alphaDetailUiState.value = AlphaDetailUiState.Success(movie)
+          tmdbDetailUiState.value = TmdbDetailUiState.Success(movie)
         } ?: run {
           val appError = AppError.ApiError("No data received")
-          alphaDetailUiState.value = AlphaDetailUiState.Error(appError, movieId)
+          tmdbDetailUiState.value = TmdbDetailUiState.Error(appError, movieId)
         }
       }
       is Error -> {
@@ -82,7 +82,7 @@ object AlphaResultHandler {
               AppError.ApiError(result.message)
             }
           }
-        alphaDetailUiState.value = AlphaDetailUiState.Error(appError, movieId)
+        tmdbDetailUiState.value = TmdbDetailUiState.Error(appError, movieId)
       }
     }
   }

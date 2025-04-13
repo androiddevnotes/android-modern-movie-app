@@ -15,7 +15,7 @@ import com.example.tmdbapp.utils.Constants
 import kotlinx.coroutines.launch
 
 @Composable
-fun <T : Any> AlphaListContentUi(
+fun <T : Any> TmdbListContentUi(
   alphaListUiState: AlphaListUiState<List<T>>,
   searchQuery: String,
   currentSortOptions: SortOptions,
@@ -119,7 +119,7 @@ fun <T : Any> AlphaListContentUi(
           val items = alphaListUiState.data
           when (viewType) {
             Constants.VIEW_TYPE_GRID ->
-              AlphaListGridUi(
+              TmdbListGridUi(
                 items = items,
                 onItemClick = onItemClick,
                 gridState = gridState,
@@ -134,7 +134,7 @@ fun <T : Any> AlphaListContentUi(
                 isItemFavorite = isItemFavorite,
               )
             Constants.VIEW_TYPE_LIST ->
-              AlphaListSimpleUi(
+              TmdbListSimpleUi(
                 items = items,
                 onItemClick = onItemClick,
                 listState = listState,

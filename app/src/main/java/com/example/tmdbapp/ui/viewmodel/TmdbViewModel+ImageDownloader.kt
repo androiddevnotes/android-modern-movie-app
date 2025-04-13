@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.tmdbapp.utils.ImageDownloader
 import kotlinx.coroutines.launch
 
-fun AlphaViewModel.downloadImage(
+fun TmdbViewModel.downloadImage(
   posterPath: String?,
   context: Context,
 ) {
