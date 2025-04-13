@@ -57,4 +57,33 @@ class RepositoryTest {
         assertTrue(result is Resource.Error<String>)
         assertEquals("An unexpected error occurred", (result as Resource.Error<String>).message)
     }
+
+    @Test
+    fun `safeApiCall works with different types`() = runTest {
+        // Given
+        val expectedResult = 42
+        val apiCall: suspend () -> Int = { expectedResult }
+
+        // When
+        val result = repository.safeApiCall(apiCall)
+
+        // Then
+        assertTrue(result is Resource.Success<Int>)
+        assertEquals(expectedResult, (result as Resource.Success<Int>).data)
+    }
+
+    @Test
+    fun `safeApiCall works with custom data class`() = runTest {
+        // Given
+        data class TestData(val id: Int, val name: String)
+        val expectedResult = TestData(1, "Test")
+        val apiCall: suspend () -> TestData = { expectedResult }
+
+        // When
+        val result = repository.safeApiCall(apiCall)
+
+        // Then
+        assertTrue(result is Resource.Success<TestData>)
+        assertEquals(expectedResult, (result as Resource.Success<TestData>).data)
+    }
 } 
