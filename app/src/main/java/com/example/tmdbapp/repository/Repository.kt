@@ -14,11 +14,11 @@ import timber.log.Timber
 class Repository(
   context: Context,
 ) {
-  val tmdbApi = TmdbApiServiceImpl(KtorClient.httpClient)
-  val openAiApi = OpenAiApiServiceImpl(KtorClient.httpClient)
-  val favoritePreferencesDatastore = FavoritePreferencesDatastore(context)
-  val sessionManagerPreferencesDataStore = SessionManagerPreferencesDataStore(context)
-  val apiKeyManager = ApiKeyManager(context)
+  var tmdbApi: TmdbApiService = TmdbApiServiceImpl(KtorClient.httpClient)
+  var openAiApi: OpenAiApiService = OpenAiApiServiceImpl(KtorClient.httpClient)
+  var favoritePreferencesDatastore: FavoritePreferencesDatastore = FavoritePreferencesDatastore(context)
+  var sessionManagerPreferencesDataStore: SessionManagerPreferencesDataStore = SessionManagerPreferencesDataStore(context)
+  var apiKeyManager: ApiKeyManager = ApiKeyManager(context)
 
   suspend fun <T> safeApiCall(apiCall: suspend () -> T): Resource<T> =
     try {
