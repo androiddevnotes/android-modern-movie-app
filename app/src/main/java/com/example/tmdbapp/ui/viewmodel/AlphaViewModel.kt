@@ -10,9 +10,25 @@ import com.example.tmdbapp.utils.*
 import com.example.tmdbapp.utils.ApiKeyManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
+
+val viewModelModule = module {
+    viewModel { 
+        AlphaViewModel(
+            application = get(),
+            repository = get(),
+            apiKeyManager = get(),
+            sessionManagerPreferencesDataStore = get()
+        )
+    }
+}
 
 class AlphaViewModel(
   application: Application,
+  internal val repository: Repository,
+  internal val apiKeyManager: ApiKeyManager,
+  internal val sessionManagerPreferencesDataStore: SessionManagerPreferencesDataStore,
 ) : AndroidViewModel(application) {
   private var searchJob: Job? = null
 
@@ -40,9 +56,7 @@ class AlphaViewModel(
 
   internal val _currentSortOptions = MutableStateFlow(SortOptions.POPULAR)
   internal val _filterOptions = MutableStateFlow(FilterOptions())
-  internal val apiKeyManager = ApiKeyManager(application)
-  internal val repository = Repository(application)
-  internal val sessionManagerPreferencesDataStore = SessionManagerPreferencesDataStore(application)
+
   val betaPieceUiState: StateFlow<BetaPieceUiState<String>> = _betaPieceUiState.asStateFlow()
   val currentSortOptions: StateFlow<SortOptions> = _currentSortOptions
   val filterOptions: StateFlow<FilterOptions> = _filterOptions

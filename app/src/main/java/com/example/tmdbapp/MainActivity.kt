@@ -15,15 +15,13 @@ import com.example.tmdbapp.ui.nav.NavGraph
 import com.example.tmdbapp.ui.theme.*
 import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
 import com.example.tmdbapp.utils.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
-  private lateinit var alphaViewModel: AlphaViewModel
+  private val alphaViewModel: AlphaViewModel by viewModel()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
-    alphaViewModel =
-      ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))[AlphaViewModel::class.java]
 
     setContent {
       var themeMode by rememberSaveable { mutableStateOf(ThemeMode.SYSTEM) }

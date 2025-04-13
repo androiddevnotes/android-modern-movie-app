@@ -10,30 +10,32 @@ import com.example.tmdbapp.utils.Resource
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import timber.log.Timber
+import kotlinx.coroutines.flow.Flow
 
 class Repository(
-  context: Context,
+    internal val context: Context,
+    internal val tmdbApi: TmdbApiService,
+    internal val openAiApi: OpenAiApiService,
+    internal val favoritePreferencesDatastore: FavoritePreferencesDatastore,
+    internal val sessionManagerPreferencesDataStore: SessionManagerPreferencesDataStore,
+    internal val apiKeyManager: ApiKeyManager,
+    internal val tmdbApiKeyFlow: Flow<String>,
+    internal val openAiApiKeyFlow: Flow<String>
 ) {
-  var tmdbApi: TmdbApiService = TmdbApiServiceImpl(KtorClient.httpClient)
-  var openAiApi: OpenAiApiService = OpenAiApiServiceImpl(KtorClient.httpClient)
-  var favoritePreferencesDatastore: FavoritePreferencesDatastore = FavoritePreferencesDatastore(context)
-  var sessionManagerPreferencesDataStore: SessionManagerPreferencesDataStore = SessionManagerPreferencesDataStore(context)
-  var apiKeyManager: ApiKeyManager = ApiKeyManager(context)
-
-  suspend fun <T> safeApiCall(apiCall: suspend () -> T): Resource<T> =
-    try {
-      val result = apiCall()
-      Timber.d("Result: $result")
-      Resource.Success(result)
-    } catch (e: Exception) {
-      Timber.e("Exception: ${e.message}")
-      Resource.Error(e.message ?: "An unexpected error occurred")
-    }
+    suspend fun <T> safeApiCall(apiCall: suspend () -> T): Resource<T> =
+        try {
+            val result = apiCall()
+            Timber.d("Result: $result")
+            Resource.Success(result)
+        } catch (e: Exception) {
+            Timber.e("Exception: ${e.message}")
+            Resource.Error(e.message ?: "An unexpected error occurred")
+        }
 }
 
 @Serializable
 data class ErrorResponse(
-  @SerialName("status_code") val statusCode: Int,
-  @SerialName("status_message") val statusMessage: String,
-  val success: Boolean,
+    @SerialName("status_code") val statusCode: Int,
+    @SerialName("status_message") val statusMessage: String,
+    val success: Boolean,
 )

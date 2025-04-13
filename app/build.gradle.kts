@@ -96,6 +96,11 @@ dependencies {
   implementation(libs.androidx.palette.ktx)
   implementation(libs.timber)
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+  
+  // Koin
+  implementation("io.insert-koin:koin-android:3.5.3")
+  implementation("io.insert-koin:koin-androidx-compose:3.5.3")
+  implementation("io.insert-koin:koin-androidx-workmanager:3.5.3")
 
   // Test dependencies
   testImplementation("junit:junit:4.13.2")

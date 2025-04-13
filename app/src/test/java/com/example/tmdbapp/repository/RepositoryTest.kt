@@ -3,6 +3,7 @@ package com.example.tmdbapp.repository
 import com.example.tmdbapp.data.FavoritePreferencesDatastore
 import com.example.tmdbapp.data.SessionManagerPreferencesDataStore
 import com.example.tmdbapp.models.Movie
+import com.example.tmdbapp.network.OpenAiApiService
 import com.example.tmdbapp.network.TmdbApiService
 import com.example.tmdbapp.network.responses.tmdb.*
 import com.example.tmdbapp.utils.ApiKeyManager
@@ -21,6 +22,7 @@ class RepositoryTest {
     private lateinit var repository: Repository
     private val mockContext = mockk<android.content.Context>(relaxed = true)
     private val mockTmdbApi = mockk<TmdbApiService>()
+    private val mockOpenAiApi = mockk<OpenAiApiService>()
     private val mockFavoriteDatastore = mockk<FavoritePreferencesDatastore>()
     private val mockSessionManager = mockk<SessionManagerPreferencesDataStore>()
     private val mockApiKeyManager = mockk<ApiKeyManager>()
@@ -45,15 +47,20 @@ class RepositoryTest {
 
     @Before
     fun setup() {
-        repository = Repository(mockContext)
-        repository.tmdbApi = mockTmdbApi
-        repository.favoritePreferencesDatastore = mockFavoriteDatastore
-        repository.sessionManagerPreferencesDataStore = mockSessionManager
-        repository.apiKeyManager = mockApiKeyManager
-
         // Setup default mock behaviors
         every { mockApiKeyManager.tmdbApiKeyFlow } returns flowOf("test_api_key")
         every { mockApiKeyManager.openAiApiKeyFlow } returns flowOf("test_openai_key")
+
+        repository = Repository(
+            context = mockContext,
+            tmdbApi = mockTmdbApi,
+            openAiApi = mockOpenAiApi,
+            favoritePreferencesDatastore = mockFavoriteDatastore,
+            sessionManagerPreferencesDataStore = mockSessionManager,
+            apiKeyManager = mockApiKeyManager,
+            tmdbApiKeyFlow = mockApiKeyManager.tmdbApiKeyFlow,
+            openAiApiKeyFlow = mockApiKeyManager.openAiApiKeyFlow
+        )
     }
 
     @Test

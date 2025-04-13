@@ -11,6 +11,7 @@ import com.example.tmdbapp.ui.theme.*
 import com.example.tmdbapp.ui.viewmodel.AlphaViewModel
 import com.example.tmdbapp.ui.viewmodel.fetchMovieDetails
 import com.example.tmdbapp.utils.ApiKeyManager
+import org.koin.androidx.compose.get
 
 @Composable
 fun NavGraph(
@@ -23,7 +24,7 @@ fun NavGraph(
   application: Application,
   modifier: Modifier = Modifier,
 ) {
-  val apiKeyManager = remember { ApiKeyManager(application) }
+  val apiKeyManager = get<ApiKeyManager>()
 
   NavHost(navController = navController, startDestination = "movieList", modifier = modifier) {
     composable("movieList") {
