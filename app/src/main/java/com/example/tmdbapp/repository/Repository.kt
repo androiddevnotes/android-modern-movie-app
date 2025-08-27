@@ -20,6 +20,7 @@ class Repository(
   val sessionManagerPreferencesDataStore = SessionManagerPreferencesDataStore(context)
   val apiKeyManager = ApiKeyManager(context)
 
+  // can safeApiCall have a Loading state
   suspend fun <T> safeApiCall(apiCall: suspend () -> T): Resource<T> =
     try {
       val result = apiCall()
